@@ -1,9 +1,9 @@
-import './App.css';
+import GroupPage from './pages/GroupPage/GroupPage';
 
 function App() {
   return (
     <div className="App">
-
+      <GroupPage />
     </div>
   );
 }
