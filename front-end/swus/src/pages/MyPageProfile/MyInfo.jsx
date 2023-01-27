@@ -5,36 +5,56 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import DialogTitle from "@mui/material/DialogTitle";
+import { Box } from "@mui/material";
+import DialogContentText from "@mui/material/DialogContentText";
 
 function MyInfo() {
   const [name, setName] = useState("김싸피");
   const [email, setEmail] = useState("ksf@gmail.com");
   const [pw, setPw] = useState("123456");
 
-  const [open, setOpen] = useState(false);
+  //각각 개인정보 수정 모달/탈퇴 확인 모달 열고 닫는 상태 useState
+  const [infoUpdateMOpen, setInfoUpdateMOpen] = useState(false);
+  const [quitMOpen, setQuitMOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  //개인정보 수정 모달 열고 닫는 함수
+  const iumClickOpen = () => {
+    setInfoUpdateMOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const iumClose = () => {
+    setInfoUpdateMOpen(false);
+  };
+
+  //탈퇴 모달 열고 닫는 함수
+  const qmClickOpen = () => {
+    setQuitMOpen(true);
+  };
+
+  const qmClose = () => {
+    setQuitMOpen(false);
   };
 
   return (
     <>
-      <div>
+      <Box
+        sx={{
+          width: 300,
+          height: 300,
+          backgroundColor: "primary.dark",
+        }}
+      >
         <h3>내 정보</h3>
-        <button onClick={handleClickOpen}>정보 수정</button>
+        <button onClick={iumClickOpen}>정보 수정</button>
         <hr />
         <div>닉네임</div>
         <div>{name}</div>
         <div>이메일</div>
         <div>{email}</div>
-        <button>탈퇴하기</button>
-      </div>
+        <button onClick={qmClickOpen}>탈퇴하기</button>
+      </Box>
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={infoUpdateMOpen} onClose={iumClose}>
         <DialogTitle>내 정보 수정</DialogTitle>
         <DialogContent>
           <TextField
@@ -74,8 +94,25 @@ function MyInfo() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Save</Button>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={iumClose}>Save</Button>
+          <Button onClick={iumClose}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={quitMOpen}
+        onClose={qmClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"정말 탈퇴하시겠습니까?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={qmClose}>Disagree</Button>
+          <Button onClick={qmClose} autoFocus>
+            Agree
+          </Button>
         </DialogActions>
       </Dialog>
     </>

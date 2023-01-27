@@ -1,19 +1,14 @@
 import React from "react";
-import { BrowserRouter,Routes, Route } from "react-router-dom";
-import MyInfo from "./pages/MyPageProfile/MyInfo";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MyInfo name="김싸피" email="ksf@gmail.com" />} />
-
-
-
+          <Route path="/" element={<MyProfileMain />} />
         </Routes>
-
       </BrowserRouter>
     </div>
   );
