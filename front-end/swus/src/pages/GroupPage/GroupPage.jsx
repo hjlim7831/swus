@@ -1,55 +1,45 @@
 import React from 'react';
-import { useState } from 'react';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+// import { useState } from 'react';
+// import Paper from '@mui/material/Paper';
+// import Stack from '@mui/material/Stack';
+// import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 
 
 
 
+
 function GroupPage() {
-  const [article, setArticle] = useState([
-			{
-				id: 1,
-				title: 'Article 1',
-			},
-			{
-				id: 2,
-				title: 'Article 2',
-			},
-			{
-				id: 3,
-				title: 'Article 3',
-			},
-			{
-				id: 4,
-				title: 'Article 4',
-			},
-	]);
 
-	let content = [];
+	// const Item = styled(Paper)(({ theme }) => ({
+	// 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : "#fff",
+	// 	...theme.typography.body2,
+	// 	padding: theme.spacing(2),
+	// 	textAlign: 'center',
+  //   color: theme.palette.text.secondary,
+	// }));
 
-	for (let i = 0; i < article.length; i++) {
-		content.push(
-		<>
-			{article[i].id}
-			{article[i].title}
-			<hr />   
-		</>
-		);
-	}
 
 	return (
-		<div style={{ textAlign: 'center'}}>
-			<Container maxWidth="lg" sx={{ justifyContent: 'space-between' }}>
-				{content}
+		<>
+			<Container maxWidth="md" sx={{ border: "5px solid red" }}>
+				<h3>내 스터디</h3>
 			</Container>
-			<div style={{ display: 'inline-block' }}>
-				<Stack spacing={2} sx={{ justifyContent: 'center' }}>
-					<Pagination count={5} color="primary" sx={{ justifyContent : 'center' }}/>
-				</Stack>
-			</div>
-		</div>
+		</>
+		// <div style={{ textAlign: 'space-between'}}>
+		// 	<Stack spacing={2}>
+		// 		{rendering()}
+		// 	</Stack>
+		// 	<Stack spacing={2}>
+		// 	<br/>
+		// 		{(() => {
+		// 			const array = [];
+		// 			for (let i = 0; i < article.length; i++) {
+		// 				array.push(<Item>{article[i].id} {article[i].title}</Item>)
+		// 			} return array;
+		// 		})()}
+		// 	</Stack>
+		// </div>
 		)
 }
 
