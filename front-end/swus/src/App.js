@@ -6,7 +6,8 @@
 import Nav from './components/Nav';
 import GroupPage from './pages/GroupPage/GroupPage'
 import { CssBaseline } from '@mui/material';
-import ReduxToolkit from './pages/GroupPage/ReduxToolkit';
+import Container from '@mui/material/Container';
+// import ReduxToolkit from './pages/GroupPage/ReduxToolkit';
 
 
 // const darkTheme = createTheme({
@@ -18,7 +19,7 @@ import ReduxToolkit from './pages/GroupPage/ReduxToolkit';
 function App() {
 
   return (
-    <>
+    <Container fixed>
       {/* <ThemeProvider theme={darkTheme}> */}
         <Nav />
         <CssBaseline />
@@ -26,8 +27,8 @@ function App() {
           <GroupPage />
         </div>
       {/* </ThemeProvider> */}
-      <ReduxToolkit/>
-    </>
+      {/* <ReduxToolkit/> */}
+    </Container>
   );
 }
 
