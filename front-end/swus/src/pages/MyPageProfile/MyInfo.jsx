@@ -6,7 +6,6 @@ import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Box } from "@mui/material";
-import DialogContentText from "@mui/material/DialogContentText";
 
 function MyInfo() {
   const [name, setName] = useState("김싸피");
@@ -41,16 +40,20 @@ function MyInfo() {
         sx={{
           width: 300,
           height: 300,
-          backgroundColor: "primary.dark",
+          backgroundColor: "primary.light",
         }}
       >
-        <h3>내 정보</h3>
-        <button onClick={iumClickOpen}>정보 수정</button>
+        <h3 style={{ display: "inline-block" }}>내 정보</h3>
+        <button style={{ display: "inline-block" }} onClick={iumClickOpen}>
+          정보 수정
+        </button>
         <hr />
-        <div>닉네임</div>
-        <div>{name}</div>
-        <div>이메일</div>
-        <div>{email}</div>
+        <div style={{ display: "inline-block" }}>닉네임</div>
+        <div style={{ display: "inline-block" }}>{name}</div>
+        <div></div>
+        <div style={{ display: "inline-block" }}>이메일</div>
+        <div style={{ display: "inline-block" }}>{email}</div>
+        <div></div>
         <button onClick={qmClickOpen}>탈퇴하기</button>
       </Box>
 
@@ -82,16 +85,8 @@ function MyInfo() {
             label="현재 비밀번호"
             defaultValue=""
           />
-          <TextField
-            id="outlined-helperText"
-            label="Helper text"
-            defaultValue="Default Value"
-          />
-          <TextField
-            id="outlined-helperText"
-            label="비밀번호 확인"
-            defaultValue=""
-          />
+          <TextField id="outlined-helperText" label="Helper text" defaultValue="Default Value" />
+          <TextField id="outlined-helperText" label="비밀번호 확인" defaultValue="" />
         </DialogContent>
         <DialogActions>
           <Button onClick={iumClose}>Save</Button>
@@ -105,9 +100,7 @@ function MyInfo() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"정말 탈퇴하시겠습니까?"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"정말 탈퇴하시겠습니까?"}</DialogTitle>
         <DialogActions>
           <Button onClick={qmClose}>Disagree</Button>
           <Button onClick={qmClose} autoFocus>
