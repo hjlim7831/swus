@@ -16,7 +16,7 @@ public class GroupRoom {
     @Id
     @GeneratedValue
     @Column(name = "room_id")
-    private long id;
+    private int id;
 
     private String type;
 

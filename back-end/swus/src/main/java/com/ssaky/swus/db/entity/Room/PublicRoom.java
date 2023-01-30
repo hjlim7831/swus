@@ -17,6 +17,7 @@ public class PublicRoom {
     @Column(name = "room_id")
     private int id;
 
+    //쉬는 시간 있는 방 Y, 없는 방 N
     private String type;
 
 }
