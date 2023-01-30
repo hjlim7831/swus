@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import React from "react";
 import MyGroupList from "./MyGroupList";
 import MyInfo from "./MyInfo";
@@ -7,7 +7,7 @@ import TopNavBar from "./TopNavBar";
 
 function MyProfileMain() {
   return (
-    <>
+    <Container>
       <Box
         sx={{
           top: -200, //이거 하.. 왜 이렇게 해줘야되는지 몰겠다.. ㅜ
@@ -17,10 +17,17 @@ function MyProfileMain() {
       >
         <MyInfo />
       </Box>
-      <Box sx={{ position: "relative", display: "inline-block", top: 69, left: 10 }}>
+      <Box
+        sx={{
+          position: "relative",
+          display: "inline-block",
+          top: 69,
+          left: 10,
+        }}
+      >
         <MyGroupList />
       </Box>
-    </>
+    </Container>
   );
 }
 

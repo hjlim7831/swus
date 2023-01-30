@@ -47,7 +47,7 @@ function SideNavBar() {
             "& .MuiDrawer-paper": {
               width: drawerWidth,
               boxSizing: "border-box",
-              top: 80,
+              top: 69,
             },
           }}
           variant="permanent"
@@ -58,7 +58,10 @@ function SideNavBar() {
             {moveHere.map((data) => (
               <ListItem key={data.id} disablePadding>
                 {/* <ListItemButton onClick={handleClickButton} name={data.name}> */}
-                <ListItemButton onClick={() => setContent(data.name)} name={data.name}>
+                <ListItemButton
+                  onClick={() => setContent(data.name)}
+                  name={data.name}
+                >
                   <ListItemText primary={data.name} />
                 </ListItemButton>
               </ListItem>
@@ -67,7 +70,9 @@ function SideNavBar() {
         </Drawer>
       </Box>
       {content && (
-        <Box sx={{ position: "relative", display: "inline-block" }}>{selectComponent[content]}</Box>
+        <Box sx={{ position: "relative", display: "inline-block" }}>
+          {selectComponent[content]}
+        </Box>
       )}
     </>
   );

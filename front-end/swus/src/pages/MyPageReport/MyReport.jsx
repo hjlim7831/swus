@@ -7,11 +7,20 @@ import TodoJandi from "./TodoJandi";
 function MyReport() {
   return (
     <>
-      <Box sx={{ position: "relative", display: "inline-block" }}>
-        <MyTodo />
-      </Box>
-      <Box sx={{ position: "relative", display: "inline-block" }}>
-        <StudyGraph />
+      <Box
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+          display: "inline-block",
+        }}
+      >
+        <Box sx={{ position: "relative" }}>
+          <MyTodo />
+        </Box>
+        <Box sx={{ position: "relative" }}>
+          <StudyGraph />
+        </Box>
       </Box>
       <Box>
         <TodoJandi />
