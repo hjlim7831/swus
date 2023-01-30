@@ -1,9 +1,8 @@
 package com.ssaky.swus.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssaky.swus.api.domain.user.User;
-import com.ssaky.swus.api.domain.user.UserDetailsImpl;
-import com.ssaky.swus.common.utils.TokenUtils;
+import com.ssaky.swus.api.domain.member.Member;
+import com.ssaky.swus.api.domain.member.MemberDetails;
 import org.json.simple.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -21,10 +20,10 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         
         // 사용자와 관련된 정보 모두 조회
-        User user = ((UserDetailsImpl) authentication.getPrincipal()).getUser();
+        Member member = ((MemberDetails) authentication.getPrincipal()).getMember();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Map result = objectMapper.convertValue(user, Map.class);
+        Map result = objectMapper.convertValue(member, Map.class);
 
         // 조회 데이터를 JSONObject 형태로 파싱
 

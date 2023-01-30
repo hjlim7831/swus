@@ -1,9 +1,9 @@
-package com.ssaky.swus.api.controller.user;
+package com.ssaky.swus.api.controller.member;
 
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController {
+public class MemberController {
 
 
 

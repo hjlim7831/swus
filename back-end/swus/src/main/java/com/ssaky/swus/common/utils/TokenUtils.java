@@ -1,6 +1,6 @@
 package com.ssaky.swus.common.utils;
 
-import com.ssaky.swus.api.domain.user.User;
+import com.ssaky.swus.api.domain.member.Member;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 
@@ -17,11 +17,11 @@ public class TokenUtils {
     // @Value(value = "${custom.jwt-secret-key}")
     private static final String jwtSecretKey = "exampleSecretKey";
 
-    public static String generateJwtToken(User user) {
+    public static String generateJwtToken(Member member) {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())
-                .setClaims(createClaims(user))
-                .setSubject(String.valueOf(user.getId()))
+                .setClaims(createClaims(member))
+                .setSubject(String.valueOf(member.getId()))
                 .signWith(SignatureAlgorithm.HS256, createSignature())
                 .setExpiration(createExpiredDate());
         return builder.compact();
@@ -91,14 +91,14 @@ public class TokenUtils {
 
     /**
      * 사용자 정보를 기반으로 클레임을 생성해주는 메서드
-     * @param user
+     * @param member
      * @return Map<String, Object>
      */
-    private static Map<String, Object> createClaims(User user){
+    private static Map<String, Object> createClaims(Member member){
         Map<String, Object> claims = new HashMap<>();
 
-        log.info("email : "+user.getEmail());
-        log.info("nickname : "+user.getNickname());
+        log.info("email : "+ member.getEmail());
+        log.info("nickname : "+ member.getNickname());
         
         return claims;
     }

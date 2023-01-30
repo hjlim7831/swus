@@ -1,9 +1,8 @@
-package com.ssaky.swus.api.domain.user;
+package com.ssaky.swus.api.domain.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Delegate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,16 +10,16 @@ import java.util.Collection;
 
 @Getter
 @AllArgsConstructor
-public class UserDetailsImpl implements UserDetails {
+public class MemberDetails implements UserDetails {
 
     @Delegate
-    private User user;
+    private Member member;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(User user){
+    public MemberDetails(Member member){
         super();
-        this.user = user;
+        this.member = member;
     }
 
     @Override
@@ -30,12 +29,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.user.getEmail();
+        return this.member.getEmail();
     }
 
     @Override

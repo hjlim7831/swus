@@ -1,7 +1,7 @@
 package com.ssaky.swus.config.handler;
 
-import com.ssaky.swus.api.domain.user.UserDetailsImpl;
-import com.ssaky.swus.api.service.user.UserDetailsServiceImpl;
+import com.ssaky.swus.api.domain.member.MemberDetails;
+import com.ssaky.swus.api.service.member.MemberDetailsService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Resource
-    private UserDetailsServiceImpl userDetailsService;
+    private MemberDetailsService userDetailsService;
 
     @NonNull
     private BCryptPasswordEncoder passwordEncoder;
@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String email = token.getName();
         String password = (String) token.getCredentials();
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(email);
+        MemberDetails userDetails = (MemberDetails) userDetailsService.loadUserByUsername(email);
 
         if (!(userDetails.getPassword().equalsIgnoreCase(password))) {
             throw new BadCredentialsException(userDetails.getUsername() + "Invalid password");

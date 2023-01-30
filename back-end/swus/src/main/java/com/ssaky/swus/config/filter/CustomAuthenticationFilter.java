@@ -2,7 +2,7 @@ package com.ssaky.swus.config.filter;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssaky.swus.api.domain.user.User;
+import com.ssaky.swus.api.domain.member.Member;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,9 +35,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
-            User user = objectMapper.readValue(request.getInputStream(), User.class);
+            Member member = objectMapper.readValue(request.getInputStream(), Member.class);
 
-            return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+            return new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword());
 
         } catch (UsernameNotFoundException ae) {
             throw new UsernameNotFoundException(ae.getMessage());

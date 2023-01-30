@@ -1,7 +1,7 @@
-package com.ssaky.swus.api.domain.user;
+package com.ssaky.swus.api.domain.member;
 
-import com.ssaky.swus.api.domain.user.User;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@ToString
 public class Question {
 
     @Id @GeneratedValue
@@ -17,6 +18,6 @@ public class Question {
 
     private String content;
 
-    @OneToMany(mappedBy = "question")
-    private List<User> users = new ArrayList<>();
+    @OneToMany(mappedBy = "question", fetch=FetchType.LAZY)
+    private List<Member> members = new ArrayList<>();
 }
