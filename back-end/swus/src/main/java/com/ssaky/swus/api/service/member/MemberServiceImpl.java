@@ -1,9 +1,9 @@
 package com.ssaky.swus.api.service.member;
 
-import com.ssaky.swus.api.request.auth.LoginDTO;
-import com.ssaky.swus.api.request.auth.SignUpDTO;
-import com.ssaky.swus.api.domain.member.Member;
-import com.ssaky.swus.api.repository.member.MemberRepository;
+import com.ssaky.swus.api.request.auth.LoginReq;
+import com.ssaky.swus.api.request.auth.SignUpReq;
+import com.ssaky.swus.db.entity.member.Member;
+import com.ssaky.swus.db.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public int join(SignUpDTO form){
+    public int join(SignUpReq form){
         Member member = new Member(form);
         log.debug(String.valueOf(member));
         memberRepository.save(member);
@@ -42,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Optional<Member> login(LoginDTO form) {
+    public Optional<Member> login(LoginReq form) {
         return memberRepository.checkEmailAndPassword(form);
     }
 }

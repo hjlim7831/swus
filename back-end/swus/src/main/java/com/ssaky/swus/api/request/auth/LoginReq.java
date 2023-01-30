@@ -3,7 +3,7 @@ package com.ssaky.swus.api.request.auth;
 import lombok.Getter;
 
 @Getter
-public class LoginDTO {
+public class LoginReq {
 
     private String email;
     private String password;

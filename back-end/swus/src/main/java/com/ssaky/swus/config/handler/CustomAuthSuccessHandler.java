@@ -1,8 +1,8 @@
 package com.ssaky.swus.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssaky.swus.api.domain.member.Member;
-import com.ssaky.swus.api.domain.member.MemberDetails;
+import com.ssaky.swus.db.entity.member.Member;
+import com.ssaky.swus.db.entity.member.MemberDetails;
 import org.json.simple.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;

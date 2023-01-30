@@ -1,7 +1,7 @@
 package com.ssaky.swus.api.service.member;
 
-import com.ssaky.swus.api.domain.member.Question;
-import com.ssaky.swus.api.repository.member.QuestionRepository;
+import com.ssaky.swus.db.entity.member.Question;
+import com.ssaky.swus.db.repository.member.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

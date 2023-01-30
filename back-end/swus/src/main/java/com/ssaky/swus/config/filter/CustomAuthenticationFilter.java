@@ -2,7 +2,7 @@ package com.ssaky.swus.config.filter;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssaky.swus.api.domain.member.Member;
+import com.ssaky.swus.db.entity.member.Member;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

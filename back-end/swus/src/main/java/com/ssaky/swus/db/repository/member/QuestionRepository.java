@@ -1,6 +1,6 @@
-package com.ssaky.swus.api.repository.member;
+package com.ssaky.swus.db.repository.member;
 
-import com.ssaky.swus.api.domain.member.Question;
+import com.ssaky.swus.db.entity.member.Question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -1,14 +1,14 @@
 package com.ssaky.swus.api.service.member;
 
-import com.ssaky.swus.api.request.auth.LoginDTO;
-import com.ssaky.swus.api.request.auth.SignUpDTO;
-import com.ssaky.swus.api.domain.member.Member;
+import com.ssaky.swus.api.request.auth.LoginReq;
+import com.ssaky.swus.api.request.auth.SignUpReq;
+import com.ssaky.swus.db.entity.member.Member;
 
 import java.util.Optional;
 
 public interface MemberService {
 
-    public int join(SignUpDTO form);
+    public int join(SignUpReq form);
 
     public boolean validateDuplicateEmail(String email);
 
@@ -16,5 +16,5 @@ public interface MemberService {
 
     public Optional<Member> findOneByEmail(String email);
 
-    public Optional<Member> login(LoginDTO form);
+    public Optional<Member> login(LoginReq form);
 }

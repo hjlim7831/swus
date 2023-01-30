@@ -1,6 +1,6 @@
-package com.ssaky.swus.api.domain.member;
+package com.ssaky.swus.db.entity.member;
 
-import com.ssaky.swus.api.request.auth.SignUpDTO;
+import com.ssaky.swus.api.request.auth.SignUpReq;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,13 +16,22 @@ import static javax.persistence.FetchType.LAZY;
 @ToString
 public class Member {
 
-    public Member(SignUpDTO form){
+    public Member(SignUpReq form){
         this.email = form.getEmail();
         this.password = form.getPassword();
         this.nickname = form.getNickname();
         this.answer = form.getAnswer();
         Question question = new Question(form.getQuestionId());
         this.question = question;
+    }
+
+    public Member(String email, String password, String nickname, int questionId, String answer){
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        Question question = new Question(questionId);
+        this.question = question;
+        this.answer = answer;
     }
 
     @Id

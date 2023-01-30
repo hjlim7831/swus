@@ -1,6 +1,6 @@
 package com.ssaky.swus.api.service.member;
 
-import com.ssaky.swus.api.domain.member.Question;
+import com.ssaky.swus.db.entity.member.Question;
 
 import java.util.List;
 

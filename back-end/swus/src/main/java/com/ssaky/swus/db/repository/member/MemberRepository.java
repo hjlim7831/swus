@@ -1,7 +1,7 @@
-package com.ssaky.swus.api.repository.member;
+package com.ssaky.swus.db.repository.member;
 
-import com.ssaky.swus.api.request.auth.LoginDTO;
-import com.ssaky.swus.api.domain.member.Member;
+import com.ssaky.swus.api.request.auth.LoginReq;
+import com.ssaky.swus.db.entity.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -30,11 +30,13 @@ public class MemberRepository {
         }
     }
 
-    public Optional<Member> checkEmailAndPassword(LoginDTO form){
+    public Optional<Member> checkEmailAndPassword(LoginReq form){
         String email = form.getEmail();
         String password = form.getPassword();
 
         List<Member> resultList = em.createQuery("select m from Member m where m.email = :email and m.password = :password", Member.class)
+                .setParameter("email", email)
+                .setParameter("password", password)
                 .getResultList();
         if (resultList.isEmpty()){
             return Optional.empty();

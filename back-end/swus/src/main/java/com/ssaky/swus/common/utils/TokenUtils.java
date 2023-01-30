@@ -1,6 +1,6 @@
 package com.ssaky.swus.common.utils;
 
-import com.ssaky.swus.api.domain.member.Member;
+import com.ssaky.swus.db.entity.member.Member;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 

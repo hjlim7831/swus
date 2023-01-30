@@ -1,8 +1,10 @@
 package com.ssaky.swus.api.controller.auth;
 
-import com.ssaky.swus.api.domain.member.Member;
-import com.ssaky.swus.api.request.auth.LoginDTO;
-import com.ssaky.swus.api.request.auth.SignUpDTO;
+import antlr.Token;
+import com.ssaky.swus.api.response.auth.LoginResp;
+import com.ssaky.swus.db.entity.member.Member;
+import com.ssaky.swus.api.request.auth.LoginReq;
+import com.ssaky.swus.api.request.auth.SignUpReq;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -26,23 +28,22 @@ public class AuthController {
     private MemberService memberService;
 
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO form){
+    public ResponseEntity<?> login(@RequestBody LoginReq form){
         Map<String, Object> resultMap = new HashMap<>();
 
         Optional<Member> member = memberService.login(form);
         if (member.isPresent()){
-
-
+            String accessToken = TokenUtils.generateJwtToken(member.get());
+            LoginResp resp = new LoginResp(member.get(), accessToken);
+            return ResponseEntity.ok(resp);
         }else{
             resultMap.put("msg", "failure_login");
             return ResponseEntity.badRequest().body(resultMap);
         }
-
-        return ResponseEntity.ok("");
     }
 
     @PostMapping("sign-up")
-    public ResponseEntity<?> signUp(@RequestBody SignUpDTO form){
+    public ResponseEntity<?> signUp(@RequestBody SignUpReq form){
         int id = memberService.join(form);
         log.debug(String.valueOf(form));
         Map<String, Object> resultMap = new HashMap<>();
@@ -50,16 +51,16 @@ public class AuthController {
         return ResponseEntity.ok(resultMap);
     }
 
-    @PostMapping("/generateToken")
-    public ResponseEntity<?> selectCodeList(@RequestBody Member member){
-        Map<String, Object> resultMap = new HashMap<>();
-
-        String resultToken = TokenUtils.generateJwtToken(member);
-
-        resultMap.put("result", resultToken);
-        resultMap.put("resultCode", 200);
-        System.out.println(resultMap);
-        return ResponseEntity.ok(resultMap);
-    }
+//    @PostMapping("/generateToken")
+//    public ResponseEntity<?> selectCodeList(@RequestBody Member member){
+//        Map<String, Object> resultMap = new HashMap<>();
+//
+//        String resultToken = TokenUtils.generateJwtToken(member);
+//
+//        resultMap.put("result", resultToken);
+//        resultMap.put("resultCode", 200);
+//        System.out.println(resultMap);
+//        return ResponseEntity.ok(resultMap);
+//    }
 
 }

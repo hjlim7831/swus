@@ -1,7 +1,7 @@
 package com.ssaky.swus.api.service.member;
 
-import com.ssaky.swus.api.domain.member.Member;
-import com.ssaky.swus.api.domain.member.MemberDetails;
+import com.ssaky.swus.db.entity.member.Member;
+import com.ssaky.swus.db.entity.member.MemberDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

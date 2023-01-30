@@ -1,6 +1,6 @@
 package com.ssaky.swus.config.handler;
 
-import com.ssaky.swus.api.domain.member.MemberDetails;
+import com.ssaky.swus.db.entity.member.MemberDetails;
 import com.ssaky.swus.api.service.member.MemberDetailsService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

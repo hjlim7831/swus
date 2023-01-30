@@ -1,4 +1,4 @@
-package com.ssaky.swus.api.domain.member;
+package com.ssaky.swus.db.entity.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
