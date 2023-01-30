@@ -122,10 +122,11 @@ export default function SignUpSide() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                // label="Email Address"
                 name="email"
                 autoComplete="email"
                 autoFocus
+                variant="standard"
               />
               비밀번호
               <TextField
@@ -133,10 +134,11 @@ export default function SignUpSide() {
                 required
                 fullWidth
                 name="password "
-                label="Password"
+                // label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                variant="standard"
               />
               비밀번호 확인
               <TextField
@@ -144,10 +146,11 @@ export default function SignUpSide() {
                 required
                 fullWidth
                 name="password Confirm"
-                label="Password Confirm"
+                // label="Password Confirm"
                 type="password"
                 id="password Confirm"
                 autoComplete="current-password"
+                variant="standard"
               />
               질문
               <TextField
@@ -155,8 +158,8 @@ export default function SignUpSide() {
                 select
                 fullWidth
                 id="password Question"
-                label="Select"
-                defaultValue="que 1"
+                label="Choose a question"
+                // defaultValue="que 1"
               >
                 {favorite_questions.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -170,10 +173,11 @@ export default function SignUpSide() {
                 required
                 fullWidth
                 id="answer"
-                label="answer"
+                // label="answer"
                 name="answer"
                 autoComplete="answer"
                 autoFocus
+                variant="standard"
               />
               <Button
                 type="submit"

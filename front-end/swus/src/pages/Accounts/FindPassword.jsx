@@ -114,10 +114,11 @@ export default function FindPassword() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                // label="Email Address"
                 name="email"
                 autoComplete="email"
                 autoFocus
+                variant="standard"
               />
               <Button
                 type="submit"
@@ -133,8 +134,8 @@ export default function FindPassword() {
                 select
                 fullWidth
                 id="password Question"
-                label="Select"
-                defaultValue="que 1"
+                label="Choose your question"
+                // defaultValue="que 1"
               >
                 {favorite_questions.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -148,10 +149,11 @@ export default function FindPassword() {
                 required
                 fullWidth
                 id="answer"
-                label="answer"
+                // label="answer"
                 name="answer"
                 autoComplete="answer"
                 autoFocus
+                variant="standard"
               />
               <Button
                 type="submit"
