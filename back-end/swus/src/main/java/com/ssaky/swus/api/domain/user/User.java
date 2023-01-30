@@ -1,5 +1,6 @@
 package com.ssaky.swus.api.domain.user;
 
+import com.ssaky.swus.api.controller.auth.SignUpDTO;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -26,4 +27,12 @@ public class User {
     private String answer;
 
     private String token;
+
+    public void signup(SignUpDTO form){
+        this.email = form.getEmail();
+        this.password = form.getPassword();
+        this.nickname = form.getNickname();
+        this.answer = form.getAnswer();
+
+    }
 }
