@@ -31,7 +31,7 @@ import logo from "./assets/logo.png";
 
 const theme = createTheme();
 
-export default function SignUpSide() {
+export default function FindPassword() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -100,14 +100,7 @@ export default function SignUpSide() {
               <LockOutlinedIcon />
             </Avatar> */}
             <Typography component="h1" variant="h5">
-              Sign Up
-              <Link
-                href="#"
-                variant="h5"
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                Sign In
-              </Link>
+              아이디/비밀번호 찾기
             </Typography>
             <Box
               component="form"
@@ -116,7 +109,6 @@ export default function SignUpSide() {
               sx={{ mt: 1 }}
             >
               아이디 (이메일)
-              <Button>중복검사</Button>
               <TextField
                 margin="normal"
                 required
@@ -127,28 +119,14 @@ export default function SignUpSide() {
                 autoComplete="email"
                 autoFocus
               />
-              비밀번호
-              <TextField
-                margin="normal"
-                required
+              <Button
+                type="submit"
                 fullWidth
-                name="password "
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              비밀번호 확인
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password Confirm"
-                label="Password Confirm"
-                type="password"
-                id="password Confirm"
-                autoComplete="current-password"
-              />
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                아이디 확인
+              </Button>
               질문
               <TextField
                 margin="normal"
@@ -181,7 +159,7 @@ export default function SignUpSide() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                비밀번호 찾기
               </Button>
               {/* <Copyright sx={{ mt: 5 }} /> */}
             </Box>

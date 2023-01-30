@@ -1,24 +1,30 @@
-import NavBar from  './components/NavBar/NavBar'
+import NavBar from "./components/NavBar/NavBar";
 import {
-  BrowserRouter as Router,
-  Routes as Switch,
+  BrowserRouter,
+  Routes,
   Route,
   // Link
 } from "react-router-dom";
 
-import SignInSide from './pages/Accounts/Login';
+import SignInSide from "./pages/Accounts/LogIn";
+import SignUpSide from "./pages/Accounts/SignUp";
+import FindPassword from "./pages/Accounts/FindPassword";
+import BasicModalDialog from "./pages/Accounts/UserModal";
 
 function App() {
   return (
     <>
-      <Router>
+      <BrowserRouter>
         <NavBar />
         <div>
-          <Switch>
+          <Routes>
             <Route exact path="/login/" element={<SignInSide />} />
-          </Switch>
+            <Route exact path="/signup/" element={<SignUpSide />} />
+            <Route exact path="/findpassword" element={<FindPassword />} />
+            <Route exact path="/modal/" element={<BasicModalDialog />} />
+          </Routes>
         </div>
-      </Router>
+      </BrowserRouter>
     </>
   );
 }
