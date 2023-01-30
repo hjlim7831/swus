@@ -4,11 +4,12 @@
 // import Nav from './components/Nav';
 // import { useState, useEffect } from 'react';
 import Nav from './components/Nav';
-import GroupPage from './pages/GroupPage/GroupPage'
+// import GroupPage from './pages/GroupPage/GroupPage'
 import { CssBaseline } from '@mui/material';
 import Container from '@mui/material/Container';
 import { Provider } from 'react-redux';
 import store from './store/Store';
+import CreateArticle from './pages/GroupPage/CreateArticle';
 
 // import ReduxToolkit from './pages/GroupPage/ReduxToolkit';
 
@@ -29,7 +30,8 @@ function App() {
             <Nav />
             <CssBaseline />
             <div className="App">
-              <GroupPage />
+              {/* <GroupPage /> */}
+              <CreateArticle />
             </div>
           {/* </ThemeProvider> */}
           {/* <ReduxToolkit/> */}

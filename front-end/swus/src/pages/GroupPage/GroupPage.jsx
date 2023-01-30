@@ -61,14 +61,13 @@ function GroupPage() {
 		<>
 			<Container maxWidth="md" sx={{ border: "5px solid red", padding: 2 }}>
 				<Box>
-					<Grid container spacing={2} sx={{ alignItems: "center", mb: 2 }}>
+					<Grid container spacing={2} sx={{ alignItems: "center", mb: 2, display: "flex", justifyContent: "space-between" }}>
 						<Grid item xs={3}>
 							<h3>스터디 모집게시판</h3>
 						</Grid>
-						<Grid item xs={7}></Grid>
 						<Grid item xs={2}>
-							<Box sx={{ pl: 4 }}>
-								<Button variant='outlined' sx={{ whiteSpace: "nowrap", minWidth: "auto", ml: 2 }}>글 쓰기</Button>
+							<Box >
+								<Button variant='outlined' sx={{ whiteSpace: "nowrap", minWidth: "auto"}}>글 쓰기</Button>
 							</Box>
 						</Grid>
 					</Grid>
