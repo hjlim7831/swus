@@ -1,8 +1,9 @@
 package com.ssaky.swus.api.domain.member;
 
-import com.ssaky.swus.api.controller.auth.SignUpDTO;
+import com.ssaky.swus.api.request.auth.SignUpDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,13 +13,15 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Table(name="user")
 @NoArgsConstructor
+@ToString
 public class Member {
 
-    public Member(SignUpDTO form, Question question){
+    public Member(SignUpDTO form){
         this.email = form.getEmail();
         this.password = form.getPassword();
         this.nickname = form.getNickname();
         this.answer = form.getAnswer();
+        Question question = new Question(form.getQuestionId());
         this.question = question;
     }
 

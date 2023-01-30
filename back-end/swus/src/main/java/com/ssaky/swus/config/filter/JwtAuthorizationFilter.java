@@ -7,7 +7,9 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,6 +26,10 @@ import java.util.List;
 //@Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    @Value("${swagger.paths}")
+    private List<String> swaggerPaths;
+
+    private AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -34,12 +40,23 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 "/auth/sign-up",
                 "/auth/generateToken"
         );
+//        System.out.println(request.getServletPath());
+        // swagger에 필요한 URL일 경우, 다음 필터로 이동
+        boolean isSwaggerPath = swaggerPaths.stream()
+                .anyMatch(path -> pathMatcher.match(path, request.getServletPath()));
+        if (isSwaggerPath){
+            chain.doFilter(request, response);
+            return;
+        }
+
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 -> 로직 처리 없이 다음 필터로 이동
         if (list.contains(request.getRequestURI())){
             chain.doFilter(request, response);
             return;
         }
+
+
         
         // 3. OPTIONS 요청일 경우 -> 로직 처리 없이 다음 필터로 이동
         if (request.getMethod().equalsIgnoreCase("OPTIONS")){

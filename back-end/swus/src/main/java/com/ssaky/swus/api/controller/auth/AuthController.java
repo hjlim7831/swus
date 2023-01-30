@@ -1,12 +1,13 @@
 package com.ssaky.swus.api.controller.auth;
 
 import com.ssaky.swus.api.domain.member.Member;
+import com.ssaky.swus.api.request.auth.LoginDTO;
+import com.ssaky.swus.api.request.auth.SignUpDTO;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -24,9 +26,17 @@ public class AuthController {
     private MemberService memberService;
 
     @PostMapping("login")
-    public ResponseEntity<?> login(Model model, LoginDTO form){
-        String email = form.getEmail();
-        String password = form.getPassword();
+    public ResponseEntity<?> login(@RequestBody LoginDTO form){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Member> member = memberService.login(form);
+        if (member.isPresent()){
+
+
+        }else{
+            resultMap.put("msg", "failure_login");
+            return ResponseEntity.badRequest().body(resultMap);
+        }
 
         return ResponseEntity.ok("");
     }
@@ -36,7 +46,7 @@ public class AuthController {
         int id = memberService.join(form);
         log.debug(String.valueOf(form));
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("id", id);
+        resultMap.put("msg", "success_signup");
         return ResponseEntity.ok(resultMap);
     }
 

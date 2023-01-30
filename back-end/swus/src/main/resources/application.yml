@@ -29,3 +29,10 @@ logging:
   level:
     root: info
     com.ssaky.swus: debug
+swagger:
+  paths: |
+    /swagger-ui/**,
+    /webjars/springfox-swagger-ui/**/*,
+    /swagger-resources,
+    /swagger-resources/**/*,
+    /v2/api-docs

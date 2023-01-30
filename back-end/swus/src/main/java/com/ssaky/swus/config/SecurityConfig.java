@@ -25,7 +25,8 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         // 정적 자원에 대해 Security 적용 X
-        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        return (web) -> web.ignoring()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Bean
@@ -38,6 +39,8 @@ public class SecurityConfig {
 
         // 토큰 활용 시, 모든 요청을 '인가'에 대해서 사용
         http.authorizeHttpRequests((authz) -> authz.anyRequest().permitAll());
+        
+
 
         // JWT를 이용해 인증할 예정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

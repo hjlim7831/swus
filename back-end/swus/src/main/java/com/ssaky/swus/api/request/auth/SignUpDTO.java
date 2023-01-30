@@ -1,4 +1,4 @@
-package com.ssaky.swus.api.controller.auth;
+package com.ssaky.swus.api.request.auth;
 
 import lombok.Getter;
 import lombok.ToString;
