@@ -7,6 +7,9 @@ import Nav from './components/Nav';
 import GroupPage from './pages/GroupPage/GroupPage'
 import { CssBaseline } from '@mui/material';
 import Container from '@mui/material/Container';
+import { Provider } from 'react-redux';
+import store from './store/Store';
+
 // import ReduxToolkit from './pages/GroupPage/ReduxToolkit';
 
 
@@ -19,16 +22,20 @@ import Container from '@mui/material/Container';
 function App() {
 
   return (
-    <Container fixed>
-      {/* <ThemeProvider theme={darkTheme}> */}
-        <Nav />
-        <CssBaseline />
-        <div className="App">
-          <GroupPage />
-        </div>
-      {/* </ThemeProvider> */}
-      {/* <ReduxToolkit/> */}
-    </Container>
+    <>
+      <Provider store={store}>
+        <Container fixed>
+          {/* <ThemeProvider theme={darkTheme}> */}
+            <Nav />
+            <CssBaseline />
+            <div className="App">
+              <GroupPage />
+            </div>
+          {/* </ThemeProvider> */}
+          {/* <ReduxToolkit/> */}
+        </Container>
+      </Provider>
+    </>
   );
 }
 

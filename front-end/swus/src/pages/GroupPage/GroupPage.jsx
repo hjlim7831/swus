@@ -11,33 +11,35 @@ import { Paper,
 				TablePagination,
 				Button,
 				Grid,
+				Box,
 			 } from '@mui/material';
+import CreateArticle from './CreateArticle';
 
-function createData( index, type, name, is_finished, date, watched ) {
-	return { index, type, name, is_finished, date, watched };
+function createData( index, type, name, is_finished, date, watched, bool ) {
+	return { index, type, name, is_finished, date, watched, bool };
 }
 
 const articles = [
-	createData(1, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(2, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(3, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(4, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(5, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(6, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(7, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(8, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(9, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(10, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(11, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(12, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(13, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(14, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(15, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(16, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(17, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(18, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(19, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
-	createData(20, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3),
+	createData(1, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(2, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, false),
+	createData(3, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(4, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(5, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(6, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(7, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(8, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(9, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(10, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(11, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(12, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(13, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(14, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(15, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(16, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(17, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(18, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(19, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(20, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 ];
 
 
@@ -50,29 +52,33 @@ function GroupPage() {
 		setPage(newPage)
 	}
 
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 5))
-		setPage(0)
-	}
+	// const handleChangeRowsPerPage = (event) => {
+	// 	setRowsPerPage(parseInt(event.target.value, 5))
+	// 	setPage(0)
+	// }
 
 	return (
 		<>
-			<Container maxWidth="md" sx={{ border: "5px solid red", padding: 3 }}>
-				<Grid container spacing={2}>
-					<Grid item xs={3}>
-						스터디 모집 게시판
+			<Container maxWidth="md" sx={{ border: "5px solid red", padding: 2 }}>
+				<Box>
+					<Grid container spacing={2} sx={{ alignItems: "center", mb: 2 }}>
+						<Grid item xs={3}>
+							<h3>스터디 모집게시판</h3>
+						</Grid>
+						<Grid item xs={7}></Grid>
+						<Grid item xs={2}>
+							<Box sx={{ pl: 4 }}>
+								<Button variant='outlined' sx={{ whiteSpace: "nowrap", minWidth: "auto", ml: 2 }}>글 쓰기</Button>
+							</Box>
+						</Grid>
 					</Grid>
-					<Grid item xs={6}></Grid>
-					<Grid item xs={3} sx={{ justifyContent: "alig" }}>
-						<Button variant='outlined'>글 쓰기</Button>
-					</Grid>
-				</Grid>
+				</Box>
 
 				<TableContainer component={Paper}>
 					<Table sx={{ width: "100%" }}>
 						<TableHead>
 							<TableRow>
-								<TableCell>id</TableCell>
+								<TableCell>글 번호</TableCell>
 								<TableCell>그룹 종류</TableCell>
 								<TableCell>제목</TableCell>
 								<TableCell>모집 여부</TableCell>
@@ -87,10 +93,10 @@ function GroupPage() {
 								<TableRow
 									key={article.index}
 								>
-									<TableCell>
-										{article.index}
+									<TableCell sx={{ justifyItems: "center"}}>
+										<span>{article.index}</span>
 									</TableCell>
-									<TableCell>{article.type}</TableCell>
+									<TableCell sx={{ color: "red"  }}>{article.type}</TableCell>
 									<TableCell>{article.name}</TableCell>
 									<TableCell>{article.is_finished}</TableCell>
 									<TableCell>{article.date}</TableCell>
@@ -105,13 +111,14 @@ function GroupPage() {
 									page={page}
 									rowsPerPage={rowsPerPage}
 									onPageChange={handleChangePage}
-									onChangeRowsPerPage={handleChangeRowsPerPage}
+									// onChangeRowsPerPage={handleChangeRowsPerPage}
 								/>
 							</TableRow>
 						</TableFooter>
 					</Table>
 				</TableContainer>
 			</Container>
+			<CreateArticle />
 		</>
 		);
 }
