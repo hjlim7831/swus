@@ -44,11 +44,18 @@ public class AuthController {
 
     @PostMapping("sign-up")
     public ResponseEntity<?> signUp(@RequestBody SignUpReq form){
-        int id = memberService.join(form);
-        log.debug(String.valueOf(form));
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("msg", "success_signup");
-        return ResponseEntity.ok(resultMap);
+        log.debug(String.valueOf(form));
+
+        if (memberService.validateDuplicateEmail(form.getEmail())){
+            resultMap.put("msg", "fail_duplicated_email");
+            return ResponseEntity.badRequest().body(resultMap);
+        } else{
+            int id = memberService.join(form);
+            resultMap.put("msg", "success_signup");
+            return ResponseEntity.ok(resultMap);
+        }
+
     }
 
 //    @PostMapping("/generateToken")

@@ -17,8 +17,8 @@ public class InitDB {
 
     @PostConstruct
     public void init(){
-        initService.dbInitQuestion();
-        initService.dbInitMember();
+//        initService.dbInitQuestion();
+//        initService.dbInitMember();
     }
 
     @Component

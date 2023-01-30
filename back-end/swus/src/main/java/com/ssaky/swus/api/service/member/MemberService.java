@@ -12,7 +12,7 @@ public interface MemberService {
 
     public boolean validateDuplicateEmail(String email);
 
-    public Member findOne(int userId);
+    public Optional<Member> findOne(int userId);
 
     public Optional<Member> findOneByEmail(String email);
 

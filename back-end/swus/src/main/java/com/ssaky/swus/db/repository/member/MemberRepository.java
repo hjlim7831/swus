@@ -17,7 +17,9 @@ public class MemberRepository {
 
     public void save(Member member) {em.persist(member);}
 
-    public Member findOne(int id) {return em.find(Member.class, id);}
+    public Optional<Member> findOne(int id) {
+        return Optional.ofNullable(em.find(Member.class, id));
+    }
 
     public Optional<Member> findByEmail(String email){
         List<Member> resultList = em.createQuery("select m from Member m where m.email = :email", Member.class)
