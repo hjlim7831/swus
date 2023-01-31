@@ -4,30 +4,24 @@ import { MenuItem, Select, Button } from '@mui/material';
 import { Container } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import checkedSlice from '../../store/CheckedSlice';
-import ArticleDetail from './ArticleDetail';
-import UpdateArticle from './UpdateArticle';
+import { useEffect } from 'react';
 
 
-function CreateArticleForm() {
+function UpdateArticleForm() {
 
 	const dispatch = useDispatch();
 	const articleDetail = useSelector(state => {
 		return state.checkDays
 	});
 
-	const [inputs, setInputs] = useState({
-		category: "",
-		title: "",
-		content: "",
-		day: "",
-		days: [false, false, false, false, false, false, false],
-		recruitmentNumber: 0,
-		beginAt: "",
-		endAt: "",
-		startTime: "",
-		finishTime: "",
-		writedAt: "",
-	})
+	const [inputs, setInputs] = useState(articleDetail);
+
+	useEffect(() => {
+		setInputs(articleDetail);
+	}, [articleDetail]);
+
+
+
 
 	const onHandleInput = (event) => {
 		const name = event.target.name
@@ -49,18 +43,6 @@ function CreateArticleForm() {
 
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
-		// let newDay = ""
-		// const date = "day"
-		// console.log(articleDetail)
-		
-		// for (let i = 0; i < inputs.days.length; i++) {
-		// 	if (inputs.days[i] === true)	{
-		// 		newDay += "1"
-		// 	}	else	{
-		// 		newDay += "0"
-		// 	}
-		// }
-		// setInputs({...inputs, [date]: newDay})
 		dispatch(checkedSlice.actions.writeArticle(inputs))
 		console.log(articleDetail)
 	}
@@ -73,7 +55,7 @@ function CreateArticleForm() {
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
 							<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
-								게시글 작성
+								게시글 수정
 							</p>
 							<div style={{ display: "flex", alignContent: "center"}}>
 								<Button 
@@ -81,7 +63,7 @@ function CreateArticleForm() {
 									variant='contained' 
 									sx={{ backgroundColor: "green", m: 3 }}
 									size="small"
-									onClick={onHandleSubmit}>글 작성</Button>
+									onClick={onHandleSubmit}>글 수정</Button>
 							</div>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
@@ -91,15 +73,17 @@ function CreateArticleForm() {
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
-								<Select
+								<TextField
+									select
 									name="category"
 									value={inputs.category}
 									onChange={onHandleInput}
 									size="small"
+									InputProps={{ readOnly: true }}
 								>
-									<MenuItem value="study">스터디</MenuItem>
-									<MenuItem value="mate">메이트</MenuItem>
-								</Select>
+									<MenuItem value="스터디">스터디</MenuItem>
+									<MenuItem value="메이트">메이트</MenuItem>
+								</TextField>
 							</div>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
@@ -283,22 +267,17 @@ function CreateArticleForm() {
 }
 
 
-function CreateArticle() {
+function UpdateArticle() {
 
 
   return (
     <>
 			<div>
-				<UpdateArticle />
+				<UpdateArticleForm />
 			</div>
-			<div>
-				<CreateArticleForm />
-			</div>
-			<div>
-				<ArticleDetail />
-			</div>
+
     </>
   )
 }
 
-export default CreateArticle
+export default UpdateArticle;

@@ -11,9 +11,7 @@ import { Paper,
 				TablePagination,
 				Button,
 				Grid,
-				Box,
 			 } from '@mui/material';
-import CreateArticle from './CreateArticle';
 
 function createData( index, type, name, is_finished, date, watched, bool ) {
 	return { index, type, name, is_finished, date, watched, bool };
@@ -59,19 +57,17 @@ function GroupPage() {
 
 	return (
 		<>
-			<Container maxWidth="md" sx={{ border: "5px solid red", padding: 2 }}>
-				<Box>
-					<Grid container spacing={2} sx={{ alignItems: "center", mb: 2, display: "flex", justifyContent: "space-between" }}>
-						<Grid item xs={3}>
-							<h3>스터디 모집게시판</h3>
-						</Grid>
-						<Grid item xs={2}>
-							<Box >
-								<Button variant='outlined' sx={{ whiteSpace: "nowrap", minWidth: "auto"}}>글 쓰기</Button>
-							</Box>
-						</Grid>
-					</Grid>
-				</Box>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
+				<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
+					<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+						스터디 모집게시판
+					</p>
+					<Button 
+						type="submit" 
+						variant='contained' 
+						sx={{ backgroundColor: "green", m: 3 }}
+						size="small">글 작성</Button>
+				</Grid>
 
 				<TableContainer component={Paper}>
 					<Table sx={{ width: "100%" }}>
@@ -117,7 +113,6 @@ function GroupPage() {
 					</Table>
 				</TableContainer>
 			</Container>
-			<CreateArticle />
 		</>
 		);
 }

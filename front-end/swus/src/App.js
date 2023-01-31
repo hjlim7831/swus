@@ -1,4 +1,4 @@
-// import GroupPage from './pages/GroupPage/GroupPage';
+import GroupPage from './pages/GroupPage/GroupPage';
 // import { ThemeProvider, createTheme } from '@mui/material/styles';
 // import CssBaseline from '@mui/material/CssBaseline';
 // import Nav from './components/Nav';
@@ -30,7 +30,7 @@ function App() {
             <Nav />
             <CssBaseline />
             <div className="App">
-              {/* <GroupPage /> */}
+              <GroupPage />
               <CreateArticle />
             </div>
           {/* </ThemeProvider> */}
