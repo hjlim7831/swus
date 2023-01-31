@@ -30,15 +30,8 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginReq form){
         Map<String, Object> resultMap = new HashMap<>();
 
-        Optional<Member> member = memberService.login(form);
-        if (member.isPresent()){
-            String accessToken = TokenUtils.generateJwtToken(member.get());
-            LoginResp resp = LoginResp.builder().member(member.get()).accessToken(accessToken).build();
-            return ResponseEntity.ok(resp);
-        }else{
-            resultMap.put("msg", "failure_login");
-            return ResponseEntity.badRequest().body(resultMap);
-        }
+        LoginResp resp = memberService.login(form);
+        return ResponseEntity.ok(resp);
     }
 
     @PostMapping("sign-up")
@@ -51,17 +44,5 @@ public class AuthController {
         return ResponseEntity.ok(resultMap);
 
     }
-
-//    @PostMapping("/generateToken")
-//    public ResponseEntity<?> selectCodeList(@RequestBody Member member){
-//        Map<String, Object> resultMap = new HashMap<>();
-//
-//        String resultToken = TokenUtils.generateJwtToken(member);
-//
-//        resultMap.put("result", resultToken);
-//        resultMap.put("resultCode", 200);
-//        System.out.println(resultMap);
-//        return ResponseEntity.ok(resultMap);
-//    }
 
 }

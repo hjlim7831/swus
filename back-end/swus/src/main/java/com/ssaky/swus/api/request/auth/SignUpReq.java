@@ -1,12 +1,12 @@
 package com.ssaky.swus.api.request.auth;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
-@AllArgsConstructor
 public class SignUpReq {
 
     private String email;
@@ -15,5 +15,16 @@ public class SignUpReq {
 
     private int questionId;
     private String answer;
+
+    @Builder
+    public SignUpReq(String email, String password, String nickname, int questionId, String answer){
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.questionId = questionId;
+        this.answer = answer;
+    }
+
+
 
 }
