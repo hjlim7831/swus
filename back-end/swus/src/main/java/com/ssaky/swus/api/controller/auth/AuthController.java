@@ -1,11 +1,10 @@
 package com.ssaky.swus.api.controller.auth;
 
-import antlr.Token;
 import com.ssaky.swus.api.response.auth.LoginResp;
+import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.api.request.auth.SignUpReq;
-import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class AuthController {
         Optional<Member> member = memberService.login(form);
         if (member.isPresent()){
             String accessToken = TokenUtils.generateJwtToken(member.get());
-            LoginResp resp = new LoginResp(member.get(), accessToken);
+            LoginResp resp = LoginResp.builder().member(member.get()).accessToken(accessToken).build();
             return ResponseEntity.ok(resp);
         }else{
             resultMap.put("msg", "failure_login");
@@ -47,14 +46,9 @@ public class AuthController {
         Map<String, Object> resultMap = new HashMap<>();
         log.debug(String.valueOf(form));
 
-        if (memberService.validateDuplicateEmail(form.getEmail())){
-            resultMap.put("msg", "fail_duplicated_email");
-            return ResponseEntity.badRequest().body(resultMap);
-        } else{
-            int id = memberService.join(form);
-            resultMap.put("msg", "success_signup");
-            return ResponseEntity.ok(resultMap);
-        }
+        int id = memberService.join(form);
+        resultMap.put("msg", "success_signup");
+        return ResponseEntity.ok(resultMap);
 
     }
 
