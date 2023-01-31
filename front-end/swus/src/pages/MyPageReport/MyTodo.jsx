@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Box } from "@mui/system";
 import MyTodoList from "./MyTodoList";
 import MyTodoForm from "./MyTodoForm";
-import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 
@@ -30,10 +29,18 @@ function MyTodo() {
     <>
       <Box sx={{ position: "relative", width: 300, height: 400 }}>
         <h4 style={{ display: "inline-block" }}>Todo List</h4>
-        <IconButton sx={{ display: "inline-block" }} color="secondary" aria-label="add an alarm">
+        <IconButton
+          sx={{ display: "inline-block" }}
+          color="secondary"
+          aria-label="add an alarm"
+        >
           <AutorenewIcon />
         </IconButton>
-        <MyTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
+        <MyTodoForm
+          handleSubmit={handleSubmit}
+          value={value}
+          setValue={setValue}
+        />
         <MyTodoList todoData={todoData} setTodoData={setTodoData} />{" "}
         {/*todoData라는 state를 내려줌 List.js에 */}
         {/*자녀컴포넌트에서는 props 파라미터로 받음 */}

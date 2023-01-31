@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import React from "react";
 import StudyRoomMain from "./StudyRoomMain";
 
