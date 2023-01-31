@@ -2,17 +2,16 @@ package com.ssaky.swus.api.service.member;
 
 import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.api.request.auth.SignUpReq;
+import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -49,10 +48,17 @@ class MemberServiceImplTest {
     @Test
     public void 중복회원_예외() throws Exception {
         // given
+        SignUpReq req1 = new SignUpReq("helenalim1205@gmail.com", "ssafy", "상상", 2, "보광초");
+        SignUpReq req2 = new SignUpReq("helenalim1205@gmail.com", "ssafy", "상상", 2, "보광초");
 
         // when
+        int id1 = memberService.join(req1);
 
         // then
+        assertThrows(InvalidValueException.class, () -> {
+            memberService.join(req2);
+        });
+
     }
 
     @Test
