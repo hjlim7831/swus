@@ -16,6 +16,8 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import "./RoomScroll/hideScrollbar.css";
 
+const elemPrefix = "글 번호";
+const getId = (index) => `${elemPrefix}${index}`;
 const getItems = () =>
   Array(20) //카드의 개수 추정 0부터 19까지 있는 카드
     .fill(0)
@@ -23,22 +25,12 @@ const getItems = () =>
 
 function StudyRoomMain() {
   const [items, setItems] = React.useState(getItems);
-  const [selected, setSelected] = React.useState([]);
-  const [position, setPosition] = React.useState(0);
 
-  const isItemSelected = (id) => !!selected.find((el) => el === id);
-
-  const handleClick =
-    (id) =>
-    ({ getItemById, scrollToItem }) => {
-      const itemSelected = isItemSelected(id);
-
-      setSelected((currentSelected) =>
-        itemSelected
-          ? currentSelected.filter((el) => el !== id)
-          : currentSelected.concat(id)
-      );
-    };
+  const addItem = () => {
+    setItems((items) =>
+      items.concat({ id: getId(String(Math.random()).slice(2, 5)) })
+    );
+  };
 
   return (
     <>
@@ -76,11 +68,10 @@ function StudyRoomMain() {
                   itemId={id} // NOTE: itemId is required for track items
                   title={id}
                   key={id}
-                  onClick={handleClick(id)}
-                  selected={isItemSelected(id)}
                 />
               ))}
             </ScrollMenu>
+            <button onClick={addItem}>Add item</button>
             <ScrollMenu
               // LeftArrow={LeftArrow}
               // RightArrow={RightArrow}
@@ -91,56 +82,11 @@ function StudyRoomMain() {
                   itemId={id} // NOTE: itemId is required for track items
                   title={id}
                   key={id}
-                  onClick={handleClick(id)}
-                  selected={isItemSelected(id)}
                 />
               ))}
             </ScrollMenu>
+            <button onClick={addItem}>Add item</button>
 
-            {/* <div
-          style={{
-            position: "absolute",
-            displayPrint: "flex",
-            width: "auto",
-            height: "auto",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              displayPrint: "inline-block",
-              width: 400,
-              height: 200,
-            }}
-          >
-            <NonStopRoom />
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              displayPrint: "inline-block",
-              width: 400,
-              height: 200,
-            }}
-          >
-            <NonStopRoom />
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              displayPrint: "inline-block",
-              float: "right",
-            }}
-          >
-            <IconButton
-              aria-label="AddCircleOutlineIcon"
-              style={{ position: "absolute", displayPrint: "inline-block" }}
-            >
-              <AddCircleOutlineIcon />
-            </IconButton>
-          </div>
-        </div> */}
             {/* <div style={{ position: "relative", displayPrint: "inline-block" }}>
           <Card style={{ minWidth: 100, maxWidth: 300 }}>
             <CardContent>
@@ -170,7 +116,7 @@ function Cardd({ onClick, selected, title, itemId }) {
     <div
       onClick={() => onClick(visibility)}
       style={{
-        width: "160px",
+        width: "300px",
       }}
       tabIndex={0}
     >
@@ -179,7 +125,7 @@ function Cardd({ onClick, selected, title, itemId }) {
       </div>
       <div
         style={{
-          height: "200px",
+          height: "400px",
         }}
       />
     </div>
