@@ -23,3 +23,16 @@ spring:
         enable_lazy_load_no_trans: true
 ##        dialect: org.hibernate.dialect.PostgreSQLDialect
 ##        default_batch_fetch_size: 100
+logging:
+  file:
+    path: /Users/Logs/swus-spring
+  level:
+    root: info
+    com.ssaky.swus: debug
+swagger:
+  paths: |
+    /swagger-ui/**,
+    /webjars/springfox-swagger-ui/**/*,
+    /swagger-resources,
+    /swagger-resources/**/*,
+    /v2/api-docs
