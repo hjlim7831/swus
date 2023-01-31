@@ -55,6 +55,9 @@ dependencies {
 	implementation "io.jsonwebtoken:jjwt:0.9.1"
 	// jwt end
 
+	// spring boot email
+	implementation "org.springframework.boot:spring-boot-starter-mail"
+
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 	compileOnly 'org.projectlombok:lombok'

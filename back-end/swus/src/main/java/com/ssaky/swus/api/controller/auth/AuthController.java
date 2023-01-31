@@ -1,5 +1,6 @@
 package com.ssaky.swus.api.controller.auth;
 
+import com.ssaky.swus.api.request.auth.CheckPwdReq;
 import com.ssaky.swus.api.response.auth.LoginResp;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.db.entity.member.Member;
@@ -43,6 +44,14 @@ public class AuthController {
         resultMap.put("msg", "success_signup");
         return ResponseEntity.ok(resultMap);
 
+    }
+
+    @PostMapping("check-pwd")
+    public ResponseEntity<?> checkPwd(@RequestBody CheckPwdReq form){
+        Map<String, Object> resultMap = new HashMap<>();
+        log.debug(String.valueOf(form));
+
+        return ResponseEntity.ok(resultMap);
     }
 
 }

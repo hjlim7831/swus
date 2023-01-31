@@ -1,11 +1,13 @@
 package com.ssaky.swus.api.service.member;
 
 import ch.qos.logback.core.LogbackException;
+import com.ssaky.swus.api.request.auth.CheckPwdReq;
 import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.api.request.auth.SignUpReq;
 import com.ssaky.swus.api.response.auth.LoginResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.common.error.exception.custom.LoginFailException;
+import com.ssaky.swus.common.error.exception.custom.UncorrectAnswerException;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.repository.member.MemberRepository;
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final EmailService emailService;
 
     @Transactional
     public int join(SignUpReq form){
@@ -55,6 +58,17 @@ public class MemberService {
             return resp;
         }else{
             throw new LoginFailException(form.getEmail());
+        }
+    }
+
+    public void checkAnswerForPasswordQuestion(CheckPwdReq form){
+        Optional<Member> member = memberRepository.findByEmailAndQuestion(form);
+        if (member.isPresent()){
+            String email = member.get().getEmail();
+            // send email
+            emailService.sendTemplateMessage(email);
+        }else{
+            throw new UncorrectAnswerException("wrong answer for question");
         }
     }
 }
