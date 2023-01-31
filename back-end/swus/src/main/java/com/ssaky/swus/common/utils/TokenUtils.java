@@ -27,7 +27,7 @@ public class TokenUtils {
         return builder.compact();
     }
 
-    public static String parseTokenToUserInfo(String token){
+    public static String parseTokenToUserInfo(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtSecretKey)
                 .parseClaimsJws(token)
@@ -35,8 +35,8 @@ public class TokenUtils {
                 .getSubject();
     }
 
-    public static boolean isValidToken(String token){
-        try{
+    public static boolean isValidToken(String token) {
+        try {
             Claims claims = getClaimsFormToken(token);
 
             log.info("expireTime :" + claims.getExpiration());

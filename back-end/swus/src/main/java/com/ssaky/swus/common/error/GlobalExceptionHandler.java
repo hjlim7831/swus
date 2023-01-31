@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -82,20 +83,30 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.error("handleException", e);
+    /**
+     * 세큐리티 - 로그인 정보가 일치하지 않을 때 발생
+     */
+    @ExceptionHandler(AuthenticationServiceException.class)
+    protected  ResponseEntity<ErrorResponse> handleAuthenticationServiceException(final AuthenticationServiceException e){
+        log.error("handleAuthenticationServiceException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
-     * 자격 증명에 실패할 때 발생함 (토큰이 유효하지 않거나 없을 때, 이메일 인증이 되지 않았을 때)
+     * 세큐리티 - 자격 증명에 실패할 때 발생함 (토큰이 유효하지 않거나 없을 때, 이메일 인증이 되지 않았을 때)
      */
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException e) {
         log.error("handleBadCredentialsException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.UNAUTHORIZED);
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error("handleException", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
