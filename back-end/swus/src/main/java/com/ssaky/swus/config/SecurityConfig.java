@@ -2,8 +2,6 @@ package com.ssaky.swus.config;
 
 import com.ssaky.swus.config.filter.CustomAuthenticationFilter;
 import com.ssaky.swus.config.filter.JwtAuthorizationFilter;
-import com.ssaky.swus.config.handler.CustomAuthFailureHandler;
-import com.ssaky.swus.config.handler.CustomAuthSuccessHandler;
 import com.ssaky.swus.config.handler.CustomAuthenticationProvider;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class SecurityConfig {
@@ -82,20 +78,8 @@ public class SecurityConfig {
     public CustomAuthenticationFilter customAuthenticationFilter(){
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
         customAuthenticationFilter.setFilterProcessesUrl("auth/login");
-        customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
-        customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
         customAuthenticationFilter.afterPropertiesSet();
         return customAuthenticationFilter;
-    }
-
-    @Bean
-    public CustomAuthSuccessHandler customLoginSuccessHandler(){
-        return new CustomAuthSuccessHandler();
-    }
-
-    @Bean
-    public CustomAuthFailureHandler customLoginFailureHandler(){
-        return new CustomAuthFailureHandler();
     }
 
     @Bean
