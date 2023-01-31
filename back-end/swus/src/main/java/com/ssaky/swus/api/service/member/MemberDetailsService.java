@@ -17,12 +17,13 @@ public class MemberDetailsService implements UserDetailsService {
     MemberService memberService;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
         Optional<Member> user = memberService.findOneByEmail(email);
+
         if (user.isPresent()){
             return new MemberDetails(user.get());
         }else {
-            return null;
+            throw new UsernameNotFoundException(email);
         }
     }
 }

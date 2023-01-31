@@ -1,8 +1,12 @@
 package com.ssaky.swus.api.service.member;
 
+import ch.qos.logback.core.LogbackException;
 import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.api.request.auth.SignUpReq;
+import com.ssaky.swus.api.response.auth.LoginResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
+import com.ssaky.swus.common.error.exception.custom.LoginFailException;
+import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +47,14 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 
-    public Optional<Member> login(LoginReq form) {
-        return memberRepository.checkEmailAndPassword(form);
+    public LoginResp login(LoginReq form) {
+        Optional<Member> member = memberRepository.checkEmailAndPassword(form);
+        if (member.isPresent()){
+            String accessToken = TokenUtils.generateJwtToken(member.get());
+            LoginResp resp = LoginResp.builder().member(member.get()).accessToken(accessToken).build();
+            return resp;
+        }else{
+            throw new LoginFailException(form.getEmail());
+        }
     }
 }
