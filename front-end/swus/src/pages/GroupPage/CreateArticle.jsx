@@ -4,12 +4,12 @@ import { MenuItem, Select, Button } from '@mui/material';
 import { Container } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import checkedSlice from '../../store/CheckedSlice';
-import ArticleDetail from './ArticleDetail';
-import UpdateArticle from './UpdateArticle';
+import { useNavigate } from 'react-router-dom';
 
 
 function CreateArticleForm() {
 
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const articleDetail = useSelector(state => {
 		return state.checkDays
@@ -62,7 +62,7 @@ function CreateArticleForm() {
 		// }
 		// setInputs({...inputs, [date]: newDay})
 		dispatch(checkedSlice.actions.writeArticle(inputs))
-		console.log(articleDetail)
+		navigate("/group/detail");
 	}
 
 
@@ -289,13 +289,7 @@ function CreateArticle() {
   return (
     <>
 			<div>
-				<UpdateArticle />
-			</div>
-			<div>
 				<CreateArticleForm />
-			</div>
-			<div>
-				<ArticleDetail />
 			</div>
     </>
   )

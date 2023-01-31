@@ -5,10 +5,13 @@ import { Container } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import checkedSlice from '../../store/CheckedSlice';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 
 function UpdateArticleForm() {
 
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const articleDetail = useSelector(state => {
 		return state.checkDays
@@ -44,7 +47,7 @@ function UpdateArticleForm() {
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
 		dispatch(checkedSlice.actions.writeArticle(inputs))
-		console.log(articleDetail)
+		navigate("/group/detail");
 	}
 
 

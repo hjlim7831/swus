@@ -12,6 +12,8 @@ import { Paper,
 				Button,
 				Grid,
 			 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
 
 function createData( index, type, name, is_finished, date, watched, bool ) {
 	return { index, type, name, is_finished, date, watched, bool };
@@ -43,6 +45,7 @@ const articles = [
 
 function GroupPage() {
 
+	const navigate = useNavigate();
 	const [page, setPage] = useState(0)
 	const [rowsPerPage, setRowsPerPage] = useState(10)
 
@@ -65,8 +68,9 @@ function GroupPage() {
 					<Button 
 						type="submit" 
 						variant='contained' 
-						sx={{ backgroundColor: "green", m: 3 }}
-						size="small">글 작성</Button>
+						sx={{ backgroundColor: "green", m: 3, height: "40px" }}
+						size="small"
+						onClick={() => {navigate("/group/create")}}>글 작성</Button>
 				</Grid>
 
 				<TableContainer component={Paper}>
