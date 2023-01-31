@@ -1,10 +1,12 @@
 # [Final] How to set EC2 & CI/CD
 
+---
 - Written By @ShinMinhye
 
-# 사용 기술
+## 사용 기술
 
-## Server
+---
+### Server
 
 - Ubuntu 20.04 LTS
 
@@ -38,6 +40,7 @@
 
 ## Dev env
 
+---
 ### Frontend
 
 - React {버전작성}
@@ -58,6 +61,10 @@
 ### Git Branch Strategy
 
 - {내용작성}
+
+### ✨ EC2 포트 정리
+
+
 
 
 # 방법
