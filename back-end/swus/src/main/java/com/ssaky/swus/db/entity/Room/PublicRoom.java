@@ -20,4 +20,10 @@ public class PublicRoom {
     //쉬는 시간 있는 방 Y, 없는 방 N
     private String type;
 
+    //세션 이름 (세션 이름별로 방이 생성됨)
+    private String session_name;
+
+    //방 참여인원수
+    private int count;
+
 }
