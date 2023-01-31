@@ -1,5 +1,6 @@
 package com.ssaky.swus.api.request.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class SignUpReq {
     private String password;
     private String nickname;
 
+    @JsonProperty("question_id")
     private int questionId;
     private String answer;
 
