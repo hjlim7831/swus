@@ -1,6 +1,7 @@
 package com.ssaky.swus.api.response.auth;
 
 import com.ssaky.swus.db.entity.member.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,6 +14,7 @@ public class LoginResp {
     private String email;
     private String accessToken;
 
+    @Builder
     public LoginResp(Member member, String accessToken){
         this.nickname = member.getNickname();
         this.email = member.getEmail();
