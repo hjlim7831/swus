@@ -23,7 +23,7 @@ public class RoomRepositoryTest {
     @Rollback(false)
     public void 공용열람실_생성() {
         PublicRoom publicRoom = new PublicRoom();
-        publicRoom.setType("Y");
+        publicRoom.setType("N");
         int roomId = roomRepository.createPublic(publicRoom);
 
         PublicRoom findPublicRoom = roomRepository.findPublicOne(roomId);
@@ -34,6 +34,4 @@ public class RoomRepositoryTest {
         //JPA 엔티티가 동일한지 비교
         Assertions.assertThat(findPublicRoom).isEqualTo(publicRoom);
     }
-
-
 }
