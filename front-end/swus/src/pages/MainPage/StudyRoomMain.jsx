@@ -19,7 +19,7 @@ import "./RoomScroll/hideScrollbar.css";
 const elemPrefix = "글 번호";
 const getId = (index) => `${elemPrefix}${index}`;
 const getItems = () =>
-  Array(20) //카드의 개수 추정 0부터 19까지 있는 카드
+  Array(10) //카드의 개수 추정 0부터 10까지 있는 카드
     .fill(0)
     .map((_, ind) => ({ id: `element-${ind}` }));
 
@@ -38,7 +38,7 @@ function StudyRoomMain() {
         {/* 하나 xs 값 주면 나머지 알아서*/}
         <Grid container spacing={2}>
           {/* 그리드 컴포넌트 사이 넓이 */}
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             {/* todo& 목표 공부시간 묶는 div */}
             <div style={{ position: "absolute", displayPrint: "inline-block" }}>
               {/* todo div */}
@@ -58,7 +58,7 @@ function StudyRoomMain() {
           >
             {/* StudyRoom */}
 
-            <ScrollMenu
+            {/* <ScrollMenu
               // LeftArrow={LeftArrow} //좌우 클릭으로 이동
               // RightArrow={RightArrow}
               onWheel={onWheel}
@@ -70,7 +70,7 @@ function StudyRoomMain() {
                   key={id}
                 />
               ))}
-            </ScrollMenu>
+            </ScrollMenu> */}
             <button onClick={addItem}>Add item</button>
             <ScrollMenu
               // LeftArrow={LeftArrow}
@@ -78,11 +78,7 @@ function StudyRoomMain() {
               onWheel={onWheel}
             >
               {items.map(({ id }) => (
-                <Cardd
-                  itemId={id} // NOTE: itemId is required for track items
-                  title={id}
-                  key={id}
-                />
+                <NonStopRoom key={id} />
               ))}
             </ScrollMenu>
             <button onClick={addItem}>Add item</button>
@@ -106,29 +102,6 @@ function StudyRoomMain() {
         </Grid>
       </Box>
     </>
-  );
-}
-
-function Cardd({ onClick, selected, title, itemId }) {
-  const visibility = React.useContext(VisibilityContext);
-
-  return (
-    <div
-      onClick={() => onClick(visibility)}
-      style={{
-        width: "300px",
-      }}
-      tabIndex={0}
-    >
-      <div className="card">
-        <div>{title}</div>
-      </div>
-      <div
-        style={{
-          height: "400px",
-        }}
-      />
-    </div>
   );
 }
 

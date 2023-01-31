@@ -18,10 +18,17 @@ function NonStopRoom() {
   return (
     <>
       <Card>
-        <CardMedia component="img" height="400" image={logo} alt="studystudy" />
+        <CardMedia
+          component="img"
+          width="200"
+          height="400"
+          image={logo}
+          alt="studystudy"
+          objectFit="cover"
+        />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            아래가 아니라 중간에 박고싶다 방 이름..
+            아래가 아니라 중간에 이름이..
           </Typography>
         </CardContent>
         <Button onClick={handleToEnter}>입장하기</Button>
