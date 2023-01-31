@@ -1,10 +1,12 @@
 package com.ssaky.swus.api.service.member;
 
+import com.ssaky.swus.api.request.auth.CheckPwdReq;
 import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.api.request.auth.SignUpReq;
 import com.ssaky.swus.api.response.auth.LoginResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.common.error.exception.custom.LoginFailException;
+import com.ssaky.swus.common.error.exception.custom.UncorrectAnswerException;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.repository.member.MemberRepository;
@@ -131,6 +133,36 @@ class MemberServiceTest {
 
         // then
         assertEquals(id, userId);
+
+    }
+
+    @Test
+    public void 비밀번호_확인_실패(){
+
+        // given
+        // 가입한 회원 만들기
+        String email = "helenalim1205@gmail.com";
+        String password = "ssafy";
+
+        SignUpReq signUpReq = SignUpReq.builder().email(email).password(password).nickname("상상").questionId(2).answer("보광초").build();
+        int id = memberService.join(signUpReq);
+
+        // when
+        CheckPwdReq req1 = CheckPwdReq.builder().email(email).questionId(1).answer("보광초").build();
+        CheckPwdReq req2 = CheckPwdReq.builder().email(email).questionId(2).answer("신중초").build();
+
+        // then
+        
+        // questionId가 잘못된 경우
+        assertThrows(UncorrectAnswerException.class, () -> {
+            memberService.checkAnswerForPasswordQuestion(req1);
+        });
+        
+        // questionId는 맞지만, 답이 아닌 경우
+        assertThrows(UncorrectAnswerException.class, () -> {
+            memberService.checkAnswerForPasswordQuestion(req2);
+        });
+
 
     }
 
