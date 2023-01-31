@@ -35,11 +35,32 @@ const theme = createTheme();
 export default function SignInSide() {
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const email = data.get("email");
+    const password = data.get("password");
+
+    const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
+    const passwordCheck = /[A-Za-z]+[0-9]/;
+
+    // 유효성검사
+    if (email && password) {
+      if (!emailCheck.test(email)) {
+        alert("이메일 형식을 지켜주세요.");
+      } else if (password.length < 8) {
+        alert("비밀번호는 8자 이상이여야 합니다.");
+      } else if (!passwordCheck.test(password)) {
+        alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
+      } else {
+        console.log({
+          email: email,
+          password: password,
+        });
+      }
+    } else {
+      alert("정보를 다시 입력해주세요.");
+    }
   };
 
   return (
