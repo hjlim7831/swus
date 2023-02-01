@@ -8,15 +8,15 @@
 ---
 ### Server
 
-- Ubuntu 20.04 LTS
+- Ubuntu `20.04 LTS`
 
 ### Database
 
-- MySQL 8.0.29
+- MySQL `8.0.32`
 
 ### Container & Management
 
-
+- Docker `20.10.23`
 
 ### SSL
 
@@ -28,11 +28,11 @@
 
 ### Deploy
 
-
+- Jenkins
 
 ### WebRTC
 
-- Openvidu 2.22.0
+- Openvidu
 
 ### Architecture
 
@@ -43,14 +43,14 @@
 ---
 ### Frontend
 
-- React {버전작성}
-- VS Code {버전작성}
+- React `18.2.0`
+- VS Code
 
 ### Backend
 
-- Spring Boot 2.7
+- Spring Boot `2.7.8`
     - OpenJDK 11
-- IntelliJ 2022.3.1
+- IntelliJ `2022.3.1`
 
 ### External Libraries
 
