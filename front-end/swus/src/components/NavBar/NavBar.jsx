@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { indigo } from "@mui/material/colors";
 
-import logo from "./assets/logo.png";
+import logo from "./../../logo.png";
 
 const drawerWidth = 240;
 // const mainItems = ["Login"];
