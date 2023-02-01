@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { indigo } from "@mui/material/colors";
 
-import logo from "./assets/logo.png";
+import logo from "./../../logo.png";
 
 // function Copyright(props) {
 //   return (
