@@ -31,4 +31,11 @@ public class RoomRepository {
                 .getResultList();
     }
 
+    //방 인원수를 count 만큼 증가 또는 감소
+    public void updateCount(int id, int count){
+        PublicRoom publicRoom = em.find(PublicRoom.class, id);
+        int updateCnt = publicRoom.getCount()+count;
+        publicRoom.setCount(updateCnt);
+    }
+
 }

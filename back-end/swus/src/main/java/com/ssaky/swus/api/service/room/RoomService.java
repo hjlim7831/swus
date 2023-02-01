@@ -1,4 +1,4 @@
-package com.ssaky.swus.api.service;
+package com.ssaky.swus.api.service.room;
 
 import com.ssaky.swus.db.entity.Room.PublicRoom;
 import com.ssaky.swus.db.repository.room.RoomRepository;
@@ -17,7 +17,6 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
-
     @Transactional
     public int createPublic(String type) {
         PublicRoom publicRoom = new PublicRoom();
@@ -28,5 +27,16 @@ public class RoomService {
 
     public List<PublicRoom> findPublics() {
         return roomRepository.findAll();
+    }
+
+    @Transactional
+    public void enterPublic(int room_id, int user_id){
+
+        //기능1. 방 정원을 넘는지 검사
+
+        //기능2. room_id의 참가자 1 증가시키기
+        roomRepository.updateCount(room_id, 1);
+
+        //기능3. user를 Paricipant에 insert해주기
     }
 }
