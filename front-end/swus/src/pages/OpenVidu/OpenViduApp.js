@@ -13,14 +13,14 @@ class OpenViduApp extends Component {
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      mySessionId: "SessionA",
+      mySessionId: props.SessionId,
+
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
     };
-
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);

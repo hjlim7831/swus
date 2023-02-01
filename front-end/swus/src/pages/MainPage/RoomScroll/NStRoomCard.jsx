@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
@@ -11,24 +11,24 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
-import EnterM from "../EnterModal/EnterM.jsx";
-
 import logo from "../../../image/sampleImage.jpg";
 
 function NSRoomCard() {
   const [open, setOpen] = React.useState(false);
+  const [roomNumber, setRoomNumber] = useState(1);
 
-  const handleToEnter = () => {
+  const handleToOpen = () => {
     setOpen(true);
   };
 
   const hadleToClose = () => {
     setOpen(false);
   };
-  // const navigate = useNavigate();
-  // const handleToEnter = () => {
-  //   navigate("/openvidu");
-  // };
+
+  const navigate = useNavigate();
+  const handleToEnter = () => {
+    navigate("/nsroom", { state: { roomNum: roomNumber } }); // nsroom 으로 이동하면서 roomNum에 roomNumber 담아 보내줌
+  };
 
   return (
     <>
@@ -43,10 +43,10 @@ function NSRoomCard() {
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            아래가 아니라 중간에 이름이..
+            NonStop 열람실 #{roomNumber}
           </Typography>
         </CardContent>
-        <Button onClick={handleToEnter}>입장하기</Button>
+        <Button onClick={handleToOpen}>입장하기</Button>
       </Card>
 
       <Dialog
@@ -56,12 +56,11 @@ function NSRoomCard() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"열람실 입장 위한 모달"}
+          Non-Stop 열람실 #{roomNumber} 입장하기
         </DialogTitle>
-        <DialogContent>
-          <EnterM />
-        </DialogContent>
+        <DialogContent></DialogContent>
         <DialogActions>
+          <Button onClick={handleToEnter}>입장</Button>
           <Button onClick={hadleToClose}>x</Button>
         </DialogActions>
       </Dialog>
