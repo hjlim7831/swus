@@ -36,8 +36,8 @@ public class SecurityConfig {
         // form 기반의 로그인 비활성화 -> 커스텀으로 구성한 필터 사용
         http.formLogin().disable();
 
-        // 토큰 활용 시, 모든 요청을 '인가'에 대해서 사용
-        http.authorizeHttpRequests((authz) -> authz.anyRequest().permitAll());
+//        // 토큰 활용 시, 모든 요청을 '인가'에 대해서 사용
+//        http.authorizeHttpRequests((authz) -> authz.anyRequest().permitAll());
         
         // CORS 허가
         http.cors().configurationSource(corsConfigurationSource());
@@ -47,6 +47,11 @@ public class SecurityConfig {
 
         // Spring Security JWT Filter load
         http.addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class);
+
+        // auth 열어두기
+//        http.antMatcher("/**")
+//                .authorizeRequests()
+//                .antMatchers("/auth/**").permitAll();
 
         return http.build();
     }
