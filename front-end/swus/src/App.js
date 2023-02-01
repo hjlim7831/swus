@@ -1,10 +1,12 @@
-import './App.css';
+import { Routes, Router } from "@angular/router";
 
 function App() {
   return (
-    <div className="App">
-
-    </div>
+    <>
+      <div>
+        <Routes></Routes>
+      </div>
+    </>
   );
 }
 
