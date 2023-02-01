@@ -73,7 +73,7 @@ class OpenViduApp extends Component {
 
   joinSession() {
     // --- 1) Get an OpenVidu object ---
-
+    //오픈비두 객체 생성
     this.OV = new OpenVidu();
 
     // --- 2) Init a session ---
@@ -115,6 +115,7 @@ class OpenViduApp extends Component {
         // --- 4) Connect to the session with a valid user token ---
 
         // Get a token from the OpenVidu deployment
+        //토큰 생성
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
@@ -142,9 +143,7 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter(
-                (device) => device.kind === "videoinput"
-              );
+              var videoDevices = devices.filter((device) => device.kind === "videoinput");
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -183,14 +182,14 @@ class OpenViduApp extends Component {
 
     // Empty all properties... 초기화
     this.OV = null;
-    this.setState({
-      session: undefined,
-      subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
-      mainStreamManager: undefined,
-      publisher: undefined,
-    });
+    // this.setState({  //여기에서 초기화를 해주면 새로고침하는 경우 방이 달라지므로 (undifined 일단 주석처리)
+    //   session: undefined,
+    //   subscribers: [],
+    //   mySessionId: "SessionA",
+    //   myUserName: "Participant" + Math.floor(Math.random() * 100),
+    //   mainStreamManager: undefined,
+    //   publisher: undefined,
+    // });
   }
 
   render() {
@@ -202,7 +201,6 @@ class OpenViduApp extends Component {
         {this.state.session === undefined ? (
           <div id="join">
             <div id="join-dialog" className="jumbotron vertical-center">
-              <h1> Join a video session </h1>
               <form className="form-group" onSubmit={this.joinSession}>
                 <p>
                   <label>Participant: </label>
@@ -215,17 +213,7 @@ class OpenViduApp extends Component {
                     required
                   />
                 </p>
-                <p>
-                  <label> Session: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
+
                 <p className="text-center">
                   <input
                     className="btn btn-lg btn-success"
@@ -256,9 +244,7 @@ class OpenViduApp extends Component {
               {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
-                  onClick={() =>
-                    this.handleMainVideoStream(this.state.publisher)
-                  }
+                  onClick={() => this.handleMainVideoStream(this.state.publisher)}
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>

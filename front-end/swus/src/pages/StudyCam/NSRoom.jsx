@@ -32,7 +32,7 @@ function NSRoom() {
               <MyTodo />
             </div>
             <div>
-              <Button variant="outlined" sx={{ width: "100%" }}>
+              <Button variant="outlined" sx={{ width: "auto", position: "fixed", bottom: 0 }}>
                 휴게실 바로가기
               </Button>
             </div>
