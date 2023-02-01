@@ -37,7 +37,7 @@ public class AuthController {
     @PostMapping("sign-up")
     public ResponseEntity<?> signUp(@RequestBody SignUpReq form){
         Map<String, Object> resultMap = new HashMap<>();
-        log.debug(String.valueOf(form));
+//        log.debug(String.valueOf(form));
 
         int id = memberService.join(form);
         resultMap.put("msg", "success_signup");
