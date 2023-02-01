@@ -1,11 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+// import axios from "axios";
+
+const BASE_URL = "http://localhost:8080"
+
+
+const getStudyRoom = createAsyncThunk(
+	"checkedSlice/getStudyRoom",
+	async () => {
+		try {
+			console.log("res:");
+			const res =  await fetch(`${BASE_URL}/studyrooms`);
+			const data = await res.json();
+			console.log("res:" + res);
+			return data
+		}	catch (err) {
+			console.log(err);
+		}
+	}
+)
+
 
 const checkedSlice = createSlice({
 	name: "checked",
 	initialState: { 
 		days: [false, false, false, false, false, false, false], 
 		day: "", 
-		category: "--", 
+		category: "", 
 		data: "", 
 		title: "", 
 		content: "", 
@@ -17,44 +37,6 @@ const checkedSlice = createSlice({
 		writedAt: "",
 	},
 	reducers: {
-		// mon: (state, action) => {
-		// 	state.value[action.payload] = !state.value[action.payload];
-		// 	state.day = "";
-		// 	for (let i = 0; i < state.value.length; i++) {
-		// 		if (state.value[i] === true) {
-		// 			state.day = state.day + "1";
-		// 		} else if (state.value[i] === false) {
-		// 			state.day = state.day + "0";
-    //     }
-		// 	}
-		// },
-		// typePick: (state, action) => {
-		// 	state.category = action.payload;
-		// },
-		// getData: (state, action) => {
-		// 	state.data = action.payload;
-		// },
-		// getStartDate: (state, action) => {
-		// 	state.startDate = action.payload;
-		// },
-		// getFinishDate: (state, action) => {
-		// 	state.finishDate = action.payload;
-		// },
-		// getStartTIme: (state, action) => {
-		// 	state.startTime = action.payload;
-		// },
-		// getFinishTime: (state, action) => {
-		// 	state.finishTime = action.payload;
-		// },
-		// getTitle: (state, action) => {
-		// 	state.title = action.payload;
-		// },
-		// getContent: (state, action) => {
-		// 	state.content = action.payload;
-		// },
-		// getRecruitmentNumber: (state, action) => {
-		// 	state.recruitmentNumber = action.payload;
-		// },
 		writeArticle: (state, action) => {
 			const time = new Date().toISOString().slice(0, 10)
 			state.writedAt = time
@@ -81,7 +63,14 @@ const checkedSlice = createSlice({
         }
 			}
 		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(getStudyRoom.fulfilled, (state, action) => {
+			// action.payload 에 위에서 선언한 thunk에서 return된 값이 저장
+			console.log("연결 성공적" + action.payload)
+		})
 	}
 });
 
 export default checkedSlice;
+export { getStudyRoom };

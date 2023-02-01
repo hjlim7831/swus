@@ -2,13 +2,6 @@ import GroupPage from './pages/GroupPage/GroupPage';
 import CreateArticle from './pages/GroupPage/CreateArticle';
 import ArticleDetail from './pages/GroupPage/ArticleDetail';
 import UpdateArticle from './pages/GroupPage/UpdateArticle';
-// import { ThemeProvider, createTheme } from '@mui/material/styles';
-// import CssBaseline from '@mui/material/CssBaseline';
-// import Nav from './components/Nav';
-// import { useState, useEffect } from 'react';
-import Nav from './components/Nav';
-// import GroupPage from './pages/GroupPage/GroupPage'
-import { CssBaseline } from '@mui/material';
 import Container from '@mui/material/Container';
 import { Provider } from 'react-redux';
 import store from './store/Store';

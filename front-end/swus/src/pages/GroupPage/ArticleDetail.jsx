@@ -1,13 +1,15 @@
 import { Container } from '@mui/system';
 import { Grid, Divider, Box, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import {getStudyRoom} from '../../store/CheckedSlice';
 
 
 
 function ArticleDetail() {
 
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
   const article = useSelector(state => {
 		return state.checkDays
@@ -60,18 +62,20 @@ function ArticleDetail() {
 						<Button 
 							variant="contained" 
 							sx={{ height: "40px" }} 
-							onClick={() => {navigate("/group")}}>뒤로 가기</Button>
+							onClick={() => {
+								dispatch(getStudyRoom())							
+								// navigate("/group");
+								}}>목록 보기</Button>
 					</Grid>
 				</Grid>
 				<Grid container>
 					<Grid item xs={1} sx={{ textAlign: "center" }}>
 						<p>서형준</p>
 					</Grid>
-					<Divider orientation='vertical' flexItem variant='middle'/>
 					<Grid item xs={8} sx={{ px: 3}}>
 						<p>{article.writedAt}</p>
 					</Grid>
-					<Grid item xs={2} sx={{ textAlign: "right"}}>
+					<Grid item xs={3} sx={{ textAlign: "right", display: "flex", justifyContent: "right", pr: 3}}>
 						<p>조회수 : 6</p>
 					</Grid>
 				</Grid>
