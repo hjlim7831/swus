@@ -55,9 +55,7 @@ function NSRoomCard() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          Non-Stop 열람실 #{roomNumber} 입장하기
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Non-Stop 열람실 #{roomNumber} 입장하기</DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>

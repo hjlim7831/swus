@@ -1,6 +1,5 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import MyTodo from "../MyPageReport/MyTodo";
 import { useLocation } from "react-router-dom";
@@ -9,6 +8,7 @@ import Clock from "./Clock";
 import { Button } from "@mui/material";
 import RoomButton from "./RoomButton";
 import OpenVidu from "../OpenVidu/OpenViduApp";
+import OpenViduApp from "../OpenVidu/OpenViduApp";
 
 function NSRoom() {
   const location = useLocation(); //화면 이동할때 방 번호 받아오는 useLocation
@@ -17,7 +17,8 @@ function NSRoom() {
   //여기까지 잘 온다.
   return (
     <>
-      <Box sx={{ flexGrow: 1, maxHeight: "500px" }}>
+      <OpenViduApp sessionId={roomid} roomType="ns" />
+      {/* <Box sx={{ flexGrow: 1, maxHeight: "500px" }}>
         <Grid container spacing={2}>
           <Grid item xs={2.2} sx={{ border: 1 }}>
             <RoomButton />
@@ -49,11 +50,11 @@ function NSRoom() {
             >
               cam
             </div> */}
-            <OpenVidu SessionId={roomid} />
-            {/*오픈비두에 방 아이디 전달해준다. */}
-          </Grid>
+      {/* <OpenVidu SessionId={roomid} /> */}
+      {/*오픈비두에 방 아이디 전달해준다. */}
+      {/*</Grid>
         </Grid>
-      </Box>
+      </Box> */}
     </>
   );
 }

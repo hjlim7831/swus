@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/nsroom" element={<NSRoom />} />
           {/* <Route path="/" element={<OpenViduApp />} /> */}
-          <Route path="/openvidu" element={<OpenViduApp />} />
+          {/* <Route path="/openvidu" element={<OpenViduApp />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

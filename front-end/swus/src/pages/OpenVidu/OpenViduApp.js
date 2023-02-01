@@ -13,7 +13,8 @@ class OpenViduApp extends Component {
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      mySessionId: props.SessionId,
+      roomType: props.roomType,
+      mySessionId: props.sessionId,
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
@@ -29,6 +30,9 @@ class OpenViduApp extends Component {
   }
 
   componentDidMount() {
+    //lifecycle 메서드
+    //컴포넌트의 출력물이 dom에 렌더링 된 후 한번만 실행
+    //네트워크 호출, 구독 등 기능 수행
     window.addEventListener("beforeunload", this.onbeforeunload);
   }
 
@@ -195,7 +199,7 @@ class OpenViduApp extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-
+    console.log(mySessionId + " " + this.state.roomType);
     return (
       <div className="container">
         {this.state.session === undefined ? (
