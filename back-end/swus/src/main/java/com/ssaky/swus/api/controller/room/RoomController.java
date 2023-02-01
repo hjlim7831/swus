@@ -1,9 +1,11 @@
 package com.ssaky.swus.api.controller.room;
 
 import com.ssaky.swus.api.request.room.PublicCreateReq;
+import com.ssaky.swus.api.request.room.PublicExitReq;
 import com.ssaky.swus.api.service.room.RoomService;
 import com.ssaky.swus.db.entity.Room.PublicRoom;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class RoomController {
@@ -42,6 +45,15 @@ public class RoomController {
         roomService.enterPublic(room_id,user_id);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("msg", "success_enter_studyroom");
+        return ResponseEntity.ok(resultMap);
+    }
+
+    @PostMapping("/studyrooms/exit")
+    public ResponseEntity<?> exitPublic(@RequestBody PublicExitReq publicExitReq) {
+        log.debug("member_id/room_id : "+publicExitReq.getMember_id()+"/"+publicExitReq.getRoom_id());
+        roomService.exitPublic(publicExitReq);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("msg", "success_exit_studyroom");
         return ResponseEntity.ok(resultMap);
     }
 }

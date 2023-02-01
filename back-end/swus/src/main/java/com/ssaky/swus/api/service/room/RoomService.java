@@ -1,5 +1,6 @@
 package com.ssaky.swus.api.service.room;
 
+import com.ssaky.swus.api.request.room.PublicExitReq;
 import com.ssaky.swus.common.error.exception.custom.OverCapacityException;
 import com.ssaky.swus.db.entity.Room.PublicParticipant;
 import com.ssaky.swus.db.entity.Room.PublicRoom;
@@ -52,11 +53,31 @@ public class RoomService {
         //기능2. room_id의 참가자 1 증가시키기
         roomRepository.updateCount(room_id, 1);
 
-        //기능3. user를 Paricipant에 insert해주기
+        //기능3. 만약 비정상적으로 종료한 사용자가 Participant에 남아있다면 삭제
+        PublicParticipant unnomalUser = participantRepository.findByMemberId(user_id);
+        if(unnomalUser != null){
+            participantRepository.exit(unnomalUser);
+        }
+
+        //기능4. user를 Paricipant에 insert해주기
         PublicParticipant participant = PublicParticipant.builder()
                 .room(room)
                 .member(member.get())
                 .joined_at(LocalDateTime.now()).build();
         participantRepository.joinPublic(participant);
+    }
+    @Transactional
+    public void exitPublic(PublicExitReq publicExitReq) {
+        //기능1 순공, 총공시간 갱신
+        //아직 구현 안함
+
+        //기능2 room_id의 참가자 1 감소시키기
+        roomRepository.updateCount(publicExitReq.getRoom_id(), -1);
+
+        //기능3. Participant에서 Delete해주기
+        PublicParticipant participant = participantRepository.findByMemberId(publicExitReq.getMember_id());
+        log.debug("삭제할 참가자 id : "+publicExitReq.getMember_id());
+        log.debug("삭제할 참가자 : "+participant);
+        participantRepository.exit(participant);
     }
 }
