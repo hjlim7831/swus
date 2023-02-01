@@ -7,7 +7,7 @@ import UserVideoComponent from "./UserVideoComponent";
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
 
-class App extends Component {
+class OpenViduApp extends Component {
   constructor(props) {
     super(props);
 
@@ -329,4 +329,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default OpenViduApp;

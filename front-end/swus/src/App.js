@@ -11,9 +11,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* <Route path="/" element={<MyPageMain />} /> */}
-          <Route path="/" element={<MainPage />} />
-          {/* <Route path="/" element={<NSRoom />} /> */}
-          <Route path="/openvidu" element={<OpenViduApp />} />
+          {/* <Route path="/" element={<MainPage />} /> */}
+          <Route path="/" element={<NSRoom />} />
+          {/* <Route path="/" element={<OpenViduApp />} /> */}
+          {/* <Route path="/openvidu" element={<OpenViduApp />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

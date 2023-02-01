@@ -5,15 +5,29 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 
 import logo from "../../../image/sampleImage.jpg";
 
 function NSRoomCard() {
-  const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+
   const handleToEnter = () => {
-    navigate("/openvidu");
+    setOpen(true);
   };
+
+  const hadleToClose = () => {
+    setOpen(false);
+  };
+  // const navigate = useNavigate();
+  // const handleToEnter = () => {
+  //   navigate("/openvidu");
+  // };
 
   return (
     <>
@@ -33,6 +47,21 @@ function NSRoomCard() {
         </CardContent>
         <Button onClick={handleToEnter}>입장하기</Button>
       </Card>
+
+      <Dialog
+        open={open}
+        onClose={hadleToClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"열람실 입장 위한 모달"}
+        </DialogTitle>
+        <DialogContent></DialogContent>
+        <DialogActions>
+          <Button onClick={hadleToClose}>x</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

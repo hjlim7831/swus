@@ -6,6 +6,7 @@ import MyTodo from "../MyPageReport/MyTodo";
 import Clock from "./Clock";
 import { Button } from "@mui/material";
 import RoomButton from "./RoomButton";
+import OpenVidu from "../OpenVidu/OpenViduApp";
 
 function NSRoom() {
   return (
@@ -44,6 +45,7 @@ function NSRoom() {
             >
               cam
             </div> */}
+            <OpenVidu />
           </Grid>
         </Grid>
       </Box>
