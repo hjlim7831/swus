@@ -5,10 +5,12 @@ import Grid from "@mui/material/Grid";
 import MyTodo from "../MyPageReport/MyTodo";
 import Clock from "./Clock";
 import { Button } from "@mui/material";
+import RoomButton from "./RoomButton";
 
 function NSRoom() {
   return (
     <>
+      <RoomButton />
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
           <Grid item xs={2.2} sx={{ border: 1 }}>

@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import OpenViduApp from "../OpenVidu/OpenViduApp";
 import MyTodo from "../MyPageReport/MyTodo";
-import NonStopRoom from "./RoomScroll/NonStopRoom";
+import NSRoomCard from "./RoomScroll/NStRoomCard";
 import { Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
@@ -19,7 +19,7 @@ import "./RoomScroll/hideScrollbar.css";
 const elemPrefix = "글 번호";
 const getId = (index) => `${elemPrefix}${index}`;
 const getItems = () =>
-  Array(10) //카드의 개수 추정 0부터 10까지 있는 카드
+  Array(1) //카드의 개수 추정 0부터 10까지 있는 카드
     .fill(0)
     .map((_, ind) => ({ id: `element-${ind}` }));
 
@@ -71,14 +71,14 @@ function StudyRoomMain() {
                 />
               ))}
             </ScrollMenu> */}
-            <button onClick={addItem}>Add item</button>
+            {/* <button onClick={addItem}>Add item</button> */}
             <ScrollMenu
               // LeftArrow={LeftArrow}
               // RightArrow={RightArrow}
               onWheel={onWheel}
             >
               {items.map(({ id }) => (
-                <NonStopRoom key={id} />
+                <NSRoomCard key={id} />
               ))}
             </ScrollMenu>
             <button onClick={addItem}>Add item</button>

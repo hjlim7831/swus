@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MyPageMain from "./pages/MyPageMain/MyPageMain";
 import MainPage from "./pages/MainPage/MainPage";
 import NSRoom from "./pages/StudyCam/NSRoom";
+import OpenViduApp from "./pages/OpenVidu/OpenViduApp";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<MyPageMain />} /> */}
           {/* <Route path="/" element={<MainPage />} /> */}
-          <Route path="/" element={<NSRoom />} />
+          {/* <Route path="/" element={<NSRoom />} /> */}
+          <Route path="/" element={<OpenViduApp />} />
         </Routes>
       </BrowserRouter>
     </div>

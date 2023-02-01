@@ -1,5 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
+
+const bull = (
+  <Box
+    component="span"
+    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+  >
+    :
+  </Box>
+);
 
 function Clock() {
   const [time, setTime] = useState(new Date());
@@ -37,12 +48,76 @@ function Clock() {
         <p>
           {year}.{month}.{day} {getTodayLabel()}요일
         </p>
-        <span>{hoursTen}</span>
-        <span>{hoursOne}</span>
-        <span>{minutesTen}</span>
-        <span>{minutesOne}</span>
-        <span>{secondsTen}</span>
-        <span>{secondsOne}</span>
+        <Box
+          sx={{
+            display: "inline-block",
+            width: 17,
+            height: 30,
+            border: 1,
+            borderRadius: 1,
+          }}
+        >
+          <Typography>{hoursTen}</Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "inline-block",
+            width: 17,
+            height: 30,
+            border: 1,
+            borderRadius: 1,
+          }}
+        >
+          <Typography>{hoursOne}</Typography>
+        </Box>
+        {bull}
+        <Box
+          sx={{
+            display: "inline-block",
+            width: 17,
+            height: 30,
+            border: 1,
+            borderRadius: 1,
+          }}
+        >
+          <Typography>{minutesTen}</Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "inline-block",
+            width: 17,
+            height: 30,
+            border: 1,
+            borderRadius: 1,
+          }}
+        >
+          <Typography>{minutesOne}</Typography>
+        </Box>
+        {bull}
+        <Box
+          sx={{
+            display: "inline-block",
+            width: 17,
+            height: 30,
+            border: 1,
+            borderRadius: 1,
+          }}
+        >
+          <Typography>{secondsTen}</Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "inline-block",
+            width: 17,
+            height: 30,
+            border: 1,
+            borderRadius: 1,
+          }}
+        >
+          <Typography>{secondsOne}</Typography>
+        </Box>
       </div>
     </>
   );

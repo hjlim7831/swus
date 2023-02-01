@@ -5,14 +5,14 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 
 import logo from "../../../image/sampleImage.jpg";
 
-function NonStopRoom() {
-  const [expanded, setExpanded] = React.useState(false);
-
+function NSRoomCard() {
+  const navigate = useNavigate();
   const handleToEnter = () => {
-    setExpanded(!expanded);
+    navigate("/openvidu");
   };
 
   return (
@@ -24,7 +24,7 @@ function NonStopRoom() {
           height="400"
           image={logo}
           alt="studystudy"
-          objectFit="cover"
+          // objectfit="cover"  objectFit 하면 안됨
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
@@ -37,4 +37,4 @@ function NonStopRoom() {
   );
 }
 
-export default NonStopRoom;
+export default NSRoomCard;

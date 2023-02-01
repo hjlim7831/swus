@@ -27,7 +27,15 @@ function MyTodo() {
 
   return (
     <>
-      <Box sx={{ position: "relative", width: 300, height: 400 }}>
+      <Box
+        sx={{
+          position: "relative",
+          overflow: "auto",
+          overflowX: "hidden",
+          width: "100%",
+          height: 500,
+        }}
+      >
         <h4 style={{ display: "inline-block" }}>Todo List</h4>
         <IconButton
           sx={{ display: "inline-block" }}
