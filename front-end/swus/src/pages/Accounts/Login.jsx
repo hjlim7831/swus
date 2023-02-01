@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
 
 import { indigo } from "@mui/material/colors";
 
@@ -38,25 +39,34 @@ export default function SignInSide() {
 
     const data = new FormData(event.currentTarget);
 
-    const email = data.get("email");
-    const password = data.get("password");
+    const payload = {
+      email: data.get("email"),
+      password: data.get("password"),
+    };
+
+    // const email = data.get("email");
+    // const password = data.get("password");
 
     const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
     const passwordCheck = /[A-Za-z]+[0-9]/;
 
     // 유효성검사
-    if (email && password) {
-      if (!emailCheck.test(email)) {
+    if (payload.email && payload.password) {
+      if (!emailCheck.test(payload.email)) {
         alert("이메일 형식을 지켜주세요.");
-      } else if (password.length < 8) {
+      } else if (payload.password.length < 8) {
         alert("비밀번호는 8자 이상이여야 합니다.");
-      } else if (!passwordCheck.test(password)) {
+      } else if (!passwordCheck.test(payload.password)) {
         alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
       } else {
-        console.log({
-          email: email,
-          password: password,
-        });
+        console.log({ payload });
+
+        axios
+          .post("http://localhost:8080/auth/login", payload)
+          .then((response) => {
+            console.log("success");
+            console.log(response.data.access_token);
+          });
       }
     } else {
       alert("정보를 다시 입력해주세요.");

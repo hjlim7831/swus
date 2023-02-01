@@ -16,6 +16,8 @@ import { indigo } from "@mui/material/colors";
 
 import logo from "./../../logo.png";
 
+import axios from "axios";
+
 // function Copyright(props) {
 //   return (
 //     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -41,7 +43,7 @@ export default function SignUpSide() {
       email: data.get("email"),
       password: data.get("password"),
       nickname: data.get("nickname"),
-      question: data.get("question"),
+      question_id: data.get("question"),
       answer: data.get("answer"),
     };
 
@@ -55,7 +57,7 @@ export default function SignUpSide() {
       payload.email &&
       payload.password &&
       payload.nickname &&
-      payload.question &&
+      payload.question_id &&
       payload.answer
     ) {
       if (!emailCheck.test(payload.email)) {
@@ -74,6 +76,13 @@ export default function SignUpSide() {
         console.log({
           payload,
         });
+
+        axios
+          .post("http://localhost:8080/auth/sign-up", payload)
+          .then((response) => {
+            console.log("success");
+            console.log(response);
+          });
       }
     } else {
       alert("정보를 다시 입력해주세요.");

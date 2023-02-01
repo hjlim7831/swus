@@ -1,10 +1,10 @@
-import * as React from "react";
+import React, { useState } from "react";
 // import Avatar from '@mui/material/Avatar';
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
+// import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -15,6 +15,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { indigo } from "@mui/material/colors";
 
 import logo from "./../../logo.png";
+
+import axios from "axios";
 
 // function Copyright(props) {
 //   return (
@@ -32,61 +34,62 @@ import logo from "./../../logo.png";
 const theme = createTheme();
 
 export default function FindPassword() {
-  // const email =
+  const [Email, setEmail] = useState("");
 
   const idSubmit = (event) => {
     event.preventDefault();
-    console.log("email");
+
+    const data = new FormData(event.currentTarget);
+
+    const email = data.get("email");
+
+    // useState 확인
+    setEmail(email);
+
+    const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
+
+    if (email) {
+      if (!emailCheck.test(email)) {
+        alert("이메일 형식을 지켜주세요.");
+      } else {
+        console.log({ email });
+
+        // axios
+        //   .get("http://localhost:8080/auth/check-email?email=${email}")
+        //   .then((response) => {
+        //     console.log("success");
+        //     console.log(response);
+        //   });
+      }
+    } else {
+      alert("정보를 다시 입력해주세요.");
+    }
   };
 
   const passwordSubmit = (event) => {
     event.preventDefault();
 
-    console.log("Hello");
+    const data = new FormData(event.currentTarget);
 
-    //   const data = new FormData(event.currentTarget);
+    const payload = {
+      email: Email,
+      question: data.get("question"),
+      answer: data.get("answer"),
+    };
 
-    //   const payload = {
-    //     email: data.get("email"),
-    //     password: data.get("password"),
-    //     nickname: data.get("nickname"),
-    //     question: data.get("question"),
-    //     answer: data.get("answer"),
-    //   };
+    // 유효성검사
+    if (payload.question && payload.answer) {
+      console.log(payload);
 
-    //   const passwordConfirm = data.get("passwordConfirm");
-
-    //   const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
-    //   const passwordCheck = /[A-Za-z]+[0-9]/;
-
-    //   // 유효성검사
-    //   if (
-    //     payload.email &&
-    //     payload.password &&
-    //     payload.nickname &&
-    //     payload.question &&
-    //     payload.answer
-    //   ) {
-    //     if (!emailCheck.test(payload.email)) {
-    //       alert("이메일 형식을 지켜주세요.");
-    //     } else if (payload.password.length < 8) {
-    //       alert("비밀번호는 8자 이상이여야 합니다.");
-    //     } else if (!passwordCheck.test(payload.password)) {
-    //       alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
-    //     } else if (payload.password != passwordConfirm) {
-    //       alert("비밀번호와 비밀번호 확인이 서로 다릅니다.");
-    //     } else if (
-    //       !(2 <= payload.nickname.length && payload.nickname.length <= 10)
-    //     ) {
-    //       alert("닉네임은 2글자 이상, 10글자 이하만 가능합니다.");
-    //     } else {
-    //       console.log({
-    //         payload,
-    //       });
-    //     }
-    //   } else {
-    //     alert("정보를 다시 입력해주세요.");
-    //   }
+      // axios
+      //   .post("http://localhost:8080/auth/check-pwd", payload)
+      //   .then((response) => {
+      //     console.log("success");
+      //     console.log(response.msg);
+      //   });
+    } else {
+      alert("정보를 다시 입력해주세요.");
+    }
   };
 
   const favorite_questions = [
