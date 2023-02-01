@@ -5,6 +5,7 @@ import { Container } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import checkedSlice from '../../store/CheckedSlice';
 import { useNavigate } from 'react-router-dom';
+import { createStudyRoom } from '../../store/CheckedSlice';
 
 
 function CreateArticleForm() {
@@ -49,19 +50,48 @@ function CreateArticleForm() {
 
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
-		// let newDay = ""
-		// const date = "day"
-		// console.log(articleDetail)
+		let selectedDays = ""
+		for (let i = 0; i < inputs.days.length; i++)	{
+			if (inputs.days[i]) {
+				selectedDays += "1"
+      }	else {
+				selectedDays += "0"
+			}
+		}
+
+		if (inputs.category === "") {
+			alert("스터디 유형을 선택해주세요.")
+			return
+		}	else if (inputs.title === "") {
+			alert("제목을 입력해주세요.")
+      return
+		}	else if (selectedDays === "0000000")	{
+			alert("요일을 선택해주세요.")
+			return
+		}	else if (inputs.recruitmentNumber === 0) {
+			alert("모집 인원을 정해주세요.")
+			return
+		}	else if (inputs.startTime === "") {
+			alert("시작 시간을 입력해주세요.")
+      return
+		}	else if (inputs.finishTime === "") {
+			alert("종료 시간을 입력해주세요.")
+			return
+		}
+
+		const payload = {
+			category: inputs.category,
+			title: inputs.title,
+			content: inputs.content,
+			day: inputs.day,
+			recruitmentNumber: inputs.recruitmentNumber,
+			beginAt: inputs.beginAt,
+			endAt: inputs.endAt,
+			startTime: inputs.startTime,
+			finishTime: inputs.finishTime,
+		}
 		
-		// for (let i = 0; i < inputs.days.length; i++) {
-		// 	if (inputs.days[i] === true)	{
-		// 		newDay += "1"
-		// 	}	else	{
-		// 		newDay += "0"
-		// 	}
-		// }
-		// setInputs({...inputs, [date]: newDay})
-		dispatch(checkedSlice.actions.writeArticle(inputs))
+		dispatch(createStudyRoom(payload))
 		navigate("/group/detail");
 	}
 

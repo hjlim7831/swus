@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {getStudyRoom} from '../../store/CheckedSlice';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 
 
@@ -16,6 +18,7 @@ function ArticleDetail() {
 	});
 
 	const [day, setDay] = useState("");
+	const [studyPlan, setStudyPlan] = useState("");
 
 	useEffect(() => {
 		let date = ""
@@ -39,6 +42,12 @@ function ArticleDetail() {
 			}
 		setDay(date)
 		}
+
+		if (article.beginAt === "" || article.endAt === "") {
+			setStudyPlan("미정")
+		}	else	{
+			setStudyPlan(article.beginAt + " ~ " + article.endAt)
+		}
 	}, [article.day])
 
 	
@@ -47,16 +56,24 @@ function ArticleDetail() {
 		<>
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
 				<Grid container sx={{ px: 2 }}>
-					<Grid item xs={6}>
-    				<h1>[{article.category}] {article.title}</h1>
+					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
+    				<p style={{ fontWeight: "bold", fontSize: "30px"}}>[{article.category}] {article.title}
+						</p>
+						<p style={{ paddingLeft: 30, paddingTop: 5}}>
+							<EditOutlinedIcon
+								variant="contained"
+								sx={{ fontSize: 30 }}
+								onClick={() => {navigate("/group/update")}} />
+						</p>
+						<p style={{ paddingLeft: 10, paddingTop: 5}}>
+							<DeleteOutlinedIcon
+								sx={{ fontSize: 30 }} 
+							/>
+						</p>
 					</Grid>
 					<Grid item xs={3}>
 					</Grid>
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 5}}>
-						<Button
-							variant="contained"
-							sx={{ height: "40px" }}
-							onClick={() => {navigate("/group/update")}}>수정하기</Button>
 					</Grid>
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 4}}>
 						<Button 
@@ -64,7 +81,7 @@ function ArticleDetail() {
 							sx={{ height: "40px" }} 
 							onClick={() => {
 								dispatch(getStudyRoom())							
-								// navigate("/group");
+								navigate("/group");
 								}}>목록 보기</Button>
 					</Grid>
 				</Grid>
@@ -85,7 +102,7 @@ function ArticleDetail() {
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 일정</p>
 					</Grid>
 					<Grid item xs={3}>
-						<p>{article.beginAt} - {article.endAt}</p>
+						<p>{studyPlan}</p>
 					</Grid>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2}}/>
 					<Grid item xs={2}>

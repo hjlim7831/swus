@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import axios from "axios";
+import axios from "axios";
 
 const BASE_URL = "http://localhost:8080"
 
@@ -19,6 +19,17 @@ const getStudyRoom = createAsyncThunk(
 	}
 )
 
+const createStudyRoom = createAsyncThunk(
+	"checkedSlice/createStudyRoom",
+	async (data) => {
+		try {
+			const res = await axios.post(`${BASE_URL}/boards`, data);
+			return res;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+)
 
 const checkedSlice = createSlice({
 	name: "checked",
@@ -67,10 +78,18 @@ const checkedSlice = createSlice({
 	extraReducers: (builder) => {
 		builder.addCase(getStudyRoom.fulfilled, (state, action) => {
 			// action.payload 에 위에서 선언한 thunk에서 return된 값이 저장
-			console.log("연결 성공적" + action.payload)
+			console.log("연결 성공적")
+			console.log(action.payload);
+		})
+		builder.addCase(createStudyRoom.fulfilled, (state, action) => {
+			console.log("글 작성!")
+			console.log(action.payload)
+		})
+		builder.addCase(createStudyRoom.rejected, (state, action) => {
+			alert("악!")
 		})
 	}
 });
 
 export default checkedSlice;
-export { getStudyRoom };
+export { getStudyRoom, createStudyRoom };

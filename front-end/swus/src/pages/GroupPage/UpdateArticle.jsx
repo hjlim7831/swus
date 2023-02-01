@@ -64,7 +64,7 @@ function UpdateArticleForm() {
 								<Button 
 									type="submit" 
 									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3 }}
+									sx={{ backgroundColor: "green", m: 3, height: "40px" }}
 									size="small"
 									onClick={onHandleSubmit}>글 수정</Button>
 							</div>
@@ -253,10 +253,10 @@ function UpdateArticleForm() {
 									variant='standard' 
 									name="content"
 									value={inputs.content}
-									sx={{ ml: 1, mt: "14px"}} 
+									sx={{ ml: 1, mt: "14px" }} 
 									size="small"
 									multiline
-									rows={3}
+									rows={10}
 									fullWidth
 									onChange={onHandleInput}
 								/>
