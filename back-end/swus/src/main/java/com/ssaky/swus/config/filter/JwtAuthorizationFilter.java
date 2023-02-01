@@ -74,14 +74,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 if (TokenUtils.isValidToken(token)){
 
                     // [4] 토큰을 기반으로 사용자 아이디를 반환 받는 메서드
-                    String userId = TokenUtils.getUserIdFromToken(token);
-                    logger.debug("[+] userId Check: "+userId);
+                    String memberId = TokenUtils.getmemberIdFromToken(token);
+                    logger.debug("[+] memberId Check: "+memberId);
 
                     // [5] 사용자 아이디의 존재여부 체크
-                    if (userId != null && !userId.equalsIgnoreCase("")){
+                    if (memberId != null && !memberId.equalsIgnoreCase("")){
                         chain.doFilter(request, response);
                     } else {
-//                        throw new BusinessExceptionHandler("TOKEN isn't userId", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+//                        throw new BusinessExceptionHandler("TOKEN isn't memberId", ErrorCode.BUSINESS_EXCEPTION_ERROR);
                     }
                     // 토큰이 유효하지 않은 경우
                 } else {

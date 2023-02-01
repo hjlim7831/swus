@@ -127,10 +127,10 @@ class MemberServiceTest {
         // when
         
         // 얘가 담고 있는 애가 맞는지
-        int userId = Integer.parseInt(TokenUtils.parseTokenToUserInfo(accessToken));
+        int memberId = Integer.parseInt(TokenUtils.parseTokenToUserInfo(accessToken));
 
         // then
-        assertEquals(id, userId);
+        assertEquals(id, memberId);
 
     }
 

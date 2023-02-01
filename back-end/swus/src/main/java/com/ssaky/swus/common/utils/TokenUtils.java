@@ -127,9 +127,9 @@ public class TokenUtils {
      * @param token : 토큰
      * @return String : 사용자 아이디
      */
-    public static String getUserIdFromToken(String token){
+    public static String getmemberIdFromToken(String token){
         Claims claims = getClaimsFormToken(token);
-        return claims.get("userId").toString();
+        return claims.get("memberId").toString();
     }
 
 }
