@@ -12,7 +12,9 @@ import Grid from "@mui/material/Grid";
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import axios from "axios";
+import { useCookies } from "react-cookie"; // useCookies import
 
 import { indigo } from "@mui/material/colors";
 
@@ -34,6 +36,8 @@ import logo from "./../../logo.png";
 const theme = createTheme();
 
 export default function SignInSide() {
+  const [cookies, setCookie] = useCookies(["user"]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -65,7 +69,7 @@ export default function SignInSide() {
           .post("http://localhost:8080/auth/login", payload)
           .then((response) => {
             console.log("success");
-            console.log(response.data.access_token);
+            setCookie("user", response.data.access_token);
           });
       }
     } else {
