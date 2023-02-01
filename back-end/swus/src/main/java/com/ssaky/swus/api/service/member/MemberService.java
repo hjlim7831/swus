@@ -64,9 +64,8 @@ public class MemberService {
     public void checkAnswerForPasswordQuestion(CheckPwdReq form){
         Optional<Member> member = memberRepository.findByEmailAndQuestion(form);
         if (member.isPresent()){
-            String email = member.get().getEmail();
             // send email
-            emailService.sendTemplateMessage(email);
+            emailService.sendEmail(member.get());
         }else{
             throw new UncorrectAnswerException("wrong answer for question");
         }
