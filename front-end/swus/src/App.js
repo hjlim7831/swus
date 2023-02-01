@@ -1,4 +1,4 @@
-import { Routes, Router } from "@angular/router";
+import { Routes, Router } from "react-router-dom";
 
 function App() {
   return (
