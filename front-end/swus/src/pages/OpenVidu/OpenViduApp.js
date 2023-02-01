@@ -2,12 +2,12 @@ import { OpenVidu } from "openvidu-browser";
 
 import axios from "axios";
 import React, { Component } from "react";
-// import "./App.css";
+import "./App.css";
 import UserVideoComponent from "./UserVideoComponent";
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
 
-class OpenViduApp extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -23,7 +23,6 @@ class OpenViduApp extends Component {
 
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
-    this.switchCamera = this.switchCamera.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
@@ -195,44 +194,6 @@ class OpenViduApp extends Component {
     });
   }
 
-  async switchCamera() {
-    try {
-      const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
-        (device) => device.kind === "videoinput"
-      );
-
-      if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
-        );
-
-        if (newVideoDevice.length > 0) {
-          // Creating a new publisher with specific videoSource
-          // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true,
-          });
-
-          //newPublisher.once("accessAllowed", () => {
-          await this.state.session.unpublish(this.state.mainStreamManager);
-
-          await this.state.session.publish(newPublisher);
-          this.setState({
-            currentVideoDevice: newVideoDevice[0],
-            mainStreamManager: newPublisher,
-            publisher: newPublisher,
-          });
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
@@ -368,4 +329,4 @@ class OpenViduApp extends Component {
   }
 }
 
-export default OpenViduApp;
+export default App;
