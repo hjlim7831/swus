@@ -1,20 +1,27 @@
 package com.ssaky.swus.db.entity.member;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
+import com.ssaky.swus.db.entity.group.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@Table(name="user")
 @NoArgsConstructor
 @ToString
 public class Member {
+
+    public Member(int id) {
+        this.id = id;
+    }
 
     public Member(SignUpReq form){
         this.email = form.getEmail();
@@ -35,7 +42,7 @@ public class Member {
 
     @Id
     @GeneratedValue
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private int id;
 
     private String email;
@@ -49,5 +56,6 @@ public class Member {
 
     private String token;
 
-
+    @OneToMany(mappedBy = "member", fetch= LAZY)
+    private List<Board> boards = new ArrayList<>();
 }

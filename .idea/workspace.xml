@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="765e54c2-c0f4-4db7-a81a-04ae346ef6af" name="Changes" comment="[STORY/DOCS] EC2, CI/CD Readme 파일 생성&#10;&#10;서버 세팅과 빌드, 배포 관련 내용 정리할 파일" />
+    <list default="true" id="765e54c2-c0f4-4db7-a81a-04ae346ef6af" name="Changes" comment="[STORY/DOCS] EC2, CI/CD Readme 파일 생성&#10;&#10;서버 세팅과 빌드, 배포 관련 내용 정리할 파일">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/swus.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/swus.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/swus.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/swus.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/swus/src/main/java/com/ssaky/swus/api/controller/auth/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/swus/src/main/java/com/ssaky/swus/api/controller/auth/AuthController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,12 +27,7 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="swus" type="f1a62948:ProjectNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -67,6 +69,9 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "spring.configuration.checksum": "fce28fdac41376ee59b9ecc4a779d228",
     "vue.rearranger.settings.migration": "true"

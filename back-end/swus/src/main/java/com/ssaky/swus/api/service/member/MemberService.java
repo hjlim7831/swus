@@ -44,7 +44,7 @@ public class MemberService {
         });
     }
 
-    public Optional<Member> findOne(int userId) {return memberRepository.findOne(userId);}
+    public Optional<Member> findOne(int memberId) {return memberRepository.findOne(memberId);}
 
     public Optional<Member> findOneByEmail(String email) {
         return memberRepository.findByEmail(email);

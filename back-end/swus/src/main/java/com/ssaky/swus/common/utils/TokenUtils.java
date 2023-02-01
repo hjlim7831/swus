@@ -71,8 +71,8 @@ public class TokenUtils {
      */
     public static Date createExpiredDate(){
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.HOUR, 8); // 8시간
-        // c.add(Calendar.DATE, 1); // 1일
+//        c.add(Calendar.HOUR, 8); // 8시간
+         c.add(Calendar.DATE, 1); // 1일
         return c.getTime();
     }
 
@@ -127,9 +127,9 @@ public class TokenUtils {
      * @param token : 토큰
      * @return String : 사용자 아이디
      */
-    public static String getUserIdFromToken(String token){
+    public static String getmemberIdFromToken(String token){
         Claims claims = getClaimsFormToken(token);
-        return claims.get("userId").toString();
+        return claims.get("memberId").toString();
     }
 
 }

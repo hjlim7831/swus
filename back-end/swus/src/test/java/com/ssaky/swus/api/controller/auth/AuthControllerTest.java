@@ -7,6 +7,7 @@ import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.common.error.exception.custom.LoginFailException;
+import com.ssaky.swus.db.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,10 +16,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -116,6 +122,43 @@ class AuthControllerTest {
                         .content(mapper.writeValueAsString(req)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.message").value(ErrorCode.ENTITY_NOT_FOUND.getMessage()))
+                .andDo(print());
+
+    }
+    
+    @Test
+    // WebMVCTest를 사용하기 때문에 추가해야 하는 코드. 실제로 바로 접근할 때에는 상관 없음
+    @WithMockUser(username = "hjlim7831@gmail.com")
+    public void 이메일_중복일때() throws Exception {
+        // given
+        String email = "hjlim7831@gmail.com";
+        doThrow(InvalidValueException.class).when(memberService).validateDuplicateEmail(email);
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<String, String>();
+        info.add("email", email);
+
+        // when & then
+        final ResultActions actions = mockMvc.perform(get("/auth/check-email").with(csrf())
+                        .params(info))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.msg").value("Y"))
+                .andDo(print());
+
+    }
+
+    @Test
+    // WebMVCTest를 사용하기 때문에 추가해야 하는 코드. 실제로 바로 접근할 때에는 상관 없음
+    @WithMockUser(username = "hjlim7831@gmail.com")
+    public void 이메일_중복아닐때() throws Exception {
+        // given
+        String email = "hjlim7831@gmail.com";
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<String, String>();
+        info.add("email", email);
+
+        // when & then
+        final ResultActions actions = mockMvc.perform(get("/auth/check-email").with(csrf())
+                        .params(info))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.msg").value("N"))
                 .andDo(print());
 
     }
