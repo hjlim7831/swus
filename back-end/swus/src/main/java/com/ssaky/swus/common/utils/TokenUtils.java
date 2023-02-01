@@ -71,8 +71,8 @@ public class TokenUtils {
      */
     public static Date createExpiredDate(){
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.HOUR, 8); // 8시간
-        // c.add(Calendar.DATE, 1); // 1일
+//        c.add(Calendar.HOUR, 8); // 8시간
+         c.add(Calendar.DATE, 1); // 1일
         return c.getTime();
     }
 
