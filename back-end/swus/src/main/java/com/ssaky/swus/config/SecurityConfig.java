@@ -36,7 +36,8 @@ public class SecurityConfig {
         // 토큰 활용 시, 모든 요청을 '인가'에 대해서 사용
         http.authorizeHttpRequests((authz) -> authz.anyRequest().permitAll());
         
-
+        // CORS 허가
+        http.cors(cors -> cors.disable());
 
         // JWT를 이용해 인증할 예정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -1,20 +1,20 @@
 package com.ssaky.swus.api.request.auth;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SignUpReq {
 
     private String email;
     private String password;
     private String nickname;
 
-    @JsonProperty("question_id")
     private int questionId;
     private String answer;
 
