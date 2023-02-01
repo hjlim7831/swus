@@ -11,7 +11,6 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@Table(name="user")
 @NoArgsConstructor
 @ToString
 public class Member {
