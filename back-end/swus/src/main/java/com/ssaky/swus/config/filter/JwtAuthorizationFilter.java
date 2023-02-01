@@ -37,8 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // 1. 토큰이 필요하지 않은 API URL에 대해 배열로 구성
         List<String> list = Arrays.asList(
                 "/auth/login",
-                "/auth/sign-up",
-                "/auth/generateToken"
+                "/auth/sign-up"
         );
 //        System.out.println(request.getServletPath());
         // swagger에 필요한 URL일 경우, 다음 필터로 이동
