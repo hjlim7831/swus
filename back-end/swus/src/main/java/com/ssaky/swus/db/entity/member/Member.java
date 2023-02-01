@@ -21,16 +21,15 @@ public class Member {
         this.password = form.getPassword();
         this.nickname = form.getNickname();
         this.answer = form.getAnswer();
-        Question question = new Question(form.getQuestionId());
-        this.question = question;
+        this.questionId = form.getQuestionId();
+
     }
 
     public Member(String email, String password, String nickname, int questionId, String answer){
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        Question question = new Question(questionId);
-        this.question = question;
+        this.questionId = questionId;
         this.answer = answer;
     }
 
@@ -43,10 +42,8 @@ public class Member {
     private String password;
     private String nickname;
     
-    // 연관관계 매핑
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "question_id")
-    private Question question; // 연관관계의 주인이 됨
+    @Column(name = "question_id")
+    private int questionId;
 
     private String answer;
 
