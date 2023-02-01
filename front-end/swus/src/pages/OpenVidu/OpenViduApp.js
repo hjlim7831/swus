@@ -16,9 +16,9 @@ class OpenViduApp extends Component {
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       session: undefined,
-      mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
+      mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
-      subscribers: [],
+      subscribers: [], //다른 사람들의 활성 스트림 저장
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -179,10 +179,10 @@ class OpenViduApp extends Component {
     const mySession = this.state.session;
 
     if (mySession) {
-      mySession.disconnect();
+      mySession.disconnect(); //연결 끊고
     }
 
-    // Empty all properties...
+    // Empty all properties... 초기화
     this.OV = null;
     this.setState({
       session: undefined,
@@ -202,12 +202,6 @@ class OpenViduApp extends Component {
       <div className="container">
         {this.state.session === undefined ? (
           <div id="join">
-            <div id="img-div">
-              <img
-                src="resources/images/openvidu_grey_bg_transp_cropped.png"
-                alt="OpenVidu logo"
-              />
-            </div>
             <div id="join-dialog" className="jumbotron vertical-center">
               <h1> Join a video session </h1>
               <form className="form-group" onSubmit={this.joinSession}>

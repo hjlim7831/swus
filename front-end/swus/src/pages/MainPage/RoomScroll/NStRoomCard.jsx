@@ -11,6 +11,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
+import EnterM from "../EnterModal/EnterM.jsx";
 
 import logo from "../../../image/sampleImage.jpg";
 
@@ -57,7 +58,9 @@ function NSRoomCard() {
         <DialogTitle id="alert-dialog-title">
           {"열람실 입장 위한 모달"}
         </DialogTitle>
-        <DialogContent></DialogContent>
+        <DialogContent>
+          <EnterM />
+        </DialogContent>
         <DialogActions>
           <Button onClick={hadleToClose}>x</Button>
         </DialogActions>

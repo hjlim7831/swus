@@ -11,18 +11,16 @@ import OpenVidu from "../OpenVidu/OpenViduApp";
 function NSRoom() {
   return (
     <>
-      <RoomButton />
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, maxHeight: "500px" }}>
         <Grid container spacing={2}>
           <Grid item xs={2.2} sx={{ border: 1 }}>
+            <RoomButton />
             <h2>Non-Stop열람실</h2>
             <Clock />
             <div
               style={{
                 backgroundColor: "skyblue",
                 height: "100%",
-                top: -1,
-                left: -1,
               }}
             >
               <MyTodo />
