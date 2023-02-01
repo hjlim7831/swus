@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
+    // http에 빨간 줄 에러 아님 (작성자 : 임혜진)
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         // 서버에 인증 정보를 저장하지 않음 -> csrf 사용 X
