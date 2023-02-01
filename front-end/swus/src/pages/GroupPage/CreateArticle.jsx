@@ -111,6 +111,7 @@ function CreateArticleForm() {
 									variant='contained' 
 									sx={{ backgroundColor: "green", m: 3 }}
 									size="small"
+									disabled={!true}
 									onClick={onHandleSubmit}>글 작성</Button>
 							</div>
 						</Grid>

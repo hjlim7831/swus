@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import {getStudyRoom} from '../../store/CheckedSlice';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import Modal from "./Modal";
 
 
 
@@ -19,6 +20,14 @@ function ArticleDetail() {
 
 	const [day, setDay] = useState("");
 	const [studyPlan, setStudyPlan] = useState("");
+	const [ modal, setModal ] = useState(false);
+
+	const openModal = () => {
+		setModal(true);
+	};
+	const closeModal = () => {
+		setModal(false);
+	};
 
 	useEffect(() => {
 		let date = ""
@@ -67,8 +76,13 @@ function ArticleDetail() {
 						</p>
 						<p style={{ paddingLeft: 10, paddingTop: 5}}>
 							<DeleteOutlinedIcon
+								onClick={openModal}
 								sx={{ fontSize: 30 }} 
 							/>
+							<Modal open={modal} close={closeModal} header="글을 삭제하시겠습니까?">
+								글을 삭제해도 그룹은 유지됩니다.
+								글을 삭제하시겠습니까?
+							</Modal>
 						</p>
 					</Grid>
 					<Grid item xs={3}>
@@ -81,7 +95,7 @@ function ArticleDetail() {
 							sx={{ height: "40px" }} 
 							onClick={() => {
 								dispatch(getStudyRoom())							
-								navigate("/group");
+								navigate("/");
 								}}>목록 보기</Button>
 					</Grid>
 				</Grid>
