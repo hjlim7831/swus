@@ -96,9 +96,6 @@ function StudyRoomMain() {
           </Card>
         </div> */}
           </Grid>
-          {/* 
-
-      <OpenViduApp /> */}
         </Grid>
       </Box>
     </>
