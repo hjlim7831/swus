@@ -163,6 +163,23 @@ class MemberServiceTest {
             memberService.checkAnswerForPasswordQuestion(req2);
         });
 
+    }
+
+    @Test
+    public void 이메일_중복일때(){
+        // given
+        String email = "helenalim1205@gmail.com";
+        String password = "ssafy";
+
+        SignUpReq req = SignUpReq.builder().email(email).password(password).nickname("상상").questionId(2).answer("보광초").build();
+
+        // when
+        int id = memberService.join(req);
+
+        // then
+        assertThrows(InvalidValueException.class, ()->{
+            memberService.validateDuplicateEmail(email);
+        });
 
     }
 
