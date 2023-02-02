@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 // import Avatar from '@mui/material/Avatar';
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,7 +14,6 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import axios from "axios";
-import { useCookies } from "react-cookie"; // useCookies import
 
 import { indigo } from "@mui/material/colors";
 
@@ -36,16 +35,24 @@ import logo from "./../../logo.png";
 const theme = createTheme();
 
 export default function SignInSide() {
-  const [cookies, setCookie] = useCookies(["user"]);
+  const [inputData, setInputData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const inputSubmit = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    setInputData({ ...inputData, [name]: value });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-
     const payload = {
-      email: data.get("email"),
-      password: data.get("password"),
+      email: inputData.email,
+      password: inputData.password,
     };
 
     // const email = data.get("email");
@@ -68,8 +75,17 @@ export default function SignInSide() {
         axios
           .post("http://localhost:8081/auth/login", payload)
           .then((response) => {
-            console.log("success");
-            setCookie("user", response.data.access_token);
+            console.log(response.data.access_token);
+
+            // 로컬스토리지에 저장    localStorage.setItem
+            // 로컬스토리지 출력     localStorage.getItem
+            // 로컬스토리지에 삭제   localStorage.removeItem
+            localStorage.setItem("id", payload.email);
+            //rememberme를 위해 이메일은 => localStorage에 저장
+
+            sessionStorage.setItem("token", response.data.access_token);
+            // token은 sessionStorage에 저장
+            // sessionStorage는 브라우저를 닫으면 clear됨.
           });
       }
     } else {
@@ -105,9 +121,6 @@ export default function SignInSide() {
               alignItems: "center",
             }}
           >
-            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
             <Typography component="h1" variant="h5">
               Sign in
               <Link
@@ -134,6 +147,7 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={inputSubmit}
               />
               비밀번호
               <TextField
@@ -145,6 +159,7 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={inputSubmit}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

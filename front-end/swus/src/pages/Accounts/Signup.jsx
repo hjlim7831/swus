@@ -274,7 +274,7 @@ export default function SignUpSide() {
                 margin="normal"
                 select
                 fullWidth
-                id="question_id"
+                id="passwordQuestion"
                 onChange={inputSubmit}
                 label="Choose a question"
                 defaultValue=""

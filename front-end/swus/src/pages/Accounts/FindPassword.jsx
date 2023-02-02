@@ -35,17 +35,23 @@ import { integerPropType } from "@mui/utils";
 const theme = createTheme();
 
 export default function FindPassword() {
-  const [Email, setEmail] = useState("");
+  const [inputData, setInputData] = useState({
+    email: "",
+    question_id: "",
+    answer: "",
+  });
+
+  const inputSubmit = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    setInputData({ ...inputData, [name]: value });
+  };
 
   const idSubmit = (event) => {
     event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-
-    const email = data.get("email");
-
-    // useState 확인
-    setEmail(email);
+    const email = inputData.email;
 
     const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
 
@@ -73,12 +79,10 @@ export default function FindPassword() {
   const passwordSubmit = (event) => {
     event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-
     const payload = {
-      email: Email,
-      question_id: data.get("question"),
-      answer: data.get("answer"),
+      email: inputData.email,
+      question_id: inputData.question_id,
+      answer: inputData.answer,
     };
 
     // 유효성검사
@@ -176,6 +180,7 @@ export default function FindPassword() {
                 autoComplete="email"
                 autoFocus
                 variant="standard"
+                onChange={inputSubmit}
               />
               <Button
                 type="submit"
@@ -200,7 +205,8 @@ export default function FindPassword() {
                 id="passwordQuestion"
                 label="Choose a question"
                 defaultValue=""
-                name="question"
+                name="question_id"
+                onChange={inputSubmit}
               >
                 {favorite_questions.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -219,6 +225,7 @@ export default function FindPassword() {
                 autoComplete="answer"
                 autoFocus
                 variant="standard"
+                onChange={inputSubmit}
               />
               <Button
                 type="submit"
