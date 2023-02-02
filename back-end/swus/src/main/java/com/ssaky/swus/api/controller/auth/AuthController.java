@@ -10,6 +10,7 @@ import com.ssaky.swus.api.request.auth.SignUpReq;
 import com.ssaky.swus.common.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,8 +62,14 @@ public class AuthController {
     public ResponseEntity<?> checkPwd(@RequestBody CheckPwdReq form){
         Map<String, Object> resultMap = new HashMap<>();
         log.debug(String.valueOf(form));
-
-        return ResponseEntity.ok(resultMap);
+        boolean res = memberService.checkAnswerForPasswordQuestion(form);
+        if (res){
+            resultMap.put("msg", "success_check_pwd");
+            return ResponseEntity.ok(resultMap);
+        }else{
+            resultMap.put("msg", "fail_send_email");
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(resultMap);
+        }
     }
 
 }

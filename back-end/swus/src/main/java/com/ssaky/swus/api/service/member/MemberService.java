@@ -61,11 +61,10 @@ public class MemberService {
         }
     }
 
-    public void checkAnswerForPasswordQuestion(CheckPwdReq form){
+    public boolean checkAnswerForPasswordQuestion(CheckPwdReq form){
         Optional<Member> member = memberRepository.findByEmailAndQuestion(form);
         if (member.isPresent()){
-            // send email
-            emailService.sendEmail(member.get());
+            return emailService.sendEmail(member.get());
         }else{
             throw new UncorrectAnswerException("wrong answer for question");
         }
