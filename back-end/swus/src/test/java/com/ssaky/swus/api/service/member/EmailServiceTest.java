@@ -16,6 +16,7 @@ class EmailServiceTest {
 
     @Autowired EmailService emailService;
 
+    // 싸피 네트워크로는 실행이 안됨.
     @Test
     public void 이메일_전송(){
 
