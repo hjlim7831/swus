@@ -1,5 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+import questions from "./pwquestions.jsx";
+
+createSlice({})
 
 export default configureStore({
-  reducer: {},
+  reducer: {
+    questions : questions.reducer,
+  },
 });

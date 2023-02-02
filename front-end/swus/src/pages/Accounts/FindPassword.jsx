@@ -16,8 +16,9 @@ import { indigo } from "@mui/material/colors";
 
 import logo from "./../../logo.png";
 
+import { useSelector } from "react-redux";
 import axios from "axios";
-import { integerPropType } from "@mui/utils";
+
 
 // function Copyright(props) {
 //   return (
@@ -35,6 +36,9 @@ import { integerPropType } from "@mui/utils";
 const theme = createTheme();
 
 export default function FindPassword() {
+  // 비밀번호 찾기용 질문 -> store에서 가져오기
+  const favorite_questions = useSelector((state) => state.questions )
+
   const [inputData, setInputData] = useState({
     email: "",
     question_id: "",
@@ -106,33 +110,6 @@ export default function FindPassword() {
       alert("정보를 다시 입력해주세요.");
     }
   };
-
-  const favorite_questions = [
-    {
-      value: 1,
-      label: "기억에 남는 추억의 장소는?",
-    },
-    {
-      value: 2,
-      label: "자신의 인생 좌우명은?",
-    },
-    {
-      value: 3,
-      label: "자신의 보물 제1호는?",
-    },
-    {
-      value: 4,
-      label: "가장 기억에 남는 선생님 성함은?",
-    },
-    {
-      value: 5,
-      label: "내가 좋아하는 캐릭터는?",
-    },
-    {
-      value: 6,
-      label: "출신 초등학교 이름은?",
-    },
-  ];
 
   return (
     <ThemeProvider theme={theme}>
