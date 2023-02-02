@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080"
+const BASE_URL = "http://i8a302.p.ssafy.io:8081"
 
 
 const getStudyRoom = createAsyncThunk(

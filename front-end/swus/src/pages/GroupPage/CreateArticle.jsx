@@ -50,7 +50,9 @@ function CreateArticleForm() {
 
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
-		let selectedDays = ""
+		const blank = /^\s+|\s+$/g;
+		let selectedDays = "";
+
 		for (let i = 0; i < inputs.days.length; i++)	{
 			if (inputs.days[i]) {
 				selectedDays += "1"
@@ -59,23 +61,29 @@ function CreateArticleForm() {
 			}
 		}
 
-		if (inputs.category === "") {
+		if (!inputs.category.replace(blank, "")) {
 			alert("스터디 유형을 선택해주세요.")
 			return
-		}	else if (inputs.title === "") {
+		}	else if (!inputs.title.replace(blank, "")) {
 			alert("제목을 입력해주세요.")
       return
-		}	else if (selectedDays === "0000000")	{
+		}	else if (!selectedDays.replace(/0/gi, ""))	{
 			alert("요일을 선택해주세요.")
 			return
 		}	else if (inputs.recruitmentNumber === 0) {
 			alert("모집 인원을 정해주세요.")
 			return
-		}	else if (inputs.startTime === "") {
+		}	else if (!inputs.startTime.replace(blank, "")) {
 			alert("시작 시간을 입력해주세요.")
       return
-		}	else if (inputs.finishTime === "") {
+		}	else if (!inputs.finishTime.replace(blank, "")) {
 			alert("종료 시간을 입력해주세요.")
+			return
+		}	else if (Number(inputs.startTime.replace(/:/gi, "") > Number(inputs.finishTime.replace(/:/gi, "")))) {
+			alert("시작 시간이 종료 시간보다 늦습니다!")
+			return
+		}	else if (Number(inputs.beginAt.replace(/-/gi, "") > Number(inputs.endAt.replace(/-/gi, "")))) {
+			alert("스터디 시작 날짜가 종료 날짜보다 늦습니다!")
 			return
 		}
 

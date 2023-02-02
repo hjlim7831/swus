@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container } from "@mui/system";
-import { Button, Grid, Divider, Typography } from '@mui/material';
+import { Button, Grid, Divider, Typography, TextField } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useNavigate } from 'react-router-dom';
+import Modal from "./Modal";
 
 
 function GroupDetail() {
@@ -11,7 +12,7 @@ function GroupDetail() {
   const members = [
     "서형준",
     "이정현"
-  ]
+  ];
 
   const message = "공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부"
 
@@ -20,12 +21,20 @@ function GroupDetail() {
     "2주차 계획",
     "3주차 계획",
     "4주차 계획"
-  ]
+  ];
 
-  const category = "스터디"
+  const category = "스터디";
 
   const filterCategory = /스터디/;
 
+  const [ modal, setModal ] = useState(false);
+  const openModal = () => {
+    setModal(true);
+  };
+  const closeModal = () => {
+    setModal(false);
+  };
+  const [member, setMember] = useState("")
 
 
   function getWeekTopics() {
@@ -60,6 +69,10 @@ function GroupDetail() {
     });
   }
 
+  function getMember(event) {
+    const value = event.target.value
+    setMember(value)
+  }
 
   return (
     <>
@@ -79,7 +92,17 @@ function GroupDetail() {
             <Button
               variant="contained"
               sx={{ height: 30, backgroundColor: "green" }}
+              onClick={openModal}
               >초대하기</Button>
+            <Modal open={modal} close={closeModal} header="멤버 초대하기">
+              <TextField 
+                name="member"
+                value={member}
+                placeholder="초대할 친구의 닉네임을 입력해주세요"
+                variant="outlined"
+                fullWidth
+                onChange={getMember} />
+            </Modal>
           </Grid>
           <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
             <Button
@@ -123,7 +146,7 @@ function GroupDetail() {
           <Grid container sx={{ padding: 2 }}>
             <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
               <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
-              <Typography style={{ margin: 10, padding: 5, minHeight: "30px", wordBreak: "break-all" }}>{message}
+              <Typography style={{ margin: 10, padding: 35, minHeight: "30px", wordBreak: "break-all", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>{message}
               </Typography>
             </Grid>
           </Grid>
