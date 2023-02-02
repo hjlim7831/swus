@@ -1,12 +1,14 @@
 package com.ssaky.swus.api.controller.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssaky.swus.api.request.auth.CheckPwdReq;
 import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.api.request.auth.SignUpReq;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.common.error.exception.custom.LoginFailException;
+import com.ssaky.swus.common.error.exception.custom.UncorrectAnswerException;
 import com.ssaky.swus.db.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,4 +165,67 @@ class AuthControllerTest {
 
     }
 
+    @Test
+    @WithMockUser(username="hjlim7831@gmail.com")
+    public void 비밀번호_확인_실패() throws Exception{
+        // given
+        String email = "hjlim7831@gmail.com";
+        CheckPwdReq req = CheckPwdReq.builder().email(email).questionId(1).answer("보리").build();
+        // checkAnswerForPasswordQuestion이 UncorrectAnswerException을 내보낼 경우
+        doThrow(new UncorrectAnswerException("wrong answer for question")).when(memberService).checkAnswerForPasswordQuestion(any());
+
+        // class -> JSON 객체 변환 함수
+        ObjectMapper mapper = new ObjectMapper();
+
+        // when & then
+        final ResultActions actions = mockMvc.perform(post("/auth/check-pwd").with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(mapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(ErrorCode.UNCORRECT_ANSWER_FOR_PASSWORD.getMessage()))
+                .andDo(print());
+    }
+
+    @Test
+    @WithMockUser(username="hjlim7831@gmail.com")
+    public void 비밀번호_이메일_전송_실패() throws Exception{
+        // given
+        String email = "hjlim7831@gmail.com";
+        CheckPwdReq req = CheckPwdReq.builder().email(email).questionId(1).answer("보리").build();
+        given(memberService.checkAnswerForPasswordQuestion(any())).willReturn(false);
+
+        // class -> JSON 객체 변환 함수
+        ObjectMapper mapper = new ObjectMapper();
+
+        // when & then
+        final ResultActions actions = mockMvc.perform(post("/auth/check-pwd").with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(mapper.writeValueAsString(req)))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(jsonPath("$.msg").value("fail_send_email"))
+                .andDo(print());
+    }
+
+    @Test
+    @WithMockUser(username="hjlim7831@gmail.com")
+    public void 이메일_전송_성공() throws Exception{
+        // given
+        String email = "hjlim7831@gmail.com";
+        CheckPwdReq req = CheckPwdReq.builder().email(email).questionId(1).answer("보리").build();
+        given(memberService.checkAnswerForPasswordQuestion(any())).willReturn(true);
+
+        // class -> JSON 객체 변환 함수
+        ObjectMapper mapper = new ObjectMapper();
+
+        // when & then
+        final ResultActions actions = mockMvc.perform(post("/auth/check-pwd").with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(mapper.writeValueAsString(req)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.msg").value("success_check_pwd"))
+                .andDo(print());
+    }
 }
