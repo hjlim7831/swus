@@ -9,6 +9,7 @@ import SignInSide from "./pages/Accounts/LogIn";
 import SignUpSide from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import BasicModalDialog from "./pages/Accounts/UserModal";
+import Lounge from "./pages/Lounge/SideBar";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route exact path="/login/" element={<SignInSide />} />
           <Route exact path="/signup/" element={<SignUpSide />} />
           <Route exact path="/findpassword" element={<FindPassword />} />
+          <Route exact path="/lounge" element={<Lounge />} />
           <Route exact path="/accounts" element={<BasicModalDialog />}>
             <Route path="login" element={<SignInSide />}></Route>
             <Route path="signup" element={<SignUpSide />}></Route>
