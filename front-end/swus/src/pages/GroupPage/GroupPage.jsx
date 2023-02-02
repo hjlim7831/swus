@@ -42,6 +42,26 @@ const articles = [
 	createData(18, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(19, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(20, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(1, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(2, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, false),
+	createData(3, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(4, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(5, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(6, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(7, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(8, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(9, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(10, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(11, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(12, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(13, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(14, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(15, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(16, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(17, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(18, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(19, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(20, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 1, true),
 ];
 
 
@@ -49,16 +69,16 @@ function GroupPage() {
 
 	const navigate = useNavigate();
 	const [page, setPage] = useState(0)
-	const [rowsPerPage, setRowsPerPage] = useState(10)
+	const [rowsPerPage, setRowsPerPage] = useState(20)
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
 	}
 
-	// const handleChangeRowsPerPage = (event) => {
-	// 	setRowsPerPage(parseInt(event.target.value, 5))
-	// 	setPage(0)
-	// }
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(parseInt(event.target.value, 5))
+		setPage(0)
+	}
 
 	return (
 		<>
@@ -112,7 +132,7 @@ function GroupPage() {
 									page={page}
 									rowsPerPage={rowsPerPage}
 									onPageChange={handleChangePage}
-									// onChangeRowsPerPage={handleChangeRowsPerPage}
+									onChangeRowsPerPage={handleChangeRowsPerPage}
 								/>
 							</TableRow>
 						</TableFooter>

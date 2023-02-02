@@ -72,7 +72,7 @@ function ArticleDetail() {
 	 
   return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", minWidth: "1300px"}}>
 				<Grid container sx={{ px: 2 }}>
 					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
     				<p style={{ fontWeight: "bold", fontSize: "30px"}}>[{article.category}] {article.title}</p>

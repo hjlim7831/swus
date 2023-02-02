@@ -67,17 +67,17 @@ function CreateArticleForm() {
 		}	else if (!inputs.title.replace(blank, "")) {
 			alert("제목을 입력해주세요.")
       return
-		}	else if (!selectedDays.replace(/0/gi, ""))	{
-			alert("요일을 선택해주세요.")
-			return
-		}	else if (inputs.recruitmentNumber === 0) {
-			alert("모집 인원을 정해주세요.")
-			return
 		}	else if (!inputs.startTime.replace(blank, "")) {
 			alert("시작 시간을 입력해주세요.")
       return
 		}	else if (!inputs.finishTime.replace(blank, "")) {
 			alert("종료 시간을 입력해주세요.")
+			return
+		}	else if (!selectedDays.replace(/0/gi, ""))	{
+			alert("요일을 선택해주세요.")
+			return
+		}	else if (inputs.recruitmentNumber === 0) {
+			alert("모집 인원을 정해주세요.")
 			return
 		}	else if (Number(inputs.startTime.replace(/:/gi, "") > Number(inputs.finishTime.replace(/:/gi, "")))) {
 			alert("시작 시간이 종료 시간보다 늦습니다!")
