@@ -1,7 +1,7 @@
 package com.ssaky.swus.db.entity.member;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
-import com.ssaky.swus.db.entity.group.Board;
+//import com.ssaky.swus.db.entity.group.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -56,6 +56,6 @@ public class Member {
 
     private String token;
 
-    @OneToMany(mappedBy = "member", fetch= LAZY)
-    private List<Board> boards = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", fetch= LAZY)
+//    private List<Board> boards = new ArrayList<>();
 }
