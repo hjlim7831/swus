@@ -1,16 +1,16 @@
 package com.ssaky.swus.db.entity.Room;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @Table(name="public_room")
 @NoArgsConstructor
+@AllArgsConstructor
 public class PublicRoom {
     @Id
     @GeneratedValue
@@ -23,7 +23,8 @@ public class PublicRoom {
     //세션 이름 (세션 이름별로 방이 생성됨)
     private String session_name;
 
-    //방 참여인원수
-    private int count;
+    //방 참여인원수 초기값 0
+    @Builder.Default
+    private int count=0;
 
 }

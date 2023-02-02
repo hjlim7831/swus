@@ -1,14 +1,11 @@
-package com.ssaky.swus.api.controller;
+package com.ssaky.swus.api.controller.room;
 
-import com.ssaky.swus.api.request.room.PublicRoomCreateReq;
-import com.ssaky.swus.api.service.RoomService;
+import com.ssaky.swus.api.request.room.PublicCreateReq;
+import com.ssaky.swus.api.service.room.RoomService;
 import com.ssaky.swus.db.entity.Room.PublicRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +18,8 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/studyrooms")
-    public ResponseEntity<?> createPublic(@RequestBody PublicRoomCreateReq publicRoomCreateReq) {
-        roomService.createPublic(publicRoomCreateReq.getType());
+    public ResponseEntity<?> createPublic(@RequestBody PublicCreateReq publicCreateReq) {
+        roomService.createPublic(publicCreateReq.getType());
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("msg", "success_get_studyrooms");
         return ResponseEntity.ok(resultMap);
@@ -36,6 +33,15 @@ public class RoomController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("msg", "success_get_studyrooms");
         resultMap.put("publics",publics);
+        return ResponseEntity.ok(resultMap);
+    }
+
+    @PostMapping("/studyrooms/{room_id}")
+    public ResponseEntity<?> enterPublic (@RequestBody Map<String, Object> userIdMap, @PathVariable int room_id){
+        int user_id = (Integer) userIdMap.get("user_id");
+        roomService.enterPublic(room_id,user_id);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("msg", "success_enter_studyroom");
         return ResponseEntity.ok(resultMap);
     }
 }
