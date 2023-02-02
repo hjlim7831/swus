@@ -2,6 +2,7 @@ package com.ssaky.swus.db.entity.todo;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.ssaky.swus.api.request.todo.TodoCreateReq;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,10 @@ import static javax.persistence.FetchType.LAZY;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoPrivate {
 
+    public TodoPrivate(TodoCreateReq req){
+        this.content = req.getContent();
+    }
+
     @Id
     @GeneratedValue
     private int num;
@@ -28,6 +33,7 @@ public class TodoPrivate {
     private String content;
 
     @ManyToOne(fetch= LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
 }
