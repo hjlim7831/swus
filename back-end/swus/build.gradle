@@ -51,12 +51,23 @@ dependencies {
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	//swagger end
 
+	// jwt start
+	implementation "io.jsonwebtoken:jjwt:0.9.1"
+	// jwt end
+
+	// spring boot email
+	implementation "org.springframework.boot:spring-boot-starter-mail"
+
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	compile 'com.fasterxml.jackson.core:jackson-databind'
 
 	//JUnit4 추가
 	testImplementation("org.junit.vintage:junit-vintage-engine") {
