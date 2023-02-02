@@ -26,7 +26,7 @@ class EmailServiceTest {
                 .nickname("이매").build();
 
         // when & then
-        emailService.sendEmail(member);
+        assert(emailService.sendEmail(member));
     }
 
 }
