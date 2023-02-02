@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SwusApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(SwusApplication.class, args);
 	}

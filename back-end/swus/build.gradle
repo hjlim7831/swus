@@ -1,7 +1,18 @@
+//queryDSL start
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+//queryDSL end
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.8'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	//queryDSL start
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	//queryDSL end
 }
 
 group = 'com.ssaky'
@@ -25,7 +36,29 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	//MySQL start
 	implementation 'mysql:mysql-connector-java:8.0.32'
+	//MySQL end
+
+	//queryDSL start
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+	//queryDSL end
+
+	//swagger start
+	implementation 'io.springfox:springfox-swagger2:3.0.0'
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	//swagger end
+
+	// jwt start
+	implementation "io.jsonwebtoken:jjwt:0.9.1"
+	// jwt end
+
+	// spring boot email
+	implementation "org.springframework.boot:spring-boot-starter-mail"
+
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -33,6 +66,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	compile 'com.fasterxml.jackson.core:jackson-databind'
 
 	//JUnit4 추가
 	testImplementation("org.junit.vintage:junit-vintage-engine") {
@@ -43,3 +78,20 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+//querydsl start
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+//querydsl end
