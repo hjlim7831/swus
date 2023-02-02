@@ -2,11 +2,7 @@ package com.ssaky.swus.db.entity.member;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
 //import com.ssaky.swus.db.entity.group.Board;
-import com.ssaky.swus.db.entity.todo.TodoPrivate;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 

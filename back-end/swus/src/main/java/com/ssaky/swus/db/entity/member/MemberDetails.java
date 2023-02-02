@@ -27,6 +27,7 @@ public class MemberDetails implements UserDetails {
         return authorities;
     }
 
+    // getPassword에 빨간 줄 에러 아님 (작성자 : 임혜진)
     @Override
     public String getPassword() {
         return member.getPassword();

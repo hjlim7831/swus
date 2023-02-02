@@ -32,6 +32,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         MemberDetails userDetails = (MemberDetails) userDetailsService.loadUserByUsername(email);
 
+        // getPassword에 빨간 줄 에러 아님 (작성자 : 임혜진)
         if (!(userDetails.getPassword().equalsIgnoreCase(password))) {
             throw new BadCredentialsException(userDetails.getUsername() + "Invalid password");
         }

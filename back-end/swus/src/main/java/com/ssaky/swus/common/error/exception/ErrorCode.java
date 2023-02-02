@@ -21,7 +21,7 @@ public enum ErrorCode {
     // User
     EMAIL_DUPLICATION(409, "U001", "Email is Duplication"),
     AUTH_EMAIL_SEND_FAIL(500, "U002", "Auth Email Send Fail"),
-    NICKNAME_DUPLICATION(409, "U003", "Nickname is Duplication"),
+    UNCORRECT_ANSWER_FOR_PASSWORD(400, "U0003", "Answer for password is not correct"),
     CURRENT_PASSWORD_NOT_MATCH_EXCEPTION(400, "U004", "Current password not match exception"),
     LOGIN_DUPLICATION(409, "U005", "Current user is logined. You can not login to this account"),
 
