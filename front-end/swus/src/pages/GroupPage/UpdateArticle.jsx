@@ -124,8 +124,9 @@ function UpdateArticleForm() {
 									}}
 									onChange={onHandleInput}
 									size="small"
+									sx={{ marginRight: 1 }}
 								/>
-								-
+								~
 								<TextField
 									name="endAt"
 									value={inputs.endAt}
@@ -135,6 +136,7 @@ function UpdateArticleForm() {
 									}}
 									onChange={onHandleInput}
 									size="small"
+									sx={{ marginLeft: 1 }}
 								/>
 							</div>
 						</Grid>
@@ -261,8 +263,8 @@ function UpdateArticleForm() {
 									onChange={onHandleInput}
 								/>
 							</Grid>
-						<Divider orientation='horizontal' flexItem />
-					</Grid>
+							<Divider orientation='horizontal' flexItem />
+						</Grid>
 				</form>
 			</Container>
 		</>

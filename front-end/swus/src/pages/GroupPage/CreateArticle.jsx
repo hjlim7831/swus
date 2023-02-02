@@ -90,7 +90,7 @@ function CreateArticleForm() {
 			startTime: inputs.startTime,
 			finishTime: inputs.finishTime,
 		}
-		
+		dispatch(checkedSlice.actions.writeArticle(inputs))
 		dispatch(createStudyRoom(payload))
 		navigate("/group/detail");
 	}

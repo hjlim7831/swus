@@ -3,6 +3,7 @@ import CreateArticle from './pages/GroupPage/CreateArticle';
 import ArticleDetail from './pages/GroupPage/ArticleDetail';
 import UpdateArticle from './pages/GroupPage/UpdateArticle';
 import GroupDetail from './pages/GroupPage/GroupDetail';
+import GroupDetailUpdate from './pages/GroupPage/GroupDetailUpdate';
 import Container from '@mui/material/Container';
 import { Provider } from 'react-redux';
 import store from './store/Store';
@@ -26,6 +27,7 @@ function App() {
                   <Route exact path="/group/detail" element={<ArticleDetail />} />
                   <Route exact path="/group/update" element={<UpdateArticle />} />
                   <Route exact path="/detail" element={<GroupDetail />} />
+                  <Route exact path="/detail/update" element={<GroupDetailUpdate />}/>
                 </Routes>
               </div>
           </Container>

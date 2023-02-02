@@ -23,7 +23,7 @@ const createStudyRoom = createAsyncThunk(
 	"checkedSlice/createStudyRoom",
 	async (data) => {
 		try {
-			const res = await axios.post(`${BASE_URL}/boards`, data);
+			const res = await axios.post(`${BASE_URL}/studyrooms`, data);
 			return res;
 		} catch (err) {
 			console.log(err);

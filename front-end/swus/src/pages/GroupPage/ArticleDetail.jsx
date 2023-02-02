@@ -7,6 +7,8 @@ import {getStudyRoom} from '../../store/CheckedSlice';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Modal from "./Modal";
+import { styled, withTheme } from '@mui/material/styles';
+
 
 
 
@@ -28,6 +30,13 @@ function ArticleDetail() {
 	const closeModal = () => {
 		setModal(false);
 	};
+
+	const ColoredButton = styled(Button) (({ theme }) => ({
+		"&:hover": {
+			backgroundColor: "white",
+			color: "black",
+		}
+	}))
 
 	useEffect(() => {
 		let date = ""
@@ -66,18 +75,17 @@ function ArticleDetail() {
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
 				<Grid container sx={{ px: 2 }}>
 					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
-    				<p style={{ fontWeight: "bold", fontSize: "30px"}}>[{article.category}] {article.title}
-						</p>
+    				<p style={{ fontWeight: "bold", fontSize: "30px"}}>[{article.category}] {article.title}</p>
 						<p style={{ paddingLeft: 30, paddingTop: 5}}>
 							<EditOutlinedIcon
 								variant="contained"
-								sx={{ fontSize: 30 }}
+								sx={{ fontSize: 30, color: "blue" }}
 								onClick={() => {navigate("/group/update")}} />
 						</p>
 						<p style={{ paddingLeft: 10, paddingTop: 5}}>
 							<DeleteOutlinedIcon
 								onClick={openModal}
-								sx={{ fontSize: 30 }} 
+								sx={{ fontSize: 30, color: "red" }} 
 							/>
 							<Modal open={modal} close={closeModal} header="글을 삭제하시겠습니까?">
 								글을 삭제해도 그룹은 유지됩니다.
@@ -90,13 +98,13 @@ function ArticleDetail() {
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 5}}>
 					</Grid>
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 4}}>
-						<Button 
+						<ColoredButton 
 							variant="contained" 
 							sx={{ height: "40px" }} 
 							onClick={() => {
 								dispatch(getStudyRoom())							
 								navigate("/");
-								}}>목록 보기</Button>
+								}}>목록 보기</ColoredButton>
 					</Grid>
 				</Grid>
 				<Grid container>
@@ -118,14 +126,14 @@ function ArticleDetail() {
 					<Grid item xs={3}>
 						<p>{studyPlan}</p>
 					</Grid>
-					<Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2}}/>
+					<Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2 }}/>
 					<Grid item xs={2}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 시간</p>
 					</Grid>
 					<Grid item xs={2}>
 						<p style={{ textAlign: "center" }}>{day} {article.startTime} - {article.finishTime}</p>
 					</Grid>
-					<Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2}}s/>
+					<Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2 }}/>
 					<Grid item xs={1}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>인원 현황</p>
 					</Grid>
