@@ -22,9 +22,11 @@ public class RoomController {
 
     @PostMapping("/studyrooms")
     public ResponseEntity<?> createPublic(@RequestBody PublicCreateReq publicCreateReq) {
-        roomService.createPublic(publicCreateReq.getType());
+        int roomId = roomService.createPublic(publicCreateReq.getType());
+        PublicRoom room = roomService.findPublic(roomId);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("msg", "success_get_studyrooms");
+        resultMap.put("public", room);
         return ResponseEntity.ok(resultMap);
     }
 

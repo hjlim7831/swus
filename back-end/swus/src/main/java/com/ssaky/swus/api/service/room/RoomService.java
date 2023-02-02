@@ -35,6 +35,10 @@ public class RoomService {
         return roomRepository.createPublic(publicRoom);
     }
 
+    public PublicRoom findPublic(int id) {
+        return roomRepository.findPublicOne(id);
+    }
+
     public List<PublicRoom> findPublics() {
         return roomRepository.findAll();
     }
