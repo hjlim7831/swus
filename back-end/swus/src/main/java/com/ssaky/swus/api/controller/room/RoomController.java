@@ -50,7 +50,7 @@ public class RoomController {
 
     @PostMapping("/studyrooms/exit")
     public ResponseEntity<?> exitPublic(@RequestBody PublicExitReq publicExitReq) {
-        log.debug("member_id/room_id : "+publicExitReq.getMember_id()+"/"+publicExitReq.getRoom_id());
+        log.debug("member_id/room_id : "+publicExitReq.getMemberId()+"/"+publicExitReq.getRoomId());
         roomService.exitPublic(publicExitReq);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("msg", "success_exit_studyroom");

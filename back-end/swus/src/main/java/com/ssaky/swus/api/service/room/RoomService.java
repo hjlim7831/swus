@@ -72,11 +72,11 @@ public class RoomService {
         //아직 구현 안함
 
         //기능2 room_id의 참가자 1 감소시키기
-        roomRepository.updateCount(publicExitReq.getRoom_id(), -1);
+        roomRepository.updateCount(publicExitReq.getRoomId(), -1);
 
         //기능3. Participant에서 Delete해주기
-        PublicParticipant participant = participantRepository.findByMemberId(publicExitReq.getMember_id());
-        log.debug("삭제할 참가자 id : "+publicExitReq.getMember_id());
+        PublicParticipant participant = participantRepository.findByMemberId(publicExitReq.getMemberId());
+        log.debug("삭제할 참가자 id : "+publicExitReq.getMemberId());
         log.debug("삭제할 참가자 : "+participant);
         participantRepository.exit(participant);
     }
