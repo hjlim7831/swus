@@ -123,7 +123,11 @@ export default function SignUpSide() {
           .post("http://localhost:8081/auth/sign-up", payload)
           .then((response) => {
             console.log("success");
-            console.log(response);
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error.message);
+            alert("존재하는 회원입니다.");
           });
       }
     } else {

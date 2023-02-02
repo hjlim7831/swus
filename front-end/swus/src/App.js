@@ -19,7 +19,11 @@ function App() {
           <Route exact path="/login/" element={<SignInSide />} />
           <Route exact path="/signup/" element={<SignUpSide />} />
           <Route exact path="/findpassword" element={<FindPassword />} />
-          <Route exact path="/modal/" element={<BasicModalDialog />} />
+          <Route exact path="/accounts" element={<BasicModalDialog />}>
+            <Route path="login" element={<SignInSide />}></Route>
+            <Route path="signup" element={<SignUpSide />}></Route>
+            <Route path="findpassword" element={<FindPassword />}></Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

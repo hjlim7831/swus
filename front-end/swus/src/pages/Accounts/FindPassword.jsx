@@ -17,6 +17,7 @@ import { indigo } from "@mui/material/colors";
 import logo from "./../../logo.png";
 
 import axios from "axios";
+import { integerPropType } from "@mui/utils";
 
 // function Copyright(props) {
 //   return (
@@ -57,10 +58,10 @@ export default function FindPassword() {
           .get(`http://localhost:8081/auth/check-email?email=${email}`)
           .then((response) => {
             console.log(response.data.msg);
-            if (response.data.msg === "N") {
-              alert("존재하는 아이디입니다.");
+            if (response.data.msg === "Y") {
+              alert("가입된 아이디입니다.");
             } else {
-              alert("사용가능한 아이디입니다.");
+              alert("가입되지 않은 아이디입니다.");
             }
           });
       }
@@ -76,20 +77,27 @@ export default function FindPassword() {
 
     const payload = {
       email: Email,
-      question: data.get("question"),
+      question_id: data.get("question"),
       answer: data.get("answer"),
     };
 
     // 유효성검사
-    if (payload.question && payload.answer) {
+    if (payload.question_id && payload.answer) {
       console.log(payload);
 
-      // axios
-      //   .post("http://localhost:8081/auth/check-pwd", payload)
-      //   .then((response) => {
-      //     console.log("success");
-      //     console.log(response.msg);
-      //   });
+      axios
+        .post("http://localhost:8081/auth/check-pwd", payload)
+        .then(() => {
+          // console.log(response.data.msg);
+          alert("입력하신 메일로 비밀번호를 전송했습니다.");
+        })
+        .catch((error) => {
+          if (error.message === "Request failed with status code 400") {
+            alert("질문이나 답이 틀렸습니다.");
+          } else {
+            alert("이메일 전송을 실패했습니다.");
+          }
+        });
     } else {
       alert("정보를 다시 입력해주세요.");
     }
