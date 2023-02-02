@@ -19,6 +19,8 @@ function createData( index, type, name, is_finished, date, watched, bool ) {
 	return { index, type, name, is_finished, date, watched, bool };
 }
 
+const filterCategory = /스터디/;
+
 const articles = [
 	createData(1, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(2, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, false),
@@ -27,16 +29,16 @@ const articles = [
 	createData(5, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(6, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(7, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(8, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(8, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(9, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(10, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(11, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(12, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(12, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(13, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(14, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(15, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(16, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(17, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
+	createData(17, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(18, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(19, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
 	createData(20, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
@@ -95,7 +97,7 @@ function GroupPage() {
 									<TableCell sx={{ justifyItems: "center"}}>
 										<span>{article.index}</span>
 									</TableCell>
-									<TableCell sx={{ color: "red"  }}>{article.type}</TableCell>
+									<TableCell style={ filterCategory.test(article.type) ? { color: "red"} : {color: "blue"} }>{article.type}</TableCell>
 									<TableCell>{article.name}</TableCell>
 									<TableCell>{article.is_finished}</TableCell>
 									<TableCell>{article.date}</TableCell>
