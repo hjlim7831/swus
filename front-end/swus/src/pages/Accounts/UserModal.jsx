@@ -16,7 +16,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 
-// import { indigo } from "@mui/material/colors";
+import { indigo } from "@mui/material/colors";
 
 // import logo from "./assets/logo.png";
 
@@ -45,25 +45,36 @@ export default function BasicModalDialog() {
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <ModalDialog
-          aria-labelledby="basic-modal-dialog-title"
-          aria-describedby="basic-modal-dialog-description"
           sx={{
             minWidth: 400,
             maxWidth: 500,
-            minHeight: 500,
+            maxHeight: 500,
             borderRadius: "md",
             p: 3,
             boxShadow: "lg",
+            display: "flex",
+            backgroundColor: indigo[900],
           }}
         >
           <Box
             sx={{
-              my: 8,
+              my: 4,
               mx: 4,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              // background: "white",
+            }}
+          ></Box>
+          <Box
+            sx={{
+              // my: 1,
+              // mx: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              background: "white",
+              borderRadius: "3%",
+              border: "1px solid",
             }}
           >
             {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -115,7 +126,7 @@ export default function BasicModalDialog() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, backgroundColor: "#E2B9B3" }}
               >
                 Sign In
               </Button>

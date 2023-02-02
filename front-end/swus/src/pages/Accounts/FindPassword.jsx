@@ -52,14 +52,17 @@ export default function FindPassword() {
       if (!emailCheck.test(email)) {
         alert("이메일 형식을 지켜주세요.");
       } else {
-        console.log({ email });
-
-        // axios
-        //   .get("http://localhost:8080/auth/check-email?email=${email}")
-        //   .then((response) => {
-        //     console.log("success");
-        //     console.log(response);
-        //   });
+        console.log(email);
+        axios
+          .get(`http://localhost:8081/auth/check-email?email=${email}`)
+          .then((response) => {
+            console.log(response.data.msg);
+            if (response.data.msg === "N") {
+              alert("존재하는 아이디입니다.");
+            } else {
+              alert("사용가능한 아이디입니다.");
+            }
+          });
       }
     } else {
       alert("정보를 다시 입력해주세요.");
@@ -82,7 +85,7 @@ export default function FindPassword() {
       console.log(payload);
 
       // axios
-      //   .post("http://localhost:8080/auth/check-pwd", payload)
+      //   .post("http://localhost:8081/auth/check-pwd", payload)
       //   .then((response) => {
       //     console.log("success");
       //     console.log(response.msg);
@@ -140,7 +143,7 @@ export default function FindPassword() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 10,
               mx: 4,
               display: "flex",
               flexDirection: "column",

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 // import Avatar from '@mui/material/Avatar';
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
@@ -34,35 +34,77 @@ import axios from "axios";
 const theme = createTheme();
 
 export default function SignUpSide() {
+  const [inputData, setInputData] = useState({
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    nickname: "",
+    question_id: "",
+    answer: "",
+  });
+
+  const inputSubmit = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    setInputData({ ...inputData, [name]: value });
+  };
+
+  // 아이디 중복검사
+  const idCheck = (event) => {
+    event.preventDefault(); // 재렌더링 막아주는...
+    // 이메일 가져오기
+    const email = inputData.email;
+
+    // 이메일 유효성검사 -> 정규식
+    const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
+
+    if (email) {
+      if (!emailCheck.test(email)) {
+        alert("이메일 형식으로 작성해주세요.");
+      } else {
+        console.log(email);
+        axios
+          .get(`http://localhost:8081/auth/check-email?email=${email}`)
+          .then((response) => {
+            console.log(response.data.msg);
+            if (response.data.msg === "Y") {
+              alert("존재하는 아이디입니다.");
+            } else {
+              alert("사용가능한 아이디입니다.");
+            }
+          });
+      }
+    } else {
+      alert("이메일을 작성해주세요.");
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-
     const payload = {
-      email: data.get("email"),
-      password: data.get("password"),
-      nickname: data.get("nickname"),
-      question_id: data.get("question"),
-      answer: data.get("answer"),
+      email: inputData.email,
+      password: inputData.password,
+      nickname: inputData.nickname,
+      question_id: inputData.question_id,
+      answer: inputData.answer,
     };
 
-    const passwordConfirm = data.get("passwordConfirm");
+    const passwordConfirm = inputData.passwordConfirm;
 
-    const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
+    // const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
     const passwordCheck = /[A-Za-z]+[0-9]/;
 
     // 유효성검사
     if (
-      payload.email &&
+      // payload.email &&
       payload.password &&
       payload.nickname &&
       payload.question_id &&
       payload.answer
     ) {
-      if (!emailCheck.test(payload.email)) {
-        alert("이메일 형식을 지켜주세요.");
-      } else if (payload.password.length < 8) {
+      if (payload.password.length < 8) {
         alert("비밀번호는 8자 이상이여야 합니다.");
       } else if (!passwordCheck.test(payload.password)) {
         alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
@@ -78,7 +120,7 @@ export default function SignUpSide() {
         });
 
         axios
-          .post("http://localhost:8080/auth/sign-up", payload)
+          .post("http://localhost:8081/auth/sign-up", payload)
           .then((response) => {
             console.log("success");
             console.log(response);
@@ -137,7 +179,7 @@ export default function SignUpSide() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 10,
               mx: 4,
               display: "flex",
               flexDirection: "column",
@@ -164,7 +206,13 @@ export default function SignUpSide() {
               sx={{ mt: 1 }}
             >
               아이디 (이메일)
-              <Button>중복검사</Button>
+              <Button
+                type="submit"
+                sx={{ bgcolor: "#E2B9B3", color: "#5F3A42" }}
+                onClick={idCheck}
+              >
+                중복검사
+              </Button>
               <TextField
                 margin="normal"
                 required
@@ -175,6 +223,7 @@ export default function SignUpSide() {
                 autoComplete="email"
                 autoFocus
                 variant="standard"
+                onChange={inputSubmit}
               />
               닉네임
               <TextField
@@ -187,6 +236,7 @@ export default function SignUpSide() {
                 autoFocus
                 variant="standard"
                 helperText="닉네임은 2 ~ 10자여야 합니다."
+                onChange={inputSubmit}
               />
               비밀번호
               <TextField
@@ -199,6 +249,7 @@ export default function SignUpSide() {
                 id="password"
                 autoComplete="current-password"
                 variant="standard"
+                onChange={inputSubmit}
                 helperText="비밀번호는 문자, 숫자 포함한 8자 이상이어야 합니다."
               />
               비밀번호 확인
@@ -210,6 +261,7 @@ export default function SignUpSide() {
                 // label="Password Confirm"
                 type="password"
                 id="passwordConfirm"
+                onChange={inputSubmit}
                 autoComplete="current-password"
                 variant="standard"
               />
@@ -218,10 +270,11 @@ export default function SignUpSide() {
                 margin="normal"
                 select
                 fullWidth
-                id="passwordQuestion"
+                id="question_id"
+                onChange={inputSubmit}
                 label="Choose a question"
                 defaultValue=""
-                name="question"
+                name="question_id"
               >
                 {favorite_questions.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -237,6 +290,7 @@ export default function SignUpSide() {
                 id="answer"
                 // label="answer"
                 name="answer"
+                onChange={inputSubmit}
                 autoComplete="answer"
                 autoFocus
                 variant="standard"

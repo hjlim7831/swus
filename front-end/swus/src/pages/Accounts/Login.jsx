@@ -66,7 +66,7 @@ export default function SignInSide() {
         console.log({ payload });
 
         axios
-          .post("http://localhost:8080/auth/login", payload)
+          .post("http://localhost:8081/auth/login", payload)
           .then((response) => {
             console.log("success");
             setCookie("user", response.data.access_token);
@@ -98,7 +98,7 @@ export default function SignInSide() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 10,
               mx: 4,
               display: "flex",
               flexDirection: "column",
@@ -164,13 +164,7 @@ export default function SignInSide() {
                     아이디/비밀번호 찾기
                   </Link>
                 </Grid>
-                {/* <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid> */}
               </Grid>
-              {/* <Copyright sx={{ mt: 5 }} /> */}
             </Box>
           </Box>
         </Grid>
