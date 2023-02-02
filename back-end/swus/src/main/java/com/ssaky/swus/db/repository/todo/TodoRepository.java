@@ -30,7 +30,7 @@ public class TodoRepository {
 
     /**
      * num을 찾아 해당 row 제거
-     * @param todoPrivate
+     * @param num
      */
     public void delete(int num){
         TodoPrivate todoPrivate = TodoPrivate.builder().num(num).build();
