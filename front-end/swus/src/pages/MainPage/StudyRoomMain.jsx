@@ -11,6 +11,7 @@ import Grid from "@mui/material/Grid";
 import { LeftArrow, RightArrow } from "./RoomScroll/Arrows";
 import usePreventBodyScroll from "./RoomScroll/usePreventBodyScroll";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
+import RoomInfo from "./RoomScroll/RoomInfo";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
@@ -32,13 +33,37 @@ function StudyRoomMain() {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1, color: "text.secondary" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          color: "text.secondary",
+          marginTop: "3%",
+          height: "100%",
+          bgcolor: "#1A1E33F2",
+        }}
+      >
         {/* 하나 xs 값 주면 나머지 알아서*/}
-        <Grid container spacing={2}>
+        <Grid container>
           {/* 그리드 컴포넌트 사이 넓이 */}
-          <Grid item xs={3}>
+          <Grid
+            item
+            xs={3}
+            style={
+              {
+                /*backgroundColor: "skyblue"*/
+              }
+            }
+          >
             {/* todo& 목표 공부시간 묶는 div */}
-            <div style={{ position: "absolute", displayPrint: "inline-block" }}>
+            <div
+              style={{
+                position: "absolute",
+                displayPrint: "inline-block",
+                marginLeft: "5%",
+                backgroundColor: "red",
+                paddingLeft: "20px",
+              }}
+            >
               {/* todo div */}
               <MyTodo />
             </div>
@@ -47,39 +72,88 @@ function StudyRoomMain() {
             </div>
           </Grid>
           <Grid
-            item
-            xs={8}
+            container
+            spacing={2}
+            xs={9}
             style={{
               position: "relative",
               displayPrint: "inline-block",
+              // backgroundColor: "red",
+              marginTop: "0%",
+              marginLeft: "0%",
             }}
           >
+            <Grid item xs={12}>
+              <Typography variant="h3" sx={{ fontSize: 20, color: "white" }}>
+                STUDY ROOM
+              </Typography>
+            </Grid>
             {/* StudyRoom */}
+            <Grid
+              item
+              xs={11}
+              style={{
+                position: "relative",
+                displayPrint: "inline-block",
+                // backgroundColor: "red",
+              }}
+            >
+              <ScrollMenu
+                // LeftArrow={LeftArrow}
+                // RightArrow={RightArrow}
+                onWheel={onWheel}
+              >
+                <RoomInfo />
+                {items.map(({ id }) => (
+                  <NSRoomCard key={id} />
+                ))}
+              </ScrollMenu>
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              style={{
+                position: "relative",
+              }}
+            >
+              <IconButton onClick={addItem} sx={{ color: "white", top: "43%" }}>
+                <AddCircleOutlineIcon />
+              </IconButton>
+            </Grid>
 
-            {/* <ScrollMenu
-              // LeftArrow={LeftArrow} //좌우 클릭으로 이동
-              // RightArrow={RightArrow}
-              onWheel={onWheel}
+            <Grid
+              item
+              xs={11}
+              style={{
+                position: "relative",
+                displayPrint: "inline-block",
+                // backgroundColor: "red",
+                marginTop: "3%",
+                marginBottom: "3%",
+              }}
             >
-              {items.map(({ id }) => (
-                <Cardd
-                  itemId={id} // NOTE: itemId is required for track items
-                  title={id}
-                  key={id}
-                />
-              ))}
-            </ScrollMenu> */}
-            {/* <button onClick={addItem}>Add item</button> */}
-            <ScrollMenu
-              // LeftArrow={LeftArrow}
-              // RightArrow={RightArrow}
-              onWheel={onWheel}
+              <ScrollMenu
+                // LeftArrow={LeftArrow}
+                // RightArrow={RightArrow}
+                onWheel={onWheel}
+              >
+                {items.map(({ id }) => (
+                  <NSRoomCard key={id} />
+                ))}
+              </ScrollMenu>
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              style={{
+                position: "relative",
+                displayPrint: "inline-block",
+              }}
             >
-              {items.map(({ id }) => (
-                <NSRoomCard key={id} />
-              ))}
-            </ScrollMenu>
-            <button onClick={addItem}>Add item</button>
+              <IconButton onClick={addItem} sx={{ color: "white", top: "43%" }}>
+                <AddCircleOutlineIcon />
+              </IconButton>
+            </Grid>
           </Grid>
         </Grid>
       </Box>

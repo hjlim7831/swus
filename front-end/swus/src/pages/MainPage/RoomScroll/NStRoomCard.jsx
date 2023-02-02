@@ -12,6 +12,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../image/sampleImage.jpg";
+import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 
 function NSRoomCard() {
   const [open, setOpen] = React.useState(false);
@@ -32,21 +33,62 @@ function NSRoomCard() {
 
   return (
     <>
-      <Card>
-        <CardMedia
+      <Card style={{ marginRight: 10 }}>
+        {/* <CardMedia
           component="img"
           width="200"
-          height="400"
+          height="300"
           image={logo}
           alt="studystudy"
           // objectfit="cover"  objectFit 하면 안됨
         />
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            NonStop 열람실 #{roomNumber}
-          </Typography>
+          <div style={{ width: 200 }}>
+            <Typography variant="body2" color="text.secondary">
+              NonStop 열람실 #{roomNumber}
+            </Typography>
+          </div>
+        </CardContent> */}
+        <div
+          style={{
+            width: 200,
+            height: 200,
+          }}
+        >
+          <img
+            style={{
+              width: 300,
+              height: 400,
+              objectFit: "cover",
+              /*filter: "brightness(40%)" */ opacity: 1,
+            }}
+            src={logo}
+          />
+        </div>
+        <CardContent>
+          <div style={{ width: 200 }}>
+            <Typography sx={{ fontSize: 20 }} color="white">
+              NonStop 열람실 #{roomNumber}
+            </Typography>
+          </div>
         </CardContent>
-        <Button onClick={handleToOpen}>입장하기</Button>
+        <div>
+          <p
+            style={{ color: "white", display: "inline-block", fontSize: "25px", marginLeft: "10%" }}
+          >
+            5/9
+          </p>
+          <Button
+            variant="contained"
+            onClick={handleToOpen}
+            sx={{ marginRight: "10%", alignItems: "right" }}
+          >
+            <startIcon>
+              <AdjustOutlinedIcon></AdjustOutlinedIcon>
+            </startIcon>
+            입장하기
+          </Button>
+        </div>
       </Card>
 
       <Dialog
