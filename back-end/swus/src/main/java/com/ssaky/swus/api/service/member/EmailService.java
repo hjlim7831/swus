@@ -42,9 +42,7 @@ public class EmailService {
                 message.setText(mailContent(member), true); //ture : html 형식 사용
 
                 // Mail에 이미지 삽입
-//                ClassPathResource resource = new ClassPathResource("static/img/swus_banner.png");
-//                message.addInline("img", resource.getFile());
-                message.addInline("swus_banner", new ClassPathResource("static/img/swus_banner.png"));
+                message.addInline("swus", new ClassPathResource("static/img/swus.png"));
 
             }
         };
@@ -71,7 +69,7 @@ public class EmailService {
         sb.append("</style>\n</head>");
         sb.append("<body style=\"font-family: 'Inter', sans-serif\">\n");
         sb.append("<div id=\"banner\">\n");
-        sb.append("<img src=\"cid:swus_banner\" width=\"150\"> </div><br>");
+        sb.append("<img src=\"cid:swus\" width=\"150\"> </div><br>");
         sb.append("<div>안녕하세요.");
         sb.append("<span style=\"font-weight:bold\">Study With Us</span>입니다.<br>");
         sb.append("요청하신 계정 정보는 다음과 같습니다.<br>");
