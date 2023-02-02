@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ssaky.swus.api.request.todo.TodoCreateReq;
 import com.ssaky.swus.db.entity.member.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,8 +20,16 @@ import static javax.persistence.FetchType.LAZY;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoPrivate {
 
-    public TodoPrivate(TodoCreateReq req){
+    public TodoPrivate(TodoCreateReq req, int memberId){
         this.content = req.getContent();
+        Member member = Member.builder().id(memberId).build();
+        this.member = member;
+        this.todoDone = "N";
+    }
+
+    @Builder
+    public TodoPrivate(int num){
+        this.num = num;
     }
 
     @Id

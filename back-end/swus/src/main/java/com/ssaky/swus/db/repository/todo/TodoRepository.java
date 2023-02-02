@@ -14,15 +14,28 @@ public class TodoRepository {
 
     private final EntityManager em;
 
-    public void save(TodoPrivate todoPrivate) {em.persist(todoPrivate); }
+    public int save(TodoPrivate todoPrivate) {
+        em.persist(todoPrivate);
+        return todoPrivate.getNum();
+    }
 
-
-
-//    public Optional<TodoPrivate> findOne(int num){ return em.find(TodoPrivate.class, num); }
+    public Optional<TodoPrivate> findOne(int num){
+        return Optional.ofNullable(em.find(TodoPrivate.class, num)); }
 
     public List<TodoPrivate> findList(int memberId){
         return em.createQuery("select t from TodoPrivate t where t.member.id = :memberId", TodoPrivate.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    /**
+     * num을 찾아 해당 row 제거
+     * @param todoPrivate
+     */
+    public void delete(int num){
+        TodoPrivate todoPrivate = TodoPrivate.builder().num(num).build();
+        em.remove(todoPrivate);
+    }
+
+
 }

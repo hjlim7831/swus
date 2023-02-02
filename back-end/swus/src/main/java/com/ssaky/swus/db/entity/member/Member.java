@@ -18,6 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @ToString
 public class Member {
 
+    @Builder
     public Member(int id) {
         this.id = id;
     }
