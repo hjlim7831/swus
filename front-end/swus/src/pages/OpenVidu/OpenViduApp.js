@@ -199,7 +199,6 @@ class OpenViduApp extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-    console.log(mySessionId + " " + this.state.roomType);
     return (
       <div className="container">
         {this.state.session === undefined ? (

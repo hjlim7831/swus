@@ -27,9 +27,7 @@ function StudyRoomMain() {
   const [items, setItems] = React.useState(getItems);
 
   const addItem = () => {
-    setItems((items) =>
-      items.concat({ id: getId(String(Math.random()).slice(2, 5)) })
-    );
+    setItems((items) => items.concat({ id: getId(String(Math.random()).slice(2, 5)) }));
   };
 
   return (
@@ -82,19 +80,6 @@ function StudyRoomMain() {
               ))}
             </ScrollMenu>
             <button onClick={addItem}>Add item</button>
-
-            {/* <div style={{ position: "relative", displayPrint: "inline-block" }}>
-          <Card style={{ minWidth: 100, maxWidth: 300 }}>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                50 to 10 열람실
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">입장하기</Button>
-            </CardActions>
-          </Card>
-        </div> */}
           </Grid>
         </Grid>
       </Box>
