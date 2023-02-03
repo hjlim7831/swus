@@ -69,16 +69,16 @@ function GroupPage() {
 
 	const navigate = useNavigate();
 	const [page, setPage] = useState(0)
-	const [rowsPerPage, setRowsPerPage] = useState(20)
+	// const [rowsPerPage, setRowsPerPage] = useState(20)
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
 	}
 
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 5))
-		setPage(0)
-	}
+	// const handleChangeRowsPerPage = (event) => {
+	// 	setRowsPerPage(parseInt(event.target.value, 5))
+	// 	setPage(0)
+	// }
 
 	return (
 		<>
@@ -109,7 +109,8 @@ function GroupPage() {
 						</TableHead>
 						<TableBody>
 							{articles
-							.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+							// .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+							.slice(page * 10, (page + 1) * 10)
 							.map((article) => (
 								<TableRow
 									key={article.index}
@@ -130,9 +131,10 @@ function GroupPage() {
 								<TablePagination
 									count={articles.length}
 									page={page}
-									rowsPerPage={rowsPerPage}
+									rowsPerPage={10}
+									rowsPerPageOptions={[]}
 									onPageChange={handleChangePage}
-									onChangeRowsPerPage={handleChangeRowsPerPage}
+									// onChangeRowsPerPage={handleChangeRowsPerPage}
 								/>
 							</TableRow>
 						</TableFooter>

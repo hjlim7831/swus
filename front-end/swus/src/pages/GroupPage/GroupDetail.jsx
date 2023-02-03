@@ -3,7 +3,7 @@ import { Container } from "@mui/system";
 import { Button, Grid, Divider, Typography, TextField } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useNavigate } from 'react-router-dom';
-import Modal from "./Modal";
+import Modal from "../../components/modals/Modal";
 
 
 function GroupDetail() {

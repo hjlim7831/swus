@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import {getStudyRoom} from '../../store/CheckedSlice';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import Modal from "./Modal";
+import Modal from "../../components/modals/Modal";
 import { styled, withTheme } from '@mui/material/styles';
 
 
