@@ -1,8 +1,10 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
-import questions from "./pwquestions.jsx";
+import { configureStore } from "@reduxjs/toolkit";
+import checkedSlice from "./CheckedSlice";
 
-export default configureStore({
-  reducer: {
-    questions: questions.reducer,
-  },
-});
+const store = configureStore({
+    reducer: {
+        checkDays: checkedSlice.reducer,
+    }
+})
+
+export default store;
