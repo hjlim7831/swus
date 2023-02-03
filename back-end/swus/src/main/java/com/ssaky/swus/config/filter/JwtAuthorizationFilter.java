@@ -2,12 +2,18 @@ package com.ssaky.swus.config.filter;
 
 import com.ssaky.swus.common.codes.AuthConstants;
 import com.ssaky.swus.common.utils.TokenUtils;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -68,20 +74,23 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 
                 // [2] Header 내에 토큰 추출
                 String token = TokenUtils.getTokenFromHeader(header);
-                
+
                 // [3] 추출한 토큰의 유효성 체크
                 if (TokenUtils.isValidToken(token)){
 
                     // [4] 토큰을 기반으로 사용자 아이디를 반환 받는 메서드
-                    String memberId = TokenUtils.getmemberIdFromToken(token);
-                    logger.debug("[+] memberId Check: "+memberId);
+                    Claims claims = TokenUtils.getClaimsFromToken(token);
 
                     // [5] 사용자 아이디의 존재여부 체크
-                    if (memberId != null && !memberId.equalsIgnoreCase("")){
-                        chain.doFilter(request, response);
-                    } else {
-//                        throw new BusinessExceptionHandler("TOKEN isn't memberId", ErrorCode.BUSINESS_EXCEPTION_ERROR);
-                    }
+                    TokenUtils.checkExistenceOfMemberId(claims);
+                    
+                    // SecurityContext에 Authentication 정보 넣기
+                    SecurityContext context = SecurityContextHolder.getContext();
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(claims, null);
+                    context.setAuthentication(authentication);
+//                    System.out.println("Principal:"+authentication.getPrincipal());
+
+                    chain.doFilter(request, response);
                     // 토큰이 유효하지 않은 경우
                 } else {
 //                    throw new BusinessExceptionHandler("TOKEN is invalid", ErrorCode.BUSINESS_EXCEPTION_ERROR);

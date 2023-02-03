@@ -49,7 +49,7 @@ public class MemberRepository {
     }
 
     public Optional<Member> findByEmailAndQuestion(CheckPwdReq form) {
-        List<Member> resultList = em.createQuery("select m from Member m where m.email = :email and m.question.id = :questionId and m.answer = :answer", Member.class)
+        List<Member> resultList = em.createQuery("select m from Member m where m.email = :email and m.questionId = :questionId and m.answer = :answer", Member.class)
                 .setParameter("email", form.getEmail())
                 .setParameter("questionId", form.getQuestionId())
                 .setParameter("answer", form.getAnswer())
