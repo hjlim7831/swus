@@ -1,5 +1,6 @@
 package com.ssaky.swus.db.repository.member;
 
+import com.ssaky.swus.api.request.auth.CheckPwdReq;
 import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -47,4 +48,16 @@ public class MemberRepository {
         }
     }
 
+    public Optional<Member> findByEmailAndQuestion(CheckPwdReq form) {
+        List<Member> resultList = em.createQuery("select m from Member m where m.email = :email and m.questionId = :questionId and m.answer = :answer", Member.class)
+                .setParameter("email", form.getEmail())
+                .setParameter("questionId", form.getQuestionId())
+                .setParameter("answer", form.getAnswer())
+                .getResultList();
+        if (resultList.isEmpty()){
+            return Optional.empty();
+        }else{
+            return Optional.of(resultList.get(0));
+        }
+    }
 }

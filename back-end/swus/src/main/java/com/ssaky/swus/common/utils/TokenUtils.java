@@ -1,5 +1,8 @@
 package com.ssaky.swus.common.utils;
 
+import com.ssaky.swus.common.codes.AuthConstants;
+import com.ssaky.swus.common.error.exception.BusinessException;
+import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.db.entity.member.Member;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +24,7 @@ public class TokenUtils {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())
                 .setClaims(createClaims(member))
-                .setSubject(String.valueOf(member.getId()))
+                .setSubject(String.valueOf(member.getEmail()))
                 .signWith(SignatureAlgorithm.HS256, createSignature())
                 .setExpiration(createExpiredDate());
         return builder.compact();
@@ -37,7 +40,7 @@ public class TokenUtils {
 
     public static boolean isValidToken(String token) {
         try {
-            Claims claims = getClaimsFormToken(token);
+            Claims claims = getClaimsFromToken(token);
 
             log.info("expireTime :" + claims.getExpiration());
             log.info("email :" + claims.get("email"));
@@ -62,7 +65,11 @@ public class TokenUtils {
      * @return String
      */
     public static String getTokenFromHeader(String header){
-        return header.split(" ")[1];
+        if (header != null && header.startsWith(AuthConstants.TOKEN_TYPE)){
+            return header.split(" ")[1];
+        }else{
+            throw new BusinessException("TOKEN TYPE doesn't match", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+        }
     }
 
     /**
@@ -71,8 +78,8 @@ public class TokenUtils {
      */
     public static Date createExpiredDate(){
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.HOUR, 8); // 8시간
-        // c.add(Calendar.DATE, 1); // 1일
+//        c.add(Calendar.HOUR, 8); // 8시간
+         c.add(Calendar.DATE, 1); // 1일
         return c.getTime();
     }
 
@@ -96,10 +103,14 @@ public class TokenUtils {
      */
     private static Map<String, Object> createClaims(Member member){
         Map<String, Object> claims = new HashMap<>();
+        claims.put("email", member.getEmail());
+        claims.put("nickname", member.getNickname());
+        claims.put("memberId", member.getId());
 
         log.info("email : "+ member.getEmail());
         log.info("nickname : "+ member.getNickname());
-        
+        claims.put("memberId", member.getId());
+
         return claims;
     }
 
@@ -117,19 +128,26 @@ public class TokenUtils {
      * @param token : 토큰
      * @return Claims : Claims
      */
-    private static Claims getClaimsFormToken(String token){
+    public static Claims getClaimsFromToken(String token){
         return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecretKey))
                 .parseClaimsJws(token).getBody();
     }
 
     /**
      * 토큰을 기반으로 사용자 정보를 반환받는 메서드
-     * @param token : 토큰
+     * @param claims : claims
      * @return String : 사용자 아이디
      */
-    public static String getmemberIdFromToken(String token){
-        Claims claims = getClaimsFormToken(token);
-        return claims.get("memberId").toString();
+    public static int getmemberIdFromToken(Claims claims){
+        return Integer.parseInt(claims.get("memberId").toString());
     }
+
+    public static void checkExistenceOfMemberId(Claims claims){
+        String memberId = claims.get("memberId").toString();
+        if (memberId == null || memberId.equalsIgnoreCase("")){
+            throw new BusinessException("TOKEN isn't memberId", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+        }
+    }
+
 
 }

@@ -1,10 +1,9 @@
 package com.ssaky.swus.db.entity.member;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
-import com.ssaky.swus.db.entity.group.Board;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+//import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.db.entity.todo.TodoPrivate;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -19,6 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @ToString
 public class Member {
 
+    @Builder
     public Member(int id) {
         this.id = id;
     }
@@ -31,7 +31,7 @@ public class Member {
         this.questionId = form.getQuestionId();
 
     }
-
+    @Builder
     public Member(String email, String password, String nickname, int questionId, String answer){
         this.email = email;
         this.password = password;
@@ -56,6 +56,10 @@ public class Member {
 
     private String token;
 
-    @OneToMany(mappedBy = "member", fetch= LAZY)
-    private List<Board> boards = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", fetch= LAZY)
+//    private List<Board> boards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch=LAZY)
+    private List<TodoPrivate> todoPrivates = new ArrayList<>();
+
 }
