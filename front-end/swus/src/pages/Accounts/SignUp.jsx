@@ -37,8 +37,8 @@ const theme = createTheme();
 
 export default function SignUpSide() {
   // 비밀번호 찾기용 질문 -> store에서 가져오기
-  const favorite_questions = useSelector((state) => state.questions )
-  
+  const favorite_questions = useSelector((state) => state.questions);
+
   // 입력데이터 저장 변수
   const [inputData, setInputData] = useState({
     email: "",

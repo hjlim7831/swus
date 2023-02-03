@@ -19,7 +19,6 @@ import logo from "./../../logo.png";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-
 // function Copyright(props) {
 //   return (
 //     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -37,7 +36,7 @@ const theme = createTheme();
 
 export default function FindPassword() {
   // 비밀번호 찾기용 질문 -> store에서 가져오기
-  const favorite_questions = useSelector((state) => state.questions )
+  const favorite_questions = useSelector((state) => state.questions);
 
   const [inputData, setInputData] = useState({
     email: "",

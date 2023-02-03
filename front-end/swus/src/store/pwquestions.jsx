@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const questions = createSlice({
   name: "questions",
-  initialState : [
+  initialState: [
     {
       value: 1,
       label: "기억에 남는 추억의 장소는?",
@@ -27,7 +27,7 @@ const questions = createSlice({
       value: 6,
       label: "다녔던 초등학교 이름은?",
     },
-  ]
-})
+  ],
+});
 
 export default questions;
