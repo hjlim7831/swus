@@ -1,24 +1,19 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MyPageMain from "./pages/MyPageMain/MyPageMain";
-import MainPage from "./pages/MainPage/MainPage";
-import NSRoom from "./pages/StudyCam/NSRoom";
-import OpenViduApp from "./pages/OpenVidu/OpenViduApp";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  // Link
+} from "react-router-dom";
+import NavBar from "./components/NavBar/NavBar";
+import SignInSide from "./pages/Accounts/LogIn";
+import SignUpSide from "./pages/Accounts/SignUp";
+import FindPassword from "./pages/Accounts/FindPassword";
+import BasicModalDialog from "./pages/Accounts/UserModal";
+import Lounge from "./pages/Lounge/SideBar";
+import GroupPage from "./pages/GroupPage/GroupPage";
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          {/* <Route path="/" element={<MyPageMain />} /> */}
-          <Route path="/" element={<MainPage />} />
-          <Route path="/nsroom" element={<NSRoom />} />
-          {/* <Route path="/" element={<OpenViduApp />} /> */}
-          {/* <Route path="/openvidu" element={<OpenViduApp />} /> */}
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+  return <></>;
 }
 
 export default App;
