@@ -11,9 +11,18 @@ import FindPassword from "./pages/Accounts/FindPassword";
 import BasicModalDialog from "./pages/Accounts/UserModal";
 import Lounge from "./pages/Lounge/SideBar";
 import GroupPage from "./pages/GroupPage/GroupPage";
+import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<StudyRoomMain />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;

@@ -20,6 +20,7 @@ import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
+// const APPLICATION_SERVER_URL = "http://localhost:5000/";
 
 class OpenViduApp extends Component {
   constructor(props) {
