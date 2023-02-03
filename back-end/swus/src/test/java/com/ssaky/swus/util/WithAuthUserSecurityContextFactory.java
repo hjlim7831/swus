@@ -6,7 +6,6 @@ import com.ssaky.swus.common.codes.AuthConstants;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

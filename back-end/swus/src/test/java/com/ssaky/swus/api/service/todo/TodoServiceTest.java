@@ -32,6 +32,7 @@ class TodoServiceTest {
     @Autowired MemberService memberService;
 
     static int memberId;
+    static int memberId2;
 
     @BeforeEach
     void beforeEach(){
@@ -42,6 +43,13 @@ class TodoServiceTest {
                 .nickname("상상").questionId(2).answer("보광초").build();
 
         memberId = memberService.join(signUpReq);
+
+        String email2 = "ssafy@gmail.com";
+        String password2 = "ssafy";
+        SignUpReq signUpReq2 = SignUpReq.builder().email(email2).password(password2)
+                .nickname("싸피").questionId(2).answer("싸피초").build();
+
+        memberId2 = memberService.join(signUpReq2);
     }
 
     @Test
@@ -102,10 +110,14 @@ class TodoServiceTest {
         TodoCreateReq todoCreateReq2 = new TodoCreateReq(content2);
         TodoCreateReq todoCreateReq3 = new TodoCreateReq(content3);
 
+        String content4 = "인강 1개 듣기";
+        TodoCreateReq todoCreateReq4 = new TodoCreateReq(content4);
+
         // when
         int num1 = todoService.save(todoCreateReq1, memberId);
         int num2 = todoService.save(todoCreateReq2, memberId);
         int num3 = todoService.save(todoCreateReq3, memberId);
+        int num4 = todoService.save(todoCreateReq4, memberId2);
 
         TodoUpdateReq todoUpdateReq = TodoUpdateReq.builder()
                 .content(content1).todoDone("Y").build();
@@ -114,6 +126,7 @@ class TodoServiceTest {
         // then
         List<TodoGetResp> list = todoService.getList(memberId);
         System.out.println(list);
+        assertEquals(3, list.size());
         assertEquals(content1, list.get(0).getContent());
         assertEquals(content2, list.get(1).getContent());
         assertEquals(content3, list.get(2).getContent());
@@ -121,6 +134,10 @@ class TodoServiceTest {
         assertEquals(num2, list.get(1).getNum());
         assertEquals(num3, list.get(2).getNum());
         assertEquals("Y", list.get(0).getTodoDone());
+
+        List<TodoGetResp> list2 = todoService.getList(memberId2);
+        assertEquals(1, list2.size());
+        assertEquals(content4, list2.get(0).getContent());
 
     }
 
