@@ -113,6 +113,7 @@ class TodoServiceTest {
 
         // then
         List<TodoGetResp> list = todoService.getList(memberId);
+        System.out.println(list);
         assertEquals(content1, list.get(0).getContent());
         assertEquals(content2, list.get(1).getContent());
         assertEquals(content3, list.get(2).getContent());

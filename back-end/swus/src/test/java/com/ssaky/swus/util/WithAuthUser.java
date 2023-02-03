@@ -8,6 +8,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @WithSecurityContext(factory = WithAuthUserSecurityContextFactory.class)
 public @interface WithAuthUser {
-    int memberId();
+
     String email();
 }

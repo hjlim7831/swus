@@ -58,8 +58,6 @@ public class TodoController {
         int memberId = TokenUtils.getmemberIdFromToken(claims);
         todoService.delete(num, memberId);
         resultMap.put("msg", "success_delete_todo");
-
         return ResponseEntity.ok(resultMap);
     }
-
 }
