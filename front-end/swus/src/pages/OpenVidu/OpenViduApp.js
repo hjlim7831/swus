@@ -5,6 +5,20 @@ import React, { Component } from "react";
 import "./App.css";
 import UserVideoComponent from "./UserVideoComponent";
 
+//열람실 내부 컴포넌트용
+import { Box } from "@mui/system";
+import Grid from "@mui/material/Grid";
+import Clock from "../StudyCam/Clock";
+import MyTodo from "../MyPageReport/MyTodo";
+import { Button } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
+import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
 
 class OpenViduApp extends Component {
@@ -147,7 +161,9 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter((device) => device.kind === "videoinput");
+              var videoDevices = devices.filter(
+                (device) => device.kind === "videoinput"
+              );
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -199,73 +215,132 @@ class OpenViduApp extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-    console.log(mySessionId + " " + this.state.roomType);
+    console.log(mySessionId);
     return (
-      <div className="container">
-        {this.state.session === undefined ? (
-          <div id="join">
-            <div id="join-dialog" className="jumbotron vertical-center">
-              <form className="form-group" onSubmit={this.joinSession}>
-                <p>
-                  <label>Participant: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-
-                <p className="text-center">
-                  <input
-                    className="btn btn-lg btn-success"
-                    name="commit"
-                    type="submit"
-                    value="JOIN"
-                  />
-                </p>
-              </form>
-            </div>
-          </div>
-        ) : null}
-
-        {this.state.session !== undefined ? (
-          <div id="session">
-            <div id="session-header">
-              <h1 id="session-title">{mySessionId}</h1>
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="Leave session"
-              />
-            </div>
-
-            <div id="video-container" className="col-md-6">
-              {this.state.publisher !== undefined ? (
+      <>
+        <Box sx={{ flexGrow: 1, maxHeight: "500px" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={2.2} sx={{ border: 1 }}>
+              <Grid item xs={11} sx={{ border: 1, margin: "auto" }}>
+                {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
+                  <Stack direction="row">
+                    {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
+                    <IconButton aria-label="record" color="primary">
+                      <PlayCircleOutlineIcon />
+                    </IconButton>
+                    <IconButton color="primary" aria-label="add an alarm">
+                      <MusicNoteOutlinedIcon />
+                    </IconButton>
+                    <IconButton color="primary" aria-label="quit">
+                      <HighlightOffIcon />
+                    </IconButton>
+                    <IconButton
+                      color="primary"
+                      aria-label="quit"
+                      onClick={() => {
+                        this.leaveSession(); //연결 끊어주고
+                        //열람실 메인으로 이동
+                        <Navigate to="/" replage={true} />;
+                        <Link to="/"></Link>;
+                      }}
+                    >
+                      <HighlightOffIcon />
+                    </IconButton>
+                  </Stack> //면 채팅방 버튼 없는 상위 버튼
+                ) : (
+                  <Stack direction="row">
+                    {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
+                    <IconButton aria-label="record" color="primary">
+                      <PlayCircleOutlineIcon />
+                    </IconButton>
+                    <IconButton color="primary" aria-label="add an alarm">
+                      <MusicNoteOutlinedIcon />
+                    </IconButton>
+                    <IconButton color="primary" aria-label="quit">
+                      <HighlightOffIcon />
+                    </IconButton>
+                  </Stack> //채팅방용 상위 버튼
+                )}
+                <h2>{mySessionId}</h2>
+                <Clock />
                 <div
-                  className="stream-container col-md-6 col-xs-6"
-                  onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                  style={{
+                    backgroundColor: "skyblue",
+                    height: "100%",
+                  }}
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <MyTodo />
                 </div>
-              ) : null}
-              {this.state.subscribers.map((sub, i) => (
-                <div
-                  key={i}
-                  className="stream-container col-md-6 col-xs-6"
-                  onClick={() => this.handleMainVideoStream(sub)}
-                >
-                  <UserVideoComponent streamManager={sub} />
+                <div>
+                  <Button variant="outlined" fullWidth sx={{ width: "auto" }}>
+                    휴게실 바로가기
+                  </Button>
                 </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
-      </div>
+              </Grid>
+            </Grid>
+            <Grid item xs={9.8} sx={{ border: 1 }}>
+              <div className="container">
+                {this.state.session === undefined ? (
+                  <div id="join">
+                    <div id="join-dialog" className="jumbotron vertical-center">
+                      <form className="form-group" onSubmit={this.joinSession}>
+                        <p>
+                          <label>Participant: </label>
+                          <input
+                            className="form-control"
+                            type="text"
+                            id="userName"
+                            value={myUserName}
+                            onChange={this.handleChangeUserName}
+                            required
+                          />
+                        </p>
+
+                        <p className="text-center">
+                          <input
+                            className="btn btn-lg btn-success"
+                            name="commit"
+                            type="submit"
+                            value="JOIN"
+                          />
+                        </p>
+                      </form>
+                    </div>
+                  </div>
+                ) : null}
+
+                {this.state.session !== undefined ? (
+                  <div id="session">
+                    <div id="video-container" className="col-md-6">
+                      {this.state.publisher !== undefined ? (
+                        <div
+                          className="stream-container col-md-6 col-xs-6"
+                          onClick={() =>
+                            this.handleMainVideoStream(this.state.publisher)
+                          }
+                        >
+                          <UserVideoComponent
+                            streamManager={this.state.publisher}
+                          />
+                        </div>
+                      ) : null}
+                      {this.state.subscribers.map((sub, i) => (
+                        <div
+                          key={i}
+                          className="stream-container col-md-6 col-xs-6"
+                          onClick={() => this.handleMainVideoStream(sub)}
+                        >
+                          <UserVideoComponent streamManager={sub} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </Grid>
+          </Grid>
+        </Box>
+      </>
     );
   }
 

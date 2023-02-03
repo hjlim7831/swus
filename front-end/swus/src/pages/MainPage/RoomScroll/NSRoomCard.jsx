@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../../image/sampleImage.jpg";
 import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 
-function FtoTRoom(props) {
+function NSRoomCard(props) {
   const [open, setOpen] = React.useState(false);
   const [sessionName, setsessionName] = useState(props.sessionName);
   console.log();
@@ -66,7 +66,7 @@ function FtoTRoom(props) {
         <CardContent>
           <div style={{ width: 200 }}>
             <Typography sx={{ fontSize: 20 }} color="white">
-              50 to 10 열람실 #{sessionName}
+              NonStop 열람실 #{sessionName}
             </Typography>
           </div>
         </CardContent>
@@ -112,4 +112,4 @@ function FtoTRoom(props) {
   );
 }
 
-export default FtoTRoom;
+export default NSRoomCard;
