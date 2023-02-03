@@ -18,10 +18,10 @@ public class MemberDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
-        Optional<Member> user = memberService.findOneByEmail(email);
+        Optional<Member> member = memberService.findOneByEmail(email);
 
-        if (user.isPresent()){
-            return new MemberDetails(user.get());
+        if (member.isPresent()){
+            return new MemberDetails(member.get());
         }else {
             throw new UsernameNotFoundException(email);
         }

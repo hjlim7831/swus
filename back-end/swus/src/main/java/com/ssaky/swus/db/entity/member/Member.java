@@ -29,7 +29,6 @@ public class Member {
         this.nickname = form.getNickname();
         this.answer = form.getAnswer();
         this.questionId = form.getQuestionId();
-
     }
 
     @Builder

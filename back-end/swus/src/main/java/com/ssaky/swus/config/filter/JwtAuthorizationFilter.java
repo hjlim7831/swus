@@ -90,7 +90,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     context.setAuthentication(authentication);
 //                    System.out.println("Principal:"+authentication.getPrincipal());
 
-
                     chain.doFilter(request, response);
                     // 토큰이 유효하지 않은 경우
                 } else {
