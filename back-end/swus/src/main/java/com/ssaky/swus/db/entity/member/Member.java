@@ -29,8 +29,21 @@ public class Member {
         this.nickname = form.getNickname();
         this.answer = form.getAnswer();
         this.questionId = form.getQuestionId();
-
     }
+
+    @Builder
+    public Member(String email, int id){
+        this.email = email;
+        this.id = id;
+    }
+
+    @Builder
+    public Member(String email, String password, String nickname){
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
+
     @Builder
     public Member(String email, String password, String nickname, int questionId, String answer){
         this.email = email;

@@ -104,11 +104,9 @@ public class TokenUtils {
     private static Map<String, Object> createClaims(Member member){
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", member.getEmail());
-        claims.put("nickname", member.getNickname());
         claims.put("memberId", member.getId());
 
         log.info("email : "+ member.getEmail());
-        log.info("nickname : "+ member.getNickname());
         claims.put("memberId", member.getId());
 
         return claims;
