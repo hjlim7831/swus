@@ -72,24 +72,6 @@ export default function MiniDrawer() {
             5. 동기부여 영상은 다양한 영상이 랜덤으로 제공됩니다. {<br />}
             6. 실시간 채팅에서는 매너를 지켜주세요.
           </Typography>
-
-          {/* <Typography>1. 휴게실은 최대 30분 이용 가능합니다.</Typography>
-
-          <Typography>
-            2. 이용시간 30분이 지나면 열람실로 자동이동됩니다.
-          </Typography>
-
-          <Typography>3. 휴게실 재입장은 한시간 이후에 가능합니다.</Typography>
-
-          <Typography>
-            4. 스트레칭은 부위별로 맞춤 동영상이 제공됩니다.
-          </Typography>
-
-          <Typography>
-            5. 동기부여 영상은 다양한 영상이 랜덤으로 제공됩니다.
-          </Typography>
-
-          <Typography>6. 실시간 채팅에서는 매너를 지켜주세요.</Typography> */}
         </Box>
 
         <Button
