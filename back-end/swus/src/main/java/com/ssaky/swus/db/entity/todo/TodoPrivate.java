@@ -22,7 +22,6 @@ import static javax.persistence.FetchType.LAZY;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoPrivate {
 
-
     public TodoPrivate(TodoCreateReq req, int memberId){
         this.content = req.getContent();
         Member member = Member.builder().id(memberId).build();
