@@ -2,6 +2,7 @@ package com.ssaky.swus.db.entity.member;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
 //import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.db.entity.todo.JandiTodo;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
 import lombok.*;
 
@@ -74,5 +75,8 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch=LAZY)
     private List<TodoPrivate> todoPrivates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch=LAZY)
+    private List<JandiTodo> jandiTodos = new ArrayList<>();
 
 }

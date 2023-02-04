@@ -2,6 +2,7 @@ package com.ssaky.swus.api.controller.todo;
 
 import com.ssaky.swus.api.request.todo.TodoCreateReq;
 import com.ssaky.swus.api.request.todo.TodoUpdateReq;
+import com.ssaky.swus.api.response.auth.todo.TodoJandiResp;
 import com.ssaky.swus.api.service.todo.TodoService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
@@ -59,5 +60,13 @@ public class TodoController {
         todoService.delete(num, memberId);
         resultMap.put("msg", "success_delete_todo");
         return ResponseEntity.ok(resultMap);
+    }
+
+    @GetMapping("/jandi")
+    public ResponseEntity<?> getTodoJandi(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        return ResponseEntity.ok(todoService.getJandiRecords(memberId));
+
     }
 }

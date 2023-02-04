@@ -50,7 +50,7 @@ public class TodoPrivate {
     private String content;
 
     @JsonIgnore
-    @ManyToOne(fetch= LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

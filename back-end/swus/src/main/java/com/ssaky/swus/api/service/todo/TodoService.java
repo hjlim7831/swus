@@ -3,16 +3,24 @@ package com.ssaky.swus.api.service.todo;
 import com.ssaky.swus.api.request.todo.TodoCreateReq;
 import com.ssaky.swus.api.request.todo.TodoUpdateReq;
 import com.ssaky.swus.api.response.auth.todo.TodoGetResp;
+import com.ssaky.swus.api.response.auth.todo.TodoJandiResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
+import com.ssaky.swus.db.entity.todo.JandiTodo;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
+import com.ssaky.swus.db.repository.todo.JandiTodoRepository;
+import com.ssaky.swus.db.repository.todo.MemberTodoCount;
 import com.ssaky.swus.db.repository.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 
 @Service
@@ -22,6 +30,7 @@ import java.util.Optional;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+    private final JandiTodoRepository jandiTodoRepository;
 
     @Transactional
     public int save(TodoCreateReq req, int memberId){
@@ -52,6 +61,68 @@ public class TodoService {
             throw new InvalidValueException("invalid num");
         }
 
+    }
+
+    /**
+     * 6시 기준 Todo 초기화, Jandi 기록 입력
+     */
+    @Scheduled(cron = "0 0 06 * * ?", zone = "Asia/Seoul")
+    @Transactional
+    protected void dailyUpdate() {
+        // 1. 멤버별로 Todo가 Y인 개수 구해오기
+        List<MemberTodoCount> todoCountList = todoRepository.findTodoCountGroupByMember();
+
+        // 2. todoDone이 Y인 애들 모두 날리기
+        todoRepository.deleteAllDoneInQuery();
+
+        // 3. Jandi 기록 입력
+        saveAllDailyTodoCount(todoCountList);
+
+    }
+
+    /**
+     * 사용자의 todo 잔디 기록 저장하기
+     * @param todoCountList
+     */
+    @Transactional
+    protected void saveAllDailyTodoCount(List<MemberTodoCount> todoCountList) {
+        Date yesterday = getYesterday();
+        for(MemberTodoCount m: todoCountList) {
+            JandiTodo jandiTodo = new JandiTodo(yesterday, m);
+            jandiTodoRepository.save(jandiTodo);
+        }
+    }
+
+    /**
+     * 어제 날짜 가져오기
+     * @return java.sql.Date
+     */
+    private Date getYesterday(){
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA);
+        final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-mm-dd");
+        System.out.println("Today: "+SDF.format(calendar.getTime()));
+
+        calendar.add(Calendar.DATE, -1);
+
+        String yesterdayStr = SDF.format(calendar.getTime());
+        System.out.println("Yesterday: "+yesterdayStr);
+
+        return Date.valueOf(yesterdayStr);
+    }
+
+    /**
+     * 올해 잔디 결과 불러오기
+     * @param memberId
+     * @return
+     */
+    public TodoJandiResp getJandiRecords(int memberId) {
+        
+        // 서울 ZoneId로 가져오기
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        // 올해 년도 가져오기
+        int year = now.getYear();
+
+        return null;
     }
 
 }
