@@ -6,8 +6,6 @@ import GroupDetail from './pages/GroupPage/GroupDetail';
 import GroupDetailUpdate from './pages/GroupPage/GroupDetailUpdate';
 // import Nav from "./components/Nav";
 import { Box } from '@mui/material';
-import { Provider } from 'react-redux';
-import store from './store/Store';
 import { 
   BrowserRouter,
   Routes,
@@ -15,27 +13,45 @@ import {
 } from 'react-router-dom';
 
 function App() {
-
   return (
     <>
-      <Provider store={store}>
-        {/* <Nav></Nav> */}
-          <Box style={{ display: "flex", justifyContent: "flex-start", margin: 0 }}>
-            <BrowserRouter>
-              <div style={{ border: "1px red solid", minHeight: "500px", minWidth: "180px", marginRight: "30px" }}></div>
-              <Box style={{ justyifyItems: "center"}}>
-                <Routes>
-                  <Route exact path="/" element={<GroupPage/>} />
-                  <Route exact path="/group/create" element={<CreateArticle />} />
-                  <Route exact path="/group/detail" element={<ArticleDetail />} />
-                  <Route exact path="/group/update" element={<UpdateArticle />} />
-                  <Route exact path="/detail" element={<GroupDetail />} />
-                  <Route exact path="/detail/update" element={<GroupDetailUpdate />}/>
-                </Routes>
-              </Box>
-            </BrowserRouter>
-          </Box>
-      </Provider>
+      <BrowserRouter>
+        <Routes>
+          {/* landingPage */}
+          {/* <Route exact path="/" /> */}
+          {/* 공용 열람실 관련 주소 */}
+          <Route exact path="/studyroom">
+            <Route path="" />
+            <Route path=":sessionName" />
+          </Route>
+          {/* 마이 페이지 관련 주소 */}
+          <Route exact path="/mypage">
+            <Route path="profile/:userId" />
+            <Route path="group/:groupId" element={<GroupDetail/>}/>
+            <Route path="group/:groupId/update" element={<GroupDetailUpdate/>}/>
+            <Route path="myreport/:userId" />
+          </Route>
+          {/* 그룹 페이지(게시판) 관련 주소 */}
+          <Route exact path="/group">
+            <Route path="mystudy/:userId"/>
+            <Route path="board" element={<GroupPage/>}/>
+            <Route path="board/:boardId" element={<ArticleDetail />}/>
+            <Route path="board/:boardId/update" element={<UpdateArticle />}/>
+            <Route path="board/create" element={<CreateArticle />}/>
+            <Route path="studyroom/:sessionName"/>
+          </Route>
+          {/* 휴게실 */}
+          <Route exact path="/lounge" />
+          {/* 회원 정보 관련 주소 */}
+          <Route exact path="/account">
+            <Route path="login" />
+            <Route path="signup" />
+            <Route path="findpassword" />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
-  );
+  )
 }
+
+export default App;

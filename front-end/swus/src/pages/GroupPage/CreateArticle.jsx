@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Checkbox, FormControlLabel, TextField, Divider, Grid } from '@mui/material';
-import { MenuItem, Select, Button } from '@mui/material';
+import { Checkbox, FormControlLabel, TextField, Divider, Grid, OutlinedInput } from '@mui/material';
+import { MenuItem, Select, Button, InputLabel, FormControl } from '@mui/material';
 import { Container } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import checkedSlice from '../../store/CheckedSlice';
@@ -47,10 +47,11 @@ function CreateArticleForm() {
 			setInputs({...inputs, [name] : value})
 		}
 	}
+	
+	const blank = /^\s+|\s+$/g;
 
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
-		const blank = /^\s+|\s+$/g;
 		let selectedDays = "";
 
 		for (let i = 0; i < inputs.days.length; i++)	{
@@ -76,8 +77,8 @@ function CreateArticleForm() {
 		}	else if (!selectedDays.replace(/0/gi, ""))	{
 			alert("요일을 선택해주세요.")
 			return
-		}	else if (inputs.recruitmentNumber === 0) {
-			alert("모집 인원을 정해주세요.")
+		}	else if (inputs.recruitmentNumber < 2) {
+			alert("2명 이상의 모집인원을 선택해주세요.")
 			return
 		}	else if (Number(inputs.startTime.replace(/:/gi, "") > Number(inputs.finishTime.replace(/:/gi, "")))) {
 			alert("시작 시간이 종료 시간보다 늦습니다!")
@@ -100,7 +101,7 @@ function CreateArticleForm() {
 		}
 		dispatch(checkedSlice.actions.writeArticle(inputs))
 		dispatch(createStudyRoom(payload))
-		navigate("/group/detail");
+		navigate(`/group/board/:boardId`);
 	}
 
 
@@ -113,11 +114,11 @@ function CreateArticleForm() {
 							<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
 								게시글 작성
 							</p>
-							<div style={{ display: "flex", alignContent: "center"}}>
+							<div style={{ display: "flex", alignItems: "center", justifyItems: "space-between"}}>
 								<Button 
 									type="submit" 
 									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3 }}
+									sx={{ backgroundColor: "green", m: 3, height: "40px" }}
 									size="small"
 									disabled={!true}
 									onClick={onHandleSubmit}>글 작성</Button>
@@ -126,16 +127,19 @@ function CreateArticleForm() {
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
-								<p>유형 </p>
+								<p>유형 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
 								<Select
+									label="유형"
 									name="category"
 									value={inputs.category}
 									onChange={onHandleInput}
 									size="small"
+									error={!inputs.category.replace(blank, "")}
 								>
+									{inputs.category ? '' : <MenuItem value=""> -- </MenuItem>}
 									<MenuItem value="study">스터디</MenuItem>
 									<MenuItem value="mate">메이트</MenuItem>
 								</Select>
@@ -144,19 +148,22 @@ function CreateArticleForm() {
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
-								<p>제목 </p>
+								<p>제목 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
-							<div style={{ display: "flex", alignItems: "center"}}>
+							<div style={{ display: "flex", alignItems: "center" }}>
 								<TextField 
 									id='title' 
 									name='title' 
+									label="title"
 									value={inputs.title}
-									placeholder="title" 
-									variant='standard' 
+									variant='outlined' 
 									size="small" 
 									fullWidth
 									onChange={onHandleInput}
+									margin="dense"
+									placeholder="제목을 입력해주세요."
+									error={!inputs.title.replace(blank, "")}
 								/>
 							</div>
 						</Grid>
@@ -176,8 +183,9 @@ function CreateArticleForm() {
 									}}
 									onChange={onHandleInput}
 									size="small"
+									style={{ marginInline: 5 }}
 								/>
-								-
+								~
 								<TextField
 									name="endAt"
 									value={inputs.endAt}
@@ -187,13 +195,14 @@ function CreateArticleForm() {
 									}}
 									onChange={onHandleInput}
 									size="small"
+									style={{ marginInline: 5 }}
 								/>
 							</div>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 								<Grid item xs={2}>
-									<p>스터디 시간 </p>
+									<p>스터디 시간 <span style={{ color: "red" }}>*</span></p>
 								</Grid>
 								<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 								<div style={{ display: "flex", alignItems: "center"}}>
@@ -206,8 +215,9 @@ function CreateArticleForm() {
 										}}
 										onChange={onHandleInput}
 										size="small"
+										style={{ marginInline: 5 }}
 									/>
-									-
+									~
 									<TextField
 										name="finishTime"
 										value={inputs.finishTime}
@@ -217,13 +227,14 @@ function CreateArticleForm() {
 										}}
 										onChange={onHandleInput}
 										size="small"
+										style={{ marginInline: 5 }}
 									/>
 								</div>
 							</Grid>
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
-								<p>스터디 요일</p>
+								<p>스터디 요일 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
@@ -274,7 +285,7 @@ function CreateArticleForm() {
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
-								<p>모집인원 </p>
+								<p>모집인원 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
@@ -283,6 +294,8 @@ function CreateArticleForm() {
 									value={inputs.recruitmentNumber}
 									onChange={onHandleInput}
 									size="small"
+
+									error={inputs.recruitmentNumber < 2}
 								>
 									<MenuItem value={0}>0</MenuItem>
 									<MenuItem value="1">1</MenuItem>
@@ -302,14 +315,18 @@ function CreateArticleForm() {
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<Grid item xs={9}>
 								<TextField  
-									variant='standard' 
+									id="content"
+									label="상세 내용"
+									variant='outlined' 
 									name="content"
 									value={inputs.content}
 									sx={{ ml: 1, mt: "14px"}} 
 									size="small"
+									margin="normal"
 									multiline
 									rows={3}
 									fullWidth
+									placeholder="세부 진행 계획에 대해 작성해주세요."
 									onChange={onHandleInput}
 								/>
 							</Grid>

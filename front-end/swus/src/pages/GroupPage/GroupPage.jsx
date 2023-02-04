@@ -92,7 +92,7 @@ function GroupPage() {
 						variant='contained' 
 						sx={{ backgroundColor: "green", m: 3, height: "40px" }}
 						size="small"
-						onClick={() => {navigate("/group/create")}}>글 작성</Button>
+						onClick={() => {navigate("/group/board/create")}}>글 작성</Button>
 				</Grid>
 
 				<TableContainer component={Paper}>

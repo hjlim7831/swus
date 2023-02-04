@@ -80,7 +80,7 @@ function ArticleDetail() {
 							<EditOutlinedIcon
 								variant="contained"
 								sx={{ fontSize: 30, color: "blue" }}
-								onClick={() => {navigate("/group/update")}} />
+								onClick={() => {navigate("/group/board/:boardId/update")}} />
 						</p>
 						<p style={{ paddingLeft: 10, paddingTop: 5}}>
 							<DeleteOutlinedIcon
@@ -103,7 +103,7 @@ function ArticleDetail() {
 							sx={{ height: "40px" }} 
 							onClick={() => {
 								dispatch(getStudyRoom())							
-								navigate("/");
+								navigate("/group/board");
 								}}>목록 보기</ColoredButton>
 					</Grid>
 				</Grid>

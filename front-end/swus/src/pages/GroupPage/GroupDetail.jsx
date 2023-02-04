@@ -83,7 +83,7 @@ function GroupDetail() {
             <p style={{ paddingLeft: 30, paddingTop: 5 }}>
               <EditOutlinedIcon
                 sx={{ fontSize: 30 }}
-                onClick={() => {navigate("/detail/update")}}
+                onClick={() => {navigate("/mypage/group/:groupId/update")}}
               />
             </p>
           </Grid>

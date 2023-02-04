@@ -47,7 +47,7 @@ function UpdateArticleForm() {
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
 		dispatch(checkedSlice.actions.writeArticle(inputs))
-		navigate("/group/detail");
+		navigate("/group/board/:boardId");
 	}
 
 

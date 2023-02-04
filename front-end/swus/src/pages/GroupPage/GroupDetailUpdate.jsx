@@ -84,7 +84,7 @@ function GroupDetailUpdate() {
 
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
-		navigate("/detail");
+		navigate("/mypage/group/:groupId");
 	}
 
 	const addTopic = () => {
