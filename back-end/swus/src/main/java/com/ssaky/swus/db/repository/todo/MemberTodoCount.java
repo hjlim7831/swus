@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class MemberTodoCount {
 
-    public MemberTodoCount(int memberId, Long todoCount){
+    public MemberTodoCount(int memberId, Long todoCount) {
         this.memberId = memberId;
         this.todoCount = todoCount.intValue();
     }

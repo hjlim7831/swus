@@ -2,8 +2,9 @@ package com.ssaky.swus.api.service.todo;
 
 import com.ssaky.swus.api.request.todo.TodoCreateReq;
 import com.ssaky.swus.api.request.todo.TodoUpdateReq;
-import com.ssaky.swus.api.response.auth.todo.TodoGetResp;
-import com.ssaky.swus.api.response.auth.todo.TodoJandiResp;
+import com.ssaky.swus.api.response.todo.DailyTodoResp;
+import com.ssaky.swus.api.response.todo.TodoGetResp;
+import com.ssaky.swus.api.response.todo.TodoJandiResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.db.entity.todo.JandiTodo;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
@@ -64,7 +65,7 @@ public class TodoService {
     }
 
     /**
-     * 6시 기준 Todo 초기화, Jandi 기록 입력
+     * 6시 기준 투두 초기화, Jandi 기록 입력
      */
     @Scheduled(cron = "0 0 06 * * ?", zone = "Asia/Seoul")
     @Transactional
@@ -81,7 +82,7 @@ public class TodoService {
     }
 
     /**
-     * 사용자의 todo 잔디 기록 저장하기
+     * 모든 사용자의 투두 잔디 기록 저장하기
      * @param todoCountList
      */
     @Transactional
@@ -94,18 +95,18 @@ public class TodoService {
     }
 
     /**
-     * 어제 날짜 가져오기
+     * 어제 날짜 가져오기 (새벽 6시 기준으로 입력하므로)
      * @return java.sql.Date
      */
     private Date getYesterday(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA);
-        final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-mm-dd");
-        System.out.println("Today: "+SDF.format(calendar.getTime()));
+        final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
+        log.debug("Today: "+SDF.format(calendar.getTime()));
 
         calendar.add(Calendar.DATE, -1);
 
         String yesterdayStr = SDF.format(calendar.getTime());
-        System.out.println("Yesterday: "+yesterdayStr);
+        log.debug("Yesterday: "+yesterdayStr);
 
         return Date.valueOf(yesterdayStr);
     }
@@ -121,7 +122,17 @@ public class TodoService {
         LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
         // 올해 년도 가져오기
         int year = now.getYear();
+        String fromDateStr = String.valueOf(year)+"-01-01";
+        String toDateStr = String.valueOf(year)+"-12-31";
 
+        Date fromDate = Date.valueOf(fromDateStr);
+        Date toDate = Date.valueOf(toDateStr);
+
+//        List<DailyTodoRespI> todoRecords = jandiTodoRepository.findByStudyAtBetween(fromDate, toDate);
+
+//        TodoJandiResp resp = TodoJandiResp.builder().year(year).todoRecords(todoRecords).build();
+
+//        return resp;
         return null;
     }
 
