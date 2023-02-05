@@ -26,6 +26,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
+    public final ListPath<com.ssaky.swus.db.entity.todo.JandiTodo, com.ssaky.swus.db.entity.todo.QJandiTodo> jandiTodos = this.<com.ssaky.swus.db.entity.todo.JandiTodo, com.ssaky.swus.db.entity.todo.QJandiTodo>createList("jandiTodos", com.ssaky.swus.db.entity.todo.JandiTodo.class, com.ssaky.swus.db.entity.todo.QJandiTodo.class, PathInits.DIRECT2);
+
     public final StringPath nickname = createString("nickname");
 
     public final StringPath password = createString("password");

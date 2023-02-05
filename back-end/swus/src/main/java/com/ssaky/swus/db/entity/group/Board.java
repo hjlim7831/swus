@@ -15,7 +15,7 @@ import java.util.Date;
 @ToString
 @Table(name = "board")
 @Entity
-public class Board {
+public class Board extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,24 +38,22 @@ public class Board {
     @Lob
     private String content;
 
-    @ColumnDefault("0")
     private int views;      // 조회수
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "write_at")
-    private Date writeAt;   // 작성일
+//    @Temporal(TemporalType.DATE)
+//    @Column(name = "write_at")
+//    private Date writeAt;   // 작성일
 
     @Column(nullable = false)
-    private int number;     // 모집인원
+    private int number;     // 최종모집인원
 
     @Builder
-    public Board(int memberId, String title, String content, int views, Date writeAt, int number) {
-        Member member = new Member(memberId);
+    public Board(int memberId, String title, String content, int number) {
+        Member member = Member.builder().id(memberId).build();
         this.member = member;
         this.title = title;
         this.content = content;
-        this.views = views;
-        this.writeAt = writeAt;
+        this.views = 0;
         this.number = number;
     }
 }
