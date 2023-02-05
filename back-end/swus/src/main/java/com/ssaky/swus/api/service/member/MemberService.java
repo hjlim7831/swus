@@ -28,6 +28,7 @@ public class MemberService {
 
 //    private final MemberRepository memberRepository;
     private final EmailService emailService;
+    private final StudyService studyService;
     private final MemberRepositoryI memberRepository;
 
     @Transactional
@@ -35,8 +36,14 @@ public class MemberService {
         Member member = new Member(form);
         log.debug(String.valueOf(member));
 
+        // 1. 이메일 중복 확인하기
         validateDuplicateEmail(form.getEmail());
+
+        // 2. 회원 Table에 회원정보 저장하기
         memberRepository.save(member);
+
+        // 3. 공부 시간 Table 생성하기
+        studyService.save(member);
         return member.getId();
     }
 

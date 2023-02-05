@@ -28,7 +28,7 @@ public class Member {
     private String email;
     private String password;
     private String nickname;
-    
+
     @Column(name = "question_id")
     private int questionId;
 
