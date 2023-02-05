@@ -41,7 +41,7 @@ public class Study {
     }
 
     public void updateTargetTime(TargetTimeReq req){
-        this.targetTime = req.getNowTargetTime();
+        this.targetTime = req.getTargetTime();
     }
 
     public void updateCoreTime(CoreTimeReq req){

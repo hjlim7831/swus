@@ -57,14 +57,14 @@ public class StudyController {
         return ResponseEntity.ok(resultMap);
     }
 
-    @GetMapping("now-target-time")
+    @GetMapping("target-time")
     public ResponseEntity<?> getTargetTime(Authentication authentication){
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
         return ResponseEntity.ok(studyService.getTargetTime(memberId));
     }
 
-    @PutMapping("now-target-time")
+    @PutMapping("target-time")
     public ResponseEntity<?> updateTargetTime(Authentication authentication, @RequestBody TargetTimeReq req){
         Map<String, Object> resultMap = new HashMap<>();
         Claims claims = (Claims) authentication.getPrincipal();
