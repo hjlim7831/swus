@@ -1,4 +1,4 @@
-package com.ssaky.swus.api.controller;
+package com.ssaky.swus.api.controller.group;
 
 import com.ssaky.swus.api.request.group.WritePostReq;
 import com.ssaky.swus.api.service.group.BoardService;
@@ -29,7 +29,7 @@ public class BoardController {
 
 
 
-//        return ResponseEntity.ok();
+        return null;
     }
 
 }
