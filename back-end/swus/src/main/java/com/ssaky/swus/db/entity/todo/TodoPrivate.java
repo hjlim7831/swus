@@ -22,7 +22,6 @@ import static javax.persistence.FetchType.LAZY;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoPrivate {
 
-
     public TodoPrivate(TodoCreateReq req, int memberId){
         this.content = req.getContent();
         Member member = Member.builder().id(memberId).build();
@@ -50,7 +49,7 @@ public class TodoPrivate {
     private String content;
 
     @JsonIgnore
-    @ManyToOne(fetch= LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
