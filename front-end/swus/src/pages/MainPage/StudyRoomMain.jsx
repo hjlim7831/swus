@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import OpenViduApp from "../OpenVidu/OpenViduApp";
 import MyTodo from "../MyPageReport/MyTodo";
+import MyTime from "../MyPageReport/MyTime";
 import NSRoomCard from "./RoomScroll/NSRoomCard";
 import FTRoomCard from "./RoomScroll/FTRoomCard";
 
@@ -86,7 +87,7 @@ function StudyRoomMain() {
           flexGrow: 1,
           color: "text.secondary",
           marginTop: 8,
-          height: "100%",
+          height: "100vh",
           bgcolor: "#1A1E33F2",
           position: "static",
           // overscrollBehavior: "contain",
@@ -95,31 +96,36 @@ function StudyRoomMain() {
         {/* 하나 xs 값 주면 나머지 알아서*/}
         <Grid container>
           {/* 그리드 컴포넌트 사이 넓이 */}
-          <Grid
-            item
-            xs={3}
-            style={
-              {
-                /*backgroundColor: "skyblue"*/
-              }
-            }
-          >
+          <Grid item xs={3} style={{}}>
             {/* todo& 목표 공부시간 묶는 div */}
-            <div
-              style={{
-                position: "absolute",
-                displayPrint: "inline-block",
-                marginLeft: "5%",
-                backgroundColor: "skyblue",
-                paddingLeft: "20px",
-              }}
-            >
-              {/* todo div */}
-              <MyTodo />
-            </div>
-            <div style={{ position: "absolute", displayPrint: "inline-block" }}>
+            <Grid item xs={8} sx={{ marginTop: 3, marginX: "auto", paddingLeft: "20px" }}>
+              <Typography variant="h5" sx={{ fontSize: 20, color: "white", marginTop: 2 }}>
+                Todo List
+              </Typography>
+              <Grid
+                item
+                xs={11}
+                sx={{ backgroundColor: "#F4EFE6", borderRadius: 2, paddingX: "10px" }}
+              >
+                <MyTodo />
+              </Grid>
+            </Grid>
+            <Grid item xs={8} sx={{ marginX: "auto", paddingLeft: "20px" }}>
               {/* 목표 공부시간 div */}
-            </div>
+              <Typography
+                variant="h5"
+                sx={{ fontSize: 20, color: "white", marginTop: 2, marginBottom: -2 }}
+              >
+                목표 공부 시간
+              </Typography>
+              <Grid
+                item
+                xs={11}
+                sx={{ backgroundColor: "#F4EFE6", borderRadius: 2, paddingX: "10px" }}
+              >
+                <MyTime />
+              </Grid>
+            </Grid>
           </Grid>
           <Grid
             item

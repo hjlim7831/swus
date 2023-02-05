@@ -1,8 +1,23 @@
 import React, { Component } from "react";
 import OpenViduVideoComponent from "./OvVideo";
+import styled from "styled-components";
 import "./UserVideo.css";
 
 import Grid from "@mui/material/Grid";
+
+// const streamcomponent = styled.div`
+//   display: flex;
+//   flex-direction: row;
+// `;
+
+// const NickName = styled.div`
+//   text-align: center;
+//   position: absoute;
+//   width: auto;
+//   height: 20px;
+//   background-color: pink;
+//   display: block;
+// `;
 
 export default class UserVideoComponent extends Component {
   getNicknameTag() {
@@ -12,15 +27,15 @@ export default class UserVideoComponent extends Component {
 
   render() {
     return (
-      <div>
+      <>
         {this.props.streamManager !== undefined ? (
           <div className="streamcomponent">
             <OpenViduVideoComponent streamManager={this.props.streamManager} />
-            <p className="videotag">{this.getNicknameTag()}</p>
-            <div></div>
+
+            <div className="nameTag">{this.getNicknameTag()}</div>
           </div>
         ) : null}
-      </div>
+      </>
     );
   }
 }

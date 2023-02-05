@@ -36,19 +36,15 @@ function MyTodo() {
           height: 500,
         }}
       >
-        <h4 style={{ display: "inline-block" }}>Todo List</h4>
+        {/* <h4 style={{ display: "inline-block" }}>Todo List</h4>
         <IconButton
           sx={{ display: "inline-block" }}
           color="secondary"
           aria-label="add an alarm"
         >
           <AutorenewIcon />
-        </IconButton>
-        <MyTodoForm
-          handleSubmit={handleSubmit}
-          value={value}
-          setValue={setValue}
-        />
+        </IconButton> */}
+        <MyTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
         <MyTodoList todoData={todoData} setTodoData={setTodoData} />{" "}
         {/*todoData라는 state를 내려줌 List.js에 */}
         {/*자녀컴포넌트에서는 props 파라미터로 받음 */}

@@ -13,6 +13,7 @@ import Lounge from "./pages/Lounge/SideBar";
 import GroupPage from "./pages/GroupPage/GroupPage";
 import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
 import NSRoom from "./pages/StudyCam/NSRoom";
+import MyPageMain from "./pages/MyPageMain/MyPageMain";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<StudyRoomMain />} />
+          <Route path="/mypage" element={<MyPageMain />} />
           <Route path="/nsroom" element={<NSRoom />} />
         </Routes>
       </BrowserRouter>

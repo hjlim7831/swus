@@ -12,6 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../image/sampleImage.jpg";
 import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
+import { Grid } from "@mui/material";
 import axios from "axios";
 
 function NSRoomCard(props) {
@@ -66,27 +67,30 @@ function NSRoomCard(props) {
             </Typography>
           </div>
         </CardContent>
-        {/* <Button onClick={handleToOpen}>입장하기</Button> */}
-        <div>
-          <p
-            style={{
+        <Grid container sx={{ marginX: "auto" }}>
+          <Grid
+            item
+            xs={2}
+            sx={{
               color: "white",
               display: "inline-block",
               fontSize: "25px",
-              marginLeft: "10%",
+              marginLeft: "7%",
             }}
           >
             {count}/9
-          </p>
-          <Button
-            variant="contained"
-            onClick={handleToOpen}
-            sx={{ marginRight: "10%", alignItems: "right" }}
-            startIcon={<AdjustOutlinedIcon></AdjustOutlinedIcon>}
-          >
-            입장하기
-          </Button>
-        </div>
+          </Grid>
+          <Grid item xs={6} sx={{ marginLeft: "20%" }}>
+            <Button
+              variant="contained"
+              onClick={handleToOpen}
+              sx={{ marginLeft: "22%", height: "100%", backgroundColor: "#475467" }}
+              startIcon={<AdjustOutlinedIcon></AdjustOutlinedIcon>}
+            >
+              입장하기
+            </Button>
+          </Grid>
+        </Grid>
       </Card>
 
       <Dialog

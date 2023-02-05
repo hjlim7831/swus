@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
+import { Grid } from "@mui/material";
 
 function TodoJandi() {
   //  Heatmap Data
@@ -45,23 +46,37 @@ function TodoJandi() {
   }, []);
   return (
     <>
-      <Box sx={{ position: "relative", width: 100, height: 200 }}>
-        <h4>투두 잔디</h4>
-        <StyledContainer style={{ width: 1000 }}>
-          <CalendarHeatmap
-            endDate={endDate}
-            startDate={startDate}
-            values={values}
-            showWeekdayLabels={true}
-            //classForValue로 색깔이 될 클래스 지정
-            classForValue={(value) => {
-              if (!value) {
-                return "color-empty";
-              }
-              return `color-scale-${value.classValue}`;
-            }}
-          />
-        </StyledContainer>
+      <Box
+        sx={{
+          width: "100%",
+          height: "270px",
+          backgroundColor: "white",
+          borderRadius: 2,
+          padding: "10px",
+          boxShadow: "2px 2px 7px 1px grey",
+          marginTop: "2%",
+        }}
+      >
+        <Grid container>
+          <Grid item xs={12}>
+            <h3 style={{ marginLeft: "40px" }}>000일의 Todo 달성 기록</h3>
+          </Grid>
+          <StyledContainer style={{ width: 1200, marginLeft: "8%" }}>
+            <CalendarHeatmap
+              endDate={endDate}
+              startDate={startDate}
+              values={values}
+              showWeekdayLabels={true}
+              //classForValue로 색깔이 될 클래스 지정
+              classForValue={(value) => {
+                if (!value) {
+                  return "color-empty";
+                }
+                return `color-scale-${value.classValue}`;
+              }}
+            />
+          </StyledContainer>
+        </Grid>
       </Box>
     </>
   );

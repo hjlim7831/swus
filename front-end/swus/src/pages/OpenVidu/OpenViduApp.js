@@ -19,7 +19,6 @@ import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 
 //HOC 사용용
 import WithRouter from "./WithRouter";
-import MoveTo from "./MoveTo";
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -152,7 +151,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "640x480", // The resolution of your video
+                resolution: "1280x700", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -213,7 +212,7 @@ class OpenViduApp extends Component {
     // });
     // const { navigate } = this.props;
     // navigate("/");
-    return <MoveTo nav="/" />;
+    // this.props.navigate("/");
   }
 
   render() {
@@ -222,9 +221,9 @@ class OpenViduApp extends Component {
     return (
       <>
         <Box sx={{ flexGrow: 1, backgroundColor: "#1A1E33", height: "100%" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={2.2} sx={{ border: 1 }}>
-              <Grid item xs={11} sx={{ margin: "auto" }}>
+          <Grid container spacing={1}>
+            <Grid item xs={2.4}>
+              <Grid item xs={10} sx={{ marginX: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
@@ -274,10 +273,12 @@ class OpenViduApp extends Component {
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <Clock />
                 </div>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
                 <div
                   style={{
-                    backgroundColor: "skyblue",
+                    backgroundColor: "#F4EFE6",
                     height: "100%",
+                    padding: 5,
                   }}
                 >
                   <MyTodo />
@@ -301,8 +302,8 @@ class OpenViduApp extends Component {
                 </div>
               </Grid>
             </Grid>
-            <Grid item xs={9.8} sx={{ border: 1 }}>
-              <div className="container">
+            <Grid item xs={9.6}>
+              <div className="container" styled={{ paddingLeft: "10%" }}>
                 {this.state.session === undefined ? (
                   <div id="join">
                     <div id="join-dialog" className="jumbotron vertical-center">
@@ -331,31 +332,38 @@ class OpenViduApp extends Component {
                     </div>
                   </div>
                 ) : null}
-                <Grid container sx={{ border: 1 }}>
-                  {this.state.session !== undefined ? (
-                    <div id="session">
-                      <div id="video-container" className="col-md-6">
-                        {this.state.publisher !== undefined ? (
-                          <div
-                            className="stream-container col-md-6 col-xs-6"
-                            onClick={() => this.handleMainVideoStream(this.state.publisher)}
-                          >
-                            <UserVideoComponent streamManager={this.state.publisher} />
-                          </div>
-                        ) : null}
-                        {this.state.subscribers.map((sub, i) => (
-                          <div
-                            key={i}
-                            className="stream-container col-md-6 col-xs-6"
-                            onClick={() => this.handleMainVideoStream(sub)}
-                          >
-                            <UserVideoComponent streamManager={sub} />
-                          </div>
-                        ))}
-                      </div>
+                {/* <Grid container sx={{ border: 1 }}> */}
+                {this.state.session !== undefined ? (
+                  <div id="session">
+                    <div
+                      id="video-container"
+                      style={
+                        {
+                          /*marginLeft: "5%"*/
+                        }
+                      }
+                    >
+                      {this.state.publisher !== undefined ? (
+                        <div
+                          className="stream-container"
+                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                        >
+                          <UserVideoComponent streamManager={this.state.publisher} />
+                        </div>
+                      ) : null}
+                      {this.state.subscribers.map((sub, i) => (
+                        <div
+                          key={i}
+                          className="stream-container"
+                          onClick={() => this.handleMainVideoStream(sub)}
+                        >
+                          <UserVideoComponent streamManager={sub} />
+                        </div>
+                      ))}
                     </div>
-                  ) : null}
-                </Grid>
+                  </div>
+                ) : null}
+                {/* </Grid> */}
               </div>
             </Grid>
           </Grid>
