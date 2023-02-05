@@ -1,9 +1,14 @@
+server:
+  port:
+    8081
+    
 #JPA
 spring:
   datasource:
+#    url: jdbc:mysql://i8a302.p.ssafy.io:3306/swusdb?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
     url: jdbc:mysql://localhost:3306/swus?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8
-    username: ssafy
-    password: ssafy
+    username: swus
+    password: swus302
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     pathmatch:
@@ -23,6 +28,19 @@ spring:
         enable_lazy_load_no_trans: true
 ##        dialect: org.hibernate.dialect.PostgreSQLDialect
 ##        default_batch_fetch_size: 100
+## Java Mail Sender
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: study.with.us.no.reply@gmail.com
+    password: kngcavwgjeoqhzan
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging:
   file:
     path: /Users/Logs/swus-spring
@@ -36,4 +54,5 @@ swagger:
     /swagger-resources,
     /swagger-resources/**/*,
     /v2/api-docs,
-    /**
+    /auth/**,
+#    /**

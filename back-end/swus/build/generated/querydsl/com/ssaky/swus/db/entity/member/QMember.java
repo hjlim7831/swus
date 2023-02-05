@@ -22,8 +22,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath answer = createString("answer");
 
-    public final ListPath<com.ssaky.swus.db.entity.group.Board, com.ssaky.swus.db.entity.group.QBoard> boards = this.<com.ssaky.swus.db.entity.group.Board, com.ssaky.swus.db.entity.group.QBoard>createList("boards", com.ssaky.swus.db.entity.group.Board.class, com.ssaky.swus.db.entity.group.QBoard.class, PathInits.DIRECT2);
-
     public final StringPath email = createString("email");
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
@@ -33,6 +31,8 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath password = createString("password");
 
     public final NumberPath<Integer> questionId = createNumber("questionId", Integer.class);
+
+    public final ListPath<com.ssaky.swus.db.entity.todo.TodoPrivate, com.ssaky.swus.db.entity.todo.QTodoPrivate> todoPrivates = this.<com.ssaky.swus.db.entity.todo.TodoPrivate, com.ssaky.swus.db.entity.todo.QTodoPrivate>createList("todoPrivates", com.ssaky.swus.db.entity.todo.TodoPrivate.class, com.ssaky.swus.db.entity.todo.QTodoPrivate.class, PathInits.DIRECT2);
 
     public final StringPath token = createString("token");
 
