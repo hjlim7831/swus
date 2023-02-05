@@ -2,6 +2,9 @@ package com.ssaky.swus.db.entity.study;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.ssaky.swus.api.request.study.CoreTimeReq;
+import com.ssaky.swus.api.request.study.TargetTimeReq;
+import com.ssaky.swus.api.request.study.TotalTimeReq;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +20,13 @@ import static javax.persistence.FetchType.LAZY;
 @ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Study {
-
     @Id
+    @Column(name = "member_id")
+    private int memberId;
+
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @MapsId
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
     Member member;
 
     @Column(name = "target_time")
@@ -29,4 +35,21 @@ public class Study {
     int nowCoreTime;
     @Column(name = "now_total_time")
     int nowTotalTime;
+
+    public Study(Member member){
+        this.member = member;
+    }
+
+    public void updateTargetTime(TargetTimeReq req){
+        this.targetTime = req.getNowTargetTime();
+    }
+
+    public void updateCoreTime(CoreTimeReq req){
+        this.nowCoreTime = req.getNowCoreTime();
+    }
+
+    public void updateTotalTime(TotalTimeReq req){
+        this.nowTotalTime = req.getNowTotalTime();
+    }
+
 }

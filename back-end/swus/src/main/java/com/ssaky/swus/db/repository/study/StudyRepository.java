@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface StudyRepository extends JpaRepository<Study, Member> {
+public interface StudyRepository extends JpaRepository<Study, Integer> {
 
     Study save(Study study);
 
