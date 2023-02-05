@@ -2,6 +2,7 @@ package com.ssaky.swus.db.entity.member;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
 //import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.api.request.member.MemberUpdateReq;
 import com.ssaky.swus.db.entity.todo.JandiTodo;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
 import lombok.*;
@@ -18,6 +19,31 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @ToString
 public class Member {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "member_id")
+    private int id;
+
+    private String email;
+    private String password;
+    private String nickname;
+    
+    @Column(name = "question_id")
+    private int questionId;
+
+    private String answer;
+
+    private String token;
+
+//    @OneToMany(mappedBy = "member", fetch= LAZY)
+//    private List<Board> boards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch=LAZY)
+    private List<TodoPrivate> todoPrivates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch=LAZY)
+    private List<JandiTodo> jandiTodos = new ArrayList<>();
 
     @Builder
     public Member(int id) {
@@ -54,29 +80,10 @@ public class Member {
         this.answer = answer;
     }
 
-    @Id
-    @GeneratedValue
-    @Column(name = "member_id")
-    private int id;
+    public void updateInfo(MemberUpdateReq req){
+        this.nickname = req.getNickname();
+        this.password = req.getPassword();
+    }
 
-    private String email;
-    private String password;
-    private String nickname;
-    
-    @Column(name = "question_id")
-    private int questionId;
-
-    private String answer;
-
-    private String token;
-
-//    @OneToMany(mappedBy = "member", fetch= LAZY)
-//    private List<Board> boards = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch=LAZY)
-    private List<TodoPrivate> todoPrivates = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch=LAZY)
-    private List<JandiTodo> jandiTodos = new ArrayList<>();
 
 }
