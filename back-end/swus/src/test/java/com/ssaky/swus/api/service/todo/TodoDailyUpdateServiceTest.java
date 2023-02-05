@@ -3,8 +3,11 @@ package com.ssaky.swus.api.service.todo;
 import com.ssaky.swus.api.request.auth.SignUpReq;
 import com.ssaky.swus.api.request.todo.TodoCreateReq;
 import com.ssaky.swus.api.request.todo.TodoUpdateReq;
+import com.ssaky.swus.api.response.todo.DailyTodoResp;
 import com.ssaky.swus.api.response.todo.TodoGetResp;
+import com.ssaky.swus.api.response.todo.TodoJandiResp;
 import com.ssaky.swus.api.service.member.MemberService;
+import com.ssaky.swus.db.repository.todo.JandiTodoRepository;
 import com.ssaky.swus.db.repository.todo.MemberTodoCount;
 import com.ssaky.swus.db.repository.todo.TodoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +20,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.transaction.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,12 +28,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-//@Transactional
+@Transactional
 public class TodoDailyUpdateServiceTest {
 
     @Autowired TodoRepository todoRepository;
     @Autowired TodoService todoService;
     @Autowired MemberService memberService;
+    @Autowired JandiTodoRepository jandiTodoRepository;
 
     static int memberId;
     static int memberId2;
@@ -99,16 +104,26 @@ public class TodoDailyUpdateServiceTest {
     public void 모든_사용자의_TODO_잔디기록하기(){
         // given
         List<MemberTodoCount> todoCountList = todoRepository.findTodoCountGroupByMember();
-
         // when
         ReflectionTestUtils.invokeMethod(todoService, "saveAllDailyTodoCount", todoCountList);
 
         // then
-
-
-
+        TodoJandiResp resp1 = todoService.getJandiRecords(memberId);
+        TodoJandiResp resp2 = todoService.getJandiRecords(memberId2);
+        assertEquals(resp1.getTodoRecords().get(0).getTodoDoneCount(),2);
+        assertEquals(resp2.getTodoRecords().get(0).getTodoDoneCount(),1);
+        System.out.println(resp1);
+        System.out.println(resp2);
     }
 
+    @Test
+    public void JpaRepository_테스트(){
+        Date fromDate = Date.valueOf("2023-02-05");
+        Date toDate = Date.valueOf("2023-02-05");
+
+        System.out.println(jandiTodoRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTodoResp.class));
+
+    }
 
 
 
