@@ -58,7 +58,7 @@ public class RoomServiceTest {
         }
 
         //참가자 9명 입장
-        for(int i=0; i<9; i++){
+        for(int i = 0; i < 9; i++){
             roomService.enterPublic(room_id, memberIds.get(i));
         }
 

@@ -1,6 +1,7 @@
 package com.ssaky.swus.api.controller.todo;
 
 import com.ssaky.swus.api.request.todo.TodoCreateReq;
+import com.ssaky.swus.api.request.todo.TodoUpdateReq;
 import com.ssaky.swus.api.service.todo.TodoService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import io.jsonwebtoken.Claims;
@@ -22,10 +23,10 @@ public class TodoController {
     private TodoService todoService;
 
     @GetMapping
-    public ResponseEntity<?> getTodoList(){
-        Map<String, Object> resultMap = new HashMap<>();
-
-        return ResponseEntity.ok(resultMap);
+    public ResponseEntity<?> getTodoList(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        return ResponseEntity.ok(todoService.getList(memberId));
     }
 
     @PostMapping
@@ -39,17 +40,31 @@ public class TodoController {
     }
 
     @PutMapping("/{num}")
-    public ResponseEntity<?> updateTodo(@PathVariable int num){
+    public ResponseEntity<?> updateTodo(Authentication authentication, @PathVariable int num, @RequestBody TodoUpdateReq req){
         Map<String, Object> resultMap = new HashMap<>();
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
 
+        todoService.update(num, req, memberId);
+        resultMap.put("msg", "success_update_todo");
         return ResponseEntity.ok(resultMap);
     }
 
     @DeleteMapping("/{num}")
-    public ResponseEntity<?> deleteTodo(@PathVariable int num){
+    public ResponseEntity<?> deleteTodo(Authentication authentication, @PathVariable int num){
         Map<String, Object> resultMap = new HashMap<>();
-
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        todoService.delete(num, memberId);
+        resultMap.put("msg", "success_delete_todo");
         return ResponseEntity.ok(resultMap);
     }
 
+    @GetMapping("/jandi")
+    public ResponseEntity<?> getTodoJandi(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        return ResponseEntity.ok(todoService.getJandiRecords(memberId));
+
+    }
 }

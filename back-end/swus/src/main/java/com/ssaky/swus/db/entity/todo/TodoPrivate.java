@@ -1,8 +1,10 @@
 package com.ssaky.swus.db.entity.todo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ssaky.swus.api.request.todo.TodoCreateReq;
+import com.ssaky.swus.api.request.todo.TodoUpdateReq;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +29,11 @@ public class TodoPrivate {
         this.todoDone = "N";
     }
 
+    public void update(TodoUpdateReq req){
+        this.content = req.getContent();
+        this.todoDone = req.getTodoDone();
+    }
+
     @Builder
     public TodoPrivate(int num){
         this.num = num;
@@ -41,7 +48,8 @@ public class TodoPrivate {
 
     private String content;
 
-    @ManyToOne(fetch= LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
