@@ -1,63 +1,25 @@
 package com.ssaky.swus.db.repository.member;
 
-import com.ssaky.swus.api.request.auth.CheckPwdReq;
-import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.db.entity.member.Member;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-public class MemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Integer> {
 
-    private final EntityManager em;
+    Member save(Member member);
 
-    public void save(Member member) {em.persist(member);}
+    void delete(Member member);
 
-    public Optional<Member> findOne(int id) {
-        return Optional.ofNullable(em.find(Member.class, id));
-    }
+    <T> Optional<T> findById(int id, Class<T> type);
 
-    public Optional<Member> findByEmail(String email){
-        List<Member> resultList = em.createQuery("select m from Member m where m.email = :email", Member.class)
-                .setParameter("email", email)
-                .getResultList();
-        if (resultList.isEmpty()){
-            return Optional.empty();
-        }else{
-            return Optional.of(resultList.get(0));
-        }
-    }
+    Optional<Member> findByEmail(String email);
 
-    public Optional<Member> checkEmailAndPassword(LoginReq form){
-        String email = form.getEmail();
-        String password = form.getPassword();
+    Optional<Member> findByEmailAndPassword(String email, String password);
 
-        List<Member> resultList = em.createQuery("select m from Member m where m.email = :email and m.password = :password", Member.class)
-                .setParameter("email", email)
-                .setParameter("password", password)
-                .getResultList();
-        if (resultList.isEmpty()){
-            return Optional.empty();
-        }else{
-            return Optional.of(resultList.get(0));
-        }
-    }
+    Optional<Member> findByEmailAndQuestionIdAndAnswer(String email, int questionId, String answer);
 
-    public Optional<Member> findByEmailAndQuestion(CheckPwdReq form) {
-        List<Member> resultList = em.createQuery("select m from Member m where m.email = :email and m.questionId = :questionId and m.answer = :answer", Member.class)
-                .setParameter("email", form.getEmail())
-                .setParameter("questionId", form.getQuestionId())
-                .setParameter("answer", form.getAnswer())
-                .getResultList();
-        if (resultList.isEmpty()){
-            return Optional.empty();
-        }else{
-            return Optional.of(resultList.get(0));
-        }
-    }
+
 }

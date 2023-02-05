@@ -6,12 +6,13 @@ import com.ssaky.swus.api.request.auth.SignUpReq;
 import com.ssaky.swus.api.request.member.MemberUpdateReq;
 import com.ssaky.swus.api.response.auth.LoginResp;
 import com.ssaky.swus.api.response.member.MemberInfoGetResp;
+import com.ssaky.swus.api.service.study.StudyService;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.common.error.exception.custom.LoginFailException;
 import com.ssaky.swus.common.error.exception.custom.UncorrectAnswerException;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
-import com.ssaky.swus.db.repository.member.MemberRepositoryI;
+import com.ssaky.swus.db.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,9 @@ import java.util.Optional;
 @Slf4j
 public class MemberService {
 
-//    private final MemberRepository memberRepository;
     private final EmailService emailService;
     private final StudyService studyService;
-    private final MemberRepositoryI memberRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public int join(SignUpReq form){
@@ -72,8 +72,6 @@ public class MemberService {
         });
     }
 
-//    public Optional<Member> findOne(int memberId) {return memberRepository.findOne(memberId);}
-
     public MemberInfoGetResp findOne(int memberId) {
         Optional<MemberInfoGetResp> respO = memberRepository.findById(memberId, MemberInfoGetResp.class);
         if (respO.isPresent()){
@@ -88,7 +86,6 @@ public class MemberService {
     }
 
     public LoginResp login(LoginReq form) {
-//        Optional<Member> member = memberRepository.checkEmailAndPassword(form);
         Optional<Member> member = memberRepository.findByEmailAndPassword(form.getEmail(), form.getPassword());
         if (member.isPresent()){
             String accessToken = TokenUtils.generateJwtToken(member.get());
@@ -100,7 +97,6 @@ public class MemberService {
     }
 
     public boolean checkAnswerForPasswordQuestion(CheckPwdReq form){
-//        Optional<Member> member = memberRepository.findByEmailAndQuestion(form);
         Optional<Member> member = memberRepository.findByEmailAndQuestionIdAndAnswer(form.getEmail(), form.getQuestionId(), form.getAnswer());
         if (member.isPresent()){
             return emailService.sendEmail(member.get());

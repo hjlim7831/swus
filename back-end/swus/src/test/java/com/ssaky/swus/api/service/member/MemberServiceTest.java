@@ -10,7 +10,6 @@ import com.ssaky.swus.common.error.exception.custom.UncorrectAnswerException;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.repository.member.MemberRepository;
-import com.ssaky.swus.db.repository.member.MemberRepositoryI;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemberServiceTest {
 
     @Autowired
-    MemberRepositoryI memberRepository;
+    MemberRepository memberRepository;
     @Autowired MemberService memberService;
     @Autowired EntityManager em;
 
