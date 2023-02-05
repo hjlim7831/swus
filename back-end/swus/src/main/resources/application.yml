@@ -40,6 +40,25 @@ spring:
           auth: true
           starttls:
             enable: true
+  ##아래 메세지의 에러가 나서 추가함 start
+  ##err msg : A bean with that name has already been defined in file
+  main:
+    allow-bean-definition-overriding: true
+  ## end
+
+  ##chat start
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
+    content-type: text/html
+    charset: utf-8
+    cache: false
+  ## chat end
 
 logging:
   file:

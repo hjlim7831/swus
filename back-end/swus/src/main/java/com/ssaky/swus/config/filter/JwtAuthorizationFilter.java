@@ -7,7 +7,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
-//@Component
+@Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Value("${swagger.paths}")
@@ -44,6 +43,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         List<String> list = Arrays.asList(
                 "/"
         );
+
+        //채팅 기능을 구현하기 위해 jwt filter기능 생략
+        //chat start
+        logger.debug("[+1] request.getRequestURI() : "+request.getRequestURI());
+        logger.debug("[+2] request.getServletPath() : "+request.getServletPath());
+        logger.debug("[+3] request.getRequestURL() : "+request.getRequestURL());
+
+        //chat end
+
 //        System.out.println(request.getServletPath());
         // swagger에 필요한 URL일 경우, 다음 필터로 이동
         boolean isSwaggerPath = swaggerPaths.stream()
