@@ -4,7 +4,6 @@ import com.ssaky.swus.api.request.todo.TodoCreateReq;
 import com.ssaky.swus.api.request.todo.TodoUpdateReq;
 import com.ssaky.swus.api.service.todo.TodoService;
 import com.ssaky.swus.common.utils.TokenUtils;
-import com.ssaky.swus.db.entity.todo.TodoPrivate;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +58,13 @@ public class TodoController {
         todoService.delete(num, memberId);
         resultMap.put("msg", "success_delete_todo");
         return ResponseEntity.ok(resultMap);
+    }
+
+    @GetMapping("/jandi")
+    public ResponseEntity<?> getTodoJandi(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        return ResponseEntity.ok(todoService.getJandiRecords(memberId));
+
     }
 }
