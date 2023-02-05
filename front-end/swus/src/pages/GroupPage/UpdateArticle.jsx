@@ -44,8 +44,46 @@ function UpdateArticleForm() {
 		}
 	}
 
+	const blank = /^\s+|\s+$/g;
+
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
+		let selectedDays = "";
+
+		for (let i = 0; i < inputs.days.length; i++) {
+			if (inputs.days[i]) {
+				selectedDays += "1"
+			}	else {
+				selectedDays += "0"
+			}
+		}
+
+		if (!inputs.category.replace(blank, "")) {
+			alert("스터디 유형을 선택해주세요.")
+			return
+		}	else if (!inputs.title.replace(blank, "")) {
+			alert("제목을 입력해주세요.")
+      return
+		}	else if (!inputs.startTime.replace(blank, "")) {
+			alert("시작 시간을 입력해주세요.")
+      return
+		}	else if (!inputs.finishTime.replace(blank, "")) {
+			alert("종료 시간을 입력해주세요.")
+			return
+		}	else if (!selectedDays.replace(/0/gi, ""))	{
+			alert("요일을 선택해주세요.")
+			return
+		}	else if (inputs.recruitmentNumber < 2) {
+			alert("2명 이상의 모집인원을 선택해주세요.")
+			return
+		}	else if (Number(inputs.startTime.replace(/:/gi, "") > Number(inputs.finishTime.replace(/:/gi, "")))) {
+			alert("시작 시간이 종료 시간보다 늦습니다!")
+			return
+		}	else if (Number(inputs.beginAt.replace(/-/gi, "") > Number(inputs.endAt.replace(/-/gi, "")))) {
+			alert("스터디 시작 날짜가 종료 날짜보다 늦습니다!")
+			return
+		}
+
 		dispatch(checkedSlice.actions.writeArticle(inputs))
 		navigate("/group/board/:boardId");
 	}
@@ -72,7 +110,7 @@ function UpdateArticleForm() {
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
-								<p>유형 </p>
+								<p>유형 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
@@ -92,19 +130,22 @@ function UpdateArticleForm() {
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
-								<p>제목 </p>
+								<p>제목 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
 								<TextField 
 									id='title' 
 									name='title' 
+									label="제목"
 									value={inputs.title}
 									placeholder="title" 
-									variant='standard' 
+									variant='outlined' 
 									size="small" 
 									fullWidth
+									margin="dense"
 									onChange={onHandleInput}
+									error={!inputs.title.replace(blank, "")}
 								/>
 							</div>
 						</Grid>
@@ -119,31 +160,41 @@ function UpdateArticleForm() {
 									name="beginAt"
 									value={inputs.beginAt}
 									type="date"
+									label="시작일자"
 									InputLabelProps={{
 										shrink: true,
+										style: {
+											fontSize: 15,
+											marginTop: 3
+										}
 									}}
 									onChange={onHandleInput}
 									size="small"
-									sx={{ marginRight: 1 }}
+									style={{ marginRight: 10 }}
 								/>
 								~
 								<TextField
 									name="endAt"
 									value={inputs.endAt}
 									type="date"
+									label="종료일자"
 									InputLabelProps={{
 										shrink: true,
+										style: {
+											fontSize: 15,
+											marginTop: 3
+										}
 									}}
 									onChange={onHandleInput}
 									size="small"
-									sx={{ marginLeft: 1 }}
+									style={{ marginInline: 10 }}
 								/>
 							</div>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 								<Grid item xs={2}>
-									<p>스터디 시간 </p>
+									<p>스터디 시간 <span style={{ color: "red" }}>*</span></p>
 								</Grid>
 								<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 								<div style={{ display: "flex", alignItems: "center"}}>
@@ -151,29 +202,44 @@ function UpdateArticleForm() {
 										name="startTime"
 										value={inputs.startTime}
 										type="time"
+										label="시작시간"
 										InputLabelProps={{
 											shrink: true,
+											style: {
+												fontSize: 15,
+												marginTop: 3
+											}
 										}}
+										error={!inputs.startTime.replace(blank, "")}
 										onChange={onHandleInput}
 										size="small"
+										style={{ marginRight: 10 }}
 									/>
-									-
+									~
 									<TextField
 										name="finishTime"
 										value={inputs.finishTime}
 										type="time"
+										label="종료시간"
 										InputLabelProps={{
 											shrink: true,
+											style: {
+												fontSize: 15,
+												marginTop: 3
+											}
 										}}
+										error={!inputs.finishTime.replace(blank, "")}
+										variant="outlined"
 										onChange={onHandleInput}
 										size="small"
+										style={{ marginInline: 10 }}
 									/>
 								</div>
 							</Grid>
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
-								<p>스터디 요일</p>
+								<p>스터디 요일 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
@@ -224,7 +290,7 @@ function UpdateArticleForm() {
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
-								<p>모집인원 </p>
+								<p>모집인원 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
@@ -233,6 +299,7 @@ function UpdateArticleForm() {
 									value={inputs.recruitmentNumber}
 									onChange={onHandleInput}
 									size="small"
+									error={inputs.recruitmentNumber < 2}
 								>
 									<MenuItem value={0}>0</MenuItem>
 									<MenuItem value="1">1</MenuItem>
@@ -252,10 +319,11 @@ function UpdateArticleForm() {
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<Grid item xs={9}>
 								<TextField  
-									variant='standard' 
+									label="상세내용"
+									variant='outlined' 
 									name="content"
 									value={inputs.content}
-									sx={{ ml: 1, mt: "14px" }} 
+									sx={{ my: "14px" }} 
 									size="small"
 									multiline
 									rows={10}

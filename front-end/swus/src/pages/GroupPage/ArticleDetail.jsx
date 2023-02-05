@@ -8,6 +8,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Modal from "../../components/modals/Modal";
 import { styled, withTheme } from '@mui/material/styles';
+import deleteArticle from '../../components/modals/DeleteArticle';
 
 
 
@@ -75,7 +76,7 @@ function ArticleDetail() {
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px", minWidth: "1300px"}}>
 				<Grid container sx={{ px: 2 }}>
 					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
-    				<p style={{ fontWeight: "bold", fontSize: "30px"}}>[{article.category}] {article.title}</p>
+    				<p style={{ fontWeight: "bold", fontSize: "30px"}}><span style={(article.category === "스터디") ? { color: "red" } : { color: "blue" } }>[{article.category}]</span> {article.title}</p>
 						<p style={{ paddingLeft: 30, paddingTop: 5}}>
 							<EditOutlinedIcon
 								variant="contained"
@@ -84,13 +85,9 @@ function ArticleDetail() {
 						</p>
 						<p style={{ paddingLeft: 10, paddingTop: 5}}>
 							<DeleteOutlinedIcon
-								onClick={openModal}
+								onClick={deleteArticle}
 								sx={{ fontSize: 30, color: "red" }} 
 							/>
-							<Modal open={modal} close={closeModal} header="글을 삭제하시겠습니까?">
-								글을 삭제해도 그룹은 유지됩니다.
-								글을 삭제하시겠습니까?
-							</Modal>
 						</p>
 					</Grid>
 					<Grid item xs={3}>

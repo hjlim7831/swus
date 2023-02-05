@@ -3,7 +3,9 @@ import { Container } from "@mui/system";
 import { Button, Grid, Divider, Typography, TextField } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useNavigate } from 'react-router-dom';
-import Modal from "../../components/modals/Modal";
+import inviteMember from '../../components/modals/InviteMember';
+import endGroup from '../../components/modals/EndGroup';
+import leaveGroup from '../../components/modals/LeaveGroup';
 
 
 function GroupDetail() {
@@ -27,13 +29,6 @@ function GroupDetail() {
 
   const filterCategory = /스터디/;
 
-  const [ modal, setModal ] = useState(false);
-  const openModal = () => {
-    setModal(true);
-  };
-  const closeModal = () => {
-    setModal(false);
-  };
   const [member, setMember] = useState("")
 
 
@@ -92,28 +87,21 @@ function GroupDetail() {
             <Button
               variant="contained"
               sx={{ height: 30, backgroundColor: "green" }}
-              onClick={openModal}
+              onClick={inviteMember}
               >초대하기</Button>
-            <Modal open={modal} close={closeModal} header="멤버 초대하기">
-              <TextField 
-                name="member"
-                value={member}
-                placeholder="초대할 친구의 닉네임을 입력해주세요"
-                variant="outlined"
-                fullWidth
-                onChange={getMember} />
-            </Modal>
           </Grid>
           <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
             <Button
               variant="contained"
               sx={{ height: 30, backgroundColor: "red"}}
+              onClick={endGroup}
             >종료하기</Button>
           </Grid>
           <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
             <Button
               variant="contained"
               sx={{ height: 30, backgroundColor: "#E2B9B3", color: "black"}}
+              onClick={leaveGroup}
             >탈퇴하기</Button>
           </Grid>
         </Grid>

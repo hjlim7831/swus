@@ -155,7 +155,7 @@ function CreateArticleForm() {
 								<TextField 
 									id='title' 
 									name='title' 
-									label="title"
+									label="제목"
 									value={inputs.title}
 									variant='outlined' 
 									size="small" 
@@ -180,10 +180,15 @@ function CreateArticleForm() {
 									type="date"
 									InputLabelProps={{
 										shrink: true,
+										style: {
+											fontSize: 15,
+											marginTop: 3
+										}
 									}}
+									label="시작일자"
 									onChange={onHandleInput}
 									size="small"
-									style={{ marginInline: 5 }}
+									style={{ marginRight: 10 }}
 								/>
 								~
 								<TextField
@@ -192,10 +197,15 @@ function CreateArticleForm() {
 									type="date"
 									InputLabelProps={{
 										shrink: true,
+										style: {
+											fontSize: 15,
+											marginTop: 3
+										}
 									}}
+									label="종료일자"
 									onChange={onHandleInput}
 									size="small"
-									style={{ marginInline: 5 }}
+									style={{ marginInline: 10 }}
 								/>
 							</div>
 						</Grid>
@@ -210,24 +220,37 @@ function CreateArticleForm() {
 										name="startTime"
 										value={inputs.startTime}
 										type="time"
+										label="시작시간"
+										error={!inputs.startTime.replace(blank, "")}
 										InputLabelProps={{
 											shrink: true,
+											style: {
+												fontSize: 15,
+												marginTop: 3
+											}
 										}}
 										onChange={onHandleInput}
 										size="small"
-										style={{ marginInline: 5 }}
+										style={{ marginRight: 10 }}
 									/>
 									~
 									<TextField
 										name="finishTime"
 										value={inputs.finishTime}
 										type="time"
+										label="종료시간"
 										InputLabelProps={{
 											shrink: true,
+											style: {
+												fontSize: 15,
+												marginTop: 3
+											}
 										}}
+										error={!inputs.finishTime.replace(blank, "")}
+										variant="outlined"
 										onChange={onHandleInput}
 										size="small"
-										style={{ marginInline: 5 }}
+										style={{ marginInline: 10 }}
 									/>
 								</div>
 							</Grid>
@@ -294,7 +317,6 @@ function CreateArticleForm() {
 									value={inputs.recruitmentNumber}
 									onChange={onHandleInput}
 									size="small"
-
 									error={inputs.recruitmentNumber < 2}
 								>
 									<MenuItem value={0}>0</MenuItem>
@@ -320,7 +342,7 @@ function CreateArticleForm() {
 									variant='outlined' 
 									name="content"
 									value={inputs.content}
-									sx={{ ml: 1, mt: "14px"}} 
+									sx={{ mt: "14px"}} 
 									size="small"
 									margin="normal"
 									multiline
