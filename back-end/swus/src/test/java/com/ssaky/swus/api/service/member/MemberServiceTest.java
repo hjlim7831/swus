@@ -10,6 +10,8 @@ import com.ssaky.swus.common.error.exception.custom.UncorrectAnswerException;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.repository.member.MemberRepository;
+import com.ssaky.swus.db.repository.member.MemberRepositoryI;
+import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -32,7 +32,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class MemberServiceTest {
 
-    @Autowired MemberRepository memberRepository;
+    @Autowired
+    MemberRepositoryI memberRepository;
     @Autowired MemberService memberService;
     @Autowired EntityManager em;
 
@@ -50,7 +51,7 @@ class MemberServiceTest {
         System.out.println(id);
 
         // then
-        Member findMember = memberRepository.findOne(id).get();
+        Member findMember = memberRepository.findById(id, Member.class).get();
         assertEquals(req.getEmail(), findMember.getEmail());
     }
 
@@ -119,7 +120,7 @@ class MemberServiceTest {
         SignUpReq signupReq = SignUpReq.builder().email(user).password(password).nickname("유저").questionId(2).answer("서울초").build();
         int id = memberService.join(signupReq);
         
-        // 회언가입 한 애로 로그인하기
+        // 회원가입 한 애로 로그인하기
         LoginReq loginReq = LoginReq.builder().email(user).password(password).build();
         LoginResp resp = memberService.login(loginReq);
         
@@ -129,7 +130,10 @@ class MemberServiceTest {
         // when
         
         // 얘가 담고 있는 애가 맞는지
-        int memberId = Integer.parseInt(TokenUtils.parseTokenToUserInfo(accessToken));
+        String s = TokenUtils.parseTokenToUserInfo(accessToken);
+        System.out.println(s);
+        Claims claims = TokenUtils.getClaimsFromToken(accessToken);
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
 
         // then
         assertEquals(id, memberId);
