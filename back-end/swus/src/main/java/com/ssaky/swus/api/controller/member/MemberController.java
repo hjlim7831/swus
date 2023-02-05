@@ -25,9 +25,8 @@ public class MemberController {
     public ResponseEntity<?> getInfo(Authentication authentication){
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
-        
-        // Repository Refactoring 해야될 듯
-        return ResponseEntity.ok(memberService.findOne(memberId));
+
+        return ResponseEntity.ok(memberService.findOneInfo(memberId));
 
     }
 

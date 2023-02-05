@@ -82,7 +82,7 @@ public class Member {
 
     public void updateInfo(MemberUpdateReq req){
         this.nickname = req.getNickname();
-        this.password = req.getPassword();
+        this.password = req.getNewPassword();
     }
 
 

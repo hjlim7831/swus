@@ -49,11 +49,16 @@ public class MemberService {
 
     public void updateInfo(int memberId, MemberUpdateReq req){
         Optional<Member> memberO = memberRepository.findById(memberId);
-        if (memberO.isPresent()){
-            memberO.get().updateInfo(req);
-        }else{
+        // 1. memberId에 해당하는 회원이 있을 경우
+        if (memberO.isEmpty()){
             throw new InvalidValueException("Invalid memberId. Check Token");
         }
+        // 2. oldPassword가 memberO에 있는 password와 일치할 경우
+        if (!memberO.get().getPassword().equals(req.getOldPassword())){
+            throw new InvalidValueException("기존 비밀번호가 일치하지 않습니다.");
+        }
+        memberO.get().updateInfo(req);
+
     }
 
     public void delete(int memberId){
@@ -72,7 +77,16 @@ public class MemberService {
         });
     }
 
-    public MemberInfoGetResp findOne(int memberId) {
+    public Member findOne(int memberId){
+        Optional<Member> memberO = memberRepository.findById(memberId, Member.class);
+        if (memberO.isPresent()){
+            return memberO.get();
+        }else{
+            throw new InvalidValueException("Invalid memberId. Check Token");
+        }
+    }
+
+    public MemberInfoGetResp findOneInfo(int memberId) {
         Optional<MemberInfoGetResp> respO = memberRepository.findById(memberId, MemberInfoGetResp.class);
         if (respO.isPresent()){
             return respO.get();

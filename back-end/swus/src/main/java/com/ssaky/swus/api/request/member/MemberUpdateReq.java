@@ -2,15 +2,16 @@ package com.ssaky.swus.api.request.member;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MemberUpdateReq {
-    String password;
+    String oldPassword;
+    String newPassword;
     String nickname;
 }

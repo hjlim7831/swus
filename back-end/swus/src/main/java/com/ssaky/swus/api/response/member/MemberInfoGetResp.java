@@ -8,7 +8,6 @@ import lombok.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberInfoGetResp {
     private String email;
-    private String password;
     private String nickname;
 
 }
