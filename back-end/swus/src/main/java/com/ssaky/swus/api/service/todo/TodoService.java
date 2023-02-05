@@ -128,12 +128,11 @@ public class TodoService {
         Date fromDate = Date.valueOf(fromDateStr);
         Date toDate = Date.valueOf(toDateStr);
 
-//        List<DailyTodoRespI> todoRecords = jandiTodoRepository.findByStudyAtBetween(fromDate, toDate);
+        List<DailyTodoResp> todoRecords = jandiTodoRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTodoResp.class);
 
-//        TodoJandiResp resp = TodoJandiResp.builder().year(year).todoRecords(todoRecords).build();
+        TodoJandiResp resp = TodoJandiResp.builder().year(year).todoRecords(todoRecords).build();
 
-//        return resp;
-        return null;
+        return resp;
     }
 
 }

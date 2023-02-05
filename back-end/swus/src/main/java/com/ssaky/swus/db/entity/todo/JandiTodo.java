@@ -9,7 +9,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import java.io.Serializable;
 import java.sql.Date;
 
 import static javax.persistence.FetchType.LAZY;
@@ -21,11 +20,9 @@ import static javax.persistence.FetchType.LAZY;
 @ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class JandiTodo {
-// 복합키 이용 시, Serializable 을 implement 해야 함
-
     public JandiTodo(Date studyAt, MemberTodoCount memberTodoCount){
-        JandiTodoId jandiTodoId = JandiTodoId.builder().memberId(memberTodoCount.getMemberId()).studyAt(studyAt).build();
-        this.jandiTodoId = jandiTodoId;
+        JandiTodoId id = JandiTodoId.builder().memberId(memberTodoCount.getMemberId()).studyAt(studyAt).build();
+        this.id = id;
         Member member = Member.builder().id(memberTodoCount.getMemberId()).build();
         this.member = member;
         this.todoDoneCount = memberTodoCount.getTodoCount();
@@ -33,7 +30,7 @@ public class JandiTodo {
 
     @EqualsAndHashCode.Include
     @EmbeddedId
-    private JandiTodoId jandiTodoId;
+    private JandiTodoId id;
 
     @MapsId("memberId") // 이렇게만 지정해 주면 PK가 됨
     @ManyToOne(fetch = LAZY)

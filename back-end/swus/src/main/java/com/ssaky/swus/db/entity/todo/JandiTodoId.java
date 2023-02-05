@@ -16,6 +16,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 public class JandiTodoId implements Serializable {
+    // 복합키에는 Serializable 을 implement 해야 함
 
     @EqualsAndHashCode.Include
     @Column(name = "study_at")
