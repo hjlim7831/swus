@@ -16,8 +16,10 @@ import Stack from "@mui/material/Stack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
-import { Navigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+
+//HOC 사용용
+import WithRouter from "./WithRouter";
+import MoveTo from "./MoveTo";
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -162,9 +164,7 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter(
-                (device) => device.kind === "videoinput"
-              );
+              var videoDevices = devices.filter((device) => device.kind === "videoinput");
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -211,18 +211,20 @@ class OpenViduApp extends Component {
     //   mainStreamManager: undefined,
     //   publisher: undefined,
     // });
+    // const { navigate } = this.props;
+    // navigate("/");
+    return <MoveTo nav="/" />;
   }
 
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-    console.log(mySessionId);
     return (
       <>
-        <Box sx={{ flexGrow: 1, maxHeight: "500px" }}>
+        <Box sx={{ flexGrow: 1, backgroundColor: "#1A1E33", height: "100%" }}>
           <Grid container spacing={2}>
             <Grid item xs={2.2} sx={{ border: 1 }}>
-              <Grid item xs={11} sx={{ border: 1, margin: "auto" }}>
+              <Grid item xs={11} sx={{ margin: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
@@ -241,8 +243,6 @@ class OpenViduApp extends Component {
                       onClick={() => {
                         this.leaveSession(); //연결 끊어주고
                         //열람실 메인으로 이동
-                        <Navigate to="/" replage={true} />;
-                        <Link to="/"></Link>;
                       }}
                     >
                       <HighlightOffIcon />
@@ -257,13 +257,23 @@ class OpenViduApp extends Component {
                     <IconButton color="primary" aria-label="add an alarm">
                       <MusicNoteOutlinedIcon />
                     </IconButton>
-                    <IconButton color="primary" aria-label="quit">
+                    <IconButton
+                      color="primary"
+                      aria-label="quit"
+                      onClick={() => {
+                        this.leaveSession(); //연결 끊어주고
+                        //열람실 메인으로 이동
+                        // const { navigation } = this.props;
+                      }}
+                    >
                       <HighlightOffIcon />
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h2>{mySessionId}</h2>
-                <Clock />
+                <h1 style={{ color: "white", paddingTop: "20px" }}>{mySessionId}</h1>
+                <div style={{ height: 100, paddingTop: "20px" }}>
+                  <Clock />
+                </div>
                 <div
                   style={{
                     backgroundColor: "skyblue",
@@ -273,7 +283,19 @@ class OpenViduApp extends Component {
                   <MyTodo />
                 </div>
                 <div>
-                  <Button variant="outlined" fullWidth sx={{ width: "auto" }}>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      mt: 4,
+                      pt: 2,
+                      pb: 1.5,
+                      backgroundColor: "#DEDCEE",
+                      height: "50px",
+                      color: "#1A1E33",
+                      fontSize: "20px",
+                    }}
+                  >
                     휴게실 바로가기
                   </Button>
                 </div>
@@ -309,34 +331,31 @@ class OpenViduApp extends Component {
                     </div>
                   </div>
                 ) : null}
-
-                {this.state.session !== undefined ? (
-                  <div id="session">
-                    <div id="video-container" className="col-md-6">
-                      {this.state.publisher !== undefined ? (
-                        <div
-                          className="stream-container col-md-6 col-xs-6"
-                          onClick={() =>
-                            this.handleMainVideoStream(this.state.publisher)
-                          }
-                        >
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                          />
-                        </div>
-                      ) : null}
-                      {this.state.subscribers.map((sub, i) => (
-                        <div
-                          key={i}
-                          className="stream-container col-md-6 col-xs-6"
-                          onClick={() => this.handleMainVideoStream(sub)}
-                        >
-                          <UserVideoComponent streamManager={sub} />
-                        </div>
-                      ))}
+                <Grid container sx={{ border: 1 }}>
+                  {this.state.session !== undefined ? (
+                    <div id="session">
+                      <div id="video-container" className="col-md-6">
+                        {this.state.publisher !== undefined ? (
+                          <div
+                            className="stream-container col-md-6 col-xs-6"
+                            onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                          >
+                            <UserVideoComponent streamManager={this.state.publisher} />
+                          </div>
+                        ) : null}
+                        {this.state.subscribers.map((sub, i) => (
+                          <div
+                            key={i}
+                            className="stream-container col-md-6 col-xs-6"
+                            onClick={() => this.handleMainVideoStream(sub)}
+                          >
+                            <UserVideoComponent streamManager={sub} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ) : null}
+                  ) : null}
+                </Grid>
               </div>
             </Grid>
           </Grid>
@@ -387,5 +406,11 @@ class OpenViduApp extends Component {
     return response.data; // The token
   }
 }
+
+// export default classRouter (props){
+//   const navigation = useNavigation();
+//   return (<OpenviduApp {...props} navigation={navigation}></OpenviduApp>);
+// };
+// export default WithRouter(OpenViduApp);
 
 export default OpenViduApp;

@@ -18,6 +18,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import axios from "axios";
 import RoomInfo from "./RoomScroll/RoomInfo";
+import NavBar from "../../components/NavBar/NavBar";
 
 import "./RoomScroll/hideScrollbar.css";
 import { resolveComponentProps } from "@mui/base";
@@ -63,7 +64,6 @@ function StudyRoomMain() {
         })
         .then((response) => {
           console.log(response);
-          console.log(rooms);
         });
 
       //방 입장하는 axios 이어서 작성 필요 (일단 랜덤입장으로 )
@@ -74,20 +74,22 @@ function StudyRoomMain() {
         })
         .then((response) => {
           console.log(response);
-          console.log(rooms);
         });
     }
   };
 
   return (
     <>
+      <NavBar />
       <Box
         sx={{
           flexGrow: 1,
           color: "text.secondary",
-          marginTop: "3%",
+          marginTop: 8,
           height: "100%",
           bgcolor: "#1A1E33F2",
+          position: "static",
+          // overscrollBehavior: "contain",
         }}
       >
         {/* 하나 xs 값 주면 나머지 알아서*/}
@@ -130,88 +132,102 @@ function StudyRoomMain() {
             }}
           >
             <Grid item xs={12}>
-              <Typography variant="h3" sx={{ fontSize: 20, color: "white" }}>
+              <Typography variant="h1" sx={{ fontSize: 30, color: "white", marginTop: 2 }}>
                 STUDY ROOM
               </Typography>
             </Grid>
-            <Grid
-              item
-              xs={11}
-              style={{
-                position: "relative",
-                displayPrint: "inline-block",
-                // backgroundColor: "red",
-              }}
-            >
-              <ScrollMenu
-                // LeftArrow={LeftArrow} //좌우 클릭으로 이동
-                // RightArrow={RightArrow}
-                onWheel={onWheel}
-              >
-                <RoomInfo />
-                {noRooms.map((room) => (
-                  <>
-                    <NSRoomCard key={room.id} sessionName={room.session_name} />
-                  </>
-                ))}
-              </ScrollMenu>
-            </Grid>
-            <Grid
-              item
-              xs={1}
-              style={{
-                position: "relative",
-                backgroundColor: "red",
-              }}
-            >
-              <IconButton
-                onClick={() => {
-                  addItem("N");
+            <Grid container>
+              <Grid
+                item
+                xs={11.2}
+                style={{
+                  position: "relative",
+                  // displayPrint: "inline-block",
+                  // backgroundColor: "green",
                 }}
-                sx={{ color: "white", top: "43%" }}
               >
-                <AddCircleOutlineIcon />
-              </IconButton>
-            </Grid>
-            <Grid
-              item
-              xs={11}
-              style={{
-                position: "relative",
-                displayPrint: "inline-block",
-                // backgroundColor: "red",
-                marginTop: "3%",
-                marginBottom: "3%",
-              }}
-            >
-              <ScrollMenu
-                // LeftArrow={LeftArrow}
-                // RightArrow={RightArrow}
-                onWheel={onWheel}
-              >
-                {yesRooms.map((room) => (
-                  <>
-                    <FTRoomCard key={room.id} sessionName={room.session_name} />
-                  </>
-                ))}
-              </ScrollMenu>
-            </Grid>
-            <Grid
-              item
-              xs={1}
-              style={{
-                position: "relative",
-                displayPrint: "inline-block",
-              }}
-            >
-              <IconButton
-                onClick={() => {
-                  addItem("Y");
+                <ScrollMenu
+                  // LeftArrow={LeftArrow} //좌우 클릭으로 이동
+                  // RightArrow={RightArrow}
+                  onWheel={onWheel}
+                >
+                  <RoomInfo />
+                  {noRooms.map((room) => (
+                    <>
+                      <NSRoomCard
+                        key={room.id}
+                        sessionName={room.session_name}
+                        partici={room.count}
+                      />
+                    </>
+                  ))}
+                </ScrollMenu>
+              </Grid>
+              <Grid
+                item
+                xs={0.8}
+                style={{
+                  position: "relative",
+                  display: "inline-block",
+                  // backgroundColor: "yellow",
                 }}
-                sx={{ color: "white", top: "43%" }}
               >
-                <AddCircleOutlineIcon />
-              </IconButton>
+                <IconButton
+                  onClick={() => {
+                    addItem("N");
+                  }}
+                  sx={{ color: "white", top: "45%", width: "80px" }}
+                >
+                  <AddCircleOutlineIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+            <Grid container sx={{ marginTop: "2%" }}>
+              <Grid
+                item
+                xs={11.2}
+                style={{
+                  position: "relative",
+                  displayPrint: "inline-block",
+                  // backgroundColor: "red",
+                  // marginTop: "2%",
+                  height: "100%",
+                }}
+              >
+                <ScrollMenu
+                  // LeftArrow={LeftArrow}
+                  // RightArrow={RightArrow}
+                  onWheel={onWheel}
+                >
+                  {yesRooms.map((room) => (
+                    <>
+                      <FTRoomCard
+                        key={room.id}
+                        sessionName={room.session_name}
+                        partici={room.count}
+                      />
+                    </>
+                  ))}
+                </ScrollMenu>
+              </Grid>
+              <Grid
+                item
+                xs={0.8}
+                style={{
+                  position: "relative",
+                  displayPrint: "inline-block",
+                  position: "relative",
+                }}
+              >
+                <IconButton
+                  onClick={() => {
+                    addItem("Y");
+                  }}
+                  sx={{ color: "white", top: "45%", width: "80px" }}
+                >
+                  <AddCircleOutlineIcon />
+                </IconButton>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

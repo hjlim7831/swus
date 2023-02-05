@@ -12,6 +12,7 @@ import BasicModalDialog from "./pages/Accounts/UserModal";
 import Lounge from "./pages/Lounge/SideBar";
 import GroupPage from "./pages/GroupPage/GroupPage";
 import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
+import NSRoom from "./pages/StudyCam/NSRoom";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<StudyRoomMain />} />
+          <Route path="/nsroom" element={<NSRoom />} />
         </Routes>
       </BrowserRouter>
     </>
