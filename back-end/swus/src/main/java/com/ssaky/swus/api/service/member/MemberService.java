@@ -71,7 +71,7 @@ public class MemberService {
 
     public String updateInfo(int memberId, MemberUpdateReq req){
         Optional<Member> memberO = memberRepository.findById(memberId);
-        // 1. memberId에 해당하는 회원이 있을 경우
+        // 1. memberId에 해당하는 회원이 없을 경우
         if (memberO.isEmpty()){
             throw new InvalidValueException("Invalid memberId. Check Token");
         }
