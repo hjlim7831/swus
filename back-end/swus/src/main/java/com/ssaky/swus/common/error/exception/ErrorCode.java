@@ -31,9 +31,11 @@ public enum ErrorCode {
     ROOM_IS_FULL(409, "R001", "Room is Full"),
     ROOM_IS_ON_GAME(409, "R002", "Room is on Game"),
     ROOM_IS_OFFLINE(404, "R003", "Room is OFF"),
-    ROOM_PASSWORD_NOT_MATCH(400, "R004", "Room password is Not Match")
-    ;
+    ROOM_PASSWORD_NOT_MATCH(400, "R004", "Room password is Not Match"),
 
+
+    // Business
+    BUSINESS_EXCEPTION_ERROR(400, "B001", "Business Exception Occurs");
 
     private final String code;
     private final String message;

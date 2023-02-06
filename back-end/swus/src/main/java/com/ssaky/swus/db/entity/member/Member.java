@@ -17,6 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 @ToString
 public class Member {
 
+    @Builder
     public Member(int id) {
         this.id = id;
     }
@@ -27,7 +28,19 @@ public class Member {
         this.nickname = form.getNickname();
         this.answer = form.getAnswer();
         this.questionId = form.getQuestionId();
+    }
 
+    @Builder
+    public Member(String email, int id){
+        this.email = email;
+        this.id = id;
+    }
+
+    @Builder
+    public Member(String email, String password, String nickname){
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
     }
 
     @Builder

@@ -15,4 +15,13 @@ public class ParticipantRepository {
     public void joinPublic(PublicParticipant publicParticipant) {
         em.persist(publicParticipant);
     }
+
+    public PublicParticipant findByMemberId(int id){
+        return em.createQuery("select p from PublicParticipant p where p.member.id = :id", PublicParticipant.class)
+                .setParameter("id", id).getSingleResult();
+    }
+
+    public void exit(PublicParticipant participant) {
+        em.remove(participant);
+    }
 }

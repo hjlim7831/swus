@@ -28,8 +28,6 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody LoginReq form){
-        Map<String, Object> resultMap = new HashMap<>();
-
         LoginResp resp = memberService.login(form);
         return ResponseEntity.ok(resp);
     }
