@@ -27,7 +27,7 @@ public class WriteBoardReq {
     private LocalTime finishTime;
 
     @Builder
-    public WriteBoardReq(String category, String title, String content, String day, int boardNumber, LocalDate beginAt, LocalDate endAt, LocalTime startTime, LocalTime finishTime) {
+    public WriteBoardReq(String category, String title, String content, String day, Integer boardNumber, LocalDate beginAt, LocalDate endAt, LocalTime startTime, LocalTime finishTime) {
         this.category = category;
         this.title = title;
         this.content = content;
