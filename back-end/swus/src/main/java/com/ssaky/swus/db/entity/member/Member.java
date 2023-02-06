@@ -1,7 +1,8 @@
 package com.ssaky.swus.db.entity.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssaky.swus.api.request.auth.SignUpReq;
-//import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.db.entity.group.Board;
 import com.ssaky.swus.db.entity.todo.JandiTodo;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
 import lombok.*;
@@ -70,8 +71,9 @@ public class Member {
 
     private String token;
 
-//    @OneToMany(mappedBy = "member", fetch= LAZY)
-//    private List<Board> boards = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", fetch= LAZY)
+    private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch=LAZY)
     private List<TodoPrivate> todoPrivates = new ArrayList<>();
