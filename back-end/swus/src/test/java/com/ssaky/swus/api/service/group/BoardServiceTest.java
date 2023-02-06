@@ -1,10 +1,12 @@
 package com.ssaky.swus.api.service.group;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
+import com.ssaky.swus.api.request.group.UpdateBoardReq;
 import com.ssaky.swus.api.request.group.WriteBoardReq;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.db.entity.group.Board;
 import com.ssaky.swus.db.repository.group.BoardRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +58,7 @@ public class BoardServiceTest {
     }
 
     @Test
-    public void board등록() {
+    public void 모집글등록() {
 
         // given
         WriteBoardReq writeBoardReq = new WriteBoardReq(
@@ -82,5 +84,73 @@ public class BoardServiceTest {
         assertEquals(boardId, board.getBoardId());
         assertEquals("React 공부스터디", board.getTitle());
         assertEquals("React 공부를 해서 마스터가 되봅시다", board.getContent());
+    }
+
+//    public void 모집글상세조회() {
+//        // given
+//
+//        // when
+//
+//        // then
+//    }
+
+    @Test
+    public void 모집글수정() {
+        // given
+        Board board = Board.builder()
+                .title("Spring 스터디 모집")
+                .content("Spring 그 자체가 되실분 구해요")
+                .number(5)
+                .build();
+        boardRepository.save(board);
+
+        UpdateBoardReq updateBoardReq = UpdateBoardReq.builder()
+                .title("SpringBoot 스터디 모집")
+                .content("SpringBoot 그 자체가 되실분 구해요")
+                .boardNumber(3)
+                .build();
+
+        // when
+        boardService.updateBoard(board.getBoardId(), updateBoardReq);
+
+        // then
+        Board changeBoard = boardRepository.findById(board.getBoardId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id = " + board.getBoardId()));
+
+        Assertions.assertEquals("SpringBoot 스터디 모집", changeBoard.getTitle());
+        Assertions.assertEquals("SpringBoot 그 자체가 되실분 구해요", changeBoard.getContent());
+    }
+
+    @Test
+    public void 게시글삭제() {
+        // given
+        Board board = Board.builder()
+                .title("Spring 스터디 모집")
+                .content("Spring 그 자체가 되실분 구해요")
+                .number(5)
+                .build();
+        boardRepository.save(board);
+
+        // when
+        boardService.deleteBoard(board.getBoardId());
+
+        // then
+        Assertions.assertEquals(0, boardRepository.count());
+    }
+
+    @Test
+    public void 존재하지않는게시글삭제() {
+        // given
+        Board board = Board.builder()
+                .title("Spring 스터디 모집")
+                .content("Spring 그 자체가 되실분 구해요")
+                .number(5)
+                .build();
+        boardRepository.save(board);
+
+        // expected
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            boardService.deleteBoard(board.getBoardId() + 1);
+        });
     }
 }
