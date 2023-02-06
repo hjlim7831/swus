@@ -13,7 +13,8 @@ import Lounge from "./pages/Lounge/SideBar";
 import GroupPage from "./pages/GroupPage/GroupPage";
 import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
 import NSRoom from "./pages/StudyCam/NSRoom";
-import MyPageMain from "./pages/MyPageMain/MyPageMain";
+import MyPageMain from "./pages/MyPageMain/Main";
+import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
 
 function App() {
   return (
@@ -29,11 +30,11 @@ function App() {
               <Route exact path=":sessionName" element={<NSRoom />} />
             </Route>
             {/* 마이 페이지 관련 주소 */}
-            <Route exact path="/mypage">
-              <Route exact path="profile/:userId" element={<MyPageMain />} />
+            <Route exact path="/mypage" element={<MyPageMain />}>
+              <Route exact path="profile/:userId" element={<MyProfileMain />} />
               <Route exact path="group/:groupId" />
               <Route exact path="group/:groupId/update" />
-              <Route exact path="myreport/:userId" elemen />
+              <Route exact path="myreport/:userId" element={<MyPageMain />} />
             </Route>
             {/* 그룹 페이지(게시판) 관련 주소 */}
             <Route exact path="/group">

@@ -153,7 +153,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1000x600", // The resolution of your video
+                resolution: "1000x300", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -165,9 +165,7 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter(
-                (device) => device.kind === "videoinput"
-              );
+              var videoDevices = devices.filter((device) => device.kind === "videoinput");
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -204,20 +202,20 @@ class OpenViduApp extends Component {
       mySession.disconnect(); //연결 끊고
     }
 
+    // axios;
+
     // Empty all properties... 초기화
     this.OV = null;
-    // this.setState({  //여기에서 초기화를 해주면 새로고침하는 경우 방이 달라지므로 (undifined 일단 주석처리)
-    //   session: undefined,
-    //   subscribers: [],
-    //   mySessionId: "SessionA",
-    //   myUserName: "Participant" + Math.floor(Math.random() * 100),
-    //   mainStreamManager: undefined,
-    //   publisher: undefined,
-    // });
-    // const { navigate } = this.props;
-    // navigate("/");
-    // const { navigate } = this.props;
-    window.location.href = "/";
+    this.setState({
+      session: undefined,
+      subscribers: [],
+      mySessionId: "SessionA",
+      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mainStreamManager: undefined,
+      publisher: undefined,
+    });
+
+    window.location.href = "/studyroom";
 
     // navigate("/");
   }
@@ -254,7 +252,7 @@ class OpenViduApp extends Component {
                     >
                       <HighlightOffIcon />
                     </IconButton>
-                  </Stack> //면 채팅방 버튼 없는 상위 버튼
+                  </Stack> //채팅방 버튼 없는 상위 버튼
                 ) : (
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
@@ -270,16 +268,13 @@ class OpenViduApp extends Component {
                       onClick={() => {
                         this.leaveSession(); //연결 끊어주고
                         //열람실 메인으로 이동
-                        // const { navigation } = this.props;
                       }}
                     >
                       <HighlightOffIcon />
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>
-                  {mySessionId}
-                </h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>{mySessionId}</h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   {this.state.mySessionId.substr(6, 1) === "Y" ? (
                     //쉬는시간 있으면Y
@@ -288,9 +283,7 @@ class OpenViduApp extends Component {
                     <Clock />
                   )}
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
-                  To-do list
-                </h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -363,13 +356,9 @@ class OpenViduApp extends Component {
                       {this.state.publisher !== undefined ? (
                         <div
                           className="stream-container"
-                          onClick={() =>
-                            this.handleMainVideoStream(this.state.publisher)
-                          }
+                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
                         >
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                          />
+                          <UserVideoComponent streamManager={this.state.publisher} />
                         </div>
                       ) : null}
                       {this.state.subscribers.map((sub, i) => (

@@ -33,7 +33,7 @@ function NSRoomCard(props) {
   const handleToEnter = () => {
     // axios
     //   .post(`http://i8a302.p.ssafy.io:8081/studyrooms/${sessionName}`, {
-    //     // "user_id": Integer,
+    //     user_id: userId,
     //   })
     //   .then((response) => {
     //     console.log(response);
@@ -43,9 +43,7 @@ function NSRoomCard(props) {
 
   return (
     <>
-      <Card
-        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
-      >
+      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
         <div
           style={{
             width: 200,
@@ -105,9 +103,7 @@ function NSRoomCard(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          Non-Stop 열람실 #{sessionName} 입장하기
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Non-Stop 열람실 #{sessionName} 입장하기</DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>
