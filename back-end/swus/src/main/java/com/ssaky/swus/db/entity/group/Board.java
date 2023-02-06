@@ -1,18 +1,15 @@
 package com.ssaky.swus.db.entity.group;
 
+import com.ssaky.swus.api.request.group.UpdaterBoardReq;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
-@ToString
 @Table(name = "board")
 @Entity
 public class Board extends BaseTimeEntity{
@@ -55,5 +52,18 @@ public class Board extends BaseTimeEntity{
         this.content = content;
         this.views = 0;
         this.number = number;
+    }
+
+    public UpdaterBoardReq.UpdaterBoardReqBuilder toUpdater() {
+        return UpdaterBoardReq.builder()
+                .title(title)
+                .content(content)
+                .boardNumber(number);
+    }
+
+    public void update(UpdaterBoardReq updaterBoardReq) {
+        title = updaterBoardReq.getTitle();
+        content = updaterBoardReq.getContent();
+        number = updaterBoardReq.getBoardNumber();
     }
 }
