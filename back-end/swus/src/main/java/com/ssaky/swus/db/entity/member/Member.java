@@ -3,6 +3,8 @@ package com.ssaky.swus.db.entity.member;
 import com.ssaky.swus.api.request.auth.SignUpReq;
 //import com.ssaky.swus.db.entity.group.Board;
 import com.ssaky.swus.api.request.member.MemberUpdateReq;
+import com.ssaky.swus.db.entity.Room.PublicParticipant;
+import com.ssaky.swus.db.entity.study.Study;
 import com.ssaky.swus.db.entity.todo.JandiTodo;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
 import lombok.*;
@@ -36,15 +38,28 @@ public class Member {
 
     private String token;
 
+    // 작성자 : 임혜진
+    // Cascade 어떻게 걸어야되지...
 //    @OneToMany(mappedBy = "member", fetch= LAZY)
 //    private List<Board> boards = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "member", fetch=LAZY)
+    @OneToMany(mappedBy = "member", fetch=LAZY, cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "member", fetch=LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<TodoPrivate> todoPrivates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch=LAZY)
+    @OneToMany(mappedBy = "member", fetch=LAZY, cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "member", fetch=LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<JandiTodo> jandiTodos = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member", fetch=LAZY, cascade = CascadeType.ALL)
+//    @OneToOne(mappedBy = "member", fetch=LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private Study study;
+
+    @OneToOne(mappedBy = "member", fetch=LAZY, cascade = CascadeType.ALL)
+//    @OneToOne(mappedBy = "member", fetch=LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private PublicParticipant publicParticipant;
+
 
     @Builder
     public Member(int id) {
