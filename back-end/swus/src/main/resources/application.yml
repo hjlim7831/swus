@@ -74,4 +74,10 @@ swagger:
     /swagger-resources/**/*,
     /v3/api-docs/**,
     /auth/**,
+    
+    /chat/**,
+    /pub/**,
+    /sub/**,
+    /webjars/**,
+    /ws-stomp/**,
 #    /**

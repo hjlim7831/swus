@@ -46,10 +46,8 @@ public class SecurityConfig {
         // JWT를 이용해 인증할 예정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        //채팅기능 구현하기 위해서 잠깐 주석처리 start
         // Spring Security JWT Filter load
         http.addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class);
-        //주석처리 end
 
 
         // auth 열어두기
@@ -95,12 +93,10 @@ public class SecurityConfig {
         return customAuthenticationFilter;
     }
 
-    //채팅 구현하기 위해 잠깐 주석처리 start
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter(){
         return new JwtAuthorizationFilter();
     }
-    //주석처리 end
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
