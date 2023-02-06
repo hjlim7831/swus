@@ -11,6 +11,8 @@ import { indigo } from "@mui/material/colors";
 
 import { Outlet } from "react-router";
 
+import loginback from "./../../loginback.jpg";
+
 const theme = createTheme();
 
 export default function UserPage() {
@@ -26,9 +28,9 @@ export default function UserPage() {
             sm={4}
             md={7}
             sx={{
-              // backgroundImage: { logo },
+              backgroundImage: `url(${ loginback })`,
               backgroundRepeat: "no-repeat",
-              backgroundColor: indigo[900],
+              backgroundColor: "#1A1E33",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

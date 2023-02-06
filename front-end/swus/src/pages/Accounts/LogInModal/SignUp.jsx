@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 import { useSelector } from "react-redux";
 
-import axios from "../../Utils/index";
+import axios from "../../../Utils/index";
 
 export default function SignUpSide() {
   // 비밀번호 찾기용 질문 -> store에서 가져오기
@@ -131,12 +131,12 @@ export default function SignUpSide() {
 
   return (
     <>
-      <Typography component="h1" variant="h5" sx={{ mb:3, mt: 1 }}> {/*display: 'flex', alignContent: 'space-between'}}> */}
+      <Typography component="h1" variant="h5" sx={{ mb:3, mt: 1, display: 'flex', alignContent: 'space-between', color: '#5F3A42' }}>
         Sign Up
         <Link
           href="#"
           variant="h5"
-          style={{ textDecoration: "none", color: "black", marginLeft: 100, fontSize: 17 }}
+          style={{ textDecoration: "none", color: "black", marginLeft: 100, fontSize: 17, color: '#5F3A42'}}
         >
           Sign In
         </Link>
@@ -236,7 +236,7 @@ export default function SignUpSide() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 3, mb: 2, backgroundColor: "#E2B9B3", color: '#5F3A42' }}
         >
           Sign Up
         </Button>

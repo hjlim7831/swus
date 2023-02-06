@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 // import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,15 +14,20 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { indigo } from "@mui/material/colors";
+// import { indigo } from "@mui/material/colors";
+
+import { useNavigate } from "react-router-dom";
 
 import logo from "./../../logo.png";
 
 const drawerWidth = 240;
 // const mainItems = ["Login"];
-const navItems = ["Study Room", "Group", "Lounge", "Mypage", "Login"];
+const token = sessionStorage.getItem("token");
+const navItems = token ? [{ name: "Study Room", path: "/studyroom" }, { name: "Group", path: "/group/mystudy/:userId" }, { name: "Lounge", path: "/lounge"}, { name: "Mypage", path: "/mypage/profile/:userId" }, { name: "Logout", path: "" }] : [{ name : "login", path: "/account/login" }];
 
 function DrawerAppBar(props) {
+  const navigate = useNavigate();
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -32,16 +37,16 @@ function DrawerAppBar(props) {
 
   const drawer = (
     // 햄거버 -> side 바
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center", backgroundColor: "#1A1E33", height: "100vh" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        <img src={logo} width="65px" heigth="58px" alt="react" />
+        <img src={logo} width="65px" heigth="58px" alt="react" onClick={() => navigate("/")}/>
       </Typography>
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+          <ListItem key={item.name} disablePadding>
+            <ListItemButton sx={{ textAlign: "center", color: "white" }} onClick={() => navigate(item.path)}>
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -66,7 +71,7 @@ function DrawerAppBar(props) {
             sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
-            <img src={logo} width="65px" heigth="58px" alt="react" />
+            <img src={logo} width="65px" heigth="58px" alt="react"  onClick={() => navigate("/")}/>
           </IconButton>
 
           {/* 메인페이지 */}
@@ -75,13 +80,13 @@ function DrawerAppBar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            <img src={logo} width="65px" heigth="58px" alt="react" />
+            <img src={logo} width="65px" heigth="58px" alt="react"  onClick={() => navigate("/")}/>
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
+              <Button key={item.name} sx={{ color: "#fff" }} onClick={() => navigate(item.path)}>
+                {item.name}
               </Button>
             ))}
           </Box>

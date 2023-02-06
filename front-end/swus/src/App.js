@@ -8,7 +8,13 @@ import LogIn from "./pages/Accounts/LogIn";
 import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
-import Lounge from "./pages/Lounge/SideBar";
+
+import Lounge from "./pages/Lounge/Lounge";
+
+import UserModal from "./pages/Accounts/LogInModal/UserModal";
+import LogInModal from "./pages/Accounts/LogInModal/LogIn";
+import SignUpModal from "./pages/Accounts/LogInModal/SignUp";
+import FindPasswordModal from "./pages/Accounts/LogInModal/FindPassword";
 
 function App() {
   return (
@@ -46,6 +52,13 @@ function App() {
             <Route exact path="login" element={<LogIn />} />
             <Route exact path="signup" element={<SignUp />} />
             <Route exact path="findpassword" element={<FindPassword />} />
+          </Route>
+
+          {/* Login modal */}
+          <Route exact path="/accounts" element={<UserModal />}>
+            <Route exact path="login" element={<LogInModal />} />
+            <Route exact path="signup" element={<SignUpModal />} />
+            <Route exact path="findpassword" element={<FindPasswordModal />} />
           </Route>
         </Routes>
       </BrowserRouter>
