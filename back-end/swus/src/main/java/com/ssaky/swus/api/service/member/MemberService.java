@@ -32,7 +32,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public int join(SignUpReq form){
+    public int join(SignUpReq form) {
         // 1. 빈 값들이 있다면 Exception 처리
         if (form.getEmail().equals("") || form.getEmail() == null) {
             throw new InvalidValueException("이메일을 입력하세요.");
@@ -87,7 +87,7 @@ public class MemberService {
             return "success_change_nickname";
         }
         
-        // 4. oldPassword가 memberO에 있는 password와 일치할 경우
+        // 4. oldPassword가 memberO에 있는 password와 일치하지 않을 경우
         if (!memberO.get().getPassword().equals(req.getOldPassword())){
             throw new InvalidValueException("기존 비밀번호가 일치하지 않습니다.");
         }
@@ -96,7 +96,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void delete(int memberId){
+    public void delete(int memberId) {
         Optional<Member> memberO = memberRepository.findById(memberId, Member.class);
         if (memberO.isPresent()){
             memberRepository.delete(memberO.get());
@@ -139,16 +139,16 @@ public class MemberService {
 
     public LoginResp login(LoginReq form) {
         Optional<Member> member = memberRepository.findByEmailAndPassword(form.getEmail(), form.getPassword());
-        if (member.isPresent()){
+        if (member.isPresent()) {
             String accessToken = TokenUtils.generateJwtToken(member.get());
             LoginResp resp = LoginResp.builder().member(member.get()).accessToken(accessToken).build();
             return resp;
-        }else{
+        } else {
             throw new LoginFailException(form.getEmail());
         }
     }
 
-    public boolean checkAnswerForPasswordQuestion(CheckPwdReq form){
+    public boolean checkAnswerForPasswordQuestion(CheckPwdReq form) {
         Optional<Member> member = memberRepository.findByEmailAndQuestionIdAndAnswer(form.getEmail(), form.getQuestionId(), form.getAnswer());
         if (member.isPresent()) {
             return emailService.sendEmail(member.get());
