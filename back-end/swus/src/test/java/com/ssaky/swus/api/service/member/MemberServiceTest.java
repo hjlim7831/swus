@@ -172,7 +172,8 @@ class MemberServiceTest {
     }
 
     @Test
-    public void 회원_탈퇴후_공공열람실_참여자_테이블_확인(){
-        // TODO: 열람실 참여자로 생성해두기
+    public void 회원_탈퇴후_공공열람실_참여자_테이블_확인() {
+        // TODO: 테스트 코드 작성하기 (물어보기)
+
     }
 }

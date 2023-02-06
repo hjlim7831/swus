@@ -128,7 +128,7 @@ public class MemberService {
         Optional<MemberInfoGetResp> respO = memberRepository.findById(memberId, MemberInfoGetResp.class);
         if (respO.isPresent()){
             return respO.get();
-        }else{
+        } else {
             throw new InvalidValueException("Invalid memberId. Check Token");
         }
     }
