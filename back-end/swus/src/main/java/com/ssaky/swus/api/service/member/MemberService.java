@@ -33,34 +33,69 @@ public class MemberService {
 
     @Transactional
     public int join(SignUpReq form){
+        // 1. 빈 값들이 있다면 Exception 처리
+        if (form.getEmail().equals("") || form.getEmail() == null) {
+            throw new InvalidValueException("이메일을 입력하세요.");
+        }
+
+        if (form.getPassword().equals("") || form.getPassword() == null) {
+            throw new InvalidValueException("비밀번호를 입력하세요.");
+        }
+
+        if (form.getNickname().equals("") || form.getNickname() == null) {
+            throw new InvalidValueException("닉네임을 입력하세요.");
+        }
+
+        if (form.getQuestionId() == 0) {
+            throw new InvalidValueException("비밀번호 확인 질문을 선택해 주세요.");
+        }
+
+        if (form.getAnswer().equals("") || form.getAnswer() == null) {
+            throw new InvalidValueException("비밀번호 확인 질문에 대한 답을 입력해 주세요.");
+        }
+
         Member member = new Member(form);
         log.debug(String.valueOf(member));
 
-        // 1. 이메일 중복 확인하기
+
+        // 2. 이메일 중복 확인하기
         validateDuplicateEmail(form.getEmail());
 
-        // 2. 회원 Table에 회원정보 저장하기
+        // 3. 회원 Table에 회원정보 저장하기
         memberRepository.save(member);
 
-        // 3. 공부 시간 Table 생성하기
+        // 4. 공부 시간 Table 생성하기
         studyService.save(member);
         return member.getId();
     }
 
-    public void updateInfo(int memberId, MemberUpdateReq req){
+    public String updateInfo(int memberId, MemberUpdateReq req){
         Optional<Member> memberO = memberRepository.findById(memberId);
         // 1. memberId에 해당하는 회원이 있을 경우
         if (memberO.isEmpty()){
             throw new InvalidValueException("Invalid memberId. Check Token");
         }
-        // 2. oldPassword가 memberO에 있는 password와 일치할 경우
+        
+        // 2. 닉네임이 입력되어 있지 않을 경우
+        if (memberO.get().getNickname().equals("") || memberO.get().getNickname() == null){
+            throw new InvalidValueException("닉네임을 입력해주세요.");
+        }
+
+        // 3. oldPassword가 비어있을 경우 -> 비밀번호는 수정하지 않음
+        if (memberO.get().getPassword().equals("") || memberO.get().getPassword() == null) {
+            memberO.get().updateNickname(req);
+            return "success_change_nickname";
+        }
+        
+        // 4. oldPassword가 memberO에 있는 password와 일치할 경우
         if (!memberO.get().getPassword().equals(req.getOldPassword())){
             throw new InvalidValueException("기존 비밀번호가 일치하지 않습니다.");
         }
         memberO.get().updateInfo(req);
-
+        return "success_change_info";
     }
 
+    @Transactional
     public void delete(int memberId){
         Optional<Member> memberO = memberRepository.findById(memberId, Member.class);
         if (memberO.isPresent()){
@@ -68,7 +103,10 @@ public class MemberService {
         }else{
             throw new InvalidValueException("Invalid memberId. Check Token");
         }
-
+    }
+    @Transactional
+    public void deleteById(int memberId) {
+        memberRepository.deleteById(memberId);
     }
 
     public void validateDuplicateEmail(String email){
@@ -112,9 +150,9 @@ public class MemberService {
 
     public boolean checkAnswerForPasswordQuestion(CheckPwdReq form){
         Optional<Member> member = memberRepository.findByEmailAndQuestionIdAndAnswer(form.getEmail(), form.getQuestionId(), form.getAnswer());
-        if (member.isPresent()){
+        if (member.isPresent()) {
             return emailService.sendEmail(member.get());
-        }else{
+        } else {
             throw new UncorrectAnswerException("wrong answer for question");
         }
     }

@@ -25,7 +25,6 @@ public class MemberController {
     public ResponseEntity<?> getInfo(Authentication authentication){
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
-
         return ResponseEntity.ok(memberService.findOneInfo(memberId));
 
     }
@@ -35,8 +34,8 @@ public class MemberController {
         Map<String, Object> resultMap = new HashMap<>();
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
-        memberService.updateInfo(memberId, req);
-        resultMap.put("msg", "success_update_user");
+        String msg = memberService.updateInfo(memberId, req);
+        resultMap.put("msg", msg);
         return ResponseEntity.ok(resultMap);
     }
 

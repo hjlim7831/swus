@@ -43,7 +43,7 @@ class MemberServiceTest {
     static int memberId2;
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         String email = "helenalim1205@gmail.com";
         String password = "ssafy";
 
@@ -61,7 +61,7 @@ class MemberServiceTest {
     }
 
     @Test
-    public void 회원정보_조회(){
+    public void 회원정보_조회() {
         MemberInfoGetResp resp = memberService.findOneInfo(memberId);
         System.out.println(resp);
         assertEquals("helenalim1205@gmail.com", resp.getEmail());
@@ -69,7 +69,7 @@ class MemberServiceTest {
     }
 
     @Test
-    public void 회원정보_수정_기존_비밀번호_다름(){
+    public void 회원정보_수정_기존_비밀번호_다름() {
         String nickname = "상상12";
         String newPassword = "ssafy123";
         MemberUpdateReq req = MemberUpdateReq.builder()
@@ -82,7 +82,7 @@ class MemberServiceTest {
     }
 
     @Test
-    public void 회원정보_수정_기존_비밀번호_같음(){
+    public void 회원정보_수정_기존_비밀번호_같음() {
         String nickname = "상상12";
         String newPassword = "ssafy123";
         MemberUpdateReq req = MemberUpdateReq.builder()
@@ -92,16 +92,17 @@ class MemberServiceTest {
 
         memberService.updateInfo(memberId, req);
 
-        MemberInfoGetResp resp = memberService.findOneInfo(memberId);
         Member one = memberService.findOne(memberId);
         assertEquals(one.getNickname(), nickname);
         assertEquals(one.getPassword(), newPassword);
     }
 
     @Test
-    public void 회원_탈퇴(){
+    public void 회원_탈퇴() {
         memberService.delete(memberId);
+//        memberService.deleteById(memberId);
         // TODO: 다른 테이블도 살아있는지 확인하기
+        assertEquals(1, memberRepository.count());
 
 
     }

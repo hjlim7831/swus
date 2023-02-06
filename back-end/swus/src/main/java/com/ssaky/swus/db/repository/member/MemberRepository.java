@@ -13,6 +13,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     void delete(Member member);
 
+    void deleteById(int id);
+
     <T> Optional<T> findById(int id, Class<T> type);
 
     Optional<Member> findByEmail(String email);
@@ -21,5 +23,5 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     Optional<Member> findByEmailAndQuestionIdAndAnswer(String email, int questionId, String answer);
 
-
+    long count();
 }

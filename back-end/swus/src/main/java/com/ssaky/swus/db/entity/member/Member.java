@@ -39,6 +39,7 @@ public class Member {
 //    @OneToMany(mappedBy = "member", fetch= LAZY)
 //    private List<Board> boards = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "member", fetch=LAZY)
     private List<TodoPrivate> todoPrivates = new ArrayList<>();
 
@@ -83,6 +84,10 @@ public class Member {
     public void updateInfo(MemberUpdateReq req){
         this.nickname = req.getNickname();
         this.password = req.getNewPassword();
+    }
+
+    public void updateNickname(MemberUpdateReq req){
+        this.nickname = req.getNickname();
     }
 
 
