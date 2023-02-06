@@ -40,7 +40,7 @@ public class TodoDailyUpdateServiceTest {
     static int memberId2;
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         String email = "helenalim1205@gmail.com";
         String password = "ssafy";
 
