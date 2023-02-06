@@ -31,7 +31,7 @@
             </div>
         </div>
         <ul class="list-group">
-            <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId" v-on:click="enterRoom(item.roomId)">
+            <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.name" v-on:click="enterRoom(item.name)">
                 {{item.name}}
             </li>
         </ul>
@@ -74,11 +74,11 @@
                         .catch( response => { alert("채팅방 개설에 실패하였습니다."); } );
                     }
                 },
-                enterRoom: function(roomId) {
+                enterRoom: function(name) {
                     var sender = prompt('대화명을 입력해 주세요.');
                     localStorage.setItem('wschat.sender',sender);
-                    localStorage.setItem('wschat.roomId',roomId);
-                    location.href="/chat/room/enter/"+roomId;
+                    localStorage.setItem('wschat.roomName',name);
+                    location.href="/chat/room/enter/"+name;
                 }
             }
         });

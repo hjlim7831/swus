@@ -19,6 +19,6 @@ public class ChatController {
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) //message 타입이 ENTER라면
             message.setMessage(message.getSender() + "님이 입장하셨습니다."); // 환영멘트를 메세지에 저장
         //ChatMessage 객체를 메세지로 변환하여 목적지로 전송함
-        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomName(), message);
     }
 }

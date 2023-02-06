@@ -35,13 +35,15 @@ public class ChatRoomController {
     @PostMapping("/room")
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
+        log.debug("createRoom호출. name : "+name);
         return chatRoomRepository.createChatRoom(name);
     }
 
     //채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
+        log.debug("roomDetail호출. roomdId : "+roomId);
+//        model.addAttribute("roomName", roomId);
         return "/chat/roomdetail";
     }
 
@@ -49,6 +51,16 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findRoomById(roomId);
+        log.debug("roomInfo호출. roomId : "+roomId);
+        return chatRoomRepository.findRoomByName(roomId);
+    }
+
+    //휴게실 입장시 채팅방 입장
+    @GetMapping("/breakrooms/chat")
+    public String breakDetail(Model model) {
+        String breakChatId = "breakroom";
+        log.debug("roomDetail호출. roomdId : "+breakChatId);
+        model.addAttribute("roomId", breakChatId);
+        return "/chat/roomdetail";
     }
 }

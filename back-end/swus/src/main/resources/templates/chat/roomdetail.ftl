@@ -50,37 +50,37 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                roomId: '',
+                roomName: '',
                 room: {},
                 sender: '',
                 message: '',
                 messages: []
             },
             created() {
-                this.roomId = localStorage.getItem('wschat.roomId');
+                this.roomName = localStorage.getItem('wschat.roomName');
                 this.sender = localStorage.getItem('wschat.sender');
                 this.findRoom();
             },
             methods: {
                 findRoom: function() {
-                    axios.get('/chat/room/'+this.roomId).then(response => { this.room = response.data; });
+                    axios.get('/chat/room/'+this.roomName).then(response => { this.room = response.data; });
                 },
                 sendMessage: function() {
-                    ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
+                    ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomName:this.roomName, sender:this.sender, message:this.message}));
                     this.message = '';
                 },
                 recvMessage: function(recv) {
-                    this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
+                    this.messages.push({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
                 }
             }
         });
         // pub/sub event
         ws.connect({}, function(frame) {
-            ws.subscribe("/sub/chat/room/"+vm.$data.roomId, function(message) {
+            ws.subscribe("/sub/chat/room/"+vm.$data.roomName, function(message) {
                 var recv = JSON.parse(message.body);
                 vm.recvMessage(recv);
             });
-            ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomId:vm.$data.roomId, sender:vm.$data.sender}));
+            ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomName:vm.$data.roomName, sender:vm.$data.sender}));
         }, function(error) {
             alert("error "+error);
         });

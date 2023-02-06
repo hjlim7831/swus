@@ -23,13 +23,13 @@ public class ChatRoomRepository {
         return chatRooms;
     }
 
-    public ChatRoom findRoomById(String id) {
-        return chatRoomMap.get(id);
+    public ChatRoom findRoomByName(String name) {
+        return chatRoomMap.get(name);
     }
 
     public ChatRoom createChatRoom(String name) {
         ChatRoom chatRoom = ChatRoom.create(name);
-        chatRoomMap.put(chatRoom.getRoomId(), chatRoom);
+        chatRoomMap.put(chatRoom.getName(), chatRoom);
         return chatRoom;
     }
 }
