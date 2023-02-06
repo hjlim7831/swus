@@ -6,6 +6,7 @@ import com.ssaky.swus.api.response.todo.DailyTodoResp;
 import com.ssaky.swus.api.response.todo.TodoGetResp;
 import com.ssaky.swus.api.response.todo.TodoJandiResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
+import com.ssaky.swus.common.utils.DateUtils;
 import com.ssaky.swus.db.entity.todo.JandiTodo;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
 import com.ssaky.swus.db.repository.todo.JandiTodoRepository;
@@ -61,7 +62,6 @@ public class TodoService {
         } else{
             throw new InvalidValueException("invalid num");
         }
-
     }
 
     /**
@@ -87,28 +87,11 @@ public class TodoService {
      */
     @Transactional
     protected void saveAllDailyTodoCount(List<MemberTodoCount> todoCountList) {
-        Date yesterday = getYesterday();
-        for(MemberTodoCount m: todoCountList) {
+        Date yesterday = DateUtils.getYesterday();
+        for (MemberTodoCount m: todoCountList) {
             JandiTodo jandiTodo = new JandiTodo(yesterday, m);
             jandiTodoRepository.save(jandiTodo);
         }
-    }
-
-    /**
-     * 어제 날짜 가져오기 (새벽 6시 기준으로 입력하므로)
-     * @return java.sql.Date
-     */
-    private Date getYesterday(){
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA);
-        final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
-        log.debug("Today: "+SDF.format(calendar.getTime()));
-
-        calendar.add(Calendar.DATE, -1);
-
-        String yesterdayStr = SDF.format(calendar.getTime());
-        log.debug("Yesterday: "+yesterdayStr);
-
-        return Date.valueOf(yesterdayStr);
     }
 
     /**

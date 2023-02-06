@@ -7,14 +7,21 @@ import com.ssaky.swus.api.response.study.CoreTimeResp;
 import com.ssaky.swus.api.response.study.TargetTimeResp;
 import com.ssaky.swus.api.response.study.TotalTimeResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
+import com.ssaky.swus.common.utils.DateUtils;
 import com.ssaky.swus.db.entity.member.Member;
+import com.ssaky.swus.db.entity.study.JandiTime;
+import com.ssaky.swus.db.entity.study.JandiTimeId;
 import com.ssaky.swus.db.entity.study.Study;
+import com.ssaky.swus.db.repository.study.JandiStudyRepository;
 import com.ssaky.swus.db.repository.study.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +31,36 @@ import java.util.Optional;
 public class StudyService {
 
     private final StudyRepository studyRepository;
+    private final JandiStudyRepository jandiStudyRepository;
+
+    /**
+     * 6시 기준 순공, 총공시간 초기화 / Jandi 기록 입력
+     */
+    @Scheduled(cron = "0 0 06 * * ?", zone = "Asia/Seoul")
+    @Transactional
+    protected void dailyUpdate() {
+        // 1. 멤버별로 순공, 총공 시간 가져오기
+        List<Study> studyTimeList = studyRepository.findAll();
+
+        // 3. 잔디 기록 입력하기 (멤버별 순공, 총공시간)
+        saveAllDailyStudyTime(studyTimeList);
+
+        // 2. 순공, 총공시간 0으로 초기화 하기
+        jandiStudyRepository.initiateCoreAndTotalTime();
+    }
+
+    @Transactional
+    protected void saveAllDailyStudyTime(List<Study> studyTimeList) {
+        Date yesterday = DateUtils.getYesterday();
+        for(Study s: studyTimeList) {
+            JandiTimeId id = JandiTimeId.builder()
+                    .studyAt(yesterday).memberId(s.getMemberId()).build();
+            JandiTime jandiTime = JandiTime.builder()
+                    .coreTime(s.getNowCoreTime()).totalTime(s.getNowTotalTime()).id(id).build();
+            jandiStudyRepository.save(jandiTime);
+        }
+    }
+    
 
     @Transactional
     public void save(Member member){
