@@ -47,6 +47,11 @@ function CreateArticleForm() {
 			setInputs({...inputs, [name] : value})
 		}
 	}
+
+	const handleupdateField = (e) => {
+		setInputs({...inputs, [e.target.name] : e.target.value})
+		console.log(e.target.value)
+  };
 	
 	const blank = /^\s+|\s+$/g;
 
@@ -111,10 +116,10 @@ function CreateArticleForm() {
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
-							<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+							<p style={{ paddingLeft: 10, display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
 								게시글 작성
 							</p>
-							<div style={{ display: "flex", alignItems: "center", justifyItems: "space-between"}}>
+							<div style={{ display: "flex", alignItems: "center" }}>
 								<Button 
 									type="submit" 
 									variant='contained' 
@@ -130,42 +135,51 @@ function CreateArticleForm() {
 								<p>유형 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
-							<div style={{ display: "flex", alignItems: "center"}}>
-								<Select
-									label="유형"
-									name="category"
-									value={inputs.category}
-									onChange={onHandleInput}
-									size="small"
-									error={!inputs.category.replace(blank, "")}
-								>
-									{inputs.category ? '' : <MenuItem value=""> -- </MenuItem>}
-									<MenuItem value="study">스터디</MenuItem>
-									<MenuItem value="mate">메이트</MenuItem>
-								</Select>
-							</div>
+							<Grid item xs={4} style={{ display: "flex", alignItems: "center"}}>
+								<div>
+									<TextField
+										label="유형"
+										name="category"
+										select
+										required
+										value={inputs.category}
+										onChange={onHandleInput}
+										fullWidth
+										size="small"
+										error={!inputs.category.replace(blank, "")}
+										style={{ width: "100px"}}
+									>
+										{inputs.category? '' : <MenuItem value=""> -- </MenuItem>}
+                    <MenuItem value="study">스터디</MenuItem>
+                    <MenuItem value="mate">메이트</MenuItem>
+									</TextField>
+								</div>
+							</Grid>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
-						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
+						<Grid container style={{ alignItems: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
 								<p>제목 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
-							<div style={{ display: "flex", alignItems: "center" }}>
-								<TextField 
-									id='title' 
-									name='title' 
-									label="제목"
-									value={inputs.title}
-									variant='outlined' 
-									size="small" 
-									fullWidth
-									onChange={onHandleInput}
-									margin="dense"
-									placeholder="제목을 입력해주세요."
-									error={!inputs.title.replace(blank, "")}
-								/>
-							</div>
+							<Grid item xs={6}>
+								<div style={{ display: "flex", alignItems: "center" }}>
+									<TextField 
+										id='title' 
+										name='title' 
+										label="제목"
+										value={inputs.title}
+										variant='outlined' 
+										size="small" 
+										fullWidth
+										required
+										onChange={onHandleInput}
+										margin="dense"
+										placeholder="제목을 입력해주세요."
+										error={!inputs.title.replace(blank, "")}
+									/>
+								</div>
+							</Grid>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
@@ -330,11 +344,11 @@ function CreateArticleForm() {
 							</div>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
-						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
+						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold", height: "40vh"}}>
 							<Grid item xs={2} sx={{ justifyContent: "center", alignContent: "center", alignItems: "center", justifyItems: "center" }}>
-								<p>상세 내용 </p>
+								<p style={{ marginTop: "25px"}}>상세 내용 </p>
 							</Grid>
-							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
+							<Divider orientation='vertical' sx={{ mr: 3, mt: 0 }}/>
 							<Grid item xs={9}>
 								<TextField  
 									id="content"
@@ -342,14 +356,17 @@ function CreateArticleForm() {
 									variant='outlined' 
 									name="content"
 									value={inputs.content}
-									sx={{ mt: "14px"}} 
+									sx={{ mt: "20px"}} 
 									size="small"
 									margin="normal"
 									multiline
-									rows={3}
+									rows={14}
+									inputProps={{
+										resize: "both"
+									}}
 									fullWidth
 									placeholder="세부 진행 계획에 대해 작성해주세요."
-									onChange={onHandleInput}
+									onChange={handleupdateField}
 								/>
 							</Grid>
 						<Divider orientation='horizontal' flexItem />

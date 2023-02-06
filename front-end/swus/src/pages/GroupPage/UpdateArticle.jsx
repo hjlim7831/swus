@@ -326,7 +326,7 @@ function UpdateArticleForm() {
 									sx={{ my: "14px" }} 
 									size="small"
 									multiline
-									rows={10}
+									rows={13}
 									fullWidth
 									onChange={onHandleInput}
 								/>

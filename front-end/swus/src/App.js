@@ -4,6 +4,11 @@ import ArticleDetail from './pages/GroupPage/ArticleDetail';
 import UpdateArticle from './pages/GroupPage/UpdateArticle';
 import GroupDetail from './pages/GroupPage/GroupDetail';
 import GroupDetailUpdate from './pages/GroupPage/GroupDetailUpdate';
+import NavBar from "./components/NavBar/NavBar";
+import SideBar from "./components/SideBar/SideBar";
+import GroupMain from "./pages/GroupPage/Main"
+
+
 // import Nav from "./components/Nav";
 import { Box } from '@mui/material';
 import { 
@@ -32,7 +37,7 @@ function App() {
             <Route path="myreport/:userId" />
           </Route>
           {/* 그룹 페이지(게시판) 관련 주소 */}
-          <Route exact path="/group">
+          <Route exact path="/group" element={<GroupMain />}>
             <Route path="mystudy/:userId"/>
             <Route path="board" element={<GroupPage/>}/>
             <Route path="board/:boardId" element={<ArticleDetail />}/>

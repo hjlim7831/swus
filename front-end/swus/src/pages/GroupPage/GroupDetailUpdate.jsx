@@ -39,12 +39,11 @@ function GroupDetailUpdate() {
 			return (
 				<>
 					<Grid item xs={2} sx={{ marginBlock: 1 }}>
-						<div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex"}}>
-							<span style={{ verticalAlign: "middle", display: "inline-block"}}>{index + 1}주차</span>
+						<div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex", marginTop: 5}}>
+							<span style={{ marginRight: 30, display: "inline-block"}}>{index + 1}주차</span>
 						</div>
 					</Grid>
-						<Divider orientation='vertical' flexItem sx={{ mr: 3 }}/>
-					<Grid item xs={9} sx={{ marginBlock: 1 }}>
+					<Grid item xs={9} sx={{ marginBlock: 1, marginLeft: 1.5 }}>
 						<TextField
 							variant='outlined'
 							name={"todolist" + String(index)}
@@ -110,7 +109,7 @@ function GroupDetailUpdate() {
 						</div>
 					</Grid>
 						<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 3, backgroundColor: "gray"}}/>
-					<Grid container sx={{ alignItems: "center", display: "flex",  textAlign: "center", FontWeight: "bold" }}>
+					<Grid container sx={{ alignItems: "center", display: "flex",  textAlign: "center", fontWeight: "bold" }}>
 						<Grid item xs={2}>
 							<p>제목</p>
 						</Grid>
@@ -253,27 +252,30 @@ function GroupDetailUpdate() {
 								variant='outlined' 
 								name="groupInfo"
 								value={inputs.groupInfo}
-								sx={{ ml: 1, mt: "14px" }} 
+								sx={{ my: "14px" }} 
 								size="small"
 								multiline
 								rows={10}
 								fullWidth
+								margin='dense'
 								onChange={onHandleInput}
 							/>
 						</Grid>
 							<Divider orientation='horizontal' flexItem />
 					</Grid>
 						<Divider orientation='horizontal' flexItem />
-					<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
-						{getWeekTopics()}
-					</Grid>
-					<Grid container sx={{ justifyContent: "center", display: "flex", marginBlock: 3 }}>
-						<Icon
-							color="primary"
-							sx={{ cursor: "pointer"}}
-							onClick={addTopic}
-						>add_circle</Icon>
-					</Grid>
+					<Container style={{ overflowY: "scroll", height: "250px" }}>
+						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
+							{getWeekTopics()}
+						</Grid>
+						<Grid container sx={{ justifyContent: "center", display: "flex", marginBlock: 3 }}>
+							<Icon
+								color="primary"
+								sx={{ cursor: "pointer"}}
+								onClick={addTopic}
+							>add_circle</Icon>
+						</Grid>
+					</Container>
 				</form>
 			</Container>
     </>

@@ -47,24 +47,6 @@ export default function MiniDrawer() {
           LOUNGE
         </Button>
       </Box>
-
-      {/* <List sx={{ mt:8 }}>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block'}}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: 'center',
-                  px: 2.5,
-                  color: 'white',
-                }}
-              >
-                { text }
-                <ListItemText primary={text} sx={{ opacity: 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
     </Box>
   );
 }
