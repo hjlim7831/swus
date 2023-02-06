@@ -8,8 +8,8 @@ import MyTodoBlock from "./MyTodoBlock";
 function MyReport() {
   return (
     <>
-      <Grid container>
-        <Grid container spacing={3}>
+      <Grid container sx={{ marginLeft: "5%" }}>
+        <Grid container spacing={4}>
           <Grid item xs={4}>
             <Box sx={{ position: "relative" }}>
               <MyTodoBlock />

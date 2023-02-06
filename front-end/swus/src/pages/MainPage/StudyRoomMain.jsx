@@ -34,8 +34,17 @@ function StudyRoomMain() {
   const [noRooms, setnoRooms] = useState([]); //nonstop방만 저장할 배열
   const [yesRooms, setyesRooms] = useState([]); //쉬는시간방만 저장할 배열
 
+  const Token =
+    "eyJyZWdEYXRlIjoxNjc1NjU4MjcxMjU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1NzQ0NjcxLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9._b05MfGI71_ve6bmh6_sYlqtO30wIblzQQWak9UKOEA";
+
   useEffect(() => {
-    axios.get("http://i8a302.p.ssafy.io:8081/studyrooms").then((res) => {
+    axios({
+      method: "get",
+      url: "http://i8a302.p.ssafy.io:8081/studyrooms",
+      headers: {
+        Authorization: `Bearer ${Token}`,
+      },
+    }).then((res) => {
       // console.log(res.data.publics);
 
       if ("success_get_studyrooms") {
@@ -46,6 +55,7 @@ function StudyRoomMain() {
     });
   }, []);
 
+  console.log(rooms);
   useEffect(() => {
     const NR = rooms.filter((room) => room.type === "N");
     setnoRooms(NR);
@@ -98,14 +108,25 @@ function StudyRoomMain() {
           {/* 그리드 컴포넌트 사이 넓이 */}
           <Grid item xs={3} style={{}}>
             {/* todo& 목표 공부시간 묶는 div */}
-            <Grid item xs={8} sx={{ marginTop: 3, marginX: "auto", paddingLeft: "20px" }}>
-              <Typography variant="h5" sx={{ fontSize: 20, color: "white", marginTop: 2 }}>
+            <Grid
+              item
+              xs={8}
+              sx={{ marginTop: 3, marginX: "auto", paddingLeft: "20px" }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ fontSize: 20, color: "white", marginTop: 2 }}
+              >
                 Todo List
               </Typography>
               <Grid
                 item
                 xs={11}
-                sx={{ backgroundColor: "#F4EFE6", borderRadius: 2, paddingX: "10px" }}
+                sx={{
+                  backgroundColor: "#F4EFE6",
+                  borderRadius: 2,
+                  paddingX: "10px",
+                }}
               >
                 <MyTodo />
               </Grid>
@@ -114,14 +135,23 @@ function StudyRoomMain() {
               {/* 목표 공부시간 div */}
               <Typography
                 variant="h5"
-                sx={{ fontSize: 20, color: "white", marginTop: 2, marginBottom: -2 }}
+                sx={{
+                  fontSize: 20,
+                  color: "white",
+                  marginTop: 2,
+                  marginBottom: -2,
+                }}
               >
                 목표 공부 시간
               </Typography>
               <Grid
                 item
                 xs={11}
-                sx={{ backgroundColor: "#F4EFE6", borderRadius: 2, paddingX: "10px" }}
+                sx={{
+                  backgroundColor: "#F4EFE6",
+                  borderRadius: 2,
+                  paddingX: "10px",
+                }}
               >
                 <MyTime />
               </Grid>
@@ -138,7 +168,10 @@ function StudyRoomMain() {
             }}
           >
             <Grid item xs={12}>
-              <Typography variant="h1" sx={{ fontSize: 30, color: "white", marginTop: 2 }}>
+              <Typography
+                variant="h1"
+                sx={{ fontSize: 30, color: "white", marginTop: 2 }}
+              >
                 STUDY ROOM
               </Typography>
             </Grid>

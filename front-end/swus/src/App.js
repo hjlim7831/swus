@@ -18,13 +18,43 @@ import MyPageMain from "./pages/MyPageMain/MyPageMain";
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<StudyRoomMain />} />
-          <Route path="/mypage" element={<MyPageMain />} />
-          <Route path="/nsroom" element={<NSRoom />} />
-        </Routes>
-      </BrowserRouter>
+      <>
+        <BrowserRouter>
+          <Routes>
+            {/* landingPage */}
+            <Route exact path="/" />
+            {/* 공용 열람실 관련 주소 */}
+            <Route exact path="/studyroom">
+              <Route exact path="" element={<StudyRoomMain />} />
+              <Route exact path=":sessionName" element={<NSRoom />} />
+            </Route>
+            {/* 마이 페이지 관련 주소 */}
+            <Route exact path="/mypage">
+              <Route exact path="profile/:userId" element={<MyPageMain />} />
+              <Route exact path="group/:groupId" />
+              <Route exact path="group/:groupId/update" />
+              <Route exact path="myreport/:userId" elemen />
+            </Route>
+            {/* 그룹 페이지(게시판) 관련 주소 */}
+            <Route exact path="/group">
+              <Route exact path="mystudy/:userId" />
+              <Route exact path="board" />
+              <Route exact path="board/:boardId" />
+              <Route exact path="board/:boardId/update" />
+              <Route exact path="board/create" />
+              <Route exact path="studyroom/:sessionName" />
+            </Route>
+            {/* 휴게실 */}
+            <Route exact path="/lounge" />
+            {/* 회원 정보 관련 주소 */}
+            <Route exact path="/account">
+              <Route exact path="login" />
+              <Route exact path="signup" />
+              <Route exact path="findpassword" />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </>
     </>
   );
 }

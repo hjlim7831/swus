@@ -38,12 +38,14 @@ function NSRoomCard(props) {
     //   .then((response) => {
     //     console.log(response);
     //   });
-    navigate("/nsroom", { state: { roomName: sessionName } }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+    navigate(`/studyroom/${sessionName}`, { state: { roomName: sessionName } }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
   };
 
   return (
     <>
-      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
+      <Card
+        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
+      >
         <div
           style={{
             width: 200,
@@ -84,7 +86,11 @@ function NSRoomCard(props) {
             <Button
               variant="contained"
               onClick={handleToOpen}
-              sx={{ marginLeft: "22%", height: "100%", backgroundColor: "#475467" }}
+              sx={{
+                marginLeft: "22%",
+                height: "100%",
+                backgroundColor: "#475467",
+              }}
               startIcon={<AdjustOutlinedIcon></AdjustOutlinedIcon>}
             >
               입장하기
@@ -99,7 +105,9 @@ function NSRoomCard(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Non-Stop 열람실 #{sessionName} 입장하기</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          Non-Stop 열람실 #{sessionName} 입장하기
+        </DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>

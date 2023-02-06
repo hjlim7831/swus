@@ -61,7 +61,7 @@ function StudyGraph() {
       <Box
         sx={{
           width: "100%",
-          height: 450,
+          height: 500,
           backgroundColor: "white",
           borderRadius: 2,
           padding: "10px",

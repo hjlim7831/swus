@@ -32,7 +32,7 @@ function MyTodoBlock() {
       <Box
         sx={{
           width: "100%",
-          height: 450,
+          height: 500,
           backgroundColor: "white",
           borderRadius: 2,
           padding: "10px",
@@ -44,7 +44,11 @@ function MyTodoBlock() {
             <h3 style={{ marginLeft: "40px" }}>To-Do List</h3>
           </Grid>
           <Grid item xs={2}>
-            <IconButton color="black" aria-label="change view" sx={{ paddingTop: "20px" }}>
+            <IconButton
+              color="black"
+              aria-label="change view"
+              sx={{ paddingTop: "20px" }}
+            >
               <AutorenewIcon />
             </IconButton>
           </Grid>
@@ -60,7 +64,11 @@ function MyTodoBlock() {
                 backgroundColor: "skyblue",
               }}
             >
-              <MyTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
+              <MyTodoForm
+                handleSubmit={handleSubmit}
+                value={value}
+                setValue={setValue}
+              />
               <MyTodoList todoData={todoData} setTodoData={setTodoData} />{" "}
               {/*todoData라는 state를 내려줌 List.js에 */}
               {/*자녀컴포넌트에서는 props 파라미터로 받음 */}

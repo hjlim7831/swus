@@ -49,8 +49,13 @@ export default function MiniDrawer() {
   return (
     <>
       <Box
-        sx={{ display: "inline-block", backgroundColor: "#1A1E33", height: "881px" }}
-        boxSizing={openedMixin}
+        sx={{
+          position: "relative",
+          display: "inline-block",
+          backgroundColor: "#1A1E33",
+          height: "100vh",
+        }}
+        // boxSizing={openedMixin}
       >
         <Divider />
 
@@ -79,19 +84,13 @@ export default function MiniDrawer() {
       </Box>
       <Box
         sx={{
-          width: "1500px",
-          height: "881px",
+          width: "1600px",
+          height: "100%",
           display: "inline-block",
-          backgroundColor: "pink",
           position: "relative",
-          marginLeft: "20px",
         }}
       >
-        {content && (
-          <Grid container sx={{ backgroundColor: "skyblue" }}>
-            {selectComponent[content]}
-          </Grid>
-        )}
+        {content && <Grid container>{selectComponent[content]}</Grid>}
       </Box>
     </>
   );

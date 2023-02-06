@@ -9,6 +9,8 @@ import UserVideoComponent from "./UserVideoComponent";
 import { Box } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Clock from "../StudyCam/Clock";
+import ClockTimer from "../StudyCam/ClockTimer";
+
 import MyTodo from "../MyPageReport/MyTodo";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -18,7 +20,6 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 
 //HOC 사용용
-import WithRouter from "./WithRouter";
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -26,6 +27,7 @@ const APPLICATION_SERVER_URL = "http://localhost:5000/";
 class OpenViduApp extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.navigate);
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
@@ -151,7 +153,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1280x700", // The resolution of your video
+                resolution: "1000x600", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -163,7 +165,9 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter((device) => device.kind === "videoinput");
+              var videoDevices = devices.filter(
+                (device) => device.kind === "videoinput"
+              );
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -212,12 +216,16 @@ class OpenViduApp extends Component {
     // });
     // const { navigate } = this.props;
     // navigate("/");
-    // this.props.navigate("/");
+    // const { navigate } = this.props;
+    window.location.href = "/";
+
+    // navigate("/");
   }
 
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
+
     return (
       <>
         <Box sx={{ flexGrow: 1, backgroundColor: "#1A1E33", height: "100%" }}>
@@ -269,11 +277,20 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>{mySessionId}</h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                  {mySessionId}
+                </h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
-                  <Clock />
+                  {this.state.mySessionId.substr(6, 1) === "Y" ? (
+                    //쉬는시간 있으면Y
+                    <ClockTimer />
+                  ) : (
+                    <Clock />
+                  )}
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                  To-do list
+                </h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -346,9 +363,13 @@ class OpenViduApp extends Component {
                       {this.state.publisher !== undefined ? (
                         <div
                           className="stream-container"
-                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                          onClick={() =>
+                            this.handleMainVideoStream(this.state.publisher)
+                          }
                         >
-                          <UserVideoComponent streamManager={this.state.publisher} />
+                          <UserVideoComponent
+                            streamManager={this.state.publisher}
+                          />
                         </div>
                       ) : null}
                       {this.state.subscribers.map((sub, i) => (
@@ -414,11 +435,5 @@ class OpenViduApp extends Component {
     return response.data; // The token
   }
 }
-
-// export default classRouter (props){
-//   const navigation = useNavigation();
-//   return (<OpenviduApp {...props} navigation={navigation}></OpenviduApp>);
-// };
-// export default WithRouter(OpenViduApp);
 
 export default OpenViduApp;
