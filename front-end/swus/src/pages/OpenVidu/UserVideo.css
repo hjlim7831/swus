@@ -15,12 +15,17 @@ video {
   float: left;
   display: inline-block;
   /* background-color: white; */
-  width: 31%;
+  /* width: 31%; */
   height: 30hv;
   margin-top: 1%;
   margin-right: 2%;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
+
+  min-width: 31%;
+  min-height: 31%;
+  /* margin: auto; */
+  flex-grow: 1;
 }
 
 /* .nameTag {
