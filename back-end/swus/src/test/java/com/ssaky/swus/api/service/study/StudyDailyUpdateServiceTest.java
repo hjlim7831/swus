@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@Transactional
+//@Transactional
 public class StudyDailyUpdateServiceTest {
 
     @Autowired MemberService memberService;
@@ -97,7 +97,15 @@ public class StudyDailyUpdateServiceTest {
 
     }
 
-    
+    @Test
+    public void 일주일데이터_가져오기(){
+        List<Study> studyTimeList = studyRepository.findAll();
+        ReflectionTestUtils.invokeMethod(studyService, "saveAllDailyStudyTime", studyTimeList);
+        System.out.println(studyService.getOneWeekData(memberId));
+    }
+
+
+
 
 
 }
