@@ -20,6 +20,7 @@ import static javax.persistence.FetchType.LAZY;
 @ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Study {
+
     @Id
     @Column(name = "member_id")
     private int memberId;
