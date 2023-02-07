@@ -3,10 +3,13 @@ import CreateArticle from './pages/GroupPage/CreateArticle';
 import ArticleDetail from './pages/GroupPage/ArticleDetail';
 import UpdateArticle from './pages/GroupPage/UpdateArticle';
 import GroupDetail from './pages/GroupPage/GroupDetail';
-import GroupDetailUpdate from './pages/GroupPage/GroupDetailUpdate';
+import UpdateGroupDetail from './pages/GroupPage/UpdateGroupDetail';
 import NavBar from "./components/NavBar/NavBar";
 import SideBar from "./components/SideBar/SideBar";
-import GroupMain from "./pages/GroupPage/Main"
+import GroupMain from "./pages/GroupPage/Main";
+import Login from "./pages/Accounts/LogIn";
+import SignUp from "./pages/Accounts/SignUp";
+import MyGroupList from './pages/MyPageProfile/MyGroupList';
 
 
 // import Nav from "./components/Nav";
@@ -33,12 +36,12 @@ function App() {
           <Route exact path="/mypage">
             <Route path="profile/:userId" />
             <Route path="group/:groupId" element={<GroupDetail/>}/>
-            <Route path="group/:groupId/update" element={<GroupDetailUpdate/>}/>
+            <Route path="group/:groupId/update" element={<UpdateGroupDetail/>}/>
             <Route path="myreport/:userId" />
           </Route>
           {/* 그룹 페이지(게시판) 관련 주소 */}
           <Route exact path="/group" element={<GroupMain />}>
-            <Route path="mystudy/:userId"/>
+            <Route path="mystudy/:userId" element={<MyGroupList/>}/>
             <Route path="board" element={<GroupPage/>}/>
             <Route path="board/:boardId" element={<ArticleDetail />}/>
             <Route path="board/:boardId/update" element={<UpdateArticle />}/>
@@ -49,8 +52,8 @@ function App() {
           <Route exact path="/lounge" />
           {/* 회원 정보 관련 주소 */}
           <Route exact path="/account">
-            <Route path="login" />
-            <Route path="signup" />
+            <Route path="login" element={<Login />}/>
+            <Route path="signup" element={<SignUp />}/>
             <Route path="findpassword" />
           </Route>
         </Routes>

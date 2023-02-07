@@ -95,14 +95,14 @@ function UpdateArticleForm() {
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
-							<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+							<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center", paddingLeft: "20px" }}>
 								게시글 수정
 							</p>
 							<div style={{ display: "flex", alignContent: "center"}}>
 								<Button 
 									type="submit" 
 									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3, height: "40px" }}
+									sx={{ backgroundColor: "green", m: 3, height: "40px", "&:hover": { backgroundColor: "green" } }}
 									size="small"
 									onClick={onHandleSubmit}>글 수정</Button>
 							</div>

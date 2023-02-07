@@ -82,7 +82,7 @@ function GroupPage() {
 
 	return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px", height: "85vh", marginTop: 5, minWidth: "80vw"}}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", height: "85vh", marginTop: 3 }}>
 				<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
 					<p style={{ display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
 						<span>스터디 모집게시판</span>
@@ -90,7 +90,7 @@ function GroupPage() {
 					<Button 
 						type="submit" 
 						variant='contained' 
-						sx={{ backgroundColor: "green", m: 3, height: "40px" }}
+						sx={{ backgroundColor: "green", m: 3, height: "40px", "&:hover": { backgroundColor: "green" } }}
 						size="small"
 						onClick={() => {navigate("/group/board/create")}}>글 작성</Button>
 				</Grid>

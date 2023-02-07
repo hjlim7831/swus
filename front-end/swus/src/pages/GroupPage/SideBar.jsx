@@ -1,17 +1,8 @@
-import * as React from "react";
-// import { styled, useTheme } from '@mui/material/styles';
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-// import IconButton from '@mui/material/IconButton';
-// import MenuIcon from '@mui/icons-material/Menu';
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from "@mui/material/ListItemText";
 import { Button } from "@mui/material";
+import "./SideBar.css";
+import { useNavigate } from "react-router-dom";
+
 
 const drawerWidth = 240;
 
@@ -23,29 +14,48 @@ const openedMixin = (theme) => ({
   }),
 });
 
-export default function MiniDrawer() {
+
+
+export default function MiniDrawer(props) {
+
+  const navigate = useNavigate();
+
+  const sideItems = window.location.pathname.slice(7, 12) === "board"
+    ? [
+      { name: "MY STUDY", path: `mystudy/${props.props.userId}`, backgroundColor: "#1A1E33", color: "white" },
+      { name: "STUDY BOARD", path: `board`, backgroundColor: "#DEDCEE", color: "#1A1E33"} 
+    ]
+    : [
+      { name: "MY STUDY", path: `mystudy/${props.props.userId}`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
+      { name: "STUDY BOARD", path: `board`, backgroundColor: "#1A1E33", color: "white"}
+    ]
+
+
   return (
     <Box
-      sx={{ display: "flex", backgroundColor: "#1A1E33", height: "100vh" }}
+      sx={{ display: "flex", backgroundColor: "#1A1E33", height: "200vh" }}
       boxSizing={openedMixin}
     >
-      <CssBaseline />
-      <Divider />
 
       <Box fullWidth sx={{ mt: 11, mx: 4, justifyContent: "center" }}>
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            backgroundColor: "#DEDCEE",
-            width: "170px",
-            height: "50px",
-            color: "#1A1E33",
-            fontSize: "20px",
-          }}
-        >
-          LOUNGE
-        </Button>
+        {sideItems.map((item, index) => {
+          return (
+            <Button
+              disableRipple 
+              variant="contained"
+              fullWidth
+              style={{
+                backgroundColor: item.backgroundColor,
+                color: item.color,
+                width: "180px",
+                height: "60px",
+                fontSize: "20px",
+                marginBlock: "20px",
+              }}
+              onClick={() => {navigate(item.path)}}
+          >{item.name}</Button>
+          )
+        })}
       </Box>
     </Box>
   );

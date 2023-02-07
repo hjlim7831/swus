@@ -50,7 +50,6 @@ function CreateArticleForm() {
 
 	const handleupdateField = (e) => {
 		setInputs({...inputs, [e.target.name] : e.target.value})
-		console.log(e.target.value)
   };
 	
 	const blank = /^\s+|\s+$/g;
@@ -66,6 +65,17 @@ function CreateArticleForm() {
 				selectedDays += "0"
 			}
 		}
+
+		const today = new Date();
+
+		const year = today.getFullYear();
+		const month = today.getMonth() + 1;
+		let day = today.getDate();
+		if (day < 10) {
+			day = "0" + `${day}`;
+    }
+		const nowDate = `${year}` + `0${month}` + `${day}`;
+
 
 		if (!inputs.category.replace(blank, "")) {
 			alert("스터디 유형을 선택해주세요.")
@@ -91,6 +101,9 @@ function CreateArticleForm() {
 		}	else if (Number(inputs.beginAt.replace(/-/gi, "") > Number(inputs.endAt.replace(/-/gi, "")))) {
 			alert("스터디 시작 날짜가 종료 날짜보다 늦습니다!")
 			return
+		}	else if (Number(nowDate) > Number(inputs.beginAt.replace(/-/gi,""))) {
+			alert("스터디 시작 날짜가 이미 지났습니다!")
+			return
 		}
 
 		const payload = {
@@ -109,11 +122,19 @@ function CreateArticleForm() {
 		navigate(`/group/board/:boardId`);
 	}
 
-
+	const dayItems = [
+		{ name: "day0", label: "월" },
+		{ name: "day1", label: "화" },
+		{ name: "day2", label: "수" },
+		{ name: "day3", label: "목" },
+		{ name: "day4", label: "금" },
+		{ name: "day5", label: "토" },
+		{ name: "day6", label: "일" }
+	]
 
 	return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", marginTop: 3 }}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
 							<p style={{ paddingLeft: 10, display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
@@ -123,7 +144,7 @@ function CreateArticleForm() {
 								<Button 
 									type="submit" 
 									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3, height: "40px" }}
+									sx={{ backgroundColor: "green", m: 3, height: "40px", "&:hover": { backgroundColor: "green" } }}
 									size="small"
 									disabled={!true}
 									onClick={onHandleSubmit}>글 작성</Button>
@@ -267,7 +288,7 @@ function CreateArticleForm() {
 										style={{ marginInline: 10 }}
 									/>
 								</div>
-							</Grid>
+						</Grid>
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 							<Grid item xs={2}>
@@ -275,48 +296,16 @@ function CreateArticleForm() {
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
-								<FormControlLabel
-									name="day0"
-									label="월"
-									value={inputs.days[0]}
-									control={<Checkbox checked={inputs.days[0]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day1"
-									label="화"
-									value={inputs.days[1]}
-									control={<Checkbox checked={inputs.days[1]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day2"
-									label="수"
-									value={inputs.days[2]}
-									control={<Checkbox checked={inputs.days[2]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day3"
-									label="목"
-									value={inputs.days[3]}
-									control={<Checkbox checked={inputs.days[3]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day4"
-									label="금"
-									value={inputs.days[4]}
-									control={<Checkbox checked={inputs.days[4]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day5"
-									label="토"
-									value={inputs.days[5]}
-									control={<Checkbox checked={inputs.days[5]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day6"
-									label="일"
-									value={inputs.days[6]}
-									control={<Checkbox checked={inputs.days[6]} onChange={onHandleInput}/>}
-								/>
+								{dayItems.map((item, index) => {
+									return (
+										<FormControlLabel
+										 name={item.name}
+										 label={item.label}
+										 value={inputs.day[index]}
+										 control={<Checkbox checked={inputs.day[index]} onChange={onHandleInput} />}
+										/>
+									)
+								})}
 							</div>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
@@ -324,8 +313,8 @@ function CreateArticleForm() {
 							<Grid item xs={2}>
 								<p>모집인원 <span style={{ color: "red" }}>*</span></p>
 							</Grid>
-							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
-							<div style={{ display: "flex", alignItems: "center"}}>
+							<Divider orientation='vertical' flexItem sx={{ mr: 3 }}/>
+							<div style={{ display: "flex", alignItems: "center" }}>
 								<Select
 									name="recruitmentNumber"
 									value={inputs.recruitmentNumber}
@@ -346,7 +335,7 @@ function CreateArticleForm() {
 					<Divider orientation='horizontal' flexItem />
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold", height: "40vh"}}>
 							<Grid item xs={2} sx={{ justifyContent: "center", alignContent: "center", alignItems: "center", justifyItems: "center" }}>
-								<p style={{ marginTop: "25px"}}>상세 내용 </p>
+								<p style={{ marginTop: "25px" }}>상세 내용 </p>
 							</Grid>
 							<Divider orientation='vertical' sx={{ mr: 3, mt: 0 }}/>
 							<Grid item xs={9}>

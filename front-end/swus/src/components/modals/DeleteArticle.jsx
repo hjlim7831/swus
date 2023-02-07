@@ -1,4 +1,8 @@
+// import { useNavigate } from "react-router-dom"
+
 function deleteArticle() {
+
+  // const navigate = useNavigate();
 
   const Swal = require("sweetalert2");
 
@@ -9,13 +13,26 @@ function deleteArticle() {
     confirmButtonColor: "#d33",
     confirmButtonText: "삭제하기",
     cancelButtonText: "아니요",
-  }).then((res) => {
+  })
+  .then((res) => {
     if (res.isConfirmed) {
-      Swal.fire(
-        "글이 삭제되었습니다.",
-        "",
-        "success"
-      )
+      console.log("삭제 가즈아!")
+      Swal.fire({
+        // "글이 삭제되었습니다.",
+        // "",
+        // "success"
+        title: "글이 삭제되었습니다.",
+        confirmButtonText: "목록으로",
+        confirmButtonColor: "gray",
+        showCancelButton: false,
+        icon: "success",
+      })
+      .then((res) => {
+        if (res.isConfirmed) {
+          console.log("목록?")
+          window.location.reload("http://localhost:3000/group/board");
+        }
+      })
     }
   })
 }

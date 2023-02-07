@@ -52,6 +52,13 @@ function ArticleDetail() {
 		}
 	}, [article.day])
 
+	useEffect(() => {
+		// 글이 지워졌을때 보드로 돌아가는 함수
+		if (article.title === "") {
+			navigate("/group/board")
+		}
+	}, [])
+
 	
 	 
   return (
@@ -59,7 +66,10 @@ function ArticleDetail() {
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px", minWidth: "1000px"}}>
 				<Grid container sx={{ px: 2 }}>
 					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
-    				<p style={{ fontWeight: "bold", fontSize: "30px"}}><span style={(article.category === "스터디") ? { color: "red" } : { color: "blue" } }>[{article.category}]</span> {article.title}</p>
+    				<p style={{ fontWeight: "bold", fontSize: "30px"}}>
+							<span style={(article.category === "스터디") ? { color: "red" } : { color: "blue" }}>[{article.category}]</span>
+							<span style={{ marginLeft: 30 }}>{article.title}</span>
+						</p>
 						<p style={{ paddingLeft: 30, paddingTop: 5}}>
 							<EditOutlinedIcon
 								variant="contained"

@@ -14,10 +14,13 @@ function leaveGroup() {
     
   }).then((res) => {
     if (res.isConfirmed) {
-      Swal.showLoading(Swal.getDenyButton())
-      Swal.fire(
-        "스터디 탈퇴가 완료되었습니다!"
-      )
+      Swal.fire({
+        title: "스터디 탈퇴가 완료되었습니다!",
+        icon: "success"
+      })
+      .then((res) => {
+        window.location.reload("/mypage/group");
+      })
     }
   })
 };
