@@ -18,4 +18,5 @@ public interface StudyRepository extends JpaRepository<Study, Integer> {
 
     // 얘는 Dynamic Projection 이 안되는 듯.. 왜지
     List<Study> findAll();
+    long countByMemberId(int memberId);
 }
