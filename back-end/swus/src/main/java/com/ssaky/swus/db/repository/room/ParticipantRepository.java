@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,9 +18,11 @@ public class ParticipantRepository {
         em.persist(publicParticipant);
     }
 
-    public PublicParticipant findByMemberId(int id){
-        return em.createQuery("select p from PublicParticipant p where p.member.id = :id", PublicParticipant.class)
-                .setParameter("id", id).getSingleResult();
+    public Optional<PublicParticipant> findByMemberId(int id){
+        List<PublicParticipant> partis = em.createQuery("select p from PublicParticipant p where p.member.id = :id", PublicParticipant.class)
+                .setParameter("id", id).getResultList();
+
+        return partis.stream().findAny();
     }
 
     public void exit(PublicParticipant participant) {

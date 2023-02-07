@@ -53,7 +53,6 @@ class StudyServiceTest {
     @Test
     public void 총공시간_조회(){
         assertEquals(studyService.getTotalTime(memberId1).getNowTotalTime(), 0);
-        
     }
 
     @Test
@@ -93,5 +92,6 @@ class StudyServiceTest {
         assertEquals(time, studyRepository.findByMemberId(memberId1, TargetTimeResp.class).get().getTargetTime());
 
     }
+
 
 }

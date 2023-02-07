@@ -23,6 +23,20 @@ public class StudyController {
     @Autowired
     StudyService studyService;
 
+    @GetMapping("/jandi")
+    public ResponseEntity<?> getTimeJandi(Authentication authentication) {
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        return ResponseEntity.ok(studyService.getJandiRecords(memberId));
+    }
+
+    @GetMapping("one-week")
+    public ResponseEntity<?> getOneWeekData(Authentication authentication) {
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        return ResponseEntity.ok(studyService.getOneWeekData(memberId));
+    }
+
     @GetMapping("now-core-time")
     public ResponseEntity<?> getCoreTime(Authentication authentication){
         Claims claims = (Claims) authentication.getPrincipal();
