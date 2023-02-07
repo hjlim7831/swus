@@ -1,6 +1,8 @@
 package com.ssaky.swus.config.filter;
 
 import com.ssaky.swus.common.codes.AuthConstants;
+import com.ssaky.swus.common.error.exception.BusinessException;
+import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.common.utils.TokenUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -93,12 +95,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     chain.doFilter(request, response);
                     // 토큰이 유효하지 않은 경우
                 } else {
-//                    throw new BusinessExceptionHandler("TOKEN is invalid", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+                    throw new BusinessException("TOKEN is invalid", ErrorCode.BUSINESS_EXCEPTION_ERROR);
                 }
             }
             // [2-1] 토큰이 존재하지 않는 경우
             else {
-//                throw new BusinessExceptionHandler("Token is null", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+                throw new BusinessException("Token is null", ErrorCode.BUSINESS_EXCEPTION_ERROR);
             }
 
         } catch (Exception e){
