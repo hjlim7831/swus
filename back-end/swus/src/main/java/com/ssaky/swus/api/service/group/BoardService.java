@@ -46,7 +46,7 @@ public class BoardService {
                 .title(board.getTitle())
                 .content(board.getContent())
                 .views(board.getViews())
-                .writeAt(board.getWriteAt())
+                .writeAt(board.getCreateAt())
                 .boardNumber(board.getNumber())
                 .build();
     }
@@ -60,7 +60,7 @@ public class BoardService {
             BoardListResp resp = BoardListResp.builder()
                     .board_id(board.getBoardId())
                     .title(board.getTitle())
-                    .writeAt(board.getWriteAt())
+                    .writeAt(board.getCreateAt())
                     .views(board.getViews())
                     .build();
 
