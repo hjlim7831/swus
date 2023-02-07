@@ -117,14 +117,11 @@ public class TodoDailyUpdateServiceTest {
     }
 
     @Test
-    public void JpaRepository_테스트(){
+    public void JpaRepository_테스트() {
         Date fromDate = Date.valueOf("2023-02-05");
         Date toDate = Date.valueOf("2023-02-05");
 
         System.out.println(jandiTodoRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTodoResp.class));
 
     }
-
-
-
 }
