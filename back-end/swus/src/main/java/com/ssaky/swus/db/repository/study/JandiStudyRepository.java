@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.util.List;
+
 @Repository
 public interface JandiStudyRepository extends JpaRepository<JandiTime, JandiTimeId> {
 
@@ -15,4 +18,7 @@ public interface JandiStudyRepository extends JpaRepository<JandiTime, JandiTime
     @Modifying
     @Query("UPDATE Study s SET s.nowCoreTime = 0, s.nowTotalTime = 0")
     void initiateCoreAndTotalTime();
+
+    <T> List<T> findByIdMemberIdAndIdStudyAtBetween(int memberId, Date fromDate, Date toDate, Class<T> type);
+
 }

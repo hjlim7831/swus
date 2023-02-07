@@ -3,14 +3,11 @@ package com.ssaky.swus.api.service.study;
 import com.ssaky.swus.api.request.study.CoreTimeReq;
 import com.ssaky.swus.api.request.study.TargetTimeReq;
 import com.ssaky.swus.api.request.study.TotalTimeReq;
-import com.ssaky.swus.api.response.study.CoreTimeResp;
-import com.ssaky.swus.api.response.study.TargetTimeResp;
-import com.ssaky.swus.api.response.study.TotalTimeResp;
+import com.ssaky.swus.api.response.study.*;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.common.utils.DateUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.entity.study.JandiTime;
-import com.ssaky.swus.db.entity.study.JandiTimeId;
 import com.ssaky.swus.db.entity.study.Study;
 import com.ssaky.swus.db.repository.study.JandiStudyRepository;
 import com.ssaky.swus.db.repository.study.StudyRepository;
@@ -21,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,18 +48,34 @@ public class StudyService {
         jandiStudyRepository.initiateCoreAndTotalTime();
     }
 
+    public TimeJandiResp getJandiRecords(int memberId) {
+        // 서울 ZoneId로 가져오기
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        // 올해 년도 가져오기
+        int year = now.getYear();
+        String fromDateStr = String.valueOf(year)+"-01-01";
+        String toDateStr = String.valueOf(year)+"-12-31";
+
+        Date fromDate = Date.valueOf(fromDateStr);
+        Date toDate = Date.valueOf(toDateStr);
+
+        List<DailyTimeResp> timeRecords = jandiStudyRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTimeResp.class);
+
+        TimeJandiResp resp = TimeJandiResp.builder().year(year).timeRecords(timeRecords).build();
+
+        return resp;
+    }
+
     @Transactional
     protected void saveAllDailyStudyTime(List<Study> studyTimeList) {
         Date yesterday = DateUtils.getYesterday();
         for(Study s: studyTimeList) {
-            JandiTimeId id = JandiTimeId.builder()
-                    .studyAt(yesterday).memberId(s.getMemberId()).build();
             JandiTime jandiTime = JandiTime.builder()
-                    .coreTime(s.getNowCoreTime()).totalTime(s.getNowTotalTime()).id(id).build();
+                    .studyAt(yesterday)
+                    .study(s).build();
             jandiStudyRepository.save(jandiTime);
         }
     }
-    
 
     @Transactional
     public void save(Member member){

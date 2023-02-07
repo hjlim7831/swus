@@ -7,6 +7,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import java.sql.Date;
+
 import static javax.persistence.FetchType.LAZY;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -26,16 +28,21 @@ public class JandiTime {
     @JoinColumn(name = "member_id")
     public Member member;
 
-    @Column(name = "core_time")
-    private int coreTime;
+    @Column(name = "target_time")
+    private int targetTime;
 
     @Column(name = "total_time")
     private int totalTime;
 
     @Builder
-    public JandiTime(JandiTimeId id, int coreTime, int totalTime) {
+    public JandiTime(Date studyAt, Study study) {
+        JandiTimeId id = JandiTimeId.builder()
+                .memberId(study.getMemberId())
+                .studyAt(studyAt).build();
         this.id = id;
-        this.coreTime = coreTime;
-        this.totalTime = totalTime;
+        Member member = Member.builder().id(study.getMemberId()).build();
+        this.member = member;
+        this.targetTime = study.getTargetTime();
+        this.totalTime = study.getNowTotalTime();
     }
 }
