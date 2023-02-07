@@ -12,7 +12,7 @@ import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 
-import MyPageMain from "./pages/MyPageMain/MyPageMain";
+import MyPageMain from "./pages/MyPageMain/Main";
 
 import Lounge from "./pages/Lounge/Lounge";
 
@@ -25,6 +25,12 @@ import MyReport from "./pages/MyPageReport/MyReport";
 import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
 import NSRoom from "./pages/StudyCam/NSRoom";
 import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+
 
 
 
@@ -37,8 +43,8 @@ function App() {
           {/* <Route exact path="/" /> */}
           {/* 공용 열람실 관련 주소 */}
           <Route exact path="/studyroom">
-            <Route path="" />
-            <Route path=":sessionName" />
+            <Route exact path="" element={<StudyRoomMain />} />
+            <Route exact path=":sessionName" element={<NSRoom />} />
           </Route>
           {/* 마이 페이지 관련 주소 */}
           <Route exact path="/mypage">
