@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -59,12 +59,33 @@ public class StudyService {
         Date fromDate = Date.valueOf(fromDateStr);
         Date toDate = Date.valueOf(toDateStr);
 
-        List<DailyTimeResp> timeRecords = jandiStudyRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTimeResp.class);
+        List<DailyTotalTimeResp> timeRecords = jandiStudyRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTotalTimeResp.class);
 
         TimeJandiResp resp = TimeJandiResp.builder().year(year).timeRecords(timeRecords).build();
 
         return resp;
     }
+
+    public WeeklyTimeResp getOneWeekData(int memberId) {
+        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA);
+        final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
+
+        // 이번 주 월요일 날짜 구하기
+        cal.add(Calendar.DATE, 2 - cal.get(Calendar.DAY_OF_WEEK));
+        String mondayStr = SDF.format(cal.getTime());
+        Date monday = Date.valueOf(mondayStr);
+
+        // 이번 주 일요일 날짜 구하기
+        cal.add(Calendar.DATE, 8 - cal.get(Calendar.DAY_OF_WEEK));
+        String sundayStr = SDF.format(cal.getTime());
+        Date sunday = Date.valueOf(sundayStr);
+        List<DailyTimeResp> weeklyRecords = jandiStudyRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, monday, sunday, DailyTimeResp.class);
+        WeeklyTimeResp resp = WeeklyTimeResp.builder().weeklyRecords(weeklyRecords).monday(mondayStr).build();
+        return resp;
+
+    }
+
 
     @Transactional
     protected void saveAllDailyStudyTime(List<Study> studyTimeList) {

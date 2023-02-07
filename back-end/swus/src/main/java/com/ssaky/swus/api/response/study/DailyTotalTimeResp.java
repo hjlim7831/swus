@@ -8,8 +8,7 @@ import java.util.Date;
 
 @Value
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class DailyTimeResp {
+public class DailyTotalTimeResp {
     private Date idStudyAt;
     private int totalTime;
-    private int targetTime;
 }
