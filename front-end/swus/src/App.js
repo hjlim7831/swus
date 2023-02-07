@@ -17,8 +17,23 @@ import { Box } from '@mui/material';
 import { 
   BrowserRouter,
   Routes,
-  Route, 
-} from 'react-router-dom';
+  Route,
+  // Link
+} from "react-router-dom";
+import NavBar from "./components/NavBar/NavBar";
+import SignInSide from "./pages/Accounts/LogIn";
+import SignUpSide from "./pages/Accounts/SignUp";
+import FindPassword from "./pages/Accounts/FindPassword";
+import BasicModalDialog from "./pages/Accounts/UserModal";
+import Lounge from "./pages/Lounge/SideBar";
+import GroupPage from "./pages/GroupPage/GroupPage";
+import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
+import NSRoom from "./pages/StudyCam/NSRoom";
+import MyPageMain from "./pages/MyPageMain/Main";
+import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
+import SignUp from "./pages/Accounts/SignUp";
+import MyReport from "./pages/MyPageReport/MyReport";
+import SignIn from "./pages/Accounts/LogIn";
 
 function App() {
   return (

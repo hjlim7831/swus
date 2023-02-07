@@ -3,15 +3,6 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    :
-  </Box>
-);
-
 function Clock() {
   const [time, setTime] = useState(new Date());
 
@@ -44,79 +35,112 @@ function Clock() {
 
   return (
     <>
-      <div>
-        <p>
-          {year}.{month}.{day} {getTodayLabel()}요일
+      <div style={{ height: "50%" }}>
+        <p style={{ color: "white" }}>
+          {year}. {month}. {day} {getTodayLabel()}요일
         </p>
-        <Box
-          sx={{
-            display: "inline-block",
-            width: 17,
-            height: 30,
-            border: 1,
-            borderRadius: 1,
-          }}
-        >
-          <Typography>{hoursTen}</Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "inline-block",
-            width: 17,
-            height: 30,
-            border: 1,
-            borderRadius: 1,
-          }}
-        >
-          <Typography>{hoursOne}</Typography>
-        </Box>
-        {bull}
-        <Box
-          sx={{
-            display: "inline-block",
-            width: 17,
-            height: 30,
-            border: 1,
-            borderRadius: 1,
-          }}
-        >
-          <Typography>{minutesTen}</Typography>
-        </Box>
+        <Box sx={{ height: "100%", mt: "5px" }}>
+          <Box
+            sx={{
+              display: "inline-block",
+              width: "15%",
+              height: "100%",
+              mr: "1%",
+              borderRadius: 2,
+              backgroundColor: "#E8E8E8",
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+              {hoursTen}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "inline-block",
+              width: "15%",
+              height: "100%",
+              mr: "0.3%",
+              borderRadius: 2,
+              backgroundColor: "#E8E8E8",
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+              {hoursOne}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "inline-block",
+              color: "white",
+              mr: "0.3%",
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: "center" }}>
+              :
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "inline-block",
+              width: "15%",
+              mr: "1%",
+              height: "100%",
+              borderRadius: 2,
+              backgroundColor: "#E8E8E8",
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+              {minutesTen}
+            </Typography>
+          </Box>
 
-        <Box
-          sx={{
-            display: "inline-block",
-            width: 17,
-            height: 30,
-            border: 1,
-            borderRadius: 1,
-          }}
-        >
-          <Typography>{minutesOne}</Typography>
-        </Box>
-        {bull}
-        <Box
-          sx={{
-            display: "inline-block",
-            width: 17,
-            height: 30,
-            border: 1,
-            borderRadius: 1,
-          }}
-        >
-          <Typography>{secondsTen}</Typography>
-        </Box>
+          <Box
+            sx={{
+              display: "inline-block",
+              width: "15%",
+              height: "100%",
+              mr: "0.3%",
+              borderRadius: 2,
+              backgroundColor: "#E8E8E8",
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+              {minutesOne}
+            </Typography>
+          </Box>
+          <Box sx={{ display: "inline-block", color: "white", mr: "0.3%" }}>
+            <Typography variant="h4" sx={{ textAlign: "center" }}>
+              :
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "inline-block",
+              width: "15%",
+              height: "100%",
+              mr: "1%",
+              borderRadius: 2,
+              backgroundColor: "#E8E8E8",
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+              {secondsTen}
+            </Typography>
+          </Box>
 
-        <Box
-          sx={{
-            display: "inline-block",
-            width: 17,
-            height: 30,
-            border: 1,
-            borderRadius: 1,
-          }}
-        >
-          <Typography>{secondsOne}</Typography>
+          <Box
+            sx={{
+              display: "inline-block",
+              width: "15%",
+              height: "100%",
+              borderRadius: 2,
+              backgroundColor: "#E8E8E8",
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+              {secondsOne}
+            </Typography>
+          </Box>
         </Box>
       </div>
     </>

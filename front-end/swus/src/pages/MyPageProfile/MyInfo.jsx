@@ -5,7 +5,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Box } from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 
 function MyInfo() {
   const [name, setName] = useState("김싸피");
@@ -38,23 +39,57 @@ function MyInfo() {
     <>
       <Box
         sx={{
-          width: 300,
-          height: 300,
-          backgroundColor: "primary.light",
+          width: 420,
+          height: 350,
+          backgroundColor: "white",
+          borderRadius: 2,
+          padding: "10px",
+          boxShadow: "2px 2px 7px 1px grey",
         }}
       >
-        <h3 style={{ display: "inline-block" }}>내 정보</h3>
-        <button style={{ display: "inline-block" }} onClick={iumClickOpen}>
-          정보 수정
-        </button>
+        <Grid container>
+          <Grid item xs={3}>
+            <h3 style={{ marginLeft: "15px" }}>내 정보</h3>
+          </Grid>
+          <Grid item xs={3} sx={{ marginLeft: "50%" }}>
+            <IconButton
+              color="#3A3A3A"
+              aria-label="modify"
+              onClick={iumClickOpen}
+              sx={{ marginLeft: "50%", marginTop: "10px" }}
+            >
+              <ModeEditOutlineOutlinedIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
         <hr />
-        <div style={{ display: "inline-block" }}>닉네임</div>
-        <div style={{ display: "inline-block" }}>{name}</div>
-        <div></div>
-        <div style={{ display: "inline-block" }}>이메일</div>
-        <div style={{ display: "inline-block" }}>{email}</div>
-        <div></div>
-        <button onClick={qmClickOpen}>탈퇴하기</button>
+        <Grid container sx={{ marginLeft: "10%", marginTop: "5%" }}>
+          <Grid container sx={{ marginY: "10%" }}>
+            <Grid item xs={3}>
+              <Typography variant="body1">닉네임</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant="body1">{name}</Typography>
+            </Grid>
+          </Grid>
+          <Grid container>
+            <Grid item xs={3}>
+              <Typography variant="body1">이메일</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant="body1">{email}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid xs={12}>
+          <Button
+            variant="text"
+            sx={{ color: "#A9A9A9", marginLeft: "80%", marginTop: "17%" }}
+            onClick={qmClickOpen}
+          >
+            탈퇴하기
+          </Button>
+        </Grid>
       </Box>
 
       <Dialog open={infoUpdateMOpen} onClose={iumClose}>

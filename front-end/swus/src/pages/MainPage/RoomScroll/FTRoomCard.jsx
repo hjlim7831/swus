@@ -10,12 +10,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
-import logo from "../../../image/sampleImage.jpg";
+import logo from "../../../image/lib.jpg";
+import { Grid } from "@mui/material";
 import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 
 function FtoTRoom(props) {
   const [open, setOpen] = React.useState(false);
   const [sessionName, setsessionName] = useState(props.sessionName);
+  const [count, setCount] = useState(props.partici);
   console.log();
 
   const handleToOpen = () => {
@@ -33,20 +35,7 @@ function FtoTRoom(props) {
 
   return (
     <>
-      <Card style={{ marginRight: 10 }}>
-        {/* <CardMedia
-          component="img"
-          width="200"
-          height="300"
-          image={logo}
-          alt="studystudy"
-          // objectfit="cover"  objectFit 하면 안됨
-        /> */}
-        {/* <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            NonStop 열람실 #{sessionName}
-          </Typography>
-        </CardContent> */}
+      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
         <div
           style={{
             width: 200,
@@ -56,7 +45,7 @@ function FtoTRoom(props) {
           <img
             style={{
               width: 300,
-              height: 400,
+              height: 380,
               objectFit: "cover",
               /*filter: "brightness(40%)" */ opacity: 1,
             }}
@@ -70,27 +59,30 @@ function FtoTRoom(props) {
             </Typography>
           </div>
         </CardContent>
-        {/* <Button onClick={handleToOpen}>입장하기</Button> */}
-        <div>
-          <p
-            style={{
+        <Grid container sx={{ marginX: "auto" }}>
+          <Grid
+            item
+            xs={2}
+            sx={{
               color: "white",
               display: "inline-block",
               fontSize: "25px",
-              marginLeft: "10%",
+              marginLeft: "7%",
             }}
           >
-            5/9
-          </p>
-          <Button
-            variant="contained"
-            onClick={handleToOpen}
-            sx={{ marginRight: "10%", alignItems: "right" }}
-          >
-            입장하기
-          </Button>
-        </div>
-        startIcon={<AdjustOutlinedIcon></AdjustOutlinedIcon>}
+            {count}/9
+          </Grid>
+          <Grid item xs={6} sx={{ marginLeft: "20%" }}>
+            <Button
+              variant="contained"
+              onClick={handleToOpen}
+              sx={{ marginLeft: "22%", height: "100%", backgroundColor: "#475467" }}
+              startIcon={<AdjustOutlinedIcon></AdjustOutlinedIcon>}
+            >
+              입장하기
+            </Button>
+          </Grid>
+        </Grid>
       </Card>
 
       <Dialog
@@ -99,9 +91,7 @@ function FtoTRoom(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          Non-Stop 열람실 #{sessionName} 입장하기
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">50 to 10 열람실 #{sessionName} 입장하기</DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>

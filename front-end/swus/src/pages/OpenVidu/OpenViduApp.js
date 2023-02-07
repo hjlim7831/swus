@@ -8,7 +8,7 @@ import UserVideoComponent from "./UserVideoComponent";
 //열람실 내부 컴포넌트용
 import { Box } from "@mui/system";
 import Grid from "@mui/material/Grid";
-import Clock from "../StudyCam/Clock";
+
 import MyTodo from "../MyPageReport/MyTodo";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -16,24 +16,29 @@ import Stack from "@mui/material/Stack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
-import { Navigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+
+//HOC 사용용
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
+// const APPLICATION_SERVER_URL = "http://localhost:5000/";
 
 class OpenViduApp extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.navigate);
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
       roomType: props.roomType,
       mySessionId: props.sessionId,
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      myUserName: JSON.parse(localStorage.getItem("nickname")),
+      roomId: props.roomId,
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
+      d: new Date(),
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -48,11 +53,31 @@ class OpenViduApp extends Component {
     //컴포넌트의 출력물이 dom에 렌더링 된 후 한번만 실행
     //네트워크 호출, 구독 등 기능 수행
     window.addEventListener("beforeunload", this.onbeforeunload);
+
+    //시계 구현 1 컴포넌트가 불러올 때마다 1초씩 this.Change()를 부른다.
+    this.timeID = setInterval(() => this.change(), 1000);
   }
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onbeforeunload);
+
+    //시계 구현 2 반복되는것 clear
+    clearInterval(this.timeID);
   }
+
+  //시계 구현 3
+  change = () => {
+    this.setState({
+      d: new Date(),
+    });
+  };
+
+  getTodayLabel = () => {
+    const dayLabel = this.state.d.getDay();
+    const week = new Array("일", "월", "화", "수", "목", "금", "토");
+    const todayLabel = week[dayLabel];
+    return todayLabel;
+  };
 
   onbeforeunload(event) {
     this.leaveSession();
@@ -147,9 +172,9 @@ class OpenViduApp extends Component {
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "640x480", // The resolution of your video
+                resolution: "1200x300", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -195,33 +220,71 @@ class OpenViduApp extends Component {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     const mySession = this.state.session;
-
+    console.log("check post");
+    console.log(this.state.room_id);
     if (mySession) {
       mySession.disconnect(); //연결 끊고
     }
 
+    const Token =
+      "eyJyZWdEYXRlIjoxNjc1NzQ0NzMwMTU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1ODMxMTMwLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9.QCvJ0J6OvsmxkiqrYQSWhUjOpdrbVzrWSZNO4q0Bahs";
+
+    axios({
+      method: "post",
+      url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
+      headers: { Authorization: `Bearer ${Token}` },
+      data: {
+        room_id: this.state.room_id,
+      },
+    }).then((response) => {
+      console.log("??");
+      console.log(response);
+    });
+
     // Empty all properties... 초기화
     this.OV = null;
-    // this.setState({  //여기에서 초기화를 해주면 새로고침하는 경우 방이 달라지므로 (undifined 일단 주석처리)
-    //   session: undefined,
-    //   subscribers: [],
-    //   mySessionId: "SessionA",
-    //   myUserName: "Participant" + Math.floor(Math.random() * 100),
-    //   mainStreamManager: undefined,
-    //   publisher: undefined,
-    // });
+    this.setState({
+      session: undefined,
+      subscribers: [],
+      mySessionId: "SessionA",
+      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mainStreamManager: undefined,
+      publisher: undefined,
+    });
+
+    // window.location.href = "/studyroom";
+
+    // navigate("/");
   }
 
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-    console.log(mySessionId);
+
+    const year = this.state.d.getFullYear();
+    const month = ("0" + (this.state.d.getMonth() + 1)).slice(-2); //getMonth는 0-11 반환하므로 +1, 05월처럼 두자리 맞추기(뒤에서 두자리 자름)
+    const day = ("0" + this.state.d.getDate()).slice(-2);
+
+    const hoursTen = ("0" + this.state.d.getHours()).slice(-2, -1); //시간 10의자리
+    const hoursOne = ("0" + this.state.d.getHours()).slice(-1); //시간 1의자리
+    const minutesTen = ("0" + this.state.d.getMinutes()).slice(-2, -1);
+    const minutesOne = ("0" + this.state.d.getMinutes()).slice(-1);
+    const secondsTen = ("0" + this.state.d.getSeconds()).slice(-2, -1);
+    const secondsOne = ("0" + this.state.d.getSeconds()).slice(-1);
+
     return (
       <>
-        <Box sx={{ flexGrow: 1, maxHeight: "500px" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={2.2} sx={{ border: 1 }}>
-              <Grid item xs={11} sx={{ border: 1, margin: "auto" }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            backgroundColor: "#1A1E33",
+            height: "100vh",
+            marginTop: "8px",
+          }}
+        >
+          <Grid container spacing={1}>
+            <Grid item xs={2.4}>
+              <Grid item xs={10} sx={{ marginX: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
@@ -240,13 +303,11 @@ class OpenViduApp extends Component {
                       onClick={() => {
                         this.leaveSession(); //연결 끊어주고
                         //열람실 메인으로 이동
-                        <Navigate to="/" replage={true} />;
-                        <Link to="/"></Link>;
                       }}
                     >
                       <HighlightOffIcon />
                     </IconButton>
-                  </Stack> //면 채팅방 버튼 없는 상위 버튼
+                  </Stack> //채팅방 버튼 없는 상위 버튼
                 ) : (
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
@@ -256,30 +317,188 @@ class OpenViduApp extends Component {
                     <IconButton color="primary" aria-label="add an alarm">
                       <MusicNoteOutlinedIcon />
                     </IconButton>
-                    <IconButton color="primary" aria-label="quit">
+                    <IconButton
+                      color="primary"
+                      aria-label="quit"
+                      onClick={() => {
+                        this.leaveSession(); //연결 끊어주고
+                        //열람실 메인으로 이동
+                      }}
+                    >
                       <HighlightOffIcon />
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h2>{mySessionId}</h2>
-                <Clock />
+                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                  {mySessionId}
+                </h1>
+                <div style={{ height: 100, paddingTop: "20px" }}>
+                  <div style={{ height: "50%" }}>
+                    <p style={{ color: "white" }}>
+                      {year}. {month}. {day} {this.getTodayLabel()}요일
+                    </p>
+                    <Box sx={{ height: "100%", mt: "5px" }}>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          mr: "1%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {hoursTen}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          mr: "0.3%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {hoursOne}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          color: "white",
+                          mr: "0.3%",
+                        }}
+                      >
+                        <Typography variant="h4" sx={{ textAlign: "center" }}>
+                          :
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          mr: "1%",
+                          height: "100%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {minutesTen}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          mr: "0.3%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {minutesOne}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          color: "white",
+                          mr: "0.3%",
+                        }}
+                      >
+                        <Typography variant="h4" sx={{ textAlign: "center" }}>
+                          :
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          mr: "1%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {secondsTen}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {secondsOne}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </div>
+                </div>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                  To-do list
+                </h4>
                 <div
                   style={{
-                    backgroundColor: "skyblue",
+                    backgroundColor: "#F4EFE6",
                     height: "100%",
+                    padding: 5,
                   }}
                 >
                   <MyTodo />
                 </div>
                 <div>
-                  <Button variant="outlined" fullWidth sx={{ width: "auto" }}>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      mt: 4,
+                      pt: 2,
+                      pb: 1.5,
+                      backgroundColor: "#DEDCEE",
+                      height: "50px",
+                      color: "#1A1E33",
+                      fontSize: "20px",
+                    }}
+                  >
                     휴게실 바로가기
                   </Button>
                 </div>
               </Grid>
             </Grid>
-            <Grid item xs={9.8} sx={{ border: 1 }}>
-              <div className="container">
+            <Grid item xs={9.6}>
+              <div className="container" styled={{ paddingLeft: "10%" }}>
                 {this.state.session === undefined ? (
                   <div id="join">
                     <div id="join-dialog" className="jumbotron vertical-center">
@@ -308,13 +527,20 @@ class OpenViduApp extends Component {
                     </div>
                   </div>
                 ) : null}
-
+                {/* <Grid container sx={{ border: 1 }}> */}
                 {this.state.session !== undefined ? (
                   <div id="session">
-                    <div id="video-container" className="col-md-6">
+                    <div
+                      id="video-container"
+                      style={
+                        {
+                          /*marginLeft: "5%"*/
+                        }
+                      }
+                    >
                       {this.state.publisher !== undefined ? (
                         <div
-                          className="stream-container col-md-6 col-xs-6"
+                          className="stream-container"
                           onClick={() =>
                             this.handleMainVideoStream(this.state.publisher)
                           }
@@ -327,7 +553,7 @@ class OpenViduApp extends Component {
                       {this.state.subscribers.map((sub, i) => (
                         <div
                           key={i}
-                          className="stream-container col-md-6 col-xs-6"
+                          className="stream-container"
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
                           <UserVideoComponent streamManager={sub} />
@@ -336,6 +562,7 @@ class OpenViduApp extends Component {
                     </div>
                   </div>
                 ) : null}
+                {/* </Grid> */}
               </div>
             </Grid>
           </Grid>
