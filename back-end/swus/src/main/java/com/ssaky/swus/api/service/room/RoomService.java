@@ -47,7 +47,7 @@ public class RoomService {
     public void enterPublic(int room_id, int user_id){
         PublicRoom room = roomRepository.findPublicOne(room_id);
         //Optional<T>를 쓰면 T가 null인 경우를 방지해줌
-        Optional<Member> member = memberRepository.findOne(user_id);
+        Optional<Member> member = memberRepository.findById(user_id, Member.class);
 
         //기능1. 방 정원을 넘는지 검사
         if (room.getCount() >= LIMIT) {
