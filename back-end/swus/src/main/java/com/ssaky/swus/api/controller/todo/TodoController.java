@@ -5,6 +5,7 @@ import com.ssaky.swus.api.request.todo.TodoUpdateReq;
 import com.ssaky.swus.api.service.todo.TodoService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,10 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/my-todos")
+@RequiredArgsConstructor
 public class TodoController {
 
-    @Autowired
-    private TodoService todoService;
+    private final TodoService todoService;
 
     @GetMapping
     public ResponseEntity<?> getTodoList(Authentication authentication){

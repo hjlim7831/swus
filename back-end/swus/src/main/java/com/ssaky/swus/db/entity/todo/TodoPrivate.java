@@ -22,6 +22,22 @@ import static javax.persistence.FetchType.LAZY;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoPrivate {
 
+
+    @Id
+    @GeneratedValue
+    private int num;
+
+    @JsonIgnore
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @Column(name = "todo_done")
+    private String todoDone;
+
+    private String content;
+
+
     public TodoPrivate(TodoCreateReq req, int memberId){
         this.content = req.getContent();
         Member member = Member.builder().id(memberId).build();
@@ -38,19 +54,5 @@ public class TodoPrivate {
     public TodoPrivate(int num){
         this.num = num;
     }
-
-    @Id
-    @GeneratedValue
-    private int num;
-
-    @Column(name = "todo_done")
-    private String todoDone;
-
-    private String content;
-
-    @JsonIgnore
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
 
 }
