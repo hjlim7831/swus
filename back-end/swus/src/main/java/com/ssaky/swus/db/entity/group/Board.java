@@ -60,7 +60,7 @@ public class Board extends BaseTimeEntity{
         this.number = updaterBoardReq.getBoardNumber();
     }
 
-    public void updateView(int number) {
-        this.number = number + 1;
+    public void updateView(int views) {
+        this.views = views + 1;
     }
 }

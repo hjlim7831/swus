@@ -1,6 +1,5 @@
 package com.ssaky.swus.db.entity.member;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssaky.swus.api.request.auth.SignUpReq;
 import com.ssaky.swus.db.entity.group.Board;
 import com.ssaky.swus.db.entity.todo.JandiTodo;
@@ -71,7 +70,6 @@ public class Member {
 
     private String token;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "member", fetch= LAZY)
     private List<Board> boards = new ArrayList<>();
 

@@ -60,11 +60,13 @@ public class BoardServiceTest {
     @Test
     public void 모집글등록() {
 
+        // 주의: test코드에서는 content에 영어만 작성가능 (title은 영한 가능)
+
         // given
         WriteBoardReq writeBoardReq = new WriteBoardReq(
                 "S",
                 "React 공부스터디",
-                "React 공부를 해서 마스터가 되봅시다",
+                "공부 스터디 english only",
                 "1010100",
                 6,
                 LocalDate.of(2023, 1, 16),
@@ -83,7 +85,7 @@ public class BoardServiceTest {
         System.out.println("board : " + board);
         assertEquals(boardId, board.getBoardId());
         assertEquals("React 공부스터디", board.getTitle());
-        assertEquals("React 공부를 해서 마스터가 되봅시다", board.getContent());
+        assertEquals("공부 스터디 english only", board.getContent());
     }
 
 //    public void 모집글상세조회() {
