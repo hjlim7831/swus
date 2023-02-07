@@ -1,7 +1,7 @@
 package com.ssaky.swus.db.entity.member;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
-//import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.db.entity.group.Board;
 import com.ssaky.swus.api.request.member.MemberUpdateReq;
 import com.ssaky.swus.db.entity.Room.PublicParticipant;
 import com.ssaky.swus.db.entity.study.Study;
@@ -40,9 +40,8 @@ public class Member {
 
     // 작성자 : 임혜진
     // Cascade 어떻게 걸어야되지...
-//    @OneToMany(mappedBy = "member", fetch= LAZY)
-//    private List<Board> boards = new ArrayList<>();
-
+    @OneToMany(mappedBy = "member", fetch= LAZY)
+    private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch=LAZY, cascade = CascadeType.ALL)
 //    @OneToMany(mappedBy = "member", fetch=LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
