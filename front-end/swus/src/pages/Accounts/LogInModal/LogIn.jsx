@@ -77,12 +77,28 @@ export default function SignInSide() {
 
   return (
     <>
-      <Typography component="h1" variant="h5" sx={{ mb:3, mt: 1, display: 'flex', alignContent: 'space-between', color: '#5F3A42' }}>
+      <Typography
+        component="h1"
+        variant="h5"
+        sx={{
+          mb: 3,
+          mt: 1,
+          display: "flex",
+          alignContent: "space-between",
+          color: "#5F3A42",
+        }}
+      >
         Sign in
         <Link
-          href="#"
+          href="signup"
           variant="h5"
-          style={{ textDecoration: "none", color: "black", marginLeft: 100, fontSize: 17, color: '#5F3A42'}}
+          style={{
+            textDecoration: "none",
+            color: "black",
+            marginLeft: 100,
+            fontSize: 17,
+            color: "#5F3A42",
+          }}
         >
           Sign Up
         </Link>
@@ -120,13 +136,13 @@ export default function SignInSide() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2, backgroundColor: "#E2B9B3", color: '#5F3A42' }}
+          sx={{ mt: 3, mb: 2, backgroundColor: "#E2B9B3", color: "#5F3A42" }}
         >
           Sign In
         </Button>
         <Grid container>
           <Grid item xs>
-            <Link href="#" variant="body2">
+            <Link href="findpassword" variant="body2">
               아이디/비밀번호 찾기
             </Link>
           </Grid>

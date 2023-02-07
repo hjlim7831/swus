@@ -28,7 +28,7 @@ export default function UserPage() {
             sm={4}
             md={7}
             sx={{
-              backgroundImage: `url(${ loginback })`,
+              backgroundImage: `url(${loginback})`,
               backgroundRepeat: "no-repeat",
               backgroundColor: "#1A1E33",
               backgroundSize: "cover",

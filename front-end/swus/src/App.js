@@ -9,12 +9,15 @@ import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 
+import MyPageMain from "./pages/MyPageMain/MyPageMain";
+
 import Lounge from "./pages/Lounge/Lounge";
 
 import UserModal from "./pages/Accounts/LogInModal/UserModal";
 import LogInModal from "./pages/Accounts/LogInModal/LogIn";
 import SignUpModal from "./pages/Accounts/LogInModal/SignUp";
 import FindPasswordModal from "./pages/Accounts/LogInModal/FindPassword";
+import MyReport from "./pages/MyPageReport/MyReport";
 
 function App() {
   return (
@@ -24,26 +27,28 @@ function App() {
           {/* landingPage */}
           {/* <Route exact path="/" /> */}
           {/* 공용 열람실 관련 주소 */}
-          {/* <Route exact path="/studyroom">
+          <Route exact path="/studyroom">
             <Route exact path="" />
             <Route exact path=":sessionName" />
-          </Route> */}
+          </Route>
           {/* 마이 페이지 관련 주소 */}
-          {/* <Route exact path="/mypage">
-            <Route exact path="profile/:userId" />
+          <Route exact path="/mypage">
+            {/* <Route exact path="profile/:userId" element={<mypagemain />} /> */}
+            <Route exact path="profile/" element={<MyPageMain />} />
             <Route exact path="group/:groupId" />
             <Route exact path="group/:groupId/update" />
-            <Route exact path="myreport/:userId" />
-          </Route> */}
+            {/* <Route exact path="myreport/:userId" /> */}
+            <Route exact path="myreport" element={<MyReport />} />
+          </Route>
           {/* 그룹 페이지(게시판) 관련 주소 */}
-          {/* <Route exact path="/group">
+          <Route exact path="/group">
             <Route exact path="mystudy/:userId" />
             <Route exact path="board" />
             <Route exact path="board/:boardId" />
             <Route exact path="board/:boardId/update" />
-            <Route exact path="board/create" element={<CreateArticle />} />
+            {/* <Route exact path="board/create" element={<CreateArticle />} /> */}
             <Route exact path="studyroom/:sessionName" />
-          </Route> */}
+          </Route>
           {/* 휴게실 */}
           <Route exact path="/lounge" element={<Lounge />} />
           {/* 회원 정보 관련 주소 */}

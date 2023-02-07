@@ -10,7 +10,11 @@ import { useSelector } from "react-redux";
 
 import axios from "../../Utils/index";
 
+import { useNavigate } from "react-router-dom";
+
 export default function FindPassword() {
+  const navigate = useNavigate();
+
   // 비밀번호 찾기용 질문 -> store에서 가져오기
   const favorite_questions = useSelector((state) => state.questions);
 
@@ -86,6 +90,7 @@ export default function FindPassword() {
         .then(() => {
           // console.log(response.data.msg);
           alert("입력하신 메일로 비밀번호를 전송했습니다.");
+          navigate("account/login");
         })
         .catch((error) => {
           if (error.message === "Request failed with status code 400") {
@@ -101,7 +106,7 @@ export default function FindPassword() {
 
   return (
     <>
-      <Typography component="h1" variant="h5" sx={{ mb:3, mt: 1 }}>
+      <Typography component="h1" variant="h5" sx={{ mb: 3, mt: 1 }}>
         아이디/비밀번호 찾기
       </Typography>
       <Box component="form" noValidate onSubmit={idSubmit} sx={{ mt: 1 }}>
