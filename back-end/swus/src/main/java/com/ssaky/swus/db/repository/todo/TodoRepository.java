@@ -17,6 +17,7 @@ public class TodoRepository {
 
     private final EntityManager em;
 
+    @Transactional
     public int save(TodoPrivate todoPrivate) {
         em.persist(todoPrivate);
         return todoPrivate.getNum();
@@ -40,6 +41,7 @@ public class TodoRepository {
      * num을 찾아 해당 row 제거
      * @param todoPrivate
      */
+    @Transactional
     public void delete(TodoPrivate todoPrivate){
         em.remove(todoPrivate);
     }

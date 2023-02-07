@@ -1,186 +1,179 @@
 package com.ssaky.swus.api.service.member;
 
-import com.ssaky.swus.api.request.auth.CheckPwdReq;
-import com.ssaky.swus.api.request.auth.LoginReq;
 import com.ssaky.swus.api.request.auth.SignUpReq;
-import com.ssaky.swus.api.response.auth.LoginResp;
+import com.ssaky.swus.api.request.member.MemberUpdateReq;
+import com.ssaky.swus.api.request.todo.TodoCreateReq;
+import com.ssaky.swus.api.request.todo.TodoUpdateReq;
+import com.ssaky.swus.api.response.member.MemberInfoGetResp;
+import com.ssaky.swus.api.response.todo.TodoGetResp;
+import com.ssaky.swus.api.response.todo.TodoJandiResp;
+import com.ssaky.swus.api.service.study.StudyService;
+import com.ssaky.swus.api.service.todo.TodoService;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
-import com.ssaky.swus.common.error.exception.custom.LoginFailException;
-import com.ssaky.swus.common.error.exception.custom.UncorrectAnswerException;
-import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.repository.member.MemberRepository;
+import com.ssaky.swus.db.repository.study.StudyRepository;
+import com.ssaky.swus.db.repository.todo.JandiTodoRepository;
+import com.ssaky.swus.db.repository.todo.TodoRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 // SpringExtension을 사용하게 되면 Spring TestContext Framework와 Junit5와 통합하여 사용하게 됨
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@Transactional
 class MemberServiceTest {
 
     @Autowired MemberRepository memberRepository;
+    @Autowired TodoRepository todoRepository;
+    @Autowired StudyRepository studyRepository;
+
     @Autowired MemberService memberService;
-    @Autowired EntityManager em;
+    @Autowired TodoService todoService;
+    @Autowired StudyService studyService;
 
-    @Test
-    public void 회원가입() throws Exception {
+    static int memberId;
+    static int memberId2;
 
-        // given
+    @BeforeEach
+    void beforeEach() {
         String email = "helenalim1205@gmail.com";
         String password = "ssafy";
 
-        SignUpReq req = SignUpReq.builder().email(email).password(password).nickname("상상").questionId(2).answer("보광초").build();
+        SignUpReq signUpReq = SignUpReq.builder().email(email).password(password)
+                .nickname("상상").questionId(2).answer("보광초").build();
 
-        // when
-        int id = memberService.join(req);
-        System.out.println(id);
+        memberId = memberService.join(signUpReq);
 
-        // then
-        Member findMember = memberRepository.findOne(id).get();
-        assertEquals(req.getEmail(), findMember.getEmail());
+        String email2 = "ssafy@gmail.com";
+        String password2 = "ssafy";
+        SignUpReq signUpReq2 = SignUpReq.builder().email(email2).password(password2)
+                .nickname("싸피").questionId(2).answer("싸피초").build();
+
+        memberId2 = memberService.join(signUpReq2);
+    }
+
+    @AfterEach
+    void afterEach() {
+        memberRepository.deleteAll();
     }
 
     @Test
-    public void 중복회원_예외() throws Exception {
-        // given
-        String email = "helenalim1205@gmail.com";
-        String password = "ssafy";
+    public void 회원정보_조회() {
+        MemberInfoGetResp resp = memberService.findOneInfo(memberId);
+        System.out.println(resp);
+        assertEquals("helenalim1205@gmail.com", resp.getEmail());
+        assertEquals("상상", resp.getNickname());
+    }
 
-        SignUpReq req1 = SignUpReq.builder().email(email).password(password).nickname("상상").questionId(2).answer("보광초").build();
-        SignUpReq req2 = SignUpReq.builder().email(email).password(password).nickname("상상").questionId(2).answer("보광초").build();
-
-        // when
-        int id1 = memberService.join(req1);
-
-        // then
+    @Test
+    public void 회원정보_수정_기존_비밀번호_다름() {
+        String nickname = "상상12";
+        String newPassword = "ssafy123";
+        MemberUpdateReq req = MemberUpdateReq.builder()
+                .oldPassword("ssafy_wrong")
+                .newPassword(newPassword)
+                .nickname(nickname).build();
         assertThrows(InvalidValueException.class, () -> {
-            memberService.join(req2);
-        });
-
-    }
-
-    @Test
-    @WithMockUser
-    public void 로그인_실패() throws Exception{
-        // given
-        String user = "user";
-        String password = "password";
-
-        // when
-        LoginReq req = LoginReq.builder().email(user).password(password).build();
-
-        // then
-        // 해당 유저 정보가 없으므로, LoginFailException이 떠야 함
-        assertThrows(LoginFailException.class, () -> {
-            memberService.login(req);
+            memberService.updateInfo(memberId, req);
         });
     }
 
     @Test
-    @WithAnonymousUser
-    public void 세큐리티_로그인_실패() throws Exception{
-        // given
-        String user = "user1234";
-        String password = "password1234";
+    public void 회원정보_수정_기존_비밀번호_같음() {
+        String nickname = "상상12";
+        String newPassword = "ssafy123";
+        MemberUpdateReq req = MemberUpdateReq.builder()
+                .oldPassword("ssafy")
+                .newPassword(newPassword)
+                .nickname(nickname).build();
 
-        // when
-        LoginReq req = LoginReq.builder().email(user).password(password).build();
+        memberService.updateInfo(memberId, req);
 
-        // then
-        // 해당 유저 정보가 없으므로, LoginFailException이 떠야 함
-        assertThrows(LoginFailException.class, () -> {
-            memberService.login(req);
-        });
-    }
-    
-    @Test
-    @WithMockUser
-    public void 로그인_성공() throws Exception{
-
-        // given
-        String user = "user";
-        String password = "password";
-
-        // 로그인을 위해 회원가입 해두기
-        SignUpReq signupReq = SignUpReq.builder().email(user).password(password).nickname("유저").questionId(2).answer("서울초").build();
-        int id = memberService.join(signupReq);
-        
-        // 회언가입 한 애로 로그인하기
-        LoginReq loginReq = LoginReq.builder().email(user).password(password).build();
-        LoginResp resp = memberService.login(loginReq);
-        
-        // 로그인 후 받은 accessToken
-        String accessToken = resp.getAccessToken();
-
-        // when
-        
-        // 얘가 담고 있는 애가 맞는지
-        int memberId = Integer.parseInt(TokenUtils.parseTokenToUserInfo(accessToken));
-
-        // then
-        assertEquals(id, memberId);
-
+        Member one = memberService.findOne(memberId);
+        assertEquals(one.getNickname(), nickname);
+        assertEquals(one.getPassword(), newPassword);
     }
 
     @Test
-    public void 비밀번호_확인_실패(){
+    public void 회원_탈퇴_작동확인() {
+        memberService.delete(memberId);
+        assertEquals(1, memberRepository.count());
+    }
 
-        // given
-        // 가입한 회원 만들기
-        String email = "helenalim1205@gmail.com";
-        String password = "ssafy";
-
-        SignUpReq signUpReq = SignUpReq.builder().email(email).password(password).nickname("상상").questionId(2).answer("보광초").build();
-        int id = memberService.join(signUpReq);
-
-        // when
-        CheckPwdReq req1 = CheckPwdReq.builder().email(email).questionId(1).answer("보광초").build();
-        CheckPwdReq req2 = CheckPwdReq.builder().email(email).questionId(2).answer("신중초").build();
-
-        // then
+    @Test
+    public void 회원_탈퇴후_투두_테이블_확인(){
+        // 투두 생성해두기
+        TodoCreateReq req = TodoCreateReq.builder().content("JPA 공부하기").build();
+        todoService.save(req, memberId);
         
-        // questionId가 잘못된 경우
-        assertThrows(UncorrectAnswerException.class, () -> {
-            memberService.checkAnswerForPasswordQuestion(req1);
-        });
+        // 탈퇴 전 테이블 확인
+        List<TodoGetResp> listBefore = todoService.getList(memberId);
+        assertEquals(1, listBefore.size());
         
-        // questionId는 맞지만, 답이 아닌 경우
-        assertThrows(UncorrectAnswerException.class, () -> {
-            memberService.checkAnswerForPasswordQuestion(req2);
-        });
+        // 탈퇴
+        memberService.delete(memberId);
+        
+        // 탈퇴 후 테이블 확인
+        List<TodoGetResp> listAfter = todoService.getList(memberId);
+        assertEquals(0, listAfter.size());
+    }
+
+    @Test
+    public void 회원_탈퇴후_잔디_테이블_확인(){
+        // 투두 생성해두기
+        String content = "JPA 공부하기";
+        TodoCreateReq req = TodoCreateReq.builder().content(content).build();
+        int num = todoService.save(req, memberId);
+        
+        // 투두 Y로 업데이트
+        TodoUpdateReq updateReq = TodoUpdateReq.builder().content(content).todoDone("Y").build();
+        todoService.update(num, updateReq, memberId);
+
+        // 잔디 생성해두기
+        ReflectionTestUtils.invokeMethod(todoService, "dailyUpdate");
+
+        TodoJandiResp jandiRecordsBefore = todoService.getJandiRecords(memberId);
+        assertEquals(1, jandiRecordsBefore.getTodoRecords().size());
+        
+        // 회원 탈퇴하기
+        memberService.delete(memberId);
+
+        // 탈퇴 후 jandi 테이블 확인하기
+        TodoJandiResp jandiRecordsAfter = todoService.getJandiRecords(memberId);
+        assertEquals(0, jandiRecordsAfter.getTodoRecords().size());
 
     }
 
     @Test
-    public void 이메일_중복일때(){
-        // given
-        String email = "helenalim1205@gmail.com";
-        String password = "ssafy";
-
-        SignUpReq req = SignUpReq.builder().email(email).password(password).nickname("상상").questionId(2).answer("보광초").build();
-
-        // when
-        int id = memberService.join(req);
-
-        // then
-        assertThrows(InvalidValueException.class, ()->{
-            memberService.validateDuplicateEmail(email);
-        });
-
+    public void 회원_탈퇴후_공부_테이블_확인(){
+        // 탈퇴 전 테이블 확인
+        assertEquals(1, studyRepository.countByMemberId(memberId));
+        
+        // 회원 탈퇴
+        memberService.delete(memberId);
+        
+        // 탈퇴 후 테이블 확인
+        assertEquals(0, studyRepository.countByMemberId(memberId));
     }
 
+    @Test
+    public void 회원_탈퇴후_공공열람실_참여자_테이블_확인() {
+        // TODO: 테스트 코드 작성하기 (물어보기)
+
+    }
 }
