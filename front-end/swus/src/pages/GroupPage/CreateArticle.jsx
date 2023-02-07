@@ -9,44 +9,25 @@ import { createStudyRoom } from '../../store/CheckedSlice';
 
 
 function CreateArticleForm() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const articleDetail = useSelector((state) => {
+    return state.checkDays;
+  });
 
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
-	const articleDetail = useSelector(state => {
-		return state.checkDays
-	});
-
-	const [inputs, setInputs] = useState({
-		category: "",
-		title: "",
-		content: "",
-		day: "",
-		days: [false, false, false, false, false, false, false],
-		recruitmentNumber: 0,
-		beginAt: "",
-		endAt: "",
-		startTime: "",
-		finishTime: "",
-		writedAt: "",
-	})
-
-	const onHandleInput = (event) => {
-		const name = event.target.name
-		const value = event.target.value
-		if (name.slice(0, 3) === "day") {
-			const num = Number(name.slice(3, 4))
-			const date = "days"
-			const newDay = [...inputs.days]
-			for (let i = 0; i < inputs.days.length; i++) {
-				if (i === num) {
-					newDay[num] = !newDay[num]
-				}
-			}
-			setInputs({...inputs, [date] : newDay})
-		}	else	{
-			setInputs({...inputs, [name] : value})
-		}
-	}
+  const [inputs, setInputs] = useState({
+    category: "",
+    title: "",
+    content: "",
+    day: "",
+    days: [false, false, false, false, false, false, false],
+    recruitmentNumber: 0,
+    beginAt: "",
+    endAt: "",
+    startTime: "",
+    finishTime: "",
+    writedAt: "",
+  });
 
 	const handleupdateField = (e) => {
 		setInputs({...inputs, [e.target.name] : e.target.value})
@@ -58,13 +39,10 @@ function CreateArticleForm() {
 		event.preventDefault();
 		let selectedDays = "";
 
-		for (let i = 0; i < inputs.days.length; i++)	{
-			if (inputs.days[i]) {
-				selectedDays += "1"
-      }	else {
-				selectedDays += "0"
-			}
-		}
+  const onHandleSubmit = (event) => {
+    event.preventDefault();
+    const blank = /^\s+|\s+$/g;
+    let selectedDays = "";
 
 		const today = new Date();
 
@@ -366,17 +344,14 @@ function CreateArticleForm() {
 	)
 }
 
-
 function CreateArticle() {
-
-
   return (
     <>
-			<div>
-				<CreateArticleForm />
-			</div>
+      <div>
+        <CreateArticleForm />
+      </div>
     </>
-  )
+  );
 }
 
-export default CreateArticle
+export default CreateArticle;
