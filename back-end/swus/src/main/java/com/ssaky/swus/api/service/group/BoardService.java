@@ -1,10 +1,10 @@
 package com.ssaky.swus.api.service.group;
 
 import com.ssaky.swus.api.request.group.UpdateBoardReq;
-import com.ssaky.swus.api.request.group.UpdaterBoardReq;
 import com.ssaky.swus.api.request.group.WriteBoardReq;
 import com.ssaky.swus.api.response.group.BoardGetResp;
 import com.ssaky.swus.api.response.group.BoardListResp;
+import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.db.entity.group.Board;
 import com.ssaky.swus.db.repository.group.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,7 +40,8 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(IllegalArgumentException::new);    // Id값에 해당하는 게시글이 없을때
 
-        System.out.println(board);
+        board.updateView(board.getViews());
+
         return BoardGetResp.builder()
                 .title(board.getTitle())
                 .content(board.getContent())
@@ -69,18 +71,12 @@ public class BoardService {
 
     @Transactional
     public void updateBoard(int boardId, UpdateBoardReq updateBoardReq) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(RuntimeException::new);
+        Optional<Board> boardO = boardRepository.findById(boardId);
 
-        UpdaterBoardReq.UpdaterBoardReqBuilder updaterBoardReqBuilder = board.toUpdater();
-
-        UpdaterBoardReq updaterBoardReq = updaterBoardReqBuilder
-                .title(updateBoardReq.getTitle())
-                .content(updateBoardReq.getContent())
-                .boardNumber(updateBoardReq.getBoardNumber())
-                .build();
-
-        board.update(updaterBoardReq);
+        if (boardO.isEmpty()) {
+            throw new InvalidValueException("기존 게시글이 없습니다.");
+        }
+        boardO.get().update(updateBoardReq);
     }
 
     @Transactional

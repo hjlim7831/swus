@@ -1,6 +1,6 @@
 package com.ssaky.swus.db.entity.group;
 
-import com.ssaky.swus.api.request.group.UpdaterBoardReq;
+import com.ssaky.swus.api.request.group.UpdateBoardReq;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,16 +54,13 @@ public class Board extends BaseTimeEntity{
         this.number = number;
     }
 
-    public UpdaterBoardReq.UpdaterBoardReqBuilder toUpdater() {
-        return UpdaterBoardReq.builder()
-                .title(title)
-                .content(content)
-                .boardNumber(number);
+    public void update(UpdateBoardReq updaterBoardReq) {
+        this.title = updaterBoardReq.getTitle();
+        this.content = updaterBoardReq.getContent();
+        this.number = updaterBoardReq.getBoardNumber();
     }
 
-    public void update(UpdaterBoardReq updaterBoardReq) {
-        title = updaterBoardReq.getTitle();
-        content = updaterBoardReq.getContent();
-        number = updaterBoardReq.getBoardNumber();
+    public void updateView(int number) {
+        this.number = number + 1;
     }
 }
