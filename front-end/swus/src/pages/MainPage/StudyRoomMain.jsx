@@ -35,7 +35,7 @@ function StudyRoomMain() {
   const [yesRooms, setyesRooms] = useState([]); //쉬는시간방만 저장할 배열
 
   const Token =
-    "eyJyZWdEYXRlIjoxNjc1NjU4MjcxMjU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1NzQ0NjcxLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9._b05MfGI71_ve6bmh6_sYlqtO30wIblzQQWak9UKOEA";
+    "eyJyZWdEYXRlIjoxNjc1NzQ0NzMwMTU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1ODMxMTMwLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9.QCvJ0J6OvsmxkiqrYQSWhUjOpdrbVzrWSZNO4q0Bahs";
 
   useEffect(() => {
     axios({
@@ -45,7 +45,8 @@ function StudyRoomMain() {
         Authorization: `Bearer ${Token}`,
       },
     }).then((res) => {
-      // console.log(res.data.publics);
+      // console.log(res.data);
+      console.log(res.data.publics);
 
       if ("success_get_studyrooms") {
         setrooms(res.data.publics);
@@ -54,7 +55,6 @@ function StudyRoomMain() {
       }
     });
   }, []);
-
   console.log(rooms);
   useEffect(() => {
     const NR = rooms.filter((room) => room.type === "N");
@@ -64,30 +64,41 @@ function StudyRoomMain() {
     setyesRooms(YR);
   }, [rooms]);
 
-  //방 추가하는 함수
+  // const navigate = useNavigate();
+
+  //방 추가하는 함수, 추가하고 바로 이동
   const addItem = (typeOfRoom) => {
     console.log(typeOfRoom);
 
     if (typeOfRoom === "Y") {
-      axios
-        .post("http://i8a302.p.ssafy.io:8081/studyrooms", {
-          type: "Y",
-        })
-        .then((response) => {
-          console.log(response);
-        });
+      axios({
+        method: "post",
+        url: "http://i8a302.p.ssafy.io:8081/studyrooms",
+        headers: { Authorization: `Bearer ${Token}` },
+        body: { type: "Y" },
+      }).then((res) => {
+        console.log(res);
+        // console.log(res.data.publics);
+        console.log("i need a room id Y");
+      });
 
-      //방 입장하는 axios 이어서 작성 필요 (일단 랜덤입장으로 )
+      //방 입장하는 axios 이어서 작성 필요
     } else if (typeOfRoom === "N") {
-      axios
-        .post("http://i8a302.p.ssafy.io:8081/studyrooms", {
-          type: "N",
-        })
-        .then((response) => {
-          console.log(response);
-        });
+      axios({
+        method: "post",
+        url: "http://i8a302.p.ssafy.io:8081/studyrooms",
+        headers: { Authorization: `Bearer ${Token}` },
+        body: { type: "N" },
+      }).then((res) => {
+        console.log(res.data.publics);
+        console.log("i need a room id N");
+      });
     }
   };
+
+  /////로컬 스토리지 실험중//////
+  //로컬 스토리지에 시간 초기화하는 코드 일단 넣고,
+  //오픈비두 입장버튼 눌렀을 때에 입장 시간 저장 필요
 
   return (
     <>
@@ -108,8 +119,15 @@ function StudyRoomMain() {
           {/* 그리드 컴포넌트 사이 넓이 */}
           <Grid item xs={3} style={{}}>
             {/* todo& 목표 공부시간 묶는 div */}
-            <Grid item xs={8} sx={{ marginTop: 3, marginX: "auto", paddingLeft: "20px" }}>
-              <Typography variant="h5" sx={{ fontSize: 20, color: "white", marginTop: 2 }}>
+            <Grid
+              item
+              xs={8}
+              sx={{ marginTop: 3, marginX: "auto", paddingLeft: "20px" }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ fontSize: 20, color: "white", marginTop: 2 }}
+              >
                 Todo List
               </Typography>
               <Grid
@@ -161,7 +179,10 @@ function StudyRoomMain() {
             }}
           >
             <Grid item xs={12}>
-              <Typography variant="h1" sx={{ fontSize: 30, color: "white", marginTop: 2 }}>
+              <Typography
+                variant="h1"
+                sx={{ fontSize: 30, color: "white", marginTop: 2 }}
+              >
                 STUDY ROOM
               </Typography>
             </Grid>
@@ -183,7 +204,12 @@ function StudyRoomMain() {
                   <RoomInfo />
                   {noRooms.map((room, i) => (
                     <>
-                      <NSRoomCard key={i} sessionName={room.session_name} partici={room.count} />
+                      <NSRoomCard
+                        key={i}
+                        id={room.id}
+                        sessionName={room.session_name}
+                        partici={room.count}
+                      />
                     </>
                   ))}
                 </ScrollMenu>
@@ -228,6 +254,7 @@ function StudyRoomMain() {
                     <>
                       <FTRoomCard
                         key={room.id}
+                        id={room.id}
                         sessionName={room.session_name}
                         partici={room.count}
                       />

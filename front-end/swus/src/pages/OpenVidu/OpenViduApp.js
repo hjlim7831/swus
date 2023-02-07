@@ -8,8 +8,6 @@ import UserVideoComponent from "./UserVideoComponent";
 //열람실 내부 컴포넌트용
 import { Box } from "@mui/system";
 import Grid from "@mui/material/Grid";
-import Clock from "../StudyCam/Clock";
-import ClockTimer from "../StudyCam/ClockTimer";
 
 import MyTodo from "../MyPageReport/MyTodo";
 import { Button } from "@mui/material";
@@ -18,6 +16,7 @@ import Stack from "@mui/material/Stack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
+import Typography from "@mui/material/Typography";
 
 //HOC 사용용
 
@@ -33,11 +32,13 @@ class OpenViduApp extends Component {
     this.state = {
       roomType: props.roomType,
       mySessionId: props.sessionId,
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      myUserName: JSON.parse(localStorage.getItem("nickname")),
+      roomId: props.roomId,
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
+      d: new Date(),
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -52,11 +53,31 @@ class OpenViduApp extends Component {
     //컴포넌트의 출력물이 dom에 렌더링 된 후 한번만 실행
     //네트워크 호출, 구독 등 기능 수행
     window.addEventListener("beforeunload", this.onbeforeunload);
+
+    //시계 구현 1 컴포넌트가 불러올 때마다 1초씩 this.Change()를 부른다.
+    this.timeID = setInterval(() => this.change(), 1000);
   }
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onbeforeunload);
+
+    //시계 구현 2 반복되는것 clear
+    clearInterval(this.timeID);
   }
+
+  //시계 구현 3
+  change = () => {
+    this.setState({
+      d: new Date(),
+    });
+  };
+
+  getTodayLabel = () => {
+    const dayLabel = this.state.d.getDay();
+    const week = new Array("일", "월", "화", "수", "목", "금", "토");
+    const todayLabel = week[dayLabel];
+    return todayLabel;
+  };
 
   onbeforeunload(event) {
     this.leaveSession();
@@ -151,9 +172,9 @@ class OpenViduApp extends Component {
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1000x300", // The resolution of your video
+                resolution: "1200x300", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -165,7 +186,9 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter((device) => device.kind === "videoinput");
+              var videoDevices = devices.filter(
+                (device) => device.kind === "videoinput"
+              );
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -197,12 +220,26 @@ class OpenViduApp extends Component {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     const mySession = this.state.session;
-
+    console.log("check post");
+    console.log(this.state.room_id);
     if (mySession) {
       mySession.disconnect(); //연결 끊고
     }
 
-    // axios;
+    const Token =
+      "eyJyZWdEYXRlIjoxNjc1NzQ0NzMwMTU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1ODMxMTMwLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9.QCvJ0J6OvsmxkiqrYQSWhUjOpdrbVzrWSZNO4q0Bahs";
+
+    axios({
+      method: "post",
+      url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
+      headers: { Authorization: `Bearer ${Token}` },
+      data: {
+        room_id: this.state.room_id,
+      },
+    }).then((response) => {
+      console.log("??");
+      console.log(response);
+    });
 
     // Empty all properties... 초기화
     this.OV = null;
@@ -215,7 +252,7 @@ class OpenViduApp extends Component {
       publisher: undefined,
     });
 
-    window.location.href = "/studyroom";
+    // window.location.href = "/studyroom";
 
     // navigate("/");
   }
@@ -224,9 +261,27 @@ class OpenViduApp extends Component {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
 
+    const year = this.state.d.getFullYear();
+    const month = ("0" + (this.state.d.getMonth() + 1)).slice(-2); //getMonth는 0-11 반환하므로 +1, 05월처럼 두자리 맞추기(뒤에서 두자리 자름)
+    const day = ("0" + this.state.d.getDate()).slice(-2);
+
+    const hoursTen = ("0" + this.state.d.getHours()).slice(-2, -1); //시간 10의자리
+    const hoursOne = ("0" + this.state.d.getHours()).slice(-1); //시간 1의자리
+    const minutesTen = ("0" + this.state.d.getMinutes()).slice(-2, -1);
+    const minutesOne = ("0" + this.state.d.getMinutes()).slice(-1);
+    const secondsTen = ("0" + this.state.d.getSeconds()).slice(-2, -1);
+    const secondsOne = ("0" + this.state.d.getSeconds()).slice(-1);
+
     return (
       <>
-        <Box sx={{ flexGrow: 1, backgroundColor: "#1A1E33", height: "100%" }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            backgroundColor: "#1A1E33",
+            height: "100vh",
+            marginTop: "8px",
+          }}
+        >
           <Grid container spacing={1}>
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
@@ -274,16 +329,146 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>{mySessionId}</h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                  {mySessionId}
+                </h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
-                  {this.state.mySessionId.substr(6, 1) === "Y" ? (
-                    //쉬는시간 있으면Y
-                    <ClockTimer />
-                  ) : (
-                    <Clock />
-                  )}
+                  <div style={{ height: "50%" }}>
+                    <p style={{ color: "white" }}>
+                      {year}. {month}. {day} {this.getTodayLabel()}요일
+                    </p>
+                    <Box sx={{ height: "100%", mt: "5px" }}>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          mr: "1%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {hoursTen}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          mr: "0.3%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {hoursOne}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          color: "white",
+                          mr: "0.3%",
+                        }}
+                      >
+                        <Typography variant="h4" sx={{ textAlign: "center" }}>
+                          :
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          mr: "1%",
+                          height: "100%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {minutesTen}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          mr: "0.3%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {minutesOne}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          color: "white",
+                          mr: "0.3%",
+                        }}
+                      >
+                        <Typography variant="h4" sx={{ textAlign: "center" }}>
+                          :
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          mr: "1%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {secondsTen}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          width: "15%",
+                          height: "100%",
+                          borderRadius: 2,
+                          backgroundColor: "#E8E8E8",
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
+                          {secondsOne}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                  To-do list
+                </h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -356,9 +541,13 @@ class OpenViduApp extends Component {
                       {this.state.publisher !== undefined ? (
                         <div
                           className="stream-container"
-                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                          onClick={() =>
+                            this.handleMainVideoStream(this.state.publisher)
+                          }
                         >
-                          <UserVideoComponent streamManager={this.state.publisher} />
+                          <UserVideoComponent
+                            streamManager={this.state.publisher}
+                          />
                         </div>
                       ) : null}
                       {this.state.subscribers.map((sub, i) => (

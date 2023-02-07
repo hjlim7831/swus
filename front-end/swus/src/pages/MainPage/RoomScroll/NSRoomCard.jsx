@@ -19,6 +19,8 @@ function NSRoomCard(props) {
   const [open, setOpen] = React.useState(false);
   const [sessionName, setsessionName] = useState(props.sessionName);
   const [count, setCount] = useState(props.partici);
+  const [roomId, setRoomId] = useState(props.id);
+
   console.log();
 
   const handleToOpen = () => {
@@ -29,21 +31,46 @@ function NSRoomCard(props) {
     setOpen(false);
   };
 
+  const Token =
+    "eyJyZWdEYXRlIjoxNjc1NzQ0NzMwMTU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1ODMxMTMwLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9.QCvJ0J6OvsmxkiqrYQSWhUjOpdrbVzrWSZNO4q0Bahs";
+
   const navigate = useNavigate();
   const handleToEnter = () => {
     // axios
-    //   .post(`http://i8a302.p.ssafy.io:8081/studyrooms/${sessionName}`, {
-    //     user_id: userId,
-    //   })
+    //   .post(`http://i8a302.p.ssafy.io:8081/studyrooms/${sessionName}`, {})
     //   .then((response) => {
     //     console.log(response);
+    //     console.log("enter room");
     //   });
-    navigate(`/studyroom/${sessionName}`, { state: { roomName: sessionName } }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+
+    //입장시 api
+    axios({
+      method: "post",
+      url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
+      headers: {
+        Authorization: `Bearer ${Token}`,
+      },
+    }).then((response) => {
+      if ("success_enter_studyroom") {
+        console.log(response);
+        navigate(`/studyroom/${sessionName}`, {
+          state: { roomName: sessionName },
+        }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+      } else {
+        alert("잠시 후 다시 입장해주세요");
+      }
+    });
+
+    navigate(`/studyroom/${sessionName}`, {
+      state: { roomName: sessionName, roomId: roomId },
+    }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
   };
 
   return (
     <>
-      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
+      <Card
+        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
+      >
         <div
           style={{
             width: 200,
@@ -103,7 +130,9 @@ function NSRoomCard(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Non-Stop 열람실 #{sessionName} 입장하기</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          Non-Stop 열람실 #{sessionName} 입장하기
+        </DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>
