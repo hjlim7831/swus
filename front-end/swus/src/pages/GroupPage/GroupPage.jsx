@@ -82,32 +82,32 @@ function GroupPage() {
 
 	return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", height: "85vh", marginTop: 3 }}>
 				<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
-					<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
-						스터디 모집게시판
+					<p style={{ display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+						<span>스터디 모집게시판</span>
 					</p>
 					<Button 
 						type="submit" 
 						variant='contained' 
-						sx={{ backgroundColor: "green", m: 3, height: "40px" }}
+						sx={{ backgroundColor: "green", m: 3, height: "40px", "&:hover": { backgroundColor: "green" } }}
 						size="small"
-						onClick={() => {navigate("/group/create")}}>글 작성</Button>
+						onClick={() => {navigate("/group/board/create")}}>글 작성</Button>
 				</Grid>
 
-				<TableContainer component={Paper}>
-					<Table sx={{ width: "100%" }}>
+				<TableContainer style={{ textAlign: "center"}}>
+					<Table style={{ textAlign: "center" }}>
 						<TableHead>
 							<TableRow>
-								<TableCell>글 번호</TableCell>
-								<TableCell>그룹 종류</TableCell>
-								<TableCell>제목</TableCell>
-								<TableCell>모집 여부</TableCell>
-								<TableCell>작성일</TableCell>
-								<TableCell>조회수</TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}></TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}>그룹 종류</TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}>제목</TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}>모집 여부</TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}>작성일</TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}>조회수</TableCell>
 							</TableRow>
 						</TableHead>
-						<TableBody>
+						<TableBody style={{ textAlign: "center" }}>
 							{articles
 							// .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
 							.slice(page * 10, (page + 1) * 10)
@@ -115,14 +115,14 @@ function GroupPage() {
 								<TableRow
 									key={article.index}
 								>
-									<TableCell sx={{ justifyItems: "center"}}>
+									<TableCell style={{ justifyItems: "center", justifyContent: "center", textAlign: "center"}}>
 										<span>{article.index}</span>
 									</TableCell>
-									<TableCell style={ filterCategory.test(article.type) ? { color: "red"} : {color: "blue"} }>{article.type}</TableCell>
-									<TableCell>{article.name}</TableCell>
-									<TableCell>{article.is_finished}</TableCell>
-									<TableCell>{article.date}</TableCell>
-									<TableCell>{article.watched}</TableCell>
+									<TableCell style={{  textAlign: "center" }}><span style={filterCategory.test(article.type) ? { color: "red"} : {color: "blue"}}>{article.type}</span></TableCell>
+									<TableCell style={{ textAlign: "center" }}>{article.name}</TableCell>
+									<TableCell style={{ textAlign: "center" }}>{article.is_finished}</TableCell>
+									<TableCell style={{ textAlign: "center" }}>{article.date}</TableCell>
+									<TableCell style={{ textAlign: "center" }}>{article.watched}</TableCell>
 								</TableRow>
 							))}
 						</TableBody>

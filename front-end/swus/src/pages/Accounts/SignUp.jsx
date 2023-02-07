@@ -71,7 +71,7 @@ export default function SignUpSide() {
       } else {
         console.log(email);
         axios
-          .get(`http://localhost:8081/auth/check-email?email=${email}`)
+          .get(`http://i8a302.p.ssafy.io:8081/auth/check-email?email=${email}`)
           .then((response) => {
             console.log(response.data.msg);
             if (response.data.msg === "Y") {

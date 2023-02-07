@@ -26,7 +26,7 @@ const openedMixin = (theme) => ({
 export default function MiniDrawer() {
   return (
     <Box
-      sx={{ display: "flex", backgroundColor: "#1A1E33", height: "881px" }}
+      sx={{ display: "flex", backgroundColor: "#1A1E33", height: "100vh" }}
       boxSizing={openedMixin}
     >
       <CssBaseline />
