@@ -33,7 +33,7 @@ export default function MiniDrawer(props) {
 
   return (
     <Box
-      sx={{ display: "flex", backgroundColor: "#1A1E33", height: "200vh" }}
+      sx={{ display: "flex", backgroundColor: "#1A1E33", height: "100vh" }}
       boxSizing={openedMixin}
     >
 

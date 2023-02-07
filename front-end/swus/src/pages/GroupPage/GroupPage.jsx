@@ -118,7 +118,7 @@ function GroupPage() {
 									<TableCell style={{ justifyItems: "center", justifyContent: "center", textAlign: "center"}}>
 										<span>{article.index}</span>
 									</TableCell>
-									<TableCell style={{  textAlign: "center" }}><span style={filterCategory.test(article.type) ? { color: "red"} : {color: "blue"}}>{article.type}</span></TableCell>
+									<TableCell style={{ textAlign: "center" }}><span style={filterCategory.test(article.type) ? { color: "red"} : {color: "blue"}}>{article.type}</span></TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.name}</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.is_finished}</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.date}</TableCell>
