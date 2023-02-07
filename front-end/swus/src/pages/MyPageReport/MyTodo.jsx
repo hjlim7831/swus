@@ -59,7 +59,7 @@ function MyTodo() {
           height: 500,
         }}
       >
-        <h4 style={{ display: "inline-block" }}>Todo List</h4>
+        {/* <h4 style={{ display: "inline-block" }}>Todo List</h4>
         <IconButton
           sx={{ display: "inline-block" }}
           color="secondary"

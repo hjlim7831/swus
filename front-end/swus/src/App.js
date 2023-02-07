@@ -1,9 +1,12 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  // Link
-} from "react-router-dom";
+import GroupPage from './pages/GroupPage/GroupPage';
+import CreateArticle from './pages/GroupPage/CreateArticle';
+import ArticleDetail from './pages/GroupPage/ArticleDetail';
+import UpdateArticle from './pages/GroupPage/UpdateArticle';
+import GroupDetail from './pages/GroupPage/GroupDetail';
+import UpdateGroupDetail from './pages/GroupPage/UpdateGroupDetail';
+import GroupMain from "./pages/GroupPage/Main";
+import MyGroupList from './pages/MyPageProfile/MyGroupList';
+
 import LogIn from "./pages/Accounts/LogIn";
 import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
@@ -19,6 +22,12 @@ import SignUpModal from "./pages/Accounts/LogInModal/SignUp";
 import FindPasswordModal from "./pages/Accounts/LogInModal/FindPassword";
 import MyReport from "./pages/MyPageReport/MyReport";
 
+import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
+import NSRoom from "./pages/StudyCam/NSRoom";
+import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
+
+
+
 function App() {
   return (
     <>
@@ -28,26 +37,24 @@ function App() {
           {/* <Route exact path="/" /> */}
           {/* 공용 열람실 관련 주소 */}
           <Route exact path="/studyroom">
-            <Route exact path="" />
-            <Route exact path=":sessionName" />
+            <Route path="" />
+            <Route path=":sessionName" />
           </Route>
           {/* 마이 페이지 관련 주소 */}
           <Route exact path="/mypage">
-            {/* <Route exact path="profile/:userId" element={<mypagemain />} /> */}
-            <Route exact path="profile/" element={<MyPageMain />} />
-            <Route exact path="group/:groupId" />
-            <Route exact path="group/:groupId/update" />
-            {/* <Route exact path="myreport/:userId" /> */}
-            <Route exact path="myreport" element={<MyReport />} />
+            <Route path="profile/:userId" />
+            <Route path="group/:groupId" element={<GroupDetail/>}/>
+            <Route path="group/:groupId/update" element={<UpdateGroupDetail/>}/>
+            <Route path="myreport/:userId" />
           </Route>
           {/* 그룹 페이지(게시판) 관련 주소 */}
-          <Route exact path="/group">
-            <Route exact path="mystudy/:userId" />
-            <Route exact path="board" />
-            <Route exact path="board/:boardId" />
-            <Route exact path="board/:boardId/update" />
-            {/* <Route exact path="board/create" element={<CreateArticle />} /> */}
-            <Route exact path="studyroom/:sessionName" />
+          <Route exact path="/group" element={<GroupMain />}>
+            <Route path="mystudy/:userId" element={<MyGroupList/>}/>
+            <Route path="board" element={<GroupPage/>}/>
+            <Route path="board/:boardId" element={<ArticleDetail />}/>
+            <Route path="board/:boardId/update" element={<UpdateArticle />}/>
+            <Route path="board/create" element={<CreateArticle />}/>
+            <Route path="studyroom/:sessionName"/>
           </Route>
           {/* 휴게실 */}
           <Route exact path="/lounge" element={<Lounge />} />

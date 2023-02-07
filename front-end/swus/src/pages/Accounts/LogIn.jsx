@@ -61,6 +61,7 @@ export default function SignInSide() {
             // 로컬스토리지에 삭제   localStorage.removeItem
             localStorage.setItem("id", payload.email);
             //rememberme를 위해 이메일은 => localStorage에 저장
+            localStorage.setItem("nickName", payload.nickname);
 
             sessionStorage.setItem("token", response.data.access_token);
             // token은 sessionStorage에 저장

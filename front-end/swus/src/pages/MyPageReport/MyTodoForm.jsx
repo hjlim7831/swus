@@ -7,7 +7,7 @@ function MyTodoForm({ handleSubmit, value, setValue }) {
   };
   return (
     <div>
-      <form style={{}} onSubmit={handleSubmit}>
+      <form style={{ width: "100%" }} onSubmit={handleSubmit}>
         <input
           type="text"
           name="value"

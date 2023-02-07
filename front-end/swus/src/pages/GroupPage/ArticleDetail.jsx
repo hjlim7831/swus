@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import {getStudyRoom} from '../../store/CheckedSlice';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import Modal from "../../components/modals/Modal";
-import { styled, withTheme } from '@mui/material/styles';
+import deleteArticle from '../../components/modals/DeleteArticle';
 
 
 
@@ -22,21 +21,6 @@ function ArticleDetail() {
 
 	const [day, setDay] = useState("");
 	const [studyPlan, setStudyPlan] = useState("");
-	const [ modal, setModal ] = useState(false);
-
-	const openModal = () => {
-		setModal(true);
-	};
-	const closeModal = () => {
-		setModal(false);
-	};
-
-	const ColoredButton = styled(Button) (({ theme }) => ({
-		"&:hover": {
-			backgroundColor: "white",
-			color: "black",
-		}
-	}))
 
 	useEffect(() => {
 		let date = ""
@@ -68,29 +52,35 @@ function ArticleDetail() {
 		}
 	}, [article.day])
 
+	useEffect(() => {
+		// 글이 지워졌을때 보드로 돌아가는 함수
+		if (article.title === "") {
+			navigate("/group/board")
+		}
+	}, [])
+
 	
 	 
   return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px", minWidth: "1300px"}}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", minWidth: "1000px"}}>
 				<Grid container sx={{ px: 2 }}>
 					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
-    				<p style={{ fontWeight: "bold", fontSize: "30px"}}>[{article.category}] {article.title}</p>
+    				<p style={{ fontWeight: "bold", fontSize: "30px"}}>
+							<span style={(article.category === "스터디") ? { color: "red" } : { color: "blue" }}>[{article.category}]</span>
+							<span style={{ marginLeft: 30 }}>{article.title}</span>
+						</p>
 						<p style={{ paddingLeft: 30, paddingTop: 5}}>
 							<EditOutlinedIcon
 								variant="contained"
 								sx={{ fontSize: 30, color: "blue" }}
-								onClick={() => {navigate("/group/update")}} />
+								onClick={() => {navigate("/group/board/:boardId/update")}} />
 						</p>
 						<p style={{ paddingLeft: 10, paddingTop: 5}}>
 							<DeleteOutlinedIcon
-								onClick={openModal}
+								onClick={deleteArticle}
 								sx={{ fontSize: 30, color: "red" }} 
 							/>
-							<Modal open={modal} close={closeModal} header="글을 삭제하시겠습니까?">
-								글을 삭제해도 그룹은 유지됩니다.
-								글을 삭제하시겠습니까?
-							</Modal>
 						</p>
 					</Grid>
 					<Grid item xs={3}>
@@ -98,23 +88,23 @@ function ArticleDetail() {
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 5}}>
 					</Grid>
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 4}}>
-						<ColoredButton 
+						<Button 
 							variant="contained" 
 							sx={{ height: "40px" }} 
 							onClick={() => {
 								dispatch(getStudyRoom())							
-								navigate("/");
-								}}>목록 보기</ColoredButton>
+								navigate("/group/board");
+								}}>목록 보기</Button>
 					</Grid>
 				</Grid>
 				<Grid container>
 					<Grid item xs={1} sx={{ textAlign: "center" }}>
 						<p>서형준</p>
 					</Grid>
-					<Grid item xs={8} sx={{ px: 3}}>
+					<Grid item xs={8} sx={{ px: 3 }}>
 						<p>{article.writedAt}</p>
 					</Grid>
-					<Grid item xs={3} sx={{ textAlign: "right", display: "flex", justifyContent: "right", pr: 3}}>
+					<Grid item xs={3} sx={{ textAlign: "right", display: "flex", justifyContent: "right", pr: 3 }}>
 						<p>조회수 : 6</p>
 					</Grid>
 				</Grid>
@@ -149,7 +139,7 @@ function ArticleDetail() {
 				<Container 
 					sx={{ width: "85%", minHeight: "500px", borderRadius: "10px", backgroundColor: "rgba(244, 239, 230, 0.47)", padding: 3, mb: 3}}>
 					<Box>
-						<p>{article.content}</p>
+						<div style={{ whiteSpace: "pre-wrap", paddingLeft: 10, paddingTop: 10, overflowY: "scroll", height: "500px" }}>{article.content}</div>
 					</Box>
 				</Container>
 			</Container>

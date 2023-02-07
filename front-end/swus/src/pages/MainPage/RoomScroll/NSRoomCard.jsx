@@ -12,10 +12,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../image/sampleImage.jpg";
 import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
+import { Grid } from "@mui/material";
+import axios from "axios";
 
 function NSRoomCard(props) {
   const [open, setOpen] = React.useState(false);
   const [sessionName, setsessionName] = useState(props.sessionName);
+  const [count, setCount] = useState(props.partici);
+  const [roomId, setRoomId] = useState(props.id);
+
   console.log();
 
   const handleToOpen = () => {
@@ -26,27 +31,46 @@ function NSRoomCard(props) {
     setOpen(false);
   };
 
+  const Token =
+    "eyJyZWdEYXRlIjoxNjc1NzQ0NzMwMTU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1ODMxMTMwLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9.QCvJ0J6OvsmxkiqrYQSWhUjOpdrbVzrWSZNO4q0Bahs";
+
   const navigate = useNavigate();
   const handleToEnter = () => {
-    navigate("/nsroom", { state: { roomName: sessionName } }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+    // axios
+    //   .post(`http://i8a302.p.ssafy.io:8081/studyrooms/${sessionName}`, {})
+    //   .then((response) => {
+    //     console.log(response);
+    //     console.log("enter room");
+    //   });
+
+    //입장시 api
+    axios({
+      method: "post",
+      url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
+      headers: {
+        Authorization: `Bearer ${Token}`,
+      },
+    }).then((response) => {
+      if ("success_enter_studyroom") {
+        console.log(response);
+        navigate(`/studyroom/${sessionName}`, {
+          state: { roomName: sessionName },
+        }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+      } else {
+        alert("잠시 후 다시 입장해주세요");
+      }
+    });
+
+    navigate(`/studyroom/${sessionName}`, {
+      state: { roomName: sessionName, roomId: roomId },
+    }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
   };
 
   return (
     <>
-      <Card style={{ marginRight: 10 }}>
-        {/* <CardMedia
-          component="img"
-          width="200"
-          height="300"
-          image={logo}
-          alt="studystudy"
-          // objectfit="cover"  objectFit 하면 안됨
-        /> */}
-        {/* <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            NonStop 열람실 #{sessionName}
-          </Typography>
-        </CardContent> */}
+      <Card
+        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
+      >
         <div
           style={{
             width: 200,
@@ -56,7 +80,7 @@ function NSRoomCard(props) {
           <img
             style={{
               width: 300,
-              height: 400,
+              height: 380,
               objectFit: "cover",
               /*filter: "brightness(40%)" */ opacity: 1,
             }}
@@ -70,27 +94,34 @@ function NSRoomCard(props) {
             </Typography>
           </div>
         </CardContent>
-        {/* <Button onClick={handleToOpen}>입장하기</Button> */}
-        <div>
-          <p
-            style={{
+        <Grid container sx={{ marginX: "auto" }}>
+          <Grid
+            item
+            xs={2}
+            sx={{
               color: "white",
               display: "inline-block",
               fontSize: "25px",
-              marginLeft: "10%",
+              marginLeft: "7%",
             }}
           >
-            5/9
-          </p>
-          <Button
-            variant="contained"
-            onClick={handleToOpen}
-            sx={{ marginRight: "10%", alignItems: "right" }}
-          >
-            입장하기
-          </Button>
-        </div>
-        startIcon={<AdjustOutlinedIcon></AdjustOutlinedIcon>}
+            {count}/9
+          </Grid>
+          <Grid item xs={6} sx={{ marginLeft: "20%" }}>
+            <Button
+              variant="contained"
+              onClick={handleToOpen}
+              sx={{
+                marginLeft: "22%",
+                height: "100%",
+                backgroundColor: "#475467",
+              }}
+              startIcon={<AdjustOutlinedIcon></AdjustOutlinedIcon>}
+            >
+              입장하기
+            </Button>
+          </Grid>
+        </Grid>
       </Card>
 
       <Dialog
