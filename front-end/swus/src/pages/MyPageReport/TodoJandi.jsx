@@ -4,10 +4,50 @@ import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Grid } from "@mui/material";
 
+import axios from "./../../Utils/index";
+
 function TodoJandi() {
   //  Heatmap Data
   const [values, setValues] = useState([]);
   const [startDate, setStartDate] = useState();
+
+  useEffect(() => {
+    const config = {
+      url: "/my-todos/jandi",
+      method: "get",
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log(response.data.todo_records);
+        // {id_study_at: '2023-02-01', todo_done_count: 3}
+        // 1 <= , 3 <=, 5<= , 7 <=
+        const newData = response.data.todo_records.map((data) => {
+          let value = 0
+          
+          if (data.todo_done_count >= 7) {
+            value = 4
+          } else if (data.todo_done_count >= 5) {
+            value = 3
+          } else if (data.todo_done_count >= 3) {
+            value = 2
+          } else if (data.todo_done_count >= 1) {
+            value = 1
+          }
+
+          return {
+            ...data,
+            classValue: value,
+          };
+        })
+        console.log(newData);
+        setValues(newData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
 
   //  기간 설정 (1년 전 ~ today)
   // Lazy Initialization (state 정의될 때 한 번만 실행)
@@ -26,24 +66,26 @@ function TodoJandi() {
 
   //  마운트 됐을 때 데이터 가져옴
   //  배열에 날짜, 퍼센트, 클래스(색) 저장
-  useEffect(() => {
-    fetch(`/testData/heatMapData.json`)
-      .then((res) => res.json())
-      .then((res) => {
-        const jsonData = res.result;
-        const newArray = [];
-        for (let element of jsonData) {
-          const { date, percentage } = element;
-          let classValue = 0;
-          if (percentage >= 80) classValue = 4;
-          else if (percentage >= 60) classValue = 3;
-          else if (percentage >= 40) classValue = 2;
-          else if (percentage >= 20) classValue = 1;
-          newArray.push({ date, percentage, classValue });
-        }
-        setValues(newArray);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/testData/heatMapData.json`)
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       const jsonData = res.result;
+  //       const newArray = [];
+  //       for (let element of jsonData) {
+  //         const { date, percentage } = element;
+  //         let classValue = 0;
+  //         if (percentage >= 80) classValue = 4;
+  //         else if (percentage >= 60) classValue = 3;
+  //         else if (percentage >= 40) classValue = 2;
+  //         else if (percentage >= 20) classValue = 1;
+  //         newArray.push({ date, percentage, classValue });
+  //       }
+  //       setValues(newArray);
+  //     });
+  // }, []);
+
+
   return (
     <>
       <Box

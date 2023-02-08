@@ -4,49 +4,27 @@ import MyTodoList from "./MyTodoList";
 import MyTodoForm from "./MyTodoForm";
 import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
-import axios from "./../../Utils/index";
-
-import { useSelector, useDispatch } from "react-redux";
-import { addTodoList } from "./../../store/TodoList";
 
 function MyTodo() {
-  const dispatch = useDispatch();
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
+  const [change, setChange] = useState("todo");
 
-  useEffect(() => {
-    const config = {
-      url: "/my-todos",
-      method: "get",
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //새로운 할 일 데이터
+    let newTodo = {
+      id: Date.now(), //유니크해야하기때문에 현재 시간으로
+      title: value, //입력한것이 들어있음(value에)
+      completed: false,
     };
 
-    axios(config)
-      .then((response) => {})
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   //새로운 할 일 데이터
-  //   // let newTodo = {
-  //   //   id: Date.now(), //유니크해야하기때문에 현재 시간으로
-  //   //   title: value, //입력한것이 들어있음(value에)
-  //   //   completed: false,
-  //   // };
-  //   let newTodo = {
-  //     num: "",
-  //     todo_done: false,
-  //     content: "",
-  //   };
-
-  //   //원래 있던 할 일에 새로운 할 일 더해주기
-  //   setTodoData((prev) => [...prev, newTodo]); //hooks사용해서 Setter에서 이전 state를 가지고 오기 위해서는 인수에 함수를 이용해서 사용
-  //   //prev: 전 todaData의 값. 전 Todo데이터에 newTodo데이터를 함께 넣어줌
-  //   setValue("");
-  // };
+    //원래 있던 할 일에 새로운 할 일 더해주기
+    setTodoData((prev) => [...prev, newTodo]); //hooks사용해서 Setter에서 이전 state를 가지고 오기 위해서는 인수에 함수를 이용해서 사용
+    //prev: 전 todaData의 값. 전 Todo데이터에 newTodo데이터를 함께 넣어줌
+    setValue("");
+  };
 
   return (
     <>
