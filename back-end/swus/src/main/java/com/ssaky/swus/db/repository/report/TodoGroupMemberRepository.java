@@ -46,7 +46,7 @@ public class TodoGroupMemberRepository {
         return em.createQuery("SELECT new com.ssaky.swus.api.response.report.TodoGroupMemberGetResp(t.num, t.todoDone, t.content)" +
                         " FROM TodoGroupMember t" +
                         " WHERE t.member.id = :memberId" +
-                        " AND t.team.id = :teamId" +
+                        " AND t.team.teamId = :teamId" +
                         " AND t.round = :round", TodoGroupMemberGetResp.class)
                 .setParameter("memberId", memberId)
                 .setParameter("round", round)

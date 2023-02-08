@@ -1,7 +1,7 @@
 package com.ssaky.swus.db.repository.report;
 
 
-import com.ssaky.swus.api.response.report.TodoGroupGetResp;
+import com.ssaky.swus.api.response.report.RoundGetResp;
 import com.ssaky.swus.db.entity.report.TodoGroup;
 import com.ssaky.swus.db.entity.report.TodoGroupId;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +29,12 @@ public class TodoGroupRepository {
     }
 
     //회차별 주제 리스트 불러오기
-    public List<TodoGroupGetResp> findTodoGroups(int teamId) {
-        return em.createQuery("SELECT com.ssaky.swus.api.response.report.TodoGroupGetResp(t.id.round, t.content)" +
+    public List<RoundGetResp> findTodoGroups(int teamId) {
+        return em.createQuery("SELECT new com.ssaky.swus.api.response.report.RoundGetResp(t.id.round, t.content, t.studyAt) " +
                         " FROM TodoGroup t" +
-                        " WHERE t.id.teamId = :teamId", TodoGroupGetResp.class)
-                .setParameter("groupId", teamId)
+                        " WHERE t.id.teamId = :teamId" +
+                        " ORDER BY t.id.round", RoundGetResp.class)
+                .setParameter("teamId", teamId)
                 .getResultList();
     }
 }
