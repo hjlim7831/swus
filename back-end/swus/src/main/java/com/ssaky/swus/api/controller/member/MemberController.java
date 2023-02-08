@@ -55,7 +55,7 @@ public class MemberController {
     public ResponseEntity<?> getMyGroupList(Authentication authentication) {
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
-        return ResponseEntity.ok(teamService.getGroupList(memberId));
+        return ResponseEntity.ok(teamService.getTeamList(memberId));
     }
 
 

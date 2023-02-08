@@ -10,5 +10,14 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class MyGroupDetailResp {
+public class MyTeamResp {
+
+    private int teamId;
+    private String teamName;
+    private String category;
+    private String teamDone;
+    private String day;
+    private String startTime;
+    private String finishTime;
+
 }

@@ -10,6 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GroupInviteReq {
+public class TeamInviteReq {
     private String email;
 }

@@ -36,8 +36,6 @@ public class Member {
 
     private String answer;
 
-    private String token;
-
     // 작성자 : 임혜진
     // Cascade 어떻게 걸어야되지...
     @OneToMany(mappedBy = "member", fetch= LAZY)

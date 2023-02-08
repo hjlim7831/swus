@@ -1,18 +1,72 @@
 package com.ssaky.swus.api.controller.team;
 
+import com.ssaky.swus.api.request.team.TeamInviteReq;
+import com.ssaky.swus.api.service.team.TeamService1;
+import com.ssaky.swus.common.utils.TokenUtils;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("my-groups")
+@RequestMapping("my-teams")
 public class TeamController {
+    private final TeamService1 teamService;
 
-    // [3] 그룹 종료 전환 my-groups/{team_id}/done
+    // 그룹 정보 수정
+    @PutMapping("{team_id}")
+    public ResponseEntity<?> updateTeamInfo(Authentication authentication, @PathVariable("team_id") int teamId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        teamService.updateTeamInfo(teamId, memberId);
+        resultMap.put("team_id", teamId);
+        return ResponseEntity.ok(resultMap);
+    }
 
-    // [4] 그룹명 조회 my-groups/{team_id}/name
+    @PostMapping("{team_id}/invite")
+    public ResponseEntity<?> inviteMember(Authentication authentication, @PathVariable("team_id") int teamId, TeamInviteReq req) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        teamService.inviteMember(teamId, memberId, req);
+        resultMap.put("msg", "success_add_team_member");
+        return ResponseEntity.ok(resultMap);
+    }
+
+    @DeleteMapping("{team_id}")
+    public ResponseEntity<?> teamWithdrawal(Authentication authentication, @PathVariable("team_id") int teamId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        teamService.teamWithdrawal(teamId, memberId);
+        return ResponseEntity.ok(resultMap);
+    }
+
+    // [3] 그룹 종료 전환 my-teams/{team_id}/done
+    @PostMapping("{team_id}/done")
+    public ResponseEntity<?> updateDone(Authentication authentication, @PathVariable("team_id") int teamId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        teamService.updateDone(teamId, memberId);
+        resultMap.put("msg", "success_team_convert_done");
+        return ResponseEntity.ok(resultMap);
+    }
+
+
+    @GetMapping("{team_id}/name")
+    public ResponseEntity<?> getTeamName(@PathVariable("team_id") int teamId) {
+        return ResponseEntity.ok(teamService.getTeamName(teamId));
+    }
+
+    // [6] 그룹 열람실 스크린샷 이미지 조회 my-reports/{team_id}/images
 
 }
