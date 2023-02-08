@@ -1,10 +1,10 @@
-package com.ssaky.swus.api.controller.group;
+package com.ssaky.swus.api.controller.team;
 
-import com.ssaky.swus.api.request.group.UpdateBoardReq;
-import com.ssaky.swus.api.request.group.WriteBoardReq;
+import com.ssaky.swus.api.request.team.UpdateBoardReq;
+import com.ssaky.swus.api.request.team.WriteBoardReq;
 import com.ssaky.swus.api.response.group.BoardGetResp;
 import com.ssaky.swus.api.response.group.BoardListResp;
-import com.ssaky.swus.api.service.group.BoardService;
+import com.ssaky.swus.api.service.team.BoardService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

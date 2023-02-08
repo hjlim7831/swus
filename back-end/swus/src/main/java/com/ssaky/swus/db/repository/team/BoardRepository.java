@@ -1,6 +1,6 @@
-package com.ssaky.swus.db.repository.group;
+package com.ssaky.swus.db.repository.team;
 
-import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.db.entity.team.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
