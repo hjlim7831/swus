@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @ToString
@@ -34,7 +33,7 @@ public class BoardGetResp {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();
-        this.writeAt = board.getWriteAt();
+        this.writeAt = board.getCreateAt();
         this.boardNumber = board.getNumber();
     }
 
