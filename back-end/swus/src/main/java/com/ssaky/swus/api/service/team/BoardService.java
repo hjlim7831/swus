@@ -1,12 +1,12 @@
-package com.ssaky.swus.api.service.group;
+package com.ssaky.swus.api.service.team;
 
-import com.ssaky.swus.api.request.group.UpdateBoardReq;
-import com.ssaky.swus.api.request.group.WriteBoardReq;
+import com.ssaky.swus.api.request.team.UpdateBoardReq;
+import com.ssaky.swus.api.request.team.WriteBoardReq;
 import com.ssaky.swus.api.response.group.BoardGetResp;
 import com.ssaky.swus.api.response.group.BoardListResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
-import com.ssaky.swus.db.entity.group.Board;
-import com.ssaky.swus.db.repository.group.BoardRepository;
+import com.ssaky.swus.db.entity.team.Board;
+import com.ssaky.swus.db.repository.team.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package com.ssaky.swus.db.entity.group;
+package com.ssaky.swus.db.entity.team;
 
 import lombok.Builder;
 import lombok.Getter;

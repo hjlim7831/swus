@@ -20,5 +20,5 @@ public class GroupRoom {
 
     private String type;
 
-    //private int group_id; //그룹id 외래키
+    //private int team_id; //그룹id 외래키
 }

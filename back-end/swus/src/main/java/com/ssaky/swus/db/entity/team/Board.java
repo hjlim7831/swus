@@ -1,6 +1,6 @@
-package com.ssaky.swus.db.entity.group;
+package com.ssaky.swus.db.entity.team;
 
-import com.ssaky.swus.api.request.group.UpdateBoardReq;
+import com.ssaky.swus.api.request.team.UpdateBoardReq;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
