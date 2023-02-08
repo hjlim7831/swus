@@ -1,21 +1,8 @@
-import React, { useState } from "react";
-// import { styled, useTheme } from '@mui/material/styles';
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-// import IconButton from '@mui/material/IconButton';
-// import MenuIcon from '@mui/icons-material/Menu';
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from "@mui/material/ListItemText";
 import { Button } from "@mui/material";
-import { Grid } from "@mui/material";
+import "./SideBar.css";
+import { useNavigate } from "react-router-dom";
 
-import MyProfileMain from "../MyPageProfile/MyProfileMain";
-import MyReport from "../MyPageReport/MyReport";
 
 const drawerWidth = 240;
 
@@ -27,71 +14,48 @@ const openedMixin = (theme) => ({
   }),
 });
 
-export default function MiniDrawer() {
-  const [content, setContent] = useState("Profile");
-  console.log(content);
 
-  const moveHere = [
-    {
-      id: 1,
-      name: "Profile",
-    },
-    {
-      id: 2,
-      name: "MyReport",
-    },
-  ];
-  const selectComponent = {
-    Profile: <MyProfileMain />,
-    MyReport: <MyReport />,
-  };
+export default function MiniDrawer(props) {
+
+  const navigate = useNavigate();
+
+  const sideItems = window.location.pathname.slice(7, 12) === "profile"
+    ? [
+      { name: "PROFILE", path: `mystudy/${props.props.userId}`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
+      { name: "MY REPORT", path: `board`, backgroundColor: "#1A1E33", color: "white"}
+    ]
+    : [
+      { name: "PROFILE", path: `mystudy/${props.props.userId}`, backgroundColor: "#1A1E33", color: "white" },
+      { name: "MY REPORT", path: `board`, backgroundColor: "#DEDCEE", color: "#1A1E33"} 
+    ]
+
 
   return (
-    <>
-      <Box
-        sx={{
-          position: "relative",
-          display: "inline-block",
-          backgroundColor: "#1A1E33",
-          height: "100vh",
-        }}
-        // boxSizing={openedMixin}
-      >
-        <Divider />
+    <Box
+      sx={{ display: "flex", backgroundColor: "#1A1E33", height: "100vh" }}
+      boxSizing={openedMixin}
+    >
 
-        <Box fullWidth sx={{ mt: 11, mx: 2, justifyContent: "center" }}>
-          {moveHere.map((data) => (
-            <ListItem key={data.id} disablePadding>
-              <ListItemButton
-                variant="contained"
-                fullWidth
-                sx={{
-                  backgroundColor: "#DEDCEE",
-                  width: "200px",
-                  height: "50px",
-                  color: "black",
-                  fontSize: "20px",
-                  borderRadius: 2,
-                }}
-                onClick={() => setContent(data.name)}
-                name={data.name}
-              >
-                <ListItemText primary={data.name} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </Box>
+      <Box fullWidth sx={{ mt: 11, mx: 4, justifyContent: "center" }}>
+        {sideItems.map((item, index) => {
+          return (
+            <Button
+              disableRipple 
+              variant="contained"
+              fullWidth
+              style={{
+                backgroundColor: item.backgroundColor,
+                color: item.color,
+                width: "180px",
+                height: "60px",
+                fontSize: "20px",
+                marginBlock: "20px",
+              }}
+              onClick={() => {navigate(item.path)}}
+          >{item.name}</Button>
+          )
+        })}
       </Box>
-      <Box
-        sx={{
-          width: "1600px",
-          height: "100%",
-          display: "inline-block",
-          position: "relative",
-        }}
-      >
-        {content && <Grid container>{selectComponent[content]}</Grid>}
-      </Box>
-    </>
+    </Box>
   );
 }

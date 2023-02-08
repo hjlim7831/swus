@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import NavBar from "../../components/NavBar/NavBar";
-import SideBar from "./SideBar";
+import SideBar from "./SideBar/SideBar";
 import { Outlet } from 'react-router';
 import { Box } from "@mui/material"
 

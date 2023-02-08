@@ -116,16 +116,17 @@ function MyGroupList() {
                       onChange={handleChange}
                       centered
                       aria-label="basic tabs example"
+                      style={{ marginInline: "10px" }}
                     >
                       <Tab
                        disableRipple
                        label="진행중인 스터디" 
-                       style={ (value === 0) ? {  color: "black", width: "100%", fontWeight: "bold" } : { backgroundColor: "white", width: "100%", fontWeight: "bold" } }
+                       style={ (value === 0) ? {  color: "black", width: "100%", fontWeight: "bold", marginRight: 10 } : { backgroundColor: "white", width: "100%", fontWeight: "bold", marginRight: 10 } }
                       />
                       <Tab 
                         disableRipple
                         label="완료된 스터디" 
-                        style={ (value === 1) ? {  color: "black", width: "100%", fontWeight: "bold" } : { backgroundColor: "white", width: "100%", fontWeight: "bold" } }
+                        style={ (value === 1) ? {  color: "black", width: "100%", fontWeight: "bold", marginRight: 10 } : { backgroundColor: "white", width: "100%", fontWeight: "bold", marginRight: 10 } }
                       />
                     </Tabs>
                   </Box>
