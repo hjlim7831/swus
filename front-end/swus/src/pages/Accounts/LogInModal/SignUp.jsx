@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 import { useSelector } from "react-redux";
 
-import axios from "../../Utils/index";
+import axios from "../../../Utils/index";
 
 export default function SignUpSide() {
   // 비밀번호 찾기용 질문 -> store에서 가져오기

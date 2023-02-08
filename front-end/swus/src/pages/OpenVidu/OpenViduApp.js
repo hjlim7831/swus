@@ -174,7 +174,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x300", // The resolution of your video
+                resolution: "1200x500", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -186,9 +186,7 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter(
-                (device) => device.kind === "videoinput"
-              );
+              var videoDevices = devices.filter((device) => device.kind === "videoinput");
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -214,6 +212,9 @@ class OpenViduApp extends Component {
         });
       }
     );
+    localStorage.setItem("inHour", this.state.d.getHours());
+    localStorage.setItem("inMin", this.state.d.getMinutes());
+    localStorage.setItem("inDate", this.state.d);
   }
 
   leaveSession() {
@@ -252,9 +253,32 @@ class OpenViduApp extends Component {
       publisher: undefined,
     });
 
-    // window.location.href = "/studyroom";
+    //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
+    //기존 입장 시간
+    const inH = parseInt(localStorage.getItem("inHour"));
+    const inM = parseInt(localStorage.getItem("inMin"));
 
-    // navigate("/");
+    //현재 시간
+    const nowH = parseInt(this.state.d.getHours());
+    const nowM = parseInt(this.state.d.getMinutes());
+
+    //누적된 총 시간
+    const totalH = parseInt(localStorage.getItem("totalH"));
+    const totalM = parseInt(localStorage.get("totalM"));
+
+    if (inH <= nowH) {
+      //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
+      const cal = nowH * 60 + nowM - (inH * 60 + inM);
+      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      localStorage.setItem("totalM", totalM + (cal % 60));
+    } else {
+      //앞시간이 더 큰 숫자일 경우 ex 18시~1시
+      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
+      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      localStorage.setItem("totalM", totalM + (cal % 60));
+    }
+
+    window.location.href = "/studyroom";
   }
 
   render() {
@@ -329,9 +353,7 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>
-                  {mySessionId}
-                </h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>{mySessionId}</h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -348,10 +370,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {hoursTen}
                         </Typography>
                       </Box>
@@ -365,10 +384,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {hoursOne}
                         </Typography>
                       </Box>
@@ -393,10 +409,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {minutesTen}
                         </Typography>
                       </Box>
@@ -411,10 +424,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {minutesOne}
                         </Typography>
                       </Box>
@@ -439,10 +449,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {secondsTen}
                         </Typography>
                       </Box>
@@ -456,19 +463,14 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {secondsOne}
                         </Typography>
                       </Box>
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
-                  To-do list
-                </h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -541,13 +543,9 @@ class OpenViduApp extends Component {
                       {this.state.publisher !== undefined ? (
                         <div
                           className="stream-container"
-                          onClick={() =>
-                            this.handleMainVideoStream(this.state.publisher)
-                          }
+                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
                         >
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                          />
+                          <UserVideoComponent streamManager={this.state.publisher} />
                         </div>
                       ) : null}
                       {this.state.subscribers.map((sub, i) => (
