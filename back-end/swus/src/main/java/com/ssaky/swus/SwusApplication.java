@@ -11,5 +11,4 @@ public class SwusApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SwusApplication.class, args);
 	}
-
 }

@@ -1,14 +1,15 @@
-package com.ssaky.swus.api.request.room;
+package com.ssaky.swus.api.request.team;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
+@ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PublicExitReq {
-    private int roomId;
-    private int memberId;
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class GroupInviteReq {
+    private String email;
 }

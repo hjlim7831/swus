@@ -2,13 +2,12 @@ package com.ssaky.swus.api.response.group;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.db.entity.team.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @ToString
@@ -34,7 +33,7 @@ public class BoardGetResp {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.views = board.getViews();
-        this.writeAt = board.getWriteAt();
+        this.writeAt = board.getCreateAt();
         this.boardNumber = board.getNumber();
     }
 
