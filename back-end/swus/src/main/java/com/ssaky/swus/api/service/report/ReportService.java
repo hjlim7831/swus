@@ -51,12 +51,12 @@ public class ReportService {
         log.debug("진행한 회차수+1는 ["+notNullRound+"] 입니다.");
 
         //진행한 회차수까지만 멤버 투두리스트 읽어오기
-        for (int i = 1, endi = notNullRound; i <= endi; i++) {
+        for (int i = 0, endi = notNullRound; i < endi; i++) {
             log.debug("이거 몇번 나옴? 2번나와야되는데");
             rounds.get(i).setMembers(new ArrayList<>());
             for (int j = 0, endj = reqs.size(); j < endj; j++) {
                 List<TodoGroupMemberGetResp> todoGMList
-                        =  todoGrMemRepo.findTodoGroupMemberList(reqs.get(j).getMemberId(),teamId,i);
+                        =  todoGrMemRepo.findTodoGroupMemberList(reqs.get(j).getMemberId(),teamId,i+1);
                 MemberGetResp member = new MemberGetResp(reqs.get(j).getNickname(), todoGMList);
                 log.debug("멤버 투두 나와주세요~ "+member.toString());
 
