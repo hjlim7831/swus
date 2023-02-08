@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import OpenViduVideoComponent from "./OvVideo";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 
 import "./UserVideo.css";
 
@@ -32,8 +33,7 @@ export default class UserVideoComponent extends Component {
 
   getNicknameTag() {
     // Gets the nickName of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data)
-      .clientData;
+    return JSON.parse(this.props.streamManager.stream.connection.data).clientData;
   }
 
   render() {
@@ -78,9 +78,7 @@ export default class UserVideoComponent extends Component {
         {this.props.streamManager !== undefined ? (
           <div style={{ display: "flex" }}>
             <div className="streamcomponent">
-              <OpenViduVideoComponent
-                streamManager={this.props.streamManager}
-              />
+              <OpenViduVideoComponent streamManager={this.props.streamManager} />
               <Grid
                 container
                 sx={{
@@ -93,7 +91,6 @@ export default class UserVideoComponent extends Component {
                   item
                   xs={5}
                   sx={{
-                    backgroundColor: "red",
                     padding: "2%",
                     paddingX: "auto",
 
@@ -104,14 +101,13 @@ export default class UserVideoComponent extends Component {
                 </Grid>
                 <Grid
                   item
-                  xs={5}
+                  xs={4}
                   sx={{
-                    backgroundColor: "pink",
                     padding: "1%",
                     paddingX: "auto",
                   }}
                 >
-                  <Box sx={{ height: "100%" }}>
+                  <Box sx={{ height: "100%", paddingLeft: "20%" }}>
                     <Box
                       sx={{
                         display: "inline-block",
@@ -147,7 +143,7 @@ export default class UserVideoComponent extends Component {
                         mr: "0.3%",
                       }}
                     >
-                      <Typography variant="h6" sx={{ textAlign: "center" }}>
+                      <Typography variant="h6" sx={{ textAlign: "center", color: "black" }}>
                         :
                       </Typography>
                     </Box>
@@ -184,16 +180,20 @@ export default class UserVideoComponent extends Component {
                 </Grid>
                 <Grid
                   item
-                  xs={2}
+                  xs={3}
                   sx={{
-                    backgroundColor: "brown",
                     padding: "2%",
                     paddingX: "auto",
                     borderBottomRightRadius: "10px",
                   }}
                 >
-                  <Grid item xs={11} sx={{ marginX: "auto" }}>
-                    0/10
+                  <Grid container>
+                    <Grid item xs={4}>
+                      <CheckBoxOutlinedIcon />
+                    </Grid>
+                    <Grid item xs={7}>
+                      0/10
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>

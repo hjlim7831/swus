@@ -123,6 +123,34 @@ function StudyRoomMain() {
         data: { type: "N" },
       }).then((res) => {
         console.log(res.data.public);
+        console.log(res);
+        console.log(res.data.public.session_name);
+        const sessionName = res.data.public.session_name;
+        const roomId = res.data.public.id;
+
+        console.log(sessionName);
+        console.log(roomId);
+
+        axios({
+          method: "post",
+          url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        }).then((response) => {
+          if ("success_enter_studyroom") {
+            console.log(response);
+            navigate(`/studyroom/${sessionName}`, {
+              state: { roomName: sessionName },
+            }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+          } else {
+            alert("잠시 후 다시 입장해주세요");
+          }
+        });
+
+        navigate(`/studyroom/${sessionName}`, {
+          state: { roomName: sessionName, roomId: roomId },
+        }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
       });
     }
   };
@@ -150,15 +178,8 @@ function StudyRoomMain() {
           {/* 그리드 컴포넌트 사이 넓이 */}
           <Grid item xs={3} style={{}}>
             {/* todo& 목표 공부시간 묶는 div */}
-            <Grid
-              item
-              xs={8}
-              sx={{ marginTop: 3, marginX: "auto", paddingLeft: "20px" }}
-            >
-              <Typography
-                variant="h5"
-                sx={{ fontSize: 20, color: "white", marginTop: 2 }}
-              >
+            <Grid item xs={8} sx={{ marginTop: 3, marginX: "auto", paddingLeft: "20px" }}>
+              <Typography variant="h5" sx={{ fontSize: 20, color: "white", marginTop: 2 }}>
                 Todo List
               </Typography>
               <Grid
@@ -210,10 +231,7 @@ function StudyRoomMain() {
             }}
           >
             <Grid item xs={12}>
-              <Typography
-                variant="h1"
-                sx={{ fontSize: 30, color: "white", marginTop: 2 }}
-              >
+              <Typography variant="h1" sx={{ fontSize: 30, color: "white", marginTop: 2 }}>
                 STUDY ROOM
               </Typography>
             </Grid>
@@ -281,10 +299,10 @@ function StudyRoomMain() {
                   // RightArrow={RightArrow}
                   onWheel={onWheel}
                 >
-                  {yesRooms.map((room) => (
+                  {yesRooms.map((room, i) => (
                     <>
                       <FTRoomCard
-                        key={room.id}
+                        key={i}
                         id={room.id}
                         sessionName={room.session_name}
                         partici={room.count}
