@@ -104,9 +104,8 @@ public class TokenUtils {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", member.getEmail());
         claims.put("memberId", member.getId());
-
-        log.info("email : "+ member.getEmail());
-        claims.put("memberId", member.getId());
+        //여기에 JWT에 필요한 user data 추가할 수 있음
+        claims.put("nickname", member.getNickname());
 
         return claims;
     }
@@ -138,6 +137,16 @@ public class TokenUtils {
     public static int getmemberIdFromToken(Claims claims){
         return Integer.parseInt(claims.get("memberId").toString());
     }
+
+    /**
+     * 토큰을 기반으로 사용자 정보를 반환받는 메서드
+     * @param claims : claims
+     * @return String : 닉네임
+     */
+    public static String getMemberNicknameFromToken(Claims claims){
+        return claims.get("memberId").toString();
+    }
+
 
     public static void checkExistenceOfMemberId(Claims claims){
         String memberId = claims.get("memberId").toString();
