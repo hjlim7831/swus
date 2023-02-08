@@ -21,7 +21,8 @@ import static javax.persistence.FetchType.LAZY;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class JandiTodo {
     public JandiTodo(Date studyAt, MemberTodoCount memberTodoCount){
-        JandiTodoId id = JandiTodoId.builder().memberId(memberTodoCount.getMemberId()).studyAt(studyAt).build();
+        JandiTodoId id = JandiTodoId.builder()
+                .memberId(memberTodoCount.getMemberId()).studyAt(studyAt).build();
         this.id = id;
         Member member = Member.builder().id(memberTodoCount.getMemberId()).build();
         this.member = member;

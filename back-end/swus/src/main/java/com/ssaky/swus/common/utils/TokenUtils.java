@@ -44,7 +44,6 @@ public class TokenUtils {
 
             log.info("expireTime :" + claims.getExpiration());
             log.info("email :" + claims.get("email"));
-            log.info("nickname :" + claims.get("nickname"));
 
             return true;
         } catch (ExpiredJwtException exception) {

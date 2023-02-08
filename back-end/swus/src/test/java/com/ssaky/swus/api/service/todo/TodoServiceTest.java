@@ -5,6 +5,7 @@ import com.ssaky.swus.api.request.todo.TodoCreateReq;
 import com.ssaky.swus.api.request.todo.TodoUpdateReq;
 import com.ssaky.swus.api.response.todo.TodoGetResp;
 import com.ssaky.swus.api.service.member.MemberService;
+import com.ssaky.swus.common.utils.DateUtils;
 import com.ssaky.swus.db.entity.todo.TodoPrivate;
 import com.ssaky.swus.db.repository.todo.TodoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -146,8 +147,7 @@ class TodoServiceTest {
     @Test
     public void 어제날짜_가져오기(){
         // when
-        Date yesterday = ReflectionTestUtils.invokeMethod(todoService, "getYesterday");
+        Date yesterday = DateUtils.getYesterday();
+        System.out.println(yesterday);
     }
-
-
 }
