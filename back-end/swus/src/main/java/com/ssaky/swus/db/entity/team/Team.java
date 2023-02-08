@@ -32,14 +32,24 @@ public class Team extends BaseDateEntity {
 
     private LocalTime startTime;    // 시작시간
 
-    private LocalDate finishTime;   // 종료시간
+    private LocalTime finishTime;   // 종료시간
 
     private int number;             // 현그룹인원(유동)
 
     private String team_done;      // 그룹 스터디완료여부
 
     @Builder
-    public Team(int teamId, String teamName, String teamInfo, String category, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalDate finishTime, int number, String team_done) {
+    public Team(int teamId, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalTime finishTime) {
+        this.teamId = teamId;
+        this.beginAt = beginAt;
+        this.endAt = endAt;
+        this.day = day;
+        this.startTime = startTime;
+        this.finishTime = finishTime;
+    }
+
+    @Builder
+    public Team(int teamId, String teamName, String teamInfo, String category, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalTime finishTime, int number, String team_done) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.teamInfo = teamInfo;

@@ -6,7 +6,9 @@ import com.ssaky.swus.api.response.group.BoardGetResp;
 import com.ssaky.swus.api.response.group.BoardListResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.db.entity.team.Board;
+import com.ssaky.swus.db.entity.team.Team;
 import com.ssaky.swus.db.repository.team.BoardRepository;
+import com.ssaky.swus.db.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final TeamRepository teamRepository;
 
     @Transactional
     public int writeBoard(int memberId, WriteBoardReq req) {
@@ -32,6 +35,16 @@ public class BoardService {
                 .content(req.getContent())
                 .number(req.getBoardNumber())
                 .build();
+
+        Team team = Team.builder()
+                .day(req.getDay())
+                .beginAt(req.getBeginAt())
+                .endAt(req.getEndAt())
+                .startTime(req.getStartTime())
+                .finishTime(req.getFinishTime())
+                .build();
+
+        teamRepository.save(team);
         return boardRepository.save(board).getBoardId();
     }
 
