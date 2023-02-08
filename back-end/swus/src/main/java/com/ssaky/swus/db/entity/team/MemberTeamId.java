@@ -12,6 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Builder
+@ToString
 public class MemberTeamId implements Serializable {
 
     @EqualsAndHashCode.Include

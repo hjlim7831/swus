@@ -1,5 +1,6 @@
 package com.ssaky.swus.db.entity.team;
 
+import com.ssaky.swus.api.request.team.TeamInfoUpdateReq;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,14 +33,14 @@ public class Team extends BaseDateEntity {
 
     private LocalTime startTime;    // 시작시간
 
-    private LocalDate finishTime;   // 종료시간
+    private LocalTime finishTime;   // 종료시간
 
     private int number;             // 현그룹인원(유동)
 
     private String teamDone;      // 그룹 스터디완료여부
 
     @Builder
-    public Team(int teamId, String teamName, String teamInfo, String category, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalDate finishTime, int number, String teamDone) {
+    public Team(int teamId, String teamName, String teamInfo, String category, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalTime finishTime, int number, String teamDone) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.teamInfo = teamInfo;
@@ -51,6 +52,27 @@ public class Team extends BaseDateEntity {
         this.finishTime = finishTime;
         this.number = number;
         this.teamDone = teamDone;
+    }
+
+    public void addNumber() {
+        this.number = this.number + 1;
+    }
+
+    public void subtractNumber() {
+        this.number = this.number - 1;
+    }
+
+    public void isDone() {
+        this.teamDone = "Y";
+    }
+
+    public void updateInfo(TeamInfoUpdateReq req) {
+        this.teamName = req.getTeamName();
+        this.beginAt = req.getBeginAt();
+        this.endAt = req.getEndAt();
+        this.day = req.getDay();
+        this.startTime = req.getStartTime();
+        this.finishTime = req.getFinishTime();
     }
 
     //    // 일대일 양방향 관계 매핑, 읽기 전용 필드
