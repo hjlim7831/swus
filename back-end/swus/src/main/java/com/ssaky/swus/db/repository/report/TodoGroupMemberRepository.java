@@ -42,14 +42,15 @@ public class TodoGroupMemberRepository {
     }
 
     //해당 회차의 사용자 투두리스트 불러오기
-    public List<TodoGroupMemberGetResp> findTodoGroupMemberList(int memberId, int groupId, int round) {
+    public List<TodoGroupMemberGetResp> findTodoGroupMemberList(int memberId, int teamId, int round) {
         return em.createQuery("SELECT new com.ssaky.swus.api.response.report.TodoGroupMemberGetResp(t.num, t.todoDone, t.content)" +
                         " FROM TodoGroupMember t" +
                         " WHERE t.member.id = :memberId" +
-//                        " AND t.group.id = :groupId" +
+                        " AND t.team.id = :teamId" +
                         " AND t.round = :round", TodoGroupMemberGetResp.class)
                 .setParameter("memberId", memberId)
                 .setParameter("round", round)
+                .setParameter("teamId", teamId)
                 .getResultList();
     }
 }

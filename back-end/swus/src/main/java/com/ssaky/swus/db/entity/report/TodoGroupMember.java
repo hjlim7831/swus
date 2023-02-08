@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ssaky.swus.api.request.report.TodoGroupMemberCreateReq;
 import com.ssaky.swus.api.request.report.TodoGroupMemberUpdateReq;
+import com.ssaky.swus.db.entity.group.Team;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,11 +35,11 @@ public class TodoGroupMember {
     //레포트 엔티티 생성 후 연관관계 짓기
     private int round; //회차
 
-//    그룹 엔티티 생성 후 주석 풀기
-//    @JsonIgnore
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "group_id")
-//    private Group group;
+    //그룹 엔티티 생성 후 주석 풀기
+    @JsonIgnore
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     @Column(name = "todo_done")
     private String todoDone;
@@ -47,9 +48,9 @@ public class TodoGroupMember {
 
 
     public TodoGroupMember(TodoGroupMemberCreateReq req, int memberId){
-//        그룹 엔티티 생성 후 주석 풀기
-//        Group group = Group..builder().id(req.getGroupId()).build();
-//        this.group = group;
+
+        Team team = Team.builder().teamId(req.getGroupId()).build();
+        this.team = team;
         Member member = Member.builder().id(memberId).build();
         this.member = member;
 
