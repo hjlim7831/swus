@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -28,10 +29,13 @@ public class Team extends BaseDateEntity {
 
     private LocalDate endAt;        // 종료날짜
 
+    @NotBlank(message = "요일을 입력해주세요")
     private String day;             // 요일 "0000000"
 
+    @Column(nullable = false)
     private LocalTime startTime;    // 시작시간
 
+    @Column(nullable = false)
     private LocalTime finishTime;   // 종료시간
 
     private int number;             // 현그룹인원(유동)
