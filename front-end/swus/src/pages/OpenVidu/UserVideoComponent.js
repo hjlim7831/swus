@@ -32,41 +32,61 @@ export default class UserVideoComponent extends Component {
 
   getNicknameTag() {
     // Gets the nickName of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data).clientData;
+    return JSON.parse(this.props.streamManager.stream.connection.data)
+      .clientData;
   }
 
   render() {
     //누적된 총 시간
     const totalH = parseInt(localStorage.getItem("totalH"));
-    const totalM = parseInt(localStorage.get("totalM"));
+    const totalM = parseInt(localStorage.getItem("totalM"));
 
-    // //입장 시간
-    // const inH = parseInt(localStorage.getItem("inHour"));
-    // const inM = parseInt(localStorage.getItem("inMin"));
+    //입장 시간
+    const inH = parseInt(localStorage.getItem("inHour"));
+    const inM = parseInt(localStorage.getItem("inMin"));
 
-    //입장 후 누적시간
-    const sumTime = localStorage.getItem("inDate");
-    const calTime = this.state.d - sumTime;
+    //현재 시간
+    const nowH = parseInt(this.state.d.getHours());
+    const nowM = parseInt(this.state.d.getMinutes());
 
-    const hoursTen = ("0" + (calTime.getHours() + totalH)).slice(-2, -1); //시간 10의자리
-    const hoursOne = ("0" + (calTime.getHours() + totalH)).slice(-1); //시간 1의자리
-    const minutesTen = ("0" + (calTime.getMinutes() + totalM)).slice(-2, -1);
-    const minutesOne = ("0" + (calTime.getMinutes() + totalM)).slice(-1);
-    const secondsTen = ("0" + calTime.getSeconds()).slice(-2, -1);
-    const secondsOne = ("0" + calTime.getSeconds()).slice(-1);
+    //계산한 시간 (시+분)
+    let cal = 0;
+
+    //계산한 시간 sumH, sumM
+    let sumH = 0;
+    let sumM = 0;
+
+    if (inH <= nowH) {
+      //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
+      const cal = nowH * 60 + nowM - (inH * 60 + inM);
+      sumH = parseInt(cal / 60);
+      sumM = cal % 60;
+    } else {
+      //앞시간이 더 큰 숫자일 경우 ex 18시~1시
+      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
+      sumH = parseInt(cal / 60);
+      sumM = cal % 60;
+    }
+
+    const hoursTen = ("0" + (sumH + totalH)).slice(-2, -1); //시간 10의자리
+    const hoursOne = ("0" + (sumH + totalH)).slice(-1); //시간 1의자리
+    const minutesTen = ("0" + (sumM + totalM)).slice(-2, -1);
+    const minutesOne = ("0" + (sumM + totalM)).slice(-1);
 
     return (
       <>
         {this.props.streamManager !== undefined ? (
           <div style={{ display: "flex" }}>
             <div className="streamcomponent">
-              <OpenViduVideoComponent streamManager={this.props.streamManager} />
+              <OpenViduVideoComponent
+                streamManager={this.props.streamManager}
+              />
               <Grid
                 container
                 sx={{
                   borderBottomRightRadius: "10px",
                   borderBottomLeftRadius: "10px",
-                  marginTop: "-3px",
+                  marginTop: "-5px",
                 }}
               >
                 <Grid
@@ -87,7 +107,7 @@ export default class UserVideoComponent extends Component {
                   xs={5}
                   sx={{
                     backgroundColor: "pink",
-                    padding: "2%",
+                    padding: "1%",
                     paddingX: "auto",
                   }}
                 >
@@ -96,7 +116,7 @@ export default class UserVideoComponent extends Component {
                       sx={{
                         display: "inline-block",
                         width: "14.5%",
-                        height: "90%",
+                        height: "100%",
                         mr: "1%",
                         borderRadius: 1,
                         backgroundColor: "#E8E8E8",
@@ -110,7 +130,7 @@ export default class UserVideoComponent extends Component {
                       sx={{
                         display: "inline-block",
                         width: "14.5%",
-                        height: "90%",
+                        height: "100%",
                         mr: "0.3%",
                         borderRadius: 1,
                         backgroundColor: "#E8E8E8",
@@ -136,7 +156,7 @@ export default class UserVideoComponent extends Component {
                         display: "inline-block",
                         width: "14.5%",
                         mr: "1%",
-                        height: "90%",
+                        height: "100%",
                         borderRadius: 1,
                         backgroundColor: "#E8E8E8",
                       }}
@@ -150,7 +170,7 @@ export default class UserVideoComponent extends Component {
                       sx={{
                         display: "inline-block",
                         width: "14.5%",
-                        height: "90%",
+                        height: "100%",
                         mr: "0.3%",
                         borderRadius: 1,
                         backgroundColor: "#E8E8E8",
@@ -158,45 +178,6 @@ export default class UserVideoComponent extends Component {
                     >
                       <Typography variant="h6" sx={{ textAlign: "center" }}>
                         {minutesOne}
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "inline-block",
-                        color: "white",
-                        mr: "0.3%",
-                      }}
-                    >
-                      <Typography variant="h6" sx={{ textAlign: "center" }}>
-                        :
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "inline-block",
-                        width: "14.5%",
-                        height: "90%",
-                        mr: "1%",
-                        borderRadius: 1,
-                        backgroundColor: "#E8E8E8",
-                      }}
-                    >
-                      <Typography variant="h6" sx={{ textAlign: "center" }}>
-                        {secondsTen}
-                      </Typography>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "inline-block",
-                        width: "14.5%",
-                        height: "90%",
-                        borderRadius: 1,
-                        backgroundColor: "#E8E8E8",
-                      }}
-                    >
-                      <Typography variant="h6" sx={{ textAlign: "center" }}>
-                        {secondsOne}
                       </Typography>
                     </Box>
                   </Box>

@@ -31,8 +31,7 @@ function NSRoomCard(props) {
     setOpen(false);
   };
 
-  const Token =
-    "eyJyZWdEYXRlIjoxNjc1NzQ0NzMwMTU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1ODMxMTMwLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9.QCvJ0J6OvsmxkiqrYQSWhUjOpdrbVzrWSZNO4q0Bahs";
+  const Token = sessionStorage.getItem("token");
 
   const navigate = useNavigate();
   const handleToEnter = () => {
@@ -44,15 +43,19 @@ function NSRoomCard(props) {
     //   });
 
     //입장시 api
+    console.log("axios post NSRoomCard");
+
     axios({
       method: "post",
       url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
       headers: {
         Authorization: `Bearer ${Token}`,
       },
+      data: {},
     }).then((response) => {
       if ("success_enter_studyroom") {
         console.log(response);
+        console.log("is here?");
         navigate(`/studyroom/${sessionName}`, {
           state: { roomName: sessionName },
         }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌

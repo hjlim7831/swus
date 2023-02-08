@@ -7,6 +7,7 @@ import MyTodo from "../MyPageReport/MyTodo";
 import MyTime from "../MyPageReport/MyTime";
 import NSRoomCard from "./RoomScroll/NSRoomCard";
 import FTRoomCard from "./RoomScroll/FTRoomCard";
+import { useNavigate } from "react-router-dom";
 
 import { Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -34,8 +35,9 @@ function StudyRoomMain() {
   const [noRooms, setnoRooms] = useState([]); //nonstop방만 저장할 배열
   const [yesRooms, setyesRooms] = useState([]); //쉬는시간방만 저장할 배열
 
-  const Token =
-    "eyJyZWdEYXRlIjoxNjc1NzQ0NzMwMTU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1ODMxMTMwLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9.QCvJ0J6OvsmxkiqrYQSWhUjOpdrbVzrWSZNO4q0Bahs";
+  const Token = sessionStorage.getItem("token");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios({
@@ -45,6 +47,7 @@ function StudyRoomMain() {
         Authorization: `Bearer ${Token}`,
       },
     }).then((res) => {
+      console.log(res);
       // console.log(res.data);
       console.log(res.data.publics);
 
@@ -69,18 +72,47 @@ function StudyRoomMain() {
   //방 추가하는 함수, 추가하고 바로 이동
   const addItem = (typeOfRoom) => {
     console.log(typeOfRoom);
-
+    console.log("axios post 방 추가 studyroomMain");
     if (typeOfRoom === "Y") {
       axios({
         method: "post",
         url: "http://i8a302.p.ssafy.io:8081/studyrooms",
         headers: { Authorization: `Bearer ${Token}` },
-        body: { type: "Y" },
-      }).then((res) => {
-        console.log(res);
-        // console.log(res.data.publics);
-        console.log("i need a room id Y");
-      });
+        data: { type: "Y" },
+      })
+        .then((res) => {
+          console.log(res);
+          console.log(res.data.public.session_name);
+          const sessionName = res.data.public.session_name;
+          const roomId = res.data.public.id;
+
+          console.log(sessionName);
+          console.log(roomId);
+
+          axios({
+            method: "post",
+            url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
+            headers: {
+              Authorization: `Bearer ${Token}`,
+            },
+          }).then((response) => {
+            if ("success_enter_studyroom") {
+              console.log(response);
+              navigate(`/studyroom/${sessionName}`, {
+                state: { roomName: sessionName },
+              }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+            } else {
+              alert("잠시 후 다시 입장해주세요");
+            }
+          });
+
+          navigate(`/studyroom/${sessionName}`, {
+            state: { roomName: sessionName, roomId: roomId },
+          }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       //방 입장하는 axios 이어서 작성 필요
     } else if (typeOfRoom === "N") {
@@ -88,10 +120,9 @@ function StudyRoomMain() {
         method: "post",
         url: "http://i8a302.p.ssafy.io:8081/studyrooms",
         headers: { Authorization: `Bearer ${Token}` },
-        body: { type: "N" },
+        data: { type: "N" },
       }).then((res) => {
-        console.log(res.data.publics);
-        console.log("i need a room id N");
+        console.log(res.data.public);
       });
     }
   };
