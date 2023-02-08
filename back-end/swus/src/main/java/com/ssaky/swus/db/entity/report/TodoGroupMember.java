@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ssaky.swus.api.request.report.TodoGroupMemberCreateReq;
 import com.ssaky.swus.api.request.report.TodoGroupMemberUpdateReq;
-import com.ssaky.swus.db.entity.group.Team;
+import com.ssaky.swus.db.entity.team.Team;
 import com.ssaky.swus.db.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
