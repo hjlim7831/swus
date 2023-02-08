@@ -19,15 +19,15 @@ public class Board extends BaseTimeEntity{
     @Column(name = "board_id")
     private int boardId;    // 모집글id
 
-    // 연관관계의 주인
+    // 연관관계의 주인 (FK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    // 추후에 연관관계 매핑해줘야함
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
-    private int groupId;
+    // 연관관계의 주인 (FK)
+    @OneToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     @Column(nullable = false)
     private String title;
@@ -36,10 +36,6 @@ public class Board extends BaseTimeEntity{
     private String content;
 
     private int views;      // 조회수
-
-//    @Temporal(TemporalType.DATE)
-//    @Column(name = "write_at")
-//    private Date writeAt;   // 작성일
 
     @Column(nullable = false)
     private int number;     // 최종모집인원
