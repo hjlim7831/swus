@@ -1,4 +1,4 @@
-// import { useNavigate } from "react-router-dom"
+import axios from "../../Utils/index";
 
 function deleteArticle() {
 
@@ -16,23 +16,28 @@ function deleteArticle() {
   })
   .then((res) => {
     if (res.isConfirmed) {
-      console.log("삭제 가즈아!")
-      Swal.fire({
-        // "글이 삭제되었습니다.",
-        // "",
-        // "success"
-        title: "글이 삭제되었습니다.",
-        confirmButtonText: "목록으로",
-        confirmButtonColor: "gray",
-        showCancelButton: false,
-        icon: "success",
-      })
-      .then((res) => {
-        if (res.isConfirmed) {
-          console.log("목록?")
-          window.location.reload("http://localhost:3000/group/board");
-        }
-      })
+      const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1);
+      const config = {
+        url: `/boards/${boardId}`,
+        method: "DELETE",
+      }
+
+      axios(config)
+        .then((response) => [
+          Swal.fire({
+            title: "글이 삭제되었습니다.",
+            confirmButtonText: "목록으로",
+            confirmButtonColor: "gray",
+            showCancelButton: false,
+            icon: "success",
+          })
+          .then((res) => {
+            if (res.isConfirmed) {
+              console.log("목록?")
+              window.location.reload("http://localhost:3000/group/board");
+            }
+          })
+        ])
     }
   })
 }

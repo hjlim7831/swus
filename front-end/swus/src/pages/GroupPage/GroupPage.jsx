@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Paper,
 				Container,
 				Table,
@@ -13,72 +13,33 @@ import { Paper,
 				Grid,
 			 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import axios from "../../Utils/index";
+import { v4 as uuidv4 } from "uuid";
 
-
-function createData( index, type, name, is_finished, date, watched, bool ) {
-	return { index, type, name, is_finished, date, watched, bool };
-}
 
 const filterCategory = /스터디/;
-
-const articles = [
-	createData(1, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(2, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, false),
-	createData(3, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(4, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(5, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(6, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(7, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(8, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(9, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(10, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(11, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(12, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(13, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(14, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(15, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(16, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(17, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(18, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(19, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(20, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(1, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(2, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, false),
-	createData(3, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(4, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(5, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(6, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(7, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(8, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(9, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(10, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(11, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(12, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(13, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(14, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(15, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(16, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(17, "[메이트]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(18, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(19, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 3, true),
-	createData(20, "[스터디]", "리액트 그자체", "모집중", "2023-01-29", 1, true),
-];
-
 
 function GroupPage() {
 
 	const navigate = useNavigate();
 	const [page, setPage] = useState(0)
-	// const [rowsPerPage, setRowsPerPage] = useState(20)
+	const [articles, setArticles] = useState([]);
+
+	useEffect(() => {
+		const config = {
+			url: `/boards`,
+			method: "GET",
+		};
+
+		axios(config)
+			.then((response) => {
+				setArticles(response.data)
+			})
+	}, [])
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
 	}
-
-	// const handleChangeRowsPerPage = (event) => {
-	// 	setRowsPerPage(parseInt(event.target.value, 5))
-	// 	setPage(0)
-	// }
 
 	return (
 		<>
@@ -113,16 +74,21 @@ function GroupPage() {
 							.slice(page * 10, (page + 1) * 10)
 							.map((article) => (
 								<TableRow
-									key={article.index}
+									key={uuidv4()}
 								>
 									<TableCell style={{ justifyItems: "center", justifyContent: "center", textAlign: "center"}}>
-										<span>{article.index}</span>
+										<span>{article.board_id}</span>
 									</TableCell>
-									<TableCell style={{ textAlign: "center" }}><span style={filterCategory.test(article.type) ? { color: "red"} : {color: "blue"}}>{article.type}</span></TableCell>
-									<TableCell style={{ textAlign: "center" }}>{article.name}</TableCell>
-									<TableCell style={{ textAlign: "center" }}>{article.is_finished}</TableCell>
-									<TableCell style={{ textAlign: "center" }}>{article.date}</TableCell>
-									<TableCell style={{ textAlign: "center" }}>{article.watched}</TableCell>
+									<TableCell style={{ textAlign: "center" }}>
+										{/* <span style={filterCategory.test(article.type) ? { color: "red"} : {color: "blue"}}>
+											{article.type}</span> */}
+									</TableCell>
+									<TableCell style={{ textAlign: "center" }}>{article.title}</TableCell>
+									<TableCell style={{ textAlign: "center" }}>
+										{/* {article.is_finished} */}
+									</TableCell>
+									<TableCell style={{ textAlign: "center" }}>{article.write_at}</TableCell>
+									<TableCell style={{ textAlign: "center" }}>{article.views}</TableCell>
 								</TableRow>
 							))}
 						</TableBody>

@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import NavBar from "../../components/NavBar/NavBar";
 import SideBar from "./SideBar/SideBar";
 import { Outlet } from 'react-router';
@@ -12,10 +12,22 @@ function Main() {
 		setCondition({...condition, ["type"] : window.location.pathname.slice(7, 12)})
 	}, [])
 
-	console.log(window.location.pathname.slice(7, 12))
+	const MusicPlayer = () => {
+		const audioRef = useRef(null);
+
+		useEffect(() => {
+			audioRef.current.play();
+		}, []);
+
+		return (
+			<audio playsinline controls ref={audioRef} src="../../music.mp3" />
+		);
+	};
+
   return (
 		<>
-			<NavBar />
+			{MusicPlayer()}
+			{/* <NavBar /> */}
 			<Box style={{ display: "flex"  }}>
 				<SideBar props={condition} />
 				<div style={{ marginLeft: 50, width: "80vw", marginTop: 80 }}>

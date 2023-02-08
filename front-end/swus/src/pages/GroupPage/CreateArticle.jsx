@@ -2,19 +2,14 @@ import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, TextField, Divider, Grid, OutlinedInput } from '@mui/material';
 import { MenuItem, Select, Button, InputLabel, FormControl } from '@mui/material';
 import { Container } from '@mui/system';
-import { useDispatch, useSelector } from 'react-redux';
-import checkedSlice from '../../store/CheckedSlice';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createStudyRoom } from '../../store/CheckedSlice';
+import axios from "../../Utils/index";
 
 
 function CreateArticleForm() {
 
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
-	const articleDetail = useSelector(state => {
-		return state.checkDays
-	});
 
 	const [inputs, setInputs] = useState({
 		category: "",
@@ -22,7 +17,7 @@ function CreateArticleForm() {
 		content: "",
 		day: "",
 		days: [false, false, false, false, false, false, false],
-		recruitmentNumber: 0,
+		boardNumber: 0,
 		beginAt: "",
 		endAt: "",
 		startTime: "",
@@ -92,7 +87,7 @@ function CreateArticleForm() {
 		}	else if (!selectedDays.replace(/0/gi, ""))	{
 			alert("요일을 선택해주세요.")
 			return
-		}	else if (inputs.recruitmentNumber < 2) {
+		}	else if (inputs.boardNumber < 2) {
 			alert("2명 이상의 모집인원을 선택해주세요.")
 			return
 		}	else if (Number(inputs.startTime.replace(/:/gi, "") > Number(inputs.finishTime.replace(/:/gi, "")))) {
@@ -107,19 +102,31 @@ function CreateArticleForm() {
 		}
 
 		const payload = {
-			category: inputs.category,
+			// category: inputs.category,
 			title: inputs.title,
 			content: inputs.content,
-			day: inputs.day,
-			recruitmentNumber: inputs.recruitmentNumber,
-			beginAt: inputs.beginAt,
-			endAt: inputs.endAt,
-			startTime: inputs.startTime,
-			finishTime: inputs.finishTime,
+			// day: inputs.day,
+			boardNumber: inputs.boardNumber,
+			// beginAt: inputs.beginAt,
+			// endAt: inputs.endAt,
+			// startTime: inputs.startTime,
+			// finishTime: inputs.finishTime,
 		}
-		dispatch(checkedSlice.actions.writeArticle(inputs))
-		dispatch(createStudyRoom(payload))
-		navigate(`/group/board/:boardId`);
+
+		const config = {
+			url: `/boards`,
+			method: "POST",
+			data: payload,
+		}
+
+		axios(config)
+			.then((response) => {
+				console.log("success")
+				console.log(response.data)
+				console.log(response.data.msg)
+				console.log(response.data.board_id)
+				navigate(`/group/board/${response.data.board_id}`);
+			})
 	}
 
 	const dayItems = [
@@ -171,8 +178,8 @@ function CreateArticleForm() {
 										style={{ width: "100px"}}
 									>
 										{inputs.category? '' : <MenuItem value=""> -- </MenuItem>}
-                    <MenuItem value="study">스터디</MenuItem>
-                    <MenuItem value="mate">메이트</MenuItem>
+                    <MenuItem value="S">스터디</MenuItem>
+                    <MenuItem value="M">메이트</MenuItem>
 									</TextField>
 								</div>
 							</Grid>
@@ -316,11 +323,11 @@ function CreateArticleForm() {
 							<Divider orientation='vertical' flexItem sx={{ mr: 3 }}/>
 							<div style={{ display: "flex", alignItems: "center" }}>
 								<Select
-									name="recruitmentNumber"
-									value={inputs.recruitmentNumber}
+									name="boardNumber"
+									value={inputs.boardNumber}
 									onChange={onHandleInput}
 									size="small"
-									error={inputs.recruitmentNumber < 2}
+									error={inputs.boardNumber < 2}
 								>
 									<MenuItem value={0}>0</MenuItem>
 									<MenuItem value="1">1</MenuItem>

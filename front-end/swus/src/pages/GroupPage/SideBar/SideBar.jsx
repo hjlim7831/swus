@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import "./SideBar.css";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 
 const drawerWidth = 240;
@@ -41,6 +42,7 @@ export default function MiniDrawer(props) {
         {sideItems.map((item, index) => {
           return (
             <Button
+              key={uuidv4()}
               disableRipple 
               variant="contained"
               fullWidth

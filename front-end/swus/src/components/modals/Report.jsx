@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from 'react';
 import './Report.css';
-import { Box, Checkbox, Grid, Icon } from '@mui/material';
+import { Box, Checkbox, Grid, Icon, Divider } from '@mui/material';
 import logo from "../../logo.png";
 import { v4 as uuidv4 } from 'uuid';
 import AddIcon from '@mui/icons-material/Add';
@@ -29,11 +29,10 @@ function Report (props) {
 			return member.todos.map((todo) => {
 				return (
 					<>
-						<p>
+						<p style={{ margin: 0}}>
 							{(todo.todoDone === "Y") ? <Checkbox checked={true} disabled/> : <Checkbox checked={false} disabled/>}
 							{todo.content}
 						</p>
-						<br/>
 					</>
 				)
 			})
@@ -43,15 +42,14 @@ function Report (props) {
 			return payload[index].members.map((member) => {
 				return (
 					<>
-						<Grid container sx={{ display: "flex", alignItems: "center", marginBottom: 3 }}>
+						<Grid container sx={{ display: "flex", alignItems: "center" }}>
 							<Grid item xs={3}></Grid>
 							<Grid item xs={2}>
 								<div style={{ fontWeight: "bold", 
 															margineInline: 5, 
 															padding: 5, 
 															textAlign: "center", 
-															alignItems: "center", 
-															height: "40px", 
+															alignItems: "center",  
 															justifyContent: "flex-start", 
 															display: "flex",
 															fontSize: "20px"}}>
@@ -60,16 +58,15 @@ function Report (props) {
 							</Grid>
 							<Grid item xs={7}>
 							<div style={{ margineInline: 5, 
-														padding: 5, 
-														textAlign: "center", 
-														alignItems: "center", 
-														height: "40px", 
-														justifyContent: "flex-start", 
-														display: "flex"}}>
+														padding: 5,  
+														display: "flex",
+														flexDirection: 'column',
+														justifyContent: "center" }}>
 									{getMemberTodos(member)}
 								</div>
 							</Grid>
 						</Grid>
+							<Divider orientation='horizontal' flexItem />
 					</>
 				)
 			})
@@ -87,7 +84,7 @@ function Report (props) {
 
 			return (
 				<>
-					<Grid container sx={{ display: "flex", alignItems: "center", marginBottom: "20px" }} key={uuidv4()}>
+					<Grid container sx={{ display: "flex", alignItems: "center", marginBlock: "20px" }} key={uuidv4()}>
 						<Grid item xs={3}>
 							<div style={{ fontWeight: "bold", 
 														margineInline: 5, 

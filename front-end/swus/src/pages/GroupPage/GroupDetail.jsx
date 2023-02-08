@@ -70,7 +70,22 @@ function GroupDetail() {
               "num": 2,
               "content": "todo2",
               "todoDone": "N",
-            }
+            },
+            {
+              "num": 3,
+              "content": "todo3",
+              "todoDone": "Y",
+            },
+            {
+              "num": 4,
+              "content": "todo4",
+              "todoDone": "Y",
+            },
+            {
+              "num": 5,
+              "content": "todo5",
+              "todoDone": "Y",
+            },
           ]
         }
       ]

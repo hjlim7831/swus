@@ -1,63 +1,69 @@
 import { Container } from '@mui/system';
 import { Grid, Divider, Box, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {getStudyRoom} from '../../store/CheckedSlice';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import deleteArticle from '../../components/modals/DeleteArticle';
+import axios from "../../Utils/index";
 
 
 
 
 function ArticleDetail() {
 
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
-  const article = useSelector(state => {
-		return state.checkDays
-	});
+  const [article, setArticle] = useState([]);
 
-	const [day, setDay] = useState("");
-	const [studyPlan, setStudyPlan] = useState("");
+	// const [day, setDay] = useState("");
+	// const [studyPlan, setStudyPlan] = useState("");
 
-	useEffect(() => {
-		let date = ""
-		for (let i = 0; i < article.day.length; i++) {
-			if (article.day[i] === "1")	{
-				if (i === 0)	{
-					date = date + "월"
-				}	else if (i === 1)	{
-					date = date + "화"
-				}	else if (i === 2)	{
-					date = date + "수"
-				}	else if (i === 3)	{
-					date = date + "목"
-				}	else if (i === 4) {
-					date = date + "금"
-				}	else if (i === 5) {
-					date = date + "토"
-				}  else if (i === 6) {
-					date = date + "일"
-        }
-			}
-		setDay(date)
-		}
+	// useEffect(() => {
+	// 	let date = ""
+	// 	for (let i = 0; i < article.day.length; i++) {
+	// 		if (article.day[i] === "1")	{
+	// 			if (i === 0)	{
+	// 				date = date + "월"
+	// 			}	else if (i === 1)	{
+	// 				date = date + "화"
+	// 			}	else if (i === 2)	{
+	// 				date = date + "수"
+	// 			}	else if (i === 3)	{
+	// 				date = date + "목"
+	// 			}	else if (i === 4) {
+	// 				date = date + "금"
+	// 			}	else if (i === 5) {
+	// 				date = date + "토"
+	// 			}  else if (i === 6) {
+	// 				date = date + "일"
+  //       }
+	// 		}
+	// 	setDay(date)
+	// 	}
 
-		if (article.beginAt === "" || article.endAt === "") {
-			setStudyPlan("미정")
-		}	else	{
-			setStudyPlan(article.beginAt + " ~ " + article.endAt)
-		}
-	}, [article.day])
+	// 	if (article.beginAt === "" || article.endAt === "") {
+	// 		setStudyPlan("미정")
+	// 	}	else	{
+	// 		setStudyPlan(article.beginAt + " ~ " + article.endAt)
+	// 	}
+	// }, [article.day])
 
 	useEffect(() => {
-		// 글이 지워졌을때 보드로 돌아가는 함수
-		if (article.title === "") {
-			navigate("/group/board")
-		}
-	}, [])
+		const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1);
+		const config = {
+			url: `/boards/${boardId}`,
+			method: "GET",
+		};
+
+		axios(config)
+			.then((response) => {
+				console.log(response.data)
+				setArticle(response.data)
+			})
+			.catch((error) => {
+				navigate("/group/board")
+			})
+	}, [article.title])
 
 	
 	 
@@ -91,8 +97,7 @@ function ArticleDetail() {
 						<Button 
 							variant="contained" 
 							sx={{ height: "40px" }} 
-							onClick={() => {
-								dispatch(getStudyRoom())							
+							onClick={() => {						
 								navigate("/group/board");
 								}}>목록 보기</Button>
 					</Grid>
@@ -109,7 +114,7 @@ function ArticleDetail() {
 					</Grid>
 				</Grid>
 				<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 5 }}/>
-				<Grid container>
+				{/* <Grid container>
 					<Grid item xs={2} sx={{ alignContent: "center" }}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 일정</p>
 					</Grid>
@@ -130,7 +135,7 @@ function ArticleDetail() {
 					<Grid item xs={1}>
 						<p style={{ textAlign: "center" }}>3 / {article.recruitmentNumber}</p>
 					</Grid>
-				</Grid>
+				</Grid> */}
 				<Grid container>
 					<Grid item xs={2} sx={{ alignContent: "center" }}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>상세 내용</p>
