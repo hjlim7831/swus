@@ -1,4 +1,4 @@
-package com.ssaky.swus.db.entity.group;
+package com.ssaky.swus.db.entity.team;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,18 +8,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.sql.Date;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserGroupId implements Serializable {
+public class MemberTeamId implements Serializable {
 
     @EqualsAndHashCode.Include
-    @Column(name = "group_id")
-    private int groupId;
+    @Column(name = "team_id")
+    private int teamId;
 
     @EqualsAndHashCode.Include
     @Column(name = "member_id")

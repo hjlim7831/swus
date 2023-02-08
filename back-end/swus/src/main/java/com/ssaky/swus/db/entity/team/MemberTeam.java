@@ -1,4 +1,4 @@
-package com.ssaky.swus.db.entity.group;
+package com.ssaky.swus.db.entity.team;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -18,21 +18,21 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserGroup extends BaseTimeEntity {
+public class MemberTeam extends BaseDateEntity {
 
     @EqualsAndHashCode.Include
     @EmbeddedId
-    private UserGroupId id;
+    private MemberTeamId id;
 
     @MapsId("memberId") // 이렇게만 지정해 주면 PK가 됨
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     public Member member;
 
-    @MapsId("groupId") // 이렇게만 지정해 주면 PK가 됨
+    @MapsId("teamId") // 이렇게만 지정해 주면 PK가 됨
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "group_id")
-    public Group group;
+    @JoinColumn(name = "team_id")
+    public Team group;
 
     private String isLeader;
 

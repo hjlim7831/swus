@@ -2,7 +2,7 @@ package com.ssaky.swus.api.response.group;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.db.entity.team.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;

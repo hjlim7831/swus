@@ -1,7 +1,7 @@
 package com.ssaky.swus.db.entity.member;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
-import com.ssaky.swus.db.entity.group.Board;
+import com.ssaky.swus.db.entity.team.Board;
 import com.ssaky.swus.api.request.member.MemberUpdateReq;
 import com.ssaky.swus.db.entity.Room.PublicParticipant;
 import com.ssaky.swus.db.entity.study.Study;

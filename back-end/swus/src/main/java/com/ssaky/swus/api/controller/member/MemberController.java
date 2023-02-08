@@ -1,7 +1,7 @@
 package com.ssaky.swus.api.controller.member;
 
 import com.ssaky.swus.api.request.member.MemberUpdateReq;
-import com.ssaky.swus.api.service.group.GroupService;
+import com.ssaky.swus.api.service.team.TeamService1;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import io.jsonwebtoken.Claims;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
-    private final GroupService groupService;
+    private final TeamService1 teamService;
 
     @GetMapping("my-info")
     public ResponseEntity<?> getInfo(Authentication authentication){
@@ -55,15 +55,15 @@ public class MemberController {
     public ResponseEntity<?> getMyGroupList(Authentication authentication) {
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
-        return ResponseEntity.ok(groupService.getGroupList(memberId));
+        return ResponseEntity.ok(teamService.getGroupList(memberId));
     }
 
 
-    @GetMapping("my-groups/{group_id}")
-    public ResponseEntity<?> getGroupInfo(Authentication authentication, @PathVariable("group_id") int groupId) {
+    @GetMapping("my-groups/{team_id}")
+    public ResponseEntity<?> getGroupInfo(Authentication authentication, @PathVariable("team_id") int teamId) {
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
-        return ResponseEntity.ok(groupService.getGroupDetailInfo(memberId, groupId));
+        return ResponseEntity.ok(teamService.getGroupDetailInfo(memberId, teamId));
     }
 
 }
