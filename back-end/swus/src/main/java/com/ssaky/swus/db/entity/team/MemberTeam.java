@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @ToString(exclude = {"member", "team"})
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class MemberTeam extends BaseDateEntity {
+public class MemberTeam extends BaseTimeEntity {
 
     @EqualsAndHashCode.Include
     @EmbeddedId

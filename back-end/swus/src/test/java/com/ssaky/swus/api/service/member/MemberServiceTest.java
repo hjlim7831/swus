@@ -160,7 +160,7 @@ class MemberServiceTest {
     }
 
     @Test
-    public void 회원_탈퇴후_공부_테이블_확인(){
+    public void 회원_탈퇴후_공부_테이블_확인() {
         // 탈퇴 전 테이블 확인
         assertEquals(1, studyRepository.countByMemberId(memberId));
         

@@ -29,6 +29,4 @@ public interface MemberTeamRepository extends JpaRepository<MemberTeam, MemberTe
 
     <T> Optional<T> findByIdMemberIdAndIdTeamId(int memberId, int teamId, Class<T> type);
 
-    <T> Optional<T> findByIdTeamIdAndFirstByOrderByCreateAtAsc(int teamId, Class<T> type);
-
 }

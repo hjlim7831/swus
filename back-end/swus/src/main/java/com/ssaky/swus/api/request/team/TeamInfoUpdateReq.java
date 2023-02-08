@@ -20,5 +20,6 @@ public class TeamInfoUpdateReq {
     private String day;
     private LocalTime startTime;
     private LocalTime finishTime;
+    private String teamInfo;
 
 }

@@ -9,9 +9,11 @@ import com.ssaky.swus.common.error.exception.BusinessException;
 import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.db.entity.member.Member;
+import com.ssaky.swus.db.entity.team.Board;
 import com.ssaky.swus.db.entity.team.MemberTeam;
 import com.ssaky.swus.db.entity.team.Team;
 import com.ssaky.swus.db.repository.member.MemberRepository;
+import com.ssaky.swus.db.repository.team.BoardRepository1;
 import com.ssaky.swus.db.repository.team.MemberTeamRepository;
 import com.ssaky.swus.db.repository.team.TeamRepository1;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +34,10 @@ public class TeamService1 {
     private final MemberTeamRepository memberTeamRepository;
     private final TeamRepository1 teamRepository;
     private final MemberRepository memberRepository;
+    private final BoardRepository1 boardRepository;
 
     /**
-     * 내 그룹 목록 가져오기
+     * 내 팀 목록 가져오기
      * @param memberId
      * @return
      */
@@ -56,16 +60,46 @@ public class TeamService1 {
         return respList;
     }
 
-    // TODO [2] 팀 상세 정보 조회 (투두 조회 제외)
-    public MyTeamDetailResp getTeamDetailInfo(int memberId, int teamId) {
-        // Team 테이블
+    public MyTeamDetailResp getTeamDetailInfo(int teamId, int memberId) {
+        // [1] Team 에 속한 멤버인지 확인
+        Optional<MemberTeam> memberTeam = memberTeamRepository.findByIdMemberIdAndIdTeamId(memberId, teamId, MemberTeam.class);
+        if (memberTeam.isEmpty()) {
+            throw new InvalidValueException("접근할 수 없는 정보입니다. 해당 팀의 구성원이 아닙니다.");
+        }
+
+        // [2] Team 테이블에서 팀 정보 가져오기
+        MyTeamDetailResp resp = new MyTeamDetailResp();
         Optional<Team> teamO = teamRepository.findByTeamId(teamId, Team.class);
 
-        // MemberTeam 테이블에서 팀원 정보들 가져오기
+        if (teamO.isEmpty()) {
+            throw new InvalidValueException("존재하지 않는 그룹입니다.");
+        }
+        resp.setTeamInfo(teamO.get());
+
+        // [3] MemberTeam 테이블에서 팀원 정보들 가져오기
+        List<String> memberList = new ArrayList<>();
+
         List<MemberTeam> memberTeams = memberTeamRepository.findByIdTeamId(teamId, MemberTeam.class);
+        for(MemberTeam m: memberTeams) {
+            // 리더일 때
+            Optional<Member> member = memberRepository.findById(m.getId().getMemberId(), Member.class);
+            if (m.getIsLeader().equals("Y")) {
+                resp.setLeaderInfo(member.get().getNickname(), member.get().getEmail());
+            }
+            // 팀원일 때
+            else {
+                memberList.add(member.get().getNickname());
+            }
+        }
+        resp.setMemberList(memberList);
+        
+        // [4] Board 테이블에서 모집 인원 가져오기
+        Optional<Board> boardO = boardRepository.findByTeamTeamId(teamId, Board.class);
+        if (boardO.isPresent()) {
+            resp.updateRecruitmentNumber(boardO.get().getNumber());
+        }
 
-
-        return null;
+        return resp;
     }
 
     /**
@@ -74,6 +108,7 @@ public class TeamService1 {
      * @param memberId
      * @param req
      */
+    @Transactional
     public void updateTeamInfo(int teamId, int memberId, TeamInfoUpdateReq req) {
         // [1] 팀장인지 확인
         isLeader(teamId, memberId);
@@ -85,14 +120,16 @@ public class TeamService1 {
         }
         // [3] 팀 정보 수정하기
         teamO.get().updateInfo(req);
-        
+
+
     }
 
     /**
-     * 그룹 종료 전환
+     * 팀 종료 전환
      * @param teamId
      * @param memberId
      */
+    @Transactional
     public void updateDone(int teamId, int memberId) {
         // [1] memberId로 그룹장인지 확인
         Optional<MemberTeam> memberTeamO = memberTeamRepository.findByIdMemberIdAndIdTeamId(memberId, teamId, MemberTeam.class);
@@ -152,6 +189,7 @@ public class TeamService1 {
      * @param teamId
      * @param memberId
      */
+    @Transactional
     public void teamWithdrawal(int teamId, int memberId) {
         Optional<Team> team = teamRepository.findByTeamId(teamId, Team.class);
 
@@ -164,9 +202,9 @@ public class TeamService1 {
         if (myMemberTeamO.get().getIsLeader().equals("Y")) {
 
             // 다음으로 들어온 사람에게 그룹장 넘기기
-            Optional<MemberTeam> nextMemberTeamO = memberTeamRepository.findByIdTeamIdAndFirstByOrderByCreateAtAsc(teamId, MemberTeam.class);
-            if (nextMemberTeamO.isPresent()) {
-                nextMemberTeamO.get().setLeader();
+            List<MemberTeam> restMemberTeams = orderByCreateAtAsc(teamId);
+            if (restMemberTeams.size() >= 2) {
+                restMemberTeams.get(1).setLeader();
             }
         }
 
@@ -192,7 +230,7 @@ public class TeamService1 {
         return respO.get();
     }
 
-    private void isLeader(int teamId, int memberId) {
+    public void isLeader(int teamId, int memberId) {
         Optional<MemberTeam> myMemberTeamO = memberTeamRepository.findByIdMemberIdAndIdTeamId(memberId, teamId, MemberTeam.class);
 
         if (myMemberTeamO.isEmpty()) {
@@ -201,5 +239,20 @@ public class TeamService1 {
         if (myMemberTeamO.get().getIsLeader().equals("N")) {
             throw new BusinessException("그룹장이 아닙니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         }
+    }
+
+    public List<MemberTeam> orderByCreateAtAsc(int teamId) {
+        List<MemberTeam> restMemberTeams = memberTeamRepository.findByIdTeamId(teamId, MemberTeam.class);
+
+        Collections.sort(restMemberTeams, (rm1, rm2) -> {
+                    // rm1이 rm2 이후이면 rm2가 앞으로 가야 함
+                    if (rm1.getCreateAt().isAfter(rm2.getCreateAt())) {
+                        return 1;
+                    }else {
+                        return -1;
+                    }
+                }
+        );
+        return restMemberTeams;
     }
 }

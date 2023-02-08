@@ -73,6 +73,7 @@ public class Team extends BaseDateEntity {
         this.day = req.getDay();
         this.startTime = req.getStartTime();
         this.finishTime = req.getFinishTime();
+        this.teamInfo = req.getTeamInfo();
     }
 
     //    // 일대일 양방향 관계 매핑, 읽기 전용 필드
