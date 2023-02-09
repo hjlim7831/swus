@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-import axios from "../../Utils/index";
+import axios from "./../../Utils/index";
 
 import { useNavigate } from "react-router-dom";
 
@@ -69,6 +69,11 @@ export default function SignInSide() {
             sessionStorage.setItem("token", response.data.access_token);
             // token은 sessionStorage에 저장
             // sessionStorage는 브라우저를 닫으면 clear됨.
+            
+            //열람실에서 공부시간 띄워주기 위해 저장하는 누적공부시간
+            localStorage.setItem("totalH", 0);
+            localStorage.setItem("totalM", 0);
+
             navigate("/studyroom/");
           })
           .catch((error) => {

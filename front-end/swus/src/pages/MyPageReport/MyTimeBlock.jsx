@@ -92,36 +92,15 @@ function MyTime() {
       <Box
         sx={{
           width: "100%",
-          height: 500,
+          height: "100%",
           backgroundColor: "white",
-          borderRadius: 2,
-          padding: "10px",
-          boxShadow: "2px 2px 7px 1px grey",
         }}
       >
         <Grid container>
-          <Grid item xs={4}>
-            <h3 style={{ marginLeft: "40px" }}>공부 목표 시간</h3>
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton color="black" aria-label="change view" sx={{ paddingTop: "20px" }}>
-              <AutorenewIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={2} sx={{ marginLeft: "10%" }}>
-            <IconButton
-              color="#3A3A3A"
-              aria-label="modify"
-              onClick={handleClickOpen}
-              sx={{ marginLeft: "50%", marginTop: "10px" }}
-            >
-              <ModeEditOutlineOutlinedIcon />
-            </IconButton>
-          </Grid>
           <Grid item xs={12}>
             <Grid
               item
-              xs={10}
+              xs={12}
               sx={{
                 backgroundColor: "#F4EFE6",
                 marginX: "auto",
@@ -133,12 +112,12 @@ function MyTime() {
                   overflow: "auto",
                   overflowX: "hidden",
                   width: "100%",
-                  height: 320,
+                  height: "180px",
                   backgroundColor: "F4EFE6",
                 }}
               >
-                <Grid item xs={10} sx={{ marginX: "auto" }}>
-                  <Grid container sx={{ backgroundColor: "red", marginTop: "10%" }}>
+                <Grid item xs={12}>
+                  <Grid container sx={{ marginTop: "3%" }}>
                     <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
                       나의 목표 시간
                     </Grid>
@@ -149,24 +128,31 @@ function MyTime() {
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid container sx={{ backgroundColor: "red", marginTop: "8%" }}>
+                  <Grid
+                    container
+                    sx={{ backgroundColor: "red", marginTop: "2%" }}
+                  >
                     <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
                       현재 달성 시간
                     </Grid>
                     <Grid item xs={6} sx={{ backgroundColor: "pink" }}>
                       <Box sx={{ marginLeft: "30%" }}>
-                        {parseInt(studyTime / 60)}시간 {("0" + parseInt(studyTime % 60)).slice(-2)}
-                        분
+                        {parseInt(studyTime / 60)}시간{" "}
+                        {("0" + parseInt(studyTime % 60)).slice(-2)}분
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid container sx={{ backgroundColor: "red", marginTop: "8%" }}>
+                  <Grid
+                    container
+                    sx={{ backgroundColor: "red", marginTop: "2%" }}
+                  >
                     <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
                       남은 목표 시간
                     </Grid>
                     <Grid item xs={6} sx={{ backgroundColor: "pink" }}>
                       <Box sx={{ marginLeft: "30%" }}>
-                        {parseInt(restTime / 60)}시간 {("0" + parseInt(restTime % 60)).slice(-2)}분
+                        {parseInt(restTime / 60)}시간{" "}
+                        {("0" + parseInt(restTime % 60)).slice(-2)}분
                       </Box>
                     </Grid>
                   </Grid>
@@ -179,7 +165,8 @@ function MyTime() {
           <DialogTitle>목표시간 설정하기</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반 공부 => 10, 30 입력
+              오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반
+              공부 => 10, 30 입력
             </DialogContentText>
             <Grid container spacing={2}>
               <Grid item xs={6}>

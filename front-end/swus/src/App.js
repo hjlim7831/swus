@@ -25,6 +25,7 @@ import MyReport from "./pages/MyPageReport/MyReport";
 import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
 import NSRoom from "./pages/StudyCam/NSRoom";
 import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -41,8 +42,9 @@ function App() {
           </Route>
           {/* 마이 페이지 관련 주소 */}
           <Route exact path="/mypage">
-            {/* <Route path="profile/:userId" element={<MyProfileMain />}/> */}
-            <Route path="profile/" element={<MyProfileMain />} />
+            {/* <Route path="profile/:userId" /> */}
+            <Route path="report" element={<MyReport />} />
+            <Route path="profile" element={<MyPageMain />} />
             <Route path="group/:groupId" element={<GroupDetail />} />
             <Route
               path="group/:groupId/update"

@@ -29,10 +29,19 @@ const navItems = token
       { name: "Study Room", path: "/studyroom" },
       { name: "Group", path: `/group/mystudy/${nickname}` },
       { name: "Lounge", path: "/lounge" },
-      { name: "Mypage", path: `/mypage/profile/${nickname}` },
+      { name: "Mypage", path: "/mypage/profile/:userId" },
       { name: "Logout", path: "/" },
     ]
   : [{ name: "Login", path: "/account/login" }];
+
+const logout = () => {
+  sessionStorage.clear();
+  localStorage.clear();
+  localStorage.removeItem("totalM");
+  localStorage.removeItem("totalH");
+  localStorage.removeItem("inHour");
+  localStorage.removeItem("inMin");
+};
 
 function DrawerAppBar(props) {
   const navigate = useNavigate();
