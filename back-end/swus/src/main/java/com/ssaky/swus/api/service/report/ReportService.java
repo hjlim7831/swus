@@ -62,6 +62,28 @@ public class ReportService {
         return rounds;
     }
 
+    //진행해야할 회차 불러오기
+    public RoundGetResp getRound(int teamId) {
+        //그룹의 모든 회차를 오름차순으로 불러오기
+        List<RoundGetResp> rounds = todoGrRepo.findTodoGroups(teamId);
+
+        //진행한 회차 수 구하기
+        int notNullRound = 0; //회차수 저장할 변수
+        for(int i=0, endi=rounds.size(); i<endi; i++){
+            if(rounds.get(i).getStudyAt()==null) { //해당 회차에 진행 날짜가 null이라면
+                notNullRound = i; //해당회차-1개만큼 진행한 것
+                break;
+            }
+        }
+
+        if(rounds.size()==notNullRound){
+            return null;
+        } else {
+            return rounds.get(notNullRound);
+        }
+    }
+
+
     //변경감지를 이용해서 날짜 등록하여 완료로 처리
     @Transactional
     public void setDone(int teamId, int round) {
