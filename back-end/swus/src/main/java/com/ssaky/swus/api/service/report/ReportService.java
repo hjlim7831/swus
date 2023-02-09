@@ -6,6 +6,7 @@ import com.ssaky.swus.api.response.report.RoundGetResp;
 import com.ssaky.swus.api.response.report.TodoGroupMemberGetResp;
 import com.ssaky.swus.db.repository.report.TodoGroupMemberRepository;
 import com.ssaky.swus.db.repository.report.TodoGroupRepository;
+import com.ssaky.swus.db.entity.report.TodoGroup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,6 @@ public class ReportService {
         for (RoundGetResp r : rounds) {
             log.debug(r.toString());
         }
-
-
-        //그룹원으로 반복문 돌려야함
-        //그룹원으로 모든 투두리스트 불러왔으면 해당 회차에 add해주기
-        //멤버의 해당 회차에 투두리스트가 없을수도 있음!
 
         //진행한 회차 수 구하기
         int notNullRound = 0; //회차수 저장할 변수
@@ -87,7 +83,12 @@ public class ReportService {
         }
     }
 
-    public void setDone(int round, int teamId) {
-//        todoGroupRepository.
+
+    //변경감지를 이용해서 날짜 등록하여 완료로 처리
+    @Transactional
+    public void setDone(int teamId, int round) {
+        TodoGroup todoGroup = todoGrRepo.findOne(teamId, round);
+        todoGroup.done();
+        log.debug(todoGroup.getId().getRound()+"회차("+todoGroup.getContent()+")를 "+todoGroup.getStudyAt()+"로 완료 처리했습니다.");
     }
 }
