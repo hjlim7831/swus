@@ -17,15 +17,18 @@ public class BoardListResp {
 
     private int board_id;
     private String title;
-//    private String category;
-//    private String recruitmentDone;
+    private String category;
+    private String recruitmentDone;
     private LocalDate writeAt;
     private int views;
 
     @Builder
-    public BoardListResp(int board_id, String title, LocalDate writeAt, int views) {
+
+    public BoardListResp(int board_id, String title, String category, String recruitmentDone, LocalDate writeAt, int views) {
         this.board_id = board_id;
         this.title = title;
+        this.category = category;
+        this.recruitmentDone = recruitmentDone;
         this.writeAt = writeAt;
         this.views = views;
     }

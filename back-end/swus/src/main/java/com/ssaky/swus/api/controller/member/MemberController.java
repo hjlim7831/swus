@@ -55,7 +55,7 @@ public class MemberController {
     public ResponseEntity<?> getMyGroupList(Authentication authentication) {
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
-        return ResponseEntity.ok(teamService.getGroupList(memberId));
+        return ResponseEntity.ok(teamService.getTeamList(memberId));
     }
 
 
@@ -63,7 +63,6 @@ public class MemberController {
     public ResponseEntity<?> getGroupInfo(Authentication authentication, @PathVariable("team_id") int teamId) {
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
-        return ResponseEntity.ok(teamService.getGroupDetailInfo(memberId, teamId));
+        return ResponseEntity.ok(teamService.getTeamDetailInfo(memberId, teamId));
     }
-
 }
