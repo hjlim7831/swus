@@ -53,12 +53,15 @@ public class Team extends BaseDateEntity {
 
     @Builder
     public Team(WriteBoardReq req) {
+        this.teamName = req.getTitle();
+        this.teamInfo = req.getContent();
         this.category = req.getCategory();
-        this.day = req.getDay();
         this.beginAt = req.getBeginAt();
         this.endAt = req.getEndAt();
+        this.day = req.getDay();
         this.startTime = req.getStartTime();
         this.finishTime = req.getFinishTime();
+        this.teamDone = "N";
     }
 
     @Builder

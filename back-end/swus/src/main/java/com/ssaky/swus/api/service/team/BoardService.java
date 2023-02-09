@@ -7,9 +7,11 @@ import com.ssaky.swus.api.response.group.BoardListResp;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.db.entity.member.Member;
 import com.ssaky.swus.db.entity.team.Board;
+import com.ssaky.swus.db.entity.team.MemberTeam;
 import com.ssaky.swus.db.entity.team.Team;
 import com.ssaky.swus.db.repository.member.MemberRepository;
 import com.ssaky.swus.db.repository.team.BoardRepository;
+import com.ssaky.swus.db.repository.team.MemberTeamRepository;
 import com.ssaky.swus.db.repository.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
+    private final MemberTeamRepository memberTeamRepository;
 
     /**
      * 모집게시글 작성
@@ -41,6 +44,15 @@ public class BoardService {
         log.info("[Service writeBoard] : memberId = {}, WriteBoardReq = {}", memberId, req);
         Team team = new Team(req);
         team.addNumber();           // 인원수 증가
+
+        // MemberTeam 연관 테이블에 팀장 추가
+        MemberTeam memberTeam = MemberTeam.builder()
+                .memberId(memberId)
+                .teamId(team.getTeamId())
+                .build();
+        memberTeam.setLeader();
+        memberTeamRepository.save(memberTeam);
+
         int teamId = teamRepository.save(team).getTeamId();
 
         Board board = Board.builder()
