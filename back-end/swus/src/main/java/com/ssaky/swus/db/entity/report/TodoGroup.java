@@ -2,6 +2,7 @@ package com.ssaky.swus.db.entity.report;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.ssaky.swus.api.request.team.TeamTodoUpdateReq;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoGroup {
 
+    @Builder
     public TodoGroup(int round, int teamId, String content) {
         TodoGroupId id = TodoGroupId.builder()
                 .round(round).teamId(teamId).build();
@@ -29,6 +31,10 @@ public class TodoGroup {
     public void done() {
         log.debug("해당 회차를 완료처리하였습니다. "+LocalDate.now());
         this.studyAt = LocalDate.now();
+    }
+
+    public void updateContent(TeamTodoUpdateReq req) {
+        this.content = req.getContent();
     }
 
     @EmbeddedId //복합키 매핑을 위한 어노테이션
