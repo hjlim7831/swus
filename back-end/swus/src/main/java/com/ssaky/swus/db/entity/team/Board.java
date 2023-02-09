@@ -43,6 +43,8 @@ public class Board extends BaseDateEntity {
     @Builder
     public Board(int memberId, int teamId, String title, String content, int number) {
         Member member = Member.builder().id(memberId).build();
+        Team team = Team.builder().teamId(teamId).build();
+        this.team = team;
         this.member = member;
         Team team = Team.builder().teamId(teamId).build();
         this.team = team;
@@ -50,6 +52,11 @@ public class Board extends BaseDateEntity {
         this.content = content;
         this.views = 0;
         this.number = number;
+    }
+
+    @Builder
+    public Board(int teamId) {
+        Team team = Team.builder().teamId(teamId).build();
     }
 
     public void update(UpdateBoardReq updaterBoardReq) {

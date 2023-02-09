@@ -1,14 +1,15 @@
-package com.ssaky.swus.api.response.group;
+package com.ssaky.swus.api.request.team;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @ToString
-@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class MyGroupResp {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class TeamInviteReq {
+    private String email;
 }

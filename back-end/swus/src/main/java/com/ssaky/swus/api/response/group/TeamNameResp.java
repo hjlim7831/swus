@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Value;
 
-@Getter
-@ToString
-@NoArgsConstructor
+@Value
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class GroupMemberTodosResp {
+public class TeamNameResp {
+    private String teamName;
 }

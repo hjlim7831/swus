@@ -1,5 +1,6 @@
 package com.ssaky.swus.db.entity.team;
 
+import com.ssaky.swus.api.request.team.TeamInfoUpdateReq;
 import com.ssaky.swus.api.request.team.UpdateBoardReq;
 import com.ssaky.swus.api.request.team.WriteBoardReq;
 import lombok.Builder;
@@ -43,7 +44,7 @@ public class Team extends BaseDateEntity {
 
     private int number;             // 현그룹인원(유동)
 
-    private String team_done;      // 그룹 스터디완료여부
+    private String teamDone;      // 그룹 스터디완료여부
 
     @Builder
     public Team(int teamId) {
@@ -72,7 +73,29 @@ public class Team extends BaseDateEntity {
         this.startTime = startTime;
         this.finishTime = finishTime;
         this.number = number;
-        this.team_done = team_done;
+        this.teamDone = teamDone;
+    }
+
+    public void addNumber() {
+        this.number = this.number + 1;
+    }
+
+    public void subtractNumber() {
+        this.number = this.number - 1;
+    }
+
+    public void isDone() {
+        this.teamDone = "Y";
+    }
+
+    public void updateInfo(TeamInfoUpdateReq req) {
+        this.teamName = req.getTeamName();
+        this.beginAt = req.getBeginAt();
+        this.endAt = req.getEndAt();
+        this.day = req.getDay();
+        this.startTime = req.getStartTime();
+        this.finishTime = req.getFinishTime();
+        this.teamInfo = req.getTeamInfo();
     }
 
     public void update(UpdateBoardReq updateBoardReq) {
