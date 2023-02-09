@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Box } from "@mui/system";
 import { Button, Grid, Divider, Typography, TextField } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -9,6 +9,7 @@ import leaveGroup from '../../components/modals/LeaveGroup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Report from "../../components/modals/Report";
 import { v4 as uuidv4 } from 'uuid';
+import axios from "../../Utils/index";
 
 
 
@@ -23,228 +24,244 @@ function GroupDetail() {
 
   const message = "공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부"
 
-  const weekTopics = [
-    {
-      round: 1,
-      content: "1주차 계획",
-      members: [
-        {
-          "nickname": "조혜진",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "서형준",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "이정현",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            },
-            {
-              "num": 3,
-              "content": "todo3",
-              "todoDone": "Y",
-            },
-            {
-              "num": 4,
-              "content": "todo4",
-              "todoDone": "Y",
-            },
-            {
-              "num": 5,
-              "content": "todo5",
-              "todoDone": "Y",
-            },
-          ]
-        }
-      ]
-    },
-    {
-      round: 2,
-      content: "2주차 계획",
-      members: [
-        {
-          "nickname": "조혜진",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "서형준",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "이정현",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        }
-      ]
-    },
-    {
-      round: 3,
-      content: "3주차 계획",
-      members: [
-        {
-          "nickname": "조혜진",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "서형준",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "이정현",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        }
-      ]
-    },
-    {
-      round: 4,
-      content: "4주차 계획",
-      members: [
-        {
-          "nickname": "조혜진",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "서형준",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "이정현",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        }
-      ]
-    }
-  ];
 
+  const [reportData, setReportData] = useState([]);
+  // const weekTopics = [
+  //   {
+  //     round: 1,
+  //     content: "1주차 계획",
+  //     members: [
+  //       {
+  //         "nickname": "조혜진",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "nickname": "서형준",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "nickname": "이정현",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           },
+  //           {
+  //             "num": 3,
+  //             "content": "todo3",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 4,
+  //             "content": "todo4",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 5,
+  //             "content": "todo5",
+  //             "todoDone": "Y",
+  //           },
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     round: 2,
+  //     content: "2주차 계획",
+  //     members: [
+  //       {
+  //         "nickname": "조혜진",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "nickname": "서형준",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "nickname": "이정현",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     round: 3,
+  //     content: "3주차 계획",
+  //     members: [
+  //       {
+  //         "nickname": "조혜진",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "nickname": "서형준",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "nickname": "이정현",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     round: 4,
+  //     content: "4주차 계획",
+  //     members: [
+  //       {
+  //         "nickname": "조혜진",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "nickname": "서형준",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         "nickname": "이정현",
+  //         "todos": [
+  //           {
+  //             "num": 1,
+  //             "content": "todo1",
+  //             "todoDone": "Y",
+  //           },
+  //           {
+  //             "num": 2,
+  //             "content": "todo2",
+  //             "todoDone": "N",
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // ];
+
+
+  useEffect(() => {
+
+    const config = {
+      url: `my-reports/${1}/member-todos`,
+      method: "GET",
+    }
+
+    axios(config)
+      .then((response) => {
+        console.log(response.data);
+        setReportData(response.data.rounds);
+      })
+  }, [])
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -262,7 +279,7 @@ function GroupDetail() {
   const [member, setMember] = useState("")
 
   function getWeekTopics() {
-    return weekTopics.map((topics) => {
+    return reportData.map((topics) => {
       return (
         <Grid container sx={{ padding: 2, display: "flex", alignItems: "center"}} key={uuidv4()}>
           <Grid item xs={3}>
@@ -391,7 +408,7 @@ function GroupDetail() {
               <Button variant="outlined" onClick={openModal}>
                 리포트 보기
               </Button>
-              <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={weekTopics}>
+              <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
                 {
                   <>
                     <div style={{ display: "flex", justifyContent: "center" }}>

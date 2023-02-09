@@ -7,6 +7,7 @@ import UpdateGroupDetail from "./pages/GroupPage/UpdateGroupDetail";
 import GroupMain from "./pages/GroupPage/Main";
 import MyPageMain from "./pages/MyPageMain/Main";
 import MyGroupList from './pages/MyPageProfile/MyGroupList';
+import LandingPage from "./pages/LandingPage/LandingPage"
 
 import LogIn from "./pages/Accounts/LogIn";
 import SignUp from "./pages/Accounts/SignUp";
@@ -34,7 +35,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* landingPage */}
-          {/* <Route exact path="/" /> */}
+          <Route exact path="/" element={<LandingPage/>}/>
           {/* 공용 열람실 관련 주소 */}
           <Route exact path="/studyroom">
             <Route exact path="" element={<StudyRoomMain />} />

@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,47 +11,63 @@ import Tab from "@mui/material/Tab";
 import { v4 as uuidv4 } from "uuid";
 import { Box, Button, Grid, TablePagination } from "@mui/material";
 import { Container } from "@mui/system";
+import axios from "../../Utils/index";
 
-function createData(num, studyType, studyName, time) {
-  return { num, studyType, studyName, time };
-}
+// function createData(num, studyType, studyName, time) {
+//   return { num, studyType, studyName, time };
+// }
 
-const ingGroups = [
-  createData(13, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(12, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(11, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(10, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(9, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(8, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(7, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(6, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(5, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(4, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(3, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(2, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(1, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-];
+// const ingGroups = [
+//   createData(13, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(12, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(11, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(10, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(9, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(8, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(7, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(6, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(5, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(4, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(3, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(2, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(1, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+// ];
 
-const finishedGroups = [
-  createData(5, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(4, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(3, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(2, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-  createData(1, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-]
+// const finishedGroups = [
+//   createData(5, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(4, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(3, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(2, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+//   createData(1, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
+// ]
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+// function a11yProps(index) {
+//   return {
+//     id: `simple-tab-${index}`,
+//     "aria-controls": `simple-tabpanel-${index}`,
+//   };
+// }
 
 
 function MyGroupList() {
-  const [value, setValue] = useState(0);
 
+  const [value, setValue] = useState(0);
   const [page, setPage] = useState(0);
+  const [ingGroups, setIngGroups] = useState([]);
+  const [finishedGroups, setFinishedGroups] = useState([]);
+
+  useEffect(() => {
+    const config = {
+      url: "users/my-teams",
+      method: "GET",
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log(response.data)
+        const ingGroupList = response.data.map()
+      })
+  })
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage)

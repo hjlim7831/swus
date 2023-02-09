@@ -19,18 +19,22 @@ function Report (props) {
 			newToggles.push(false);
 			console.log(toggles);
 		};
-
+		
+		console.log("여기야 여기!");
+		console.log(payload);
+		
 		setToggles(newToggles);
 	}, []);
 
 	function weekTopics() {
 
 		function getMemberTodos(member) {
-			return member.todos.map((todo) => {
+			// 여기서 members를 todos로 바꾸기
+			return member.members.map((todo) => {
 				return (
 					<>
 						<p style={{ margin: 0}}>
-							{(todo.todoDone === "Y") ? <Checkbox checked={true} disabled/> : <Checkbox checked={false} disabled/>}
+							{(todo.todo_done === "Y") ? <Checkbox checked={true} disabled/> : <Checkbox checked={false} disabled/>}
 							{todo.content}
 						</p>
 					</>
@@ -122,7 +126,7 @@ function Report (props) {
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div className={open ? 'openModal modal' : 'modal'}>
       {open ? (
-        <section style={{ width: "90vw", height: "90vh", marginTop: "50px"}}>
+        <section style={{ width: "70vw", height: "90vh", marginTop: "50px"}}>
           <header>
             <img
 							src={logo}

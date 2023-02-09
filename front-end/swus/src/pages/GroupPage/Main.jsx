@@ -28,7 +28,7 @@ function Main() {
   return (
 		<>
 			<NavBar />
-			<Box style={{ display: "flex"  }}>
+			<Box style={{ display: "flex" }}>
 				<SideBar props={condition} />
 				<div style={{ marginLeft: 50, width: "80vw", marginTop: 80 }}>
 					<Outlet></Outlet>
