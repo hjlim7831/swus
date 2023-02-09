@@ -2,6 +2,7 @@ package com.ssaky.swus.api.controller.room;
 
 import com.ssaky.swus.api.request.room.PublicCreateReq;
 import com.ssaky.swus.api.request.room.PublicExitReq;
+import com.ssaky.swus.api.response.room.ParticipantResp;
 import com.ssaky.swus.api.service.room.RoomService;
 import com.ssaky.swus.common.utils.TokenUtils;
 import com.ssaky.swus.db.entity.Room.PublicRoom;
@@ -46,11 +47,14 @@ public class RoomController {
 
     @PostMapping("/studyrooms/{room_id}")
     public ResponseEntity<?> enterPublic (Authentication authentication, @PathVariable int room_id){
+        //참가하고 있는 참여자 목록 불러와서 결과값에 넣어주기
+        Map<String, Object> resultMap = new HashMap<>();
+        List<ParticipantResp> participants = roomService.getParticipants(room_id);
+        resultMap.put("participants", participants);
+
         Claims claims = (Claims) authentication.getPrincipal();
         int userId = TokenUtils.getmemberIdFromToken(claims);
         roomService.enterPublic(room_id,userId);
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("msg", "success_enter_studyroom");
         return ResponseEntity.ok(resultMap);
     }
 

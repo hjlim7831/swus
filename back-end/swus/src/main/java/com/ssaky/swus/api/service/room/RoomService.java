@@ -1,6 +1,7 @@
 package com.ssaky.swus.api.service.room;
 
 import com.ssaky.swus.api.request.room.PublicExitReq;
+import com.ssaky.swus.api.response.room.ParticipantResp;
 import com.ssaky.swus.common.error.exception.custom.OverCapacityException;
 import com.ssaky.swus.db.entity.Room.PublicParticipant;
 import com.ssaky.swus.db.entity.Room.PublicRoom;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,5 +85,17 @@ public class RoomService {
         log.debug("삭제할 참가자 id : "+publicExitReq.getMemberId());
         log.debug("삭제할 참가자 : "+participant);
         participantRepository.exit(participant);
+    }
+
+    public List<ParticipantResp> getParticipants(int roomId) {
+        List<ParticipantResp> partiResps = new ArrayList<>();
+        List<PublicParticipant> partis = participantRepository.findByRoomId(roomId);
+        for (PublicParticipant p : partis) {
+            int partiId = p.getId();
+            int memberId = p.getMember().getId();
+            LocalDateTime joinedAt = p.getJoined_at();
+            partiResps.add(new ParticipantResp(partiId,memberId,joinedAt));
+        }
+        return partiResps;
     }
 }
