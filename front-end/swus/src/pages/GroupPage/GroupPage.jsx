@@ -34,6 +34,8 @@ function GroupPage() {
 		axios(config)
 			.then((response) => {
 				setArticles(response.data)
+				console.log(response.data)
+				
 			})
 	}, [])
 

@@ -63,7 +63,7 @@ function ArticleDetail() {
 			.catch((error) => {
 				navigate("/group/board")
 			})
-	}, [article.title])
+	}, [])
 
 	
 	 
@@ -110,7 +110,7 @@ function ArticleDetail() {
 						<p>{article.writedAt}</p>
 					</Grid>
 					<Grid item xs={3} sx={{ textAlign: "right", display: "flex", justifyContent: "right", pr: 3 }}>
-						<p>조회수 : 6</p>
+						<p>조회수 : {article.views}</p>
 					</Grid>
 				</Grid>
 				<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 5 }}/>
