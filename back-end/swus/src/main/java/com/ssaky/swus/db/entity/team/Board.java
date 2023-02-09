@@ -41,9 +41,11 @@ public class Board extends BaseDateEntity {
     private int number;     // 최종모집인원
 
     @Builder
-    public Board(int memberId, String title, String content, int number) {
+    public Board(int memberId, int teamId, String title, String content, int number) {
         Member member = Member.builder().id(memberId).build();
         this.member = member;
+        Team team = Team.builder().teamId(teamId).build();
+        this.team = team;
         this.title = title;
         this.content = content;
         this.views = 0;
