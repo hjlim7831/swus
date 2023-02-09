@@ -9,8 +9,10 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 
 import axios from "../../../Utils/index";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpSide() {
+  const navigate = useNavigate();
   // 비밀번호 찾기용 질문 -> store에서 가져오기
   const favorite_questions = useSelector((state) => state.questions);
 
@@ -116,8 +118,9 @@ export default function SignUpSide() {
         axios(config)
           // .post("http://localhost:8081/auth/sign-up", payload)
           .then((response) => {
-            console.log("success");
+            // console.log("success");
             console.log(response.data);
+            navigate("accounts/login");
           })
           .catch((error) => {
             console.log(error.message);

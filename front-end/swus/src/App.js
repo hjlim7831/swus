@@ -50,8 +50,10 @@ function App() {
               path="group/:groupId/update"
               element={<UpdateGroupDetail />}
             />
-            <Route path="myreport/:userId" />
+            {/* <Route path="myreport/:userId"  element={<MyReport />}/> */}
+            <Route path="myreport/" element={<MyReport />} />
           </Route>
+
           {/* 그룹 페이지(게시판) 관련 주소 */}
           <Route exact path="/group" element={<GroupMain />}>
             <Route path="mystudy/:userId" element={<MyGroupList />} />

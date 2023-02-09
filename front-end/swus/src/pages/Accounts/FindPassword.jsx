@@ -90,7 +90,7 @@ export default function FindPassword() {
         .then(() => {
           // console.log(response.data.msg);
           alert("입력하신 메일로 비밀번호를 전송했습니다.");
-          navigate("account/login");
+          navigate("/account/login");
         })
         .catch((error) => {
           if (error.message === "Request failed with status code 400") {
