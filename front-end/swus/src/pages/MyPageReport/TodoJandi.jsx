@@ -19,27 +19,27 @@ function TodoJandi() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data.todo_records);
+        console.log(response.data);
         // {id_study_at: '2023-02-01', todo_done_count: 3}
         // 1 <= , 3 <=, 5<= , 7 <=
         const newData = response.data.todo_records.map((data) => {
-          let value = 0
-          
+          let value = 0;
+
           if (data.todo_done_count >= 7) {
-            value = 4
+            value = 4;
           } else if (data.todo_done_count >= 5) {
-            value = 3
+            value = 3;
           } else if (data.todo_done_count >= 3) {
-            value = 2
+            value = 2;
           } else if (data.todo_done_count >= 1) {
-            value = 1
+            value = 1;
           }
 
           return {
             ...data,
             classValue: value,
           };
-        })
+        });
         console.log(newData);
         setValues(newData);
       })
@@ -47,7 +47,6 @@ function TodoJandi() {
         console.log(error);
       });
   }, []);
-
 
   //  기간 설정 (1년 전 ~ today)
   // Lazy Initialization (state 정의될 때 한 번만 실행)
@@ -85,6 +84,7 @@ function TodoJandi() {
   //     });
   // }, []);
 
+  const color = ["grey", "#BDACFB", "#7A5DDF", "#4926C1", "#2A117D"];
 
   return (
     <>
@@ -110,11 +110,15 @@ function TodoJandi() {
               values={values}
               showWeekdayLabels={true}
               //classForValue로 색깔이 될 클래스 지정
-              classForValue={(value) => {
+              color={(value) => {
+                // const color = ["#E8E8E8", "#BDACFB", "#7A5DDF", "#4926C1", "#2A117D"]
+
+                // return color[value.classValue];
                 if (!value) {
-                  return "color-empty";
+                  return color[0];
+                  // return "color-empty";
                 }
-                return `color-scale-${value.classValue}`;
+                return color[value.classValue];
               }}
             />
           </StyledContainer>

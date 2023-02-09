@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import MyTodoList from "./MyTodoList";
-import MyTodoForm from "./MyTodoForm";
+import GroupTodoList from "./GroupTodoList";
+import GroupTodoForm from "./GroupTodoForm";
 import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
@@ -111,12 +111,12 @@ function GroupTodoBlock() {
                 backgroundColor: "#F4EFE6",
               }}
             >
-              <MyTodoForm
+              <GroupTodoForm
                 handleSubmit={handleSubmit}
                 value={value}
                 setValue={setValue}
               />
-              <MyTodoList
+              <GroupTodoList
                 todoData={todoData}
                 setTodoData={setTodoData}
                 value={value}

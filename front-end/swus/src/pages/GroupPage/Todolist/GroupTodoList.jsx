@@ -4,7 +4,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
-function MyTodoList({
+function GroupTodoList({
   todoData,
   setTodoData,
   value,
@@ -142,4 +142,4 @@ function MyTodoList({
   );
 }
 
-export default MyTodoList;
+export default GroupTodoList;
