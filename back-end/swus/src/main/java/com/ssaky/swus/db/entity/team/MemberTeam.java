@@ -32,8 +32,7 @@ public class MemberTeam extends BaseDateEntity {
     @MapsId("teamId") // 이렇게만 지정해 주면 PK가 됨
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "team_id")
-    public Team group;
+    public Team team;
 
     private String isLeader;
-
 }
