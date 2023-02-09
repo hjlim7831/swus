@@ -17,6 +17,13 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import Typography from "@mui/material/Typography";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
 
 //HOC 사용용
 
@@ -32,13 +39,14 @@ class OpenViduApp extends Component {
     this.state = {
       roomType: props.roomType,
       mySessionId: props.sessionId,
-      myUserName: JSON.parse(localStorage.getItem("nickname")),
+      myUserName: localStorage.getItem("nickname"),
       roomId: props.roomId,
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
       d: new Date(),
+      open: false,
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -77,6 +85,14 @@ class OpenViduApp extends Component {
     const week = new Array("일", "월", "화", "수", "목", "금", "토");
     const todayLabel = week[dayLabel];
     return todayLabel;
+  };
+
+  //쉬는시간 모달 열고 닫아주는함수
+  handleClickOpen = () => {
+    this.setOpen(true);
+  };
+  handleClose = () => {
+    this.setOpen(false);
   };
 
   onbeforeunload(event) {
@@ -174,7 +190,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x300", // The resolution of your video
+                resolution: "1200x500", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -214,6 +230,8 @@ class OpenViduApp extends Component {
         });
       }
     );
+    localStorage.setItem("inHour", this.state.d.getHours());
+    localStorage.setItem("inMin", this.state.d.getMinutes());
   }
 
   leaveSession() {
@@ -221,24 +239,24 @@ class OpenViduApp extends Component {
 
     const mySession = this.state.session;
     console.log("check post");
-    console.log(this.state.room_id);
+    console.log(this.state.roomId);
     if (mySession) {
       mySession.disconnect(); //연결 끊고
     }
 
-    const Token =
-      "eyJyZWdEYXRlIjoxNjc1NzQ0NzMwMTU0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmdAZ21haWwuY29tIiwiZXhwIjoxNjc1ODMxMTMwLCJlbWFpbCI6InN0cmluZ0BnbWFpbC5jb20iLCJtZW1iZXJJZCI6ODN9.QCvJ0J6OvsmxkiqrYQSWhUjOpdrbVzrWSZNO4q0Bahs";
-
+    const Token = sessionStorage.getItem("token");
+    console.log("방 퇴장");
+    console.log(this.state.roomId);
     axios({
       method: "post",
       url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
       headers: { Authorization: `Bearer ${Token}` },
       data: {
-        room_id: this.state.room_id,
+        member_id: 0,
+        room_id: this.state.roomId,
       },
     }).then((response) => {
-      console.log("??");
-      console.log(response);
+      console.log(response.data.message);
     });
 
     // Empty all properties... 초기화
@@ -252,9 +270,32 @@ class OpenViduApp extends Component {
       publisher: undefined,
     });
 
-    // window.location.href = "/studyroom";
+    //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
+    //기존 입장 시간
+    const inH = parseInt(localStorage.getItem("inHour"));
+    const inM = parseInt(localStorage.getItem("inMin"));
 
-    // navigate("/");
+    //현재 시간
+    const nowH = parseInt(this.state.d.getHours());
+    const nowM = parseInt(this.state.d.getMinutes());
+
+    //누적된 총 시간
+    const totalH = parseInt(localStorage.getItem("totalH"));
+    const totalM = parseInt(localStorage.getItem("totalM"));
+
+    if (inH <= nowH) {
+      //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
+      const cal = nowH * 60 + nowM - (inH * 60 + inM);
+      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      localStorage.setItem("totalM", totalM + (cal % 60));
+    } else {
+      //앞시간이 더 큰 숫자일 경우 ex 18시~1시
+      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
+      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      localStorage.setItem("totalM", totalM + (cal % 60));
+    }
+
+    window.location.href = "/studyroom";
   }
 
   render() {
@@ -330,7 +371,7 @@ class OpenViduApp extends Component {
                   </Stack> //채팅방용 상위 버튼
                 )}
                 <h1 style={{ color: "white", paddingTop: "20px" }}>
-                  {mySessionId}
+                  공용 열람실{mySessionId}
                 </h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
@@ -500,32 +541,7 @@ class OpenViduApp extends Component {
             <Grid item xs={9.6}>
               <div className="container" styled={{ paddingLeft: "10%" }}>
                 {this.state.session === undefined ? (
-                  <div id="join">
-                    <div id="join-dialog" className="jumbotron vertical-center">
-                      <form className="form-group" onSubmit={this.joinSession}>
-                        <p>
-                          <label>Participant: </label>
-                          <input
-                            className="form-control"
-                            type="text"
-                            id="userName"
-                            value={myUserName}
-                            onChange={this.handleChangeUserName}
-                            required
-                          />
-                        </p>
-
-                        <p className="text-center">
-                          <input
-                            className="btn btn-lg btn-success"
-                            name="commit"
-                            type="submit"
-                            value="JOIN"
-                          />
-                        </p>
-                      </form>
-                    </div>
-                  </div>
+                  <div id="join">{this.joinSession()}</div>
                 ) : null}
                 {/* <Grid container sx={{ border: 1 }}> */}
                 {this.state.session !== undefined ? (
@@ -562,10 +578,20 @@ class OpenViduApp extends Component {
                     </div>
                   </div>
                 ) : null}
-                {/* </Grid> */}
               </div>
             </Grid>
           </Grid>
+          {/*정각이 되었을때 알림을 주는 모달창 */}
+          {this.state.d.getMinutes() === 22 &&
+          this.state.d.getSeconds() === 30 ? (
+            <div></div>
+          ) : null}
+
+          {/*정각이 되었을때 알림을 주는 모달창 */}
+          {this.state.d.getMinutes() === 0 &&
+          this.state.d.getSeconds() === 0 ? (
+            <div></div>
+          ) : null}
         </Box>
       </>
     );
