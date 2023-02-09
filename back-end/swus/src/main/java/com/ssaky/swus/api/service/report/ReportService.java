@@ -4,6 +4,8 @@ import com.ssaky.swus.api.request.member.MemberNicknameReq;
 import com.ssaky.swus.api.response.report.MemberGetResp;
 import com.ssaky.swus.api.response.report.RoundGetResp;
 import com.ssaky.swus.api.response.report.TodoGroupMemberGetResp;
+import com.ssaky.swus.db.entity.report.TodoGroup;
+import com.ssaky.swus.db.entity.report.TodoGroupId;
 import com.ssaky.swus.db.repository.report.TodoGroupMemberRepository;
 import com.ssaky.swus.db.repository.report.TodoGroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +35,6 @@ public class ReportService {
             log.debug(r.toString());
         }
 
-
-            //그룹원으로 반복문 돌려야함
-            //그룹원으로 모든 투두리스트 불러왔으면 해당 회차에 add해주기
-        //멤버의 해당 회차에 투두리스트가 없을수도 있음!
-
         //진행한 회차 수 구하기
         int notNullRound = 0; //회차수 저장할 변수
         for(int i=0, endi=rounds.size(); i<endi; i++){
@@ -62,11 +59,14 @@ public class ReportService {
                 rounds.get(i).getMembers().add(member);
             }
         }
-
         return rounds;
     }
 
-    public void setDone(int round, int teamId) {
-//        todoGroupRepository.
+    //변경감지를 이용해서 날짜 등록하여 완료로 처리
+    @Transactional
+    public void setDone(int teamId, int round) {
+        TodoGroup todoGroup = todoGrRepo.findOne(teamId, round);
+        todoGroup.done();
+        log.debug(todoGroup.getId().getRound()+"회차("+todoGroup.getContent()+")를 "+todoGroup.getStudyAt()+"로 완료 처리했습니다.");
     }
 }

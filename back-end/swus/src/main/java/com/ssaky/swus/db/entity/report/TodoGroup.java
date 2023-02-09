@@ -3,6 +3,7 @@ package com.ssaky.swus.db.entity.report;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @ToString
+@Slf4j
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoGroup {
 
@@ -25,6 +27,7 @@ public class TodoGroup {
 
     //현재시간 기준으로 해당 회차 완료 처리
     public void done() {
+        log.debug("해당 회차를 완료처리하였습니다. "+LocalDate.now());
         this.studyAt = LocalDate.now();
     }
 
