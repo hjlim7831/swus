@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MemberGetResp {
     private String nickname;
-    private List<TodoGroupMemberGetResp> members;
+    private List<TodoGroupMemberGetResp> todos;
 
 
 }

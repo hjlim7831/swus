@@ -4,8 +4,6 @@ import com.ssaky.swus.api.request.member.MemberNicknameReq;
 import com.ssaky.swus.api.response.report.MemberGetResp;
 import com.ssaky.swus.api.response.report.RoundGetResp;
 import com.ssaky.swus.api.response.report.TodoGroupMemberGetResp;
-import com.ssaky.swus.db.entity.report.TodoGroup;
-import com.ssaky.swus.db.entity.report.TodoGroupId;
 import com.ssaky.swus.db.repository.report.TodoGroupMemberRepository;
 import com.ssaky.swus.db.repository.report.TodoGroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +57,7 @@ public class ReportService {
                 rounds.get(i).getMembers().add(member);
             }
         }
+
         return rounds;
     }
 
