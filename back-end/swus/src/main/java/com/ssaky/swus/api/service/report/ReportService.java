@@ -6,6 +6,7 @@ import com.ssaky.swus.api.response.report.RoundGetResp;
 import com.ssaky.swus.api.response.report.TodoGroupMemberGetResp;
 import com.ssaky.swus.db.repository.report.TodoGroupMemberRepository;
 import com.ssaky.swus.db.repository.report.TodoGroupRepository;
+import com.ssaky.swus.db.entity.report.TodoGroup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
