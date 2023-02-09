@@ -11,6 +11,7 @@ import java.io.Serializable;
 //회차별 투두의 복합키가 되는 클래스
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Embeddable
+@Getter
 @NoArgsConstructor
 @Builder
 public class TodoGroupId implements Serializable {
