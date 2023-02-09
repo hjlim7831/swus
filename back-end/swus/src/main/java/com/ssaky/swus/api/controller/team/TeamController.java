@@ -49,6 +49,7 @@ public class TeamController {
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
         teamService.teamWithdrawal(teamId, memberId);
+        resultMap.put("msg", "success_withdraw_team");
         return ResponseEntity.ok(resultMap);
     }
 
