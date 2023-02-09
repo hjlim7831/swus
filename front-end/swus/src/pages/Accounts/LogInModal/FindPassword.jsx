@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 
 import axios from "../../../Utils/index";
+import { Navigate } from "react-router";
 
 export default function FindPassword() {
   // 비밀번호 찾기용 질문 -> store에서 가져오기
@@ -86,6 +87,7 @@ export default function FindPassword() {
         .then(() => {
           // console.log(response.data.msg);
           alert("입력하신 메일로 비밀번호를 전송했습니다.");
+          Navigate("/accounts/login");
         })
         .catch((error) => {
           if (error.message === "Request failed with status code 400") {
@@ -101,7 +103,11 @@ export default function FindPassword() {
 
   return (
     <>
-      <Typography component="h1" variant="h5" sx={{ mb:2, mt: 1, color: '#5F3A42' }}>
+      <Typography
+        component="h1"
+        variant="h5"
+        sx={{ mb: 2, mt: 1, color: "#5F3A42" }}
+      >
         아이디/비밀번호 찾기
       </Typography>
       <Box component="form" noValidate onSubmit={idSubmit} sx={{ mt: 1 }}>
@@ -122,7 +128,7 @@ export default function FindPassword() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 2, mb: 2, backgroundColor: "#E2B9B3", color: '#5F3A42' }}
+          sx={{ mt: 2, mb: 2, backgroundColor: "#E2B9B3", color: "#5F3A42" }}
         >
           아이디 확인
         </Button>
@@ -162,7 +168,7 @@ export default function FindPassword() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 2, mb: 2, backgroundColor: "#E2B9B3", color: '#5F3A42' }}
+          sx={{ mt: 2, mb: 2, backgroundColor: "#E2B9B3", color: "#5F3A42" }}
         >
           비밀번호 찾기
         </Button>

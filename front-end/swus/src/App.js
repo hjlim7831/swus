@@ -1,9 +1,9 @@
-import GroupPage from './pages/GroupPage/GroupPage';
-import CreateArticle from './pages/GroupPage/CreateArticle';
-import ArticleDetail from './pages/GroupPage/ArticleDetail';
-import UpdateArticle from './pages/GroupPage/UpdateArticle';
-import GroupDetail from './pages/GroupPage/GroupDetail';
-import UpdateGroupDetail from './pages/GroupPage/UpdateGroupDetail';
+import GroupPage from "./pages/GroupPage/GroupPage";
+import CreateArticle from "./pages/GroupPage/CreateArticle";
+import ArticleDetail from "./pages/GroupPage/ArticleDetail";
+import UpdateArticle from "./pages/GroupPage/UpdateArticle";
+import GroupDetail from "./pages/GroupPage/GroupDetail";
+import UpdateGroupDetail from "./pages/GroupPage/UpdateGroupDetail";
 import GroupMain from "./pages/GroupPage/Main";
 import MyPageMain from "./pages/MyPageMain/Main";
 import MyGroupList from './pages/MyPageProfile/MyGroupList';
@@ -25,14 +25,8 @@ import MyReport from "./pages/MyPageReport/MyReport";
 import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
 import NSRoom from "./pages/StudyCam/NSRoom";
 import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
 
-
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -51,6 +45,7 @@ function App() {
             <Route path="profile/:userId" />
             <Route path="myreport/:userId" />
           </Route>
+
           {/* 그룹 페이지(게시판) 관련 주소 */}
           <Route exact path="/group" element={<GroupMain />}>
             <Route path="mystudy/:userId" element={<MyGroupList/>}/>

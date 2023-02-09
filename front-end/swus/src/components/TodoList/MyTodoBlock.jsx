@@ -8,11 +8,11 @@ import { Grid } from "@mui/material";
 
 import axios from "./../../Utils/index";
 
-// import { useSelector, useDispatch } from "react-redux";
-// import { addTodoList } from "./../../store/TodoList";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodoList } from "./../../store/TodoList";
 
 function MyTodoBlock() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
@@ -100,7 +100,7 @@ function MyTodoBlock() {
                 overflowX: "hidden",
                 width: "85%",
                 marginX: "auto",
-                height: 360,
+                height: 320,
                 backgroundColor: "#F4EFE6",
               }}
             >

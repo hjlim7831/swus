@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import NavBar from "../../components/NavBar/NavBar";
 import SideBar from "./SideBar";
 import { Outlet } from "react-router-dom";
+import SideBar from "./SideBar";
 
 function Main() {
 

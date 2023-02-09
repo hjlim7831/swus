@@ -23,15 +23,25 @@ import logo from "./../../logo.png";
 const drawerWidth = 240;
 // const mainItems = ["Login"];
 const token = sessionStorage.getItem("token");
+const nickname = localStorage.getItem("nickname");
 const navItems = token
   ? [
       { name: "Study Room", path: "/studyroom" },
-      { name: "Group", path: "/group/mystudy/:userId" },
+      { name: "Group", path: `/group/mystudy/${nickname}` },
       { name: "Lounge", path: "/lounge" },
       { name: "Mypage", path: "/mypage/profile/:userId" },
-      { name: "Logout", path: "" },
+      { name: "Logout", path: "/" },
     ]
-  : [{ name: "login", path: "/account/login" }];
+  : [{ name: "Login", path: "/account/login" }];
+
+const logout = () => {
+  sessionStorage.clear();
+  localStorage.clear();
+  localStorage.removeItem("totalM");
+  localStorage.removeItem("totalH");
+  localStorage.removeItem("inHour");
+  localStorage.removeItem("inMin");
+};
 
 function DrawerAppBar(props) {
   const navigate = useNavigate();
@@ -41,6 +51,10 @@ function DrawerAppBar(props) {
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const logout = () => {
+    sessionStorage.clear();
   };
 
   const drawer = (
@@ -64,7 +78,12 @@ function DrawerAppBar(props) {
           <ListItem key={item.name} disablePadding>
             <ListItemButton
               sx={{ textAlign: "center", color: "white" }}
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                if (item.name === "Logout") {
+                  logout();
+                }
+                navigate(item.path);
+              }}
             >
               <ListItemText primary={item.name} />
             </ListItemButton>
@@ -74,7 +93,8 @@ function DrawerAppBar(props) {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -119,7 +139,12 @@ function DrawerAppBar(props) {
               <Button
                 key={item.name}
                 sx={{ color: "#fff" }}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  if (item.name === "Logout") {
+                    logout();
+                  }
+                  navigate(item.path);
+                }}
               >
                 {item.name}
               </Button>
