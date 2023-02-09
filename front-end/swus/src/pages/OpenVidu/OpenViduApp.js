@@ -9,7 +9,7 @@ import UserVideoComponent from "./UserVideoComponent";
 import { Box } from "@mui/system";
 import Grid from "@mui/material/Grid";
 
-import MyTodo from "../MyPageReport/MyTodo";
+import MyTodoPublicIn from "./TodoList/MyTodoPublicIn";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
@@ -45,15 +45,17 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
-      d: new Date(),
-      open: false,
+      d: new Date(), //시계
+      open: false, //모달
+      todo: 0, //투두리스트 할 목록 개수
+      done: 0, //투두 리스트 한 목록 개수
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
-    this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    // this.getTodoCount = this.getTodoCount.bind(this);
   }
 
   componentDidMount() {
@@ -89,10 +91,20 @@ class OpenViduApp extends Component {
 
   //쉬는시간 모달 열고 닫아주는함수
   handleClickOpen = () => {
-    this.setOpen(true);
+    this.setState({
+      open: true,
+    });
   };
   handleClose = () => {
     this.setOpen(false);
+  };
+
+  ////
+  getTodoCount = (todoProps, doneProps) => {
+    this.setState({
+      todo: todoProps,
+      done: doneProps,
+    });
   };
 
   onbeforeunload(event) {
@@ -102,12 +114,6 @@ class OpenViduApp extends Component {
   handleChangeSessionId(e) {
     this.setState({
       mySessionId: e.target.value,
-    });
-  }
-
-  handleChangeUserName(e) {
-    this.setState({
-      myUserName: e.target.value,
     });
   }
 
@@ -286,11 +292,37 @@ class OpenViduApp extends Component {
     if (inH <= nowH) {
       //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
       const cal = nowH * 60 + nowM - (inH * 60 + inM);
+      //시간 저장
+      axios({
+        method: "put",
+        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+
+        headers: { Authorization: `Bearer ${Token}` },
+        data: {
+          now_total_time: totalH * 60 + totalM + cal,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+
       localStorage.setItem("totalH", totalH + parseInt(cal / 60));
       localStorage.setItem("totalM", totalM + (cal % 60));
     } else {
       //앞시간이 더 큰 숫자일 경우 ex 18시~1시
       const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
+      //시간 저장
+      axios({
+        method: "put",
+        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+
+        headers: { Authorization: `Bearer ${Token}` },
+        data: {
+          now_total_time: totalH * 60 + totalM + cal,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+
       localStorage.setItem("totalH", totalH + parseInt(cal / 60));
       localStorage.setItem("totalM", totalM + (cal % 60));
     }
@@ -517,7 +549,7 @@ class OpenViduApp extends Component {
                     padding: 5,
                   }}
                 >
-                  <MyTodo />
+                  <MyTodoPublicIn parentFunction={this.getTodoCount} />
                 </div>
                 <div>
                   <Button
@@ -563,6 +595,8 @@ class OpenViduApp extends Component {
                         >
                           <UserVideoComponent
                             streamManager={this.state.publisher}
+                            todoTodo={this.state.todo}
+                            todoDone={this.state.done}
                           />
                         </div>
                       ) : null}
@@ -572,7 +606,11 @@ class OpenViduApp extends Component {
                           className="stream-container"
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
-                          <UserVideoComponent streamManager={sub} />
+                          <UserVideoComponent
+                            streamManager={sub}
+                            todoTodo={this.state.todo}
+                            todoDone={this.state.done}
+                          />
                         </div>
                       ))}
                     </div>

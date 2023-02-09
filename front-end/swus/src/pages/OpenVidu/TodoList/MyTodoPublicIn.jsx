@@ -6,16 +6,18 @@ import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
 
-import axios from "./../../Utils/index";
+import axios from "../../../Utils/index";
 
 import { useSelector, useDispatch } from "react-redux";
-import { addTodoList } from "./../../store/TodoList";
+import { addTodoList } from "../../../store/TodoList";
 
-function MyTodoBlock() {
+function MyTodoPublicIn({ parentFunction }) {
   const dispatch = useDispatch();
   // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
+  const [todoCnt, setTodoCnt] = useState(0);
+  const [doneCnt, setDoneCnt] = useState(0);
 
   useEffect(() => {
     const config = {
@@ -41,6 +43,18 @@ function MyTodoBlock() {
         console.log(error);
       });
   }, []);
+
+  // useEffect(() => {
+  //   setTodoCnt(todoData.length);
+  //   setDoneCnt(todoData.filter((todo) => todo.todo_done === true));
+  // }, []);
+
+  const childFunction = () => {
+    parentFunction(
+      todoData.length,
+      todoData.filter((todo) => todo.todo_done === true).length
+    );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,44 +85,31 @@ function MyTodoBlock() {
     <>
       <Box
         sx={{
-          width: "100%",
+          width: "90%",
           height: 500,
-          backgroundColor: "white",
-          borderRadius: 2,
           padding: "10px",
-          boxShadow: "2px 2px 7px 1px grey",
         }}
       >
         <Grid container>
-          <Grid item xs={4}>
-            <h3 style={{ marginLeft: "40px" }}>To-Do List</h3>
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              color="black"
-              aria-label="change view"
-              sx={{ paddingTop: "20px" }}
-            >
-              <AutorenewIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ marginTop: "8%" }}>
+            <MyTodoForm
+              handleSubmit={handleSubmit}
+              value={value}
+              setValue={setValue}
+            />
             <Box
               sx={{
                 position: "relative",
                 overflow: "auto",
                 overflowX: "hidden",
-                width: "85%",
+                width: "100%",
                 marginX: "auto",
-                height: 320,
+                height: 400,
                 backgroundColor: "#F4EFE6",
+                marginTop: "2%",
               }}
             >
-              <MyTodoForm
-                handleSubmit={handleSubmit}
-                value={value}
-                setValue={setValue}
-              />
+              {childFunction()}
               <MyTodoList
                 todoData={todoData}
                 setTodoData={setTodoData}
@@ -125,4 +126,4 @@ function MyTodoBlock() {
   );
 }
 
-export default MyTodoBlock;
+export default MyTodoPublicIn;

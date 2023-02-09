@@ -14,6 +14,8 @@ export default class UserVideoComponent extends Component {
 
     this.state = {
       d: new Date(),
+      todo: this.props.todo,
+      done: this.props.done,
     };
   }
 
@@ -69,17 +71,17 @@ export default class UserVideoComponent extends Component {
       sumM = cal % 60;
     }
 
-    // let hours =(sumH+totalH);
-    // let minutes =(sumM+totalM);
-    // if(minutes>59){
-    //   hours+=1;
-    //   minutes-=60;
-    // }
+    let hours = sumH + totalH;
+    let minutes = sumM + totalM;
+    if (minutes > 59) {
+      hours += 1;
+      minutes -= 60;
+    }
 
-    const hoursTen = ("0" + (sumH + totalH)).slice(-2, -1); //시간 10의자리
-    const hoursOne = ("0" + (sumH + totalH)).slice(-1); //시간 1의자리
-    const minutesTen = ("0" + (sumM + totalM)).slice(-2, -1);
-    const minutesOne = ("0" + (sumM + totalM)).slice(-1);
+    const hoursTen = ("0" + hours).slice(-2, -1); //시간 10의자리
+    const hoursOne = ("0" + hours).slice(-1); //시간 1의자리
+    const minutesTen = ("0" + minutes).slice(-2, -1);
+    const minutesOne = ("0" + minutes).slice(-1);
 
     return (
       <>
@@ -205,7 +207,7 @@ export default class UserVideoComponent extends Component {
                       <CheckBoxOutlinedIcon />
                     </Grid>
                     <Grid item xs={7}>
-                      0/10
+                      {this.state.done}/{this.state.todo}
                     </Grid>
                   </Grid>
                 </Grid>
