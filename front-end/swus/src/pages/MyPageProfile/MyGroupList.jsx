@@ -12,10 +12,15 @@ import { v4 as uuidv4 } from "uuid";
 import { Box, Button, Grid, TablePagination } from "@mui/material";
 import { Container } from "@mui/system";
 import axios from "../../Utils/index";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import myGroupListSlice from "../../store/MyGroupListSlice";
 
 
 function MyGroupList() {
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [page, setPage] = useState(0);
   const [ingGroups, setIngGroups] = useState([]);
@@ -29,7 +34,6 @@ function MyGroupList() {
 
     axios(config)
       .then((response) => {
-
         const ingGroupList = response.data.filter(function(group) {
           return group.team_done === "N"
         });
@@ -44,11 +48,26 @@ function MyGroupList() {
       .catch((error) => {
         console.log(error)
       })
-  })
+  }, []);
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage)
-	}
+	};
+
+  
+  function goGroupDetail(teamId) {
+
+    const config = {
+      url: `/users/my-groups/${teamId}`,
+      method: "GET",
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log(response.data)
+        dispatch(myGroupListSlice.actions.getGroupDetails(response.data))
+      })
+  };
 
   function getIngGroups() {
     return ingGroups.slice(page * 8, (page + 1) * 8).map((group) => {
@@ -60,8 +79,14 @@ function MyGroupList() {
               ? <span style={{ color: "red" }}>[스터디]</span> 
               : <span style={{ color: "blue" }}>[메이트]</span>} 
           </TableCell>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_name}</TableCell>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}</TableCell>
+          <TableCell 
+            style={{ textAlign: "center", fontSize: "15px" }}
+            onClick={() => {goGroupDetail(group.team_id)}}>
+              <span style={{ cursor: "pointer" }}>{group.team_name}</span>
+          </TableCell>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
+            {group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}
+          </TableCell>
           <TableCell style={{ textAlign: "center" }}>
             <Button variant="contained" style={{ width: "130px" }}>
               스터디룸 입장
@@ -76,10 +101,16 @@ function MyGroupList() {
     return finishedGroups.slice(page * 8, (page + 1) * 8).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.num}</TableCell>
-          <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}><span style={(group.studyType === "[스터디]") ? { color: "red"} : {color: "blue"}}>{group.studyType}</span></TableCell>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.studyName}</TableCell>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.time}</TableCell>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
+          <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
+            {(group.category === "S")
+              ? <span style={{ color: "red" }}>[스터디]</span> 
+              : <span style={{ color: "blue" }}>[메이트]</span>} 
+          </TableCell>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_name}</TableCell>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
+            {group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}
+          </TableCell>
           <TableCell style={{ textAlign: "center" }}>
             <Button variant="contained" style={{ width: "130px" }}>
               리포트 보기

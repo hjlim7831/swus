@@ -52,9 +52,7 @@ function GroupPage() {
 
 		axios(config)
 			.then((response) => {
-				// const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1)
 				console.log(response.data)
-				// dispatch(groupBoardSlice.actions.saveBoardId(boardId))
 				dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
 			})
 			.then((response) => {
