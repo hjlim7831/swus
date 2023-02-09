@@ -35,7 +35,7 @@ public class TodoService {
     private final JandiTodoRepository jandiTodoRepository;
 
     @Transactional
-    public int save(TodoCreateReq req, int memberId){
+    public int save(TodoCreateReq req, int memberId) {
         TodoPrivate todo = new TodoPrivate(req, memberId);
         return todoRepository.save(todo);
     }
@@ -45,7 +45,7 @@ public class TodoService {
     }
 
     @Transactional
-    public void update(int num, TodoUpdateReq req, int memberId){
+    public void update(int num, TodoUpdateReq req, int memberId) {
         Optional<TodoPrivate> todoPrivate = todoRepository.findOne(num, memberId);
         if (todoPrivate.isPresent()){
             todoPrivate.get().update(req);
@@ -55,9 +55,9 @@ public class TodoService {
     }
 
     @Transactional
-    public void delete(int num, int memberId){
+    public void delete(int num, int memberId) {
         Optional<TodoPrivate> todoPrivate = todoRepository.findOne(num, memberId);
-        if (todoPrivate.isPresent() ){
+        if (todoPrivate.isPresent()) {
             todoRepository.delete(todoPrivate.get());
         } else{
             throw new InvalidValueException("invalid num");

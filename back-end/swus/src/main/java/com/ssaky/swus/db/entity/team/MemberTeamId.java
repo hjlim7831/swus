@@ -1,9 +1,6 @@
 package com.ssaky.swus.db.entity.team;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,7 +10,9 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Builder
+@ToString
 public class MemberTeamId implements Serializable {
 
     @EqualsAndHashCode.Include

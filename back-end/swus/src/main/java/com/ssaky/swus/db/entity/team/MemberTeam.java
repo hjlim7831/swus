@@ -3,10 +3,7 @@ package com.ssaky.swus.db.entity.team;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ssaky.swus.db.entity.member.Member;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,9 +13,9 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"member", "team"})
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class MemberTeam extends BaseDateEntity {
+public class MemberTeam extends BaseTimeEntity {
 
     @EqualsAndHashCode.Include
     @EmbeddedId
@@ -32,8 +29,24 @@ public class MemberTeam extends BaseDateEntity {
     @MapsId("teamId") // 이렇게만 지정해 주면 PK가 됨
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "team_id")
-    public Team group;
+    public Team team;
 
     private String isLeader;
+
+    @Builder
+    public MemberTeam(int memberId, int teamId) {
+        MemberTeamId id = MemberTeamId.builder()
+                .memberId(memberId).teamId(teamId).build();
+        this.id = id;
+        Member member = Member.builder().id(memberId).build();
+        this.member = member;
+        Team team = Team.builder().teamId(teamId).build();
+        this.team = team;
+        this.isLeader = "N";
+    }
+
+    public void setLeader() {
+        this.isLeader = "Y";
+    }
 
 }

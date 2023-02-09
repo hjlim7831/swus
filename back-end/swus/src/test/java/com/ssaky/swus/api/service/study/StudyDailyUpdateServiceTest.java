@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-//@Transactional
+@Transactional
 public class StudyDailyUpdateServiceTest {
 
     @Autowired MemberService memberService;
