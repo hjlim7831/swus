@@ -13,41 +13,6 @@ import { Box, Button, Grid, TablePagination } from "@mui/material";
 import { Container } from "@mui/system";
 import axios from "../../Utils/index";
 
-// function createData(num, studyType, studyName, time) {
-//   return { num, studyType, studyName, time };
-// }
-
-// const ingGroups = [
-//   createData(13, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(12, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(11, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(10, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(9, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(8, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(7, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(6, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(5, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(4, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(3, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(2, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(1, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-// ];
-
-// const finishedGroups = [
-//   createData(5, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(4, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(3, "[스터디]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(2, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-//   createData(1, "[메이트]", "자바의 정석 완독 스터디", "월수금 12:00~15:00"),
-// ]
-
-// function a11yProps(index) {
-//   return {
-//     id: `simple-tab-${index}`,
-//     "aria-controls": `simple-tabpanel-${index}`,
-//   };
-// }
-
 
 function MyGroupList() {
 
@@ -58,14 +23,26 @@ function MyGroupList() {
 
   useEffect(() => {
     const config = {
-      url: "users/my-teams",
+      url: "/users/my-groups",
       method: "GET",
     };
 
     axios(config)
       .then((response) => {
-        console.log(response.data)
-        const ingGroupList = response.data.map()
+
+        const ingGroupList = response.data.filter(function(group) {
+          return group.team_done === "N"
+        });
+        
+        const finishedGroupList = response.data.filter(function(group) {
+          return group.team_done === "Y"
+        });
+
+        setIngGroups(ingGroupList)
+        setFinishedGroups(finishedGroupList)
+      })
+      .catch((error) => {
+        console.log(error)
       })
   })
 
@@ -77,10 +54,14 @@ function MyGroupList() {
     return ingGroups.slice(page * 8, (page + 1) * 8).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.num}</TableCell>
-          <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}><span style={(group.studyType === "[스터디]") ? { color: "red"} : {color: "blue"}}>{group.studyType}</span></TableCell>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.studyName}</TableCell>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.time}</TableCell>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
+          <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
+            {(group.category === "S")
+              ? <span style={{ color: "red" }}>[스터디]</span> 
+              : <span style={{ color: "blue" }}>[메이트]</span>} 
+          </TableCell>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_name}</TableCell>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}</TableCell>
           <TableCell style={{ textAlign: "center" }}>
             <Button variant="contained" style={{ width: "130px" }}>
               스터디룸 입장

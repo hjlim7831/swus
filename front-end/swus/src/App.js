@@ -49,7 +49,7 @@ function App() {
 
           {/* 그룹 페이지(게시판) 관련 주소 */}
           <Route exact path="/group" element={<GroupMain />}>
-            <Route path="mystudy/:userId" element={<MyGroupList/>}/>
+            <Route path="mystudy" element={<MyGroupList/>}/>
             <Route path="mystudy/group/:groupId" element={<GroupDetail/>}/>
             <Route path="mystudy/group/:groupId/update" element={<UpdateGroupDetail/>}/>
             <Route path="board" element={<GroupPage/>}/>

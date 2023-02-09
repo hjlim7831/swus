@@ -6,6 +6,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import deleteArticle from '../../components/modals/DeleteArticle';
 import axios from "../../Utils/index";
+import { useDispatch, useSelector } from 'react-redux';
+import groupBoardSlice from '../../store/GroupBoardSlice';
 
 
 
@@ -13,57 +15,19 @@ import axios from "../../Utils/index";
 function ArticleDetail() {
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
   const [article, setArticle] = useState([]);
-
-	const [day, setDay] = useState("");
-	const [studyPlan, setStudyPlan] = useState("");
 	const filterCategory = /S/;
 
+	const articleDetail = useSelector(state => {
+		return state.groupBoard.info
+	})
+
+	const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1)
 	
 	useEffect(() => {
-		const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1);
-		const config = {
-			url: `/boards/${boardId}`,
-			method: "GET",
-		};
-		
-		axios(config)
-		.then((response) => {
-			setArticle(response.data)
-
-			let date = "";
-			for (let i = 0; i < article.day.length; i++) {
-				if (article.day[i] === "1")	{
-					if (i === 0)	{
-						date = date + "월"
-					}	else if (i === 1)	{
-						date = date + "화"
-					}	else if (i === 2)	{
-						date = date + "수"
-					}	else if (i === 3)	{
-						date = date + "목"
-					}	else if (i === 4) {
-						date = date + "금"
-					}	else if (i === 5) {
-						date = date + "토"
-					}  else if (i === 6) {
-						date = date + "일"
-					}
-				}
-			}
-			setDay(date)
-
-			console.log("역;!")
-			console.log(article)
-			if (article.begin_at === "" || article.end_at === "")	{
-				setStudyPlan("미정")
-			}	else {
-				setStudyPlan(article.begin_at + " ~ " + article.end_at)
-			}
-
-			setArticle({...article, ["start_time"]: response.data.start_time.slice(0, 5)})
-			setArticle({...article, ["finish_time"]: response.data.finish_time.slice(0, 5)})
-		})
+		setArticle(articleDetail)
+		dispatch(groupBoardSlice.actions.saveBoardId(boardId))
 	}, [])
 
 	function getButtons () {
@@ -73,7 +37,7 @@ function ArticleDetail() {
 					<EditOutlinedIcon
 						variant="contained"
 						sx={{ fontSize: 30, color: "blue", "&:hover": { cursor: "pointer"} }}
-						onClick={() => {navigate("/group/board/:boardId/update")}} />
+						onClick={() => {navigate(`update`)}} />
 				</p>
 				<p style={{ paddingLeft: 10, paddingTop: 5}}>
 					<DeleteOutlinedIcon
@@ -114,14 +78,17 @@ function ArticleDetail() {
 					</Grid>
 				</Grid>
 				<Grid container>
-					<Grid item xs={1} sx={{ textAlign: "center" }}>
-						<p>{article.nickname}</p>
+					<Grid item xs={2}>
+						<p style={{ justifyContent: "center", alignItems: "center", marginLeft: 30 }}>
+							<span style={{ fontSize: "20px", fontWeight: "bold" }}>작성자: </span>
+							<span style={{ fontSize: "20px", fontWeight: "bold" }}>{article.nickname}</span>
+						</p>
 					</Grid>
-					<Grid item xs={8} sx={{ px: 3 }}>
-						<p>{article.writedAt}</p>
+					<Grid item xs={7} sx={{ px: 3 }}>
+						<p>{article.writed_at}</p>
 					</Grid>
 					<Grid item xs={3} sx={{ textAlign: "right", display: "flex", justifyContent: "right", pr: 3 }}>
-						<p>조회수 : {article.views}</p>
+						<p style={{ fontSize: "18px" }}>조회수 : {article.views}</p>
 					</Grid>
 				</Grid>
 				<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 5 }}/>
@@ -130,14 +97,17 @@ function ArticleDetail() {
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 일정</p>
 					</Grid>
 					<Grid item xs={3}>
-						<p>{studyPlan}</p>
+						{(article.begin_at) ? <p>{article.begin_at} ~ {article.end_at}</p> : <p>미정</p>}
 					</Grid>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2 }}/>
 					<Grid item xs={2}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 시간</p>
 					</Grid>
 					<Grid item xs={2}>
-						<p style={{ textAlign: "center" }}>{day} {article.start_time} - {article.finish_time}</p>
+						<p style={{ justifyContent: "center", alignItems: "center" }}>
+							<span style={{ textAlign: "center", marginInline: 5 }}>{article.day} </span>
+							<span style={{ textAlign: "center", marginInline: 5 }}>{article.start_time} ~ {article.finish_time}</span>
+						</p>
 					</Grid>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2 }}/>
 					<Grid item xs={1}>

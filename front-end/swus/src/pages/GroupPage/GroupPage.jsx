@@ -11,9 +11,11 @@ import { Container,
 					Button,
 					Grid,
 				} from '@mui/material';
+import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from "uuid";
+import groupBoardSlice from '../../store/GroupBoardSlice';
 
 
 const filterCategory = /S/;
@@ -21,6 +23,7 @@ const filterCategory = /S/;
 function GroupPage() {
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [page, setPage] = useState(0)
 	const [articles, setArticles] = useState([]);
 
@@ -34,10 +37,29 @@ function GroupPage() {
 			.then((response) => {
 				setArticles(response.data)
 			})
-	}, [])
+	}, []);
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
+	};
+
+	function goArticleDetail(boardId) {
+
+		const config = {
+			url: `/boards/${boardId}`,
+			method: "GET",
+		};
+
+		axios(config)
+			.then((response) => {
+				// const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1)
+				console.log(response.data)
+				// dispatch(groupBoardSlice.actions.saveBoardId(boardId))
+				dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
+			})
+			.then((response) => {
+				navigate(`${boardId}`)
+			})
 	}
 
 	return (
@@ -74,7 +96,6 @@ function GroupPage() {
 						</TableHead>
 						<TableBody style={{ textAlign: "center" }}>
 							{articles
-							// .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
 							.slice(page * 10, (page + 1) * 10)
 							.map((article) => (
 								<TableRow
@@ -92,7 +113,7 @@ function GroupPage() {
 									</TableCell>
 									<TableCell 
 										style={{ textAlign: "center" }}
-										onClick={() => {navigate(`/group/board/${article.board_id}`)}}>
+										onClick={() => {goArticleDetail(article.board_id)}}>
 											<span style={{ cursor: "pointer" }}>{article.title}</span>
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>

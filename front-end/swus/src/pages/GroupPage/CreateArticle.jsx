@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, TextField, Divider, Grid, OutlinedInput } from '@mui/material';
 import { MenuItem, Select, Button, InputLabel, FormControl } from '@mui/material';
 import { Container } from '@mui/system';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from 'uuid';
+import groupBoardSlice from '../../store/GroupBoardSlice';
 
 
 
 function CreateArticleForm() {
 
 	const navigate = useNavigate();
-
+	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		category: "",
 		title: "",
@@ -118,15 +119,30 @@ function CreateArticleForm() {
 			url: `/boards`,
 			method: "POST",
 			data: payload,
-		}
+		};
 
+		
 		axios(config)
-			.then((response) => {
-				navigate(`/group/board/${response.data.board_id}`);
-			})
-			.catch((error) => {
-				console.log(error);
-			})
+		.then((response) => {
+
+			const boardId = response.data.board_id
+			const config2 = {
+				url: `/boards/${boardId}`,
+				method: "GET",
+			};
+
+			axios(config2)
+				.then((response) => {
+					dispatch(groupBoardSlice.actions.saveBoardId(boardId))
+					dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
+				})
+				.then((response) => {
+					navigate(`/group/board/${boardId}`);
+				})
+		})
+		.catch((error) => {
+			console.log(error);
+		})
 	}
 
 	const dayItems = [
