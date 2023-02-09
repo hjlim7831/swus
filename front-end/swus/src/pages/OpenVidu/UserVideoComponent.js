@@ -33,7 +33,8 @@ export default class UserVideoComponent extends Component {
 
   getNicknameTag() {
     // Gets the nickName of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data).clientData;
+    return JSON.parse(this.props.streamManager.stream.connection.data)
+      .clientData;
   }
 
   render() {
@@ -68,6 +69,13 @@ export default class UserVideoComponent extends Component {
       sumM = cal % 60;
     }
 
+    // let hours =(sumH+totalH);
+    // let minutes =(sumM+totalM);
+    // if(minutes>59){
+    //   hours+=1;
+    //   minutes-=60;
+    // }
+
     const hoursTen = ("0" + (sumH + totalH)).slice(-2, -1); //시간 10의자리
     const hoursOne = ("0" + (sumH + totalH)).slice(-1); //시간 1의자리
     const minutesTen = ("0" + (sumM + totalM)).slice(-2, -1);
@@ -78,7 +86,9 @@ export default class UserVideoComponent extends Component {
         {this.props.streamManager !== undefined ? (
           <div style={{ display: "flex" }}>
             <div className="streamcomponent">
-              <OpenViduVideoComponent streamManager={this.props.streamManager} />
+              <OpenViduVideoComponent
+                streamManager={this.props.streamManager}
+              />
               <Grid
                 container
                 sx={{
@@ -143,7 +153,10 @@ export default class UserVideoComponent extends Component {
                         mr: "0.3%",
                       }}
                     >
-                      <Typography variant="h6" sx={{ textAlign: "center", color: "black" }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ textAlign: "center", color: "black" }}
+                      >
                         :
                       </Typography>
                     </Box>
