@@ -25,17 +25,20 @@ public class ReportController {
 
     private final ReportService reportService;
 
+    //해당 그룹의 모든 회차의 레포트 불러오기
     @GetMapping("/{teamId}/member-todos")
     public ResponseEntity<?> getReports(Authentication authentication, @PathVariable int teamId) {
         Map<String, Object> resultMap = new HashMap<>();
+
         //team에 속한 memberList 불러오기
         //memberList에는 memberId, nickname이 저장되어있어야함
 
+        //임의로 더미데이터 객체 생성
         List<MemberNicknameReq> members = new ArrayList<>();
         for (int i = 1; i <= 3; i++) {
             MemberNicknameReq member = new MemberNicknameReq(i, "멤버" + i);
             members.add(member);
-            log.debug("생성된 멤버 확인 : "+member.toString());
+//            log.debug("생성된 멤버 확인 : "+member.toString());
         }
 
         List<RoundGetResp> rounds = reportService.getReports(teamId, members);

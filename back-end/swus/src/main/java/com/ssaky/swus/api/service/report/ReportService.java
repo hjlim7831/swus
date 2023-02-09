@@ -25,17 +25,15 @@ public class ReportService {
 
     //그룹의 모든회차 레포트 불러오기
     public List<RoundGetResp> getReports(int teamId, List<MemberNicknameReq> reqs) {
-        //1. 해당 그룹의 모든 유저id 불러오기 << 이건 파라미터로 해결
+        //파라미터로 해당 그룹의 모든 유저id 받기
 
-        //그룹의 모든 회차 불러오기
-            //회차는 오름차순으로 불러오기
+        //그룹의 모든 회차를 오름차순으로 불러오기
         List<RoundGetResp> rounds = todoGrRepo.findTodoGroups(teamId);
         for (RoundGetResp r : rounds) {
             log.debug(r.toString());
         }
 
-        /* 회차의 studyAt이 null이 아닌 값만 member와 투두리스트를 불러와야함 */
-        //null이 아닌 모든 그룹원의 todo리스트 불러오기
+
             //그룹원으로 반복문 돌려야함
             //그룹원으로 모든 투두리스트 불러왔으면 해당 회차에 add해주기
         //멤버의 해당 회차에 투두리스트가 없을수도 있음!
@@ -48,25 +46,22 @@ public class ReportService {
                 break;
             }
         }
-        log.debug("진행한 회차수+1는 ["+notNullRound+"] 입니다.");
+        log.debug("진행한 회차수는 ["+(notNullRound-1)+"회] 입니다.");
 
         //진행한 회차수까지만 멤버 투두리스트 읽어오기
-        for (int i = 0, endi = notNullRound; i < endi; i++) {
-            log.debug("이거 몇번 나옴? 2번나와야되는데");
+        for (int i = 0, endi = notNullRound; i < endi; i++) { //회차수 만큼 반복
             rounds.get(i).setMembers(new ArrayList<>());
-            for (int j = 0, endj = reqs.size(); j < endj; j++) {
+            for (int j = 0, endj = reqs.size(); j < endj; j++) { //멤버수 만큼 반복
+                //해당 멤버의 투두리스트 배열 저장
                 List<TodoGroupMemberGetResp> todoGMList
                         =  todoGrMemRepo.findTodoGroupMemberList(reqs.get(j).getMemberId(),teamId,i+1);
+                //rounds에 저장할 형태로 객체 생성
                 MemberGetResp member = new MemberGetResp(reqs.get(j).getNickname(), todoGMList);
-                log.debug("멤버 투두 나와주세요~ "+member.toString());
-
+                log.debug((i+1)+"   회차에 멤버 투두리스트 : "+member.toString());
+                //rounds에 저장
                 rounds.get(i).getMembers().add(member);
             }
         }
-
-
-
-
 
         return rounds;
     }
