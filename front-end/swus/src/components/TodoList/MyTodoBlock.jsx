@@ -101,7 +101,7 @@ function MyTodoBlock() {
                 width: "85%",
                 marginX: "auto",
                 height: 320,
-                backgroundColor: "skyblue",
+                backgroundColor: "#F4EFE6",
               }}
             >
               <MyTodoForm
@@ -109,7 +109,12 @@ function MyTodoBlock() {
                 value={value}
                 setValue={setValue}
               />
-              <MyTodoList todoData={todoData} setTodoData={setTodoData} value={value} setValue={setValue}/>
+              <MyTodoList
+                todoData={todoData}
+                setTodoData={setTodoData}
+                value={value}
+                setValue={setValue}
+              />
               {/*todoData라는 state를 내려줌 List.js에 */}
               {/*자녀컴포넌트에서는 props 파라미터로 받음 */}
             </Box>

@@ -23,12 +23,13 @@ import logo from "./../../logo.png";
 const drawerWidth = 240;
 // const mainItems = ["Login"];
 const token = sessionStorage.getItem("token");
+const nickname = localStorage.getItem("nickname");
 const navItems = token
   ? [
       { name: "Study Room", path: "/studyroom" },
-      { name: "Group", path: "/group/mystudy/:userId" },
+      { name: "Group", path: `/group/mystudy/${nickname}` },
       { name: "Lounge", path: "/lounge" },
-      { name: "Mypage", path: "/mypage/profile/:userId" },
+      { name: "Mypage", path: `/mypage/profile/${nickname}` },
       { name: "Logout", path: "/" },
     ]
   : [{ name: "Login", path: "/account/login" }];

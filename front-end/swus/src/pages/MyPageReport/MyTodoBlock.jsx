@@ -8,11 +8,11 @@ import { Grid } from "@mui/material";
 
 import axios from "./../../Utils/index";
 
-import { useSelector, useDispatch } from "react-redux";
-import { addTodoList } from "./../../store/TodoList";
+// import { useSelector, useDispatch } from "react-redux";
+// import { addTodoList } from "./../../store/TodoList";
 
 function MyTodoBlock() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
@@ -100,8 +100,8 @@ function MyTodoBlock() {
                 overflowX: "hidden",
                 width: "85%",
                 marginX: "auto",
-                height: 320,
-                backgroundColor: "skyblue",
+                height: 360,
+                backgroundColor: "#F4EFE6",
               }}
             >
               <MyTodoForm
@@ -109,7 +109,12 @@ function MyTodoBlock() {
                 value={value}
                 setValue={setValue}
               />
-              <MyTodoList todoData={todoData} setTodoData={setTodoData} value={value} setValue={setValue}/>
+              <MyTodoList
+                todoData={todoData}
+                setTodoData={setTodoData}
+                value={value}
+                setValue={setValue}
+              />
               {/*todoData라는 state를 내려줌 List.js에 */}
               {/*자녀컴포넌트에서는 props 파라미터로 받음 */}
             </Box>
