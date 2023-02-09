@@ -62,7 +62,7 @@ public class Team extends BaseDateEntity {
     }
 
     @Builder
-    public Team(int teamId, String teamName, String teamInfo, String category, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalTime finishTime, int number, String team_done) {
+    public Team(int teamId, String teamName, String teamInfo, String category, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalTime finishTime, int number, String teamDone) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.teamInfo = teamInfo;

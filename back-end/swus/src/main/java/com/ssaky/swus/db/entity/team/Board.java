@@ -46,7 +46,6 @@ public class Board extends BaseDateEntity {
         Team team = Team.builder().teamId(teamId).build();
         this.team = team;
         this.member = member;
-        Team team = Team.builder().teamId(teamId).build();
         this.team = team;
         this.title = title;
         this.content = content;

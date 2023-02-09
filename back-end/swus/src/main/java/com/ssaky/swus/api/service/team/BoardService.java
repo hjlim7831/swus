@@ -40,6 +40,7 @@ public class BoardService {
     public int writeBoard(int memberId, WriteBoardReq req) {
         log.info("[Service writeBoard] : memberId = {}, WriteBoardReq = {}", memberId, req);
         Team team = new Team(req);
+        team.addNumber();           // 인원수 증가
         int teamId = teamRepository.save(team).getTeamId();
 
         Board board = Board.builder()
