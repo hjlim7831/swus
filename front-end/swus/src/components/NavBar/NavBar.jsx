@@ -29,7 +29,7 @@ const navItems = token
       { name: "Study Room", path: "/studyroom" },
       { name: "Group", path: `/group/mystudy/${nickname}` },
       { name: "Lounge", path: "/lounge" },
-      { name: "Mypage", path: "/mypage/profile/:userId" },
+      { name: "Mypage", path: `/mypage/profile/${nickname}` },
       { name: "Logout", path: "/" },
     ]
   : [{ name: "Login", path: "/account/login" }];

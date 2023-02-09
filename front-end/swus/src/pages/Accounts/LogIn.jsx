@@ -13,12 +13,29 @@ import axios from "./../../Utils/index";
 import { useNavigate } from "react-router-dom";
 
 export default function SignInSide() {
-  const navigate = useNavigate();
+
+  // 이메일 기억하는 변수
+  const remember = localStorage.getItem("remember")
+  let check = remember && remember === "true" ? true : false;
+  const [rememberCheck, setRememberCheck] = useState(check);
+
+  // remember me 체크하면, 값 저장하는 함수.
+  const saveRemember = () => {
+    check = !check
+    setRememberCheck(check);
+    check ? localStorage.setItem("remember", "true") : localStorage.removeItem("remember");
+  };
+  
+  
+  // const navigate = useNavigate();
+
+  // 이메일, 비밀번호 저장 변수
   const [inputData, setInputData] = useState({
     email: "",
     password: "",
   });
 
+  // 이메일, 비밀번호 반응형 함수 (사용자 입력하는 순간순간 체크?)
   const inputSubmit = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -26,6 +43,7 @@ export default function SignInSide() {
     setInputData({ ...inputData, [name]: value });
   };
 
+  // 이메일, 비밀번호 제출 함수
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -75,7 +93,7 @@ export default function SignInSide() {
             localStorage.setItem("totalM", 0);
           })
           .then(() => {
-            navigate("/mypage/profile");
+            window.location = "http://localhost:3000/studyroom/"
           })
           .catch((error) => {
             alert("존재하는 아이디가 아닙니다.");
@@ -116,7 +134,7 @@ export default function SignInSide() {
       </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
         아이디 (이메일)
-        <TextField
+        { (rememberCheck) ? <TextField
           margin="normal"
           required
           fullWidth
@@ -126,7 +144,18 @@ export default function SignInSide() {
           autoComplete="email"
           autoFocus
           onChange={inputSubmit}
-        />
+          defaultValue = {localStorage.getItem('id')}
+        /> : <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          onChange={inputSubmit}
+        /> }
         비밀번호
         <TextField
           margin="normal"
@@ -140,8 +169,10 @@ export default function SignInSide() {
           onChange={inputSubmit}
         />
         <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
+          control={<Checkbox value="remember" color="primary"/>}
           label="Remember me"
+          checked={rememberCheck}
+          onClick={ saveRemember }
         />
         <Button
           type="submit"
