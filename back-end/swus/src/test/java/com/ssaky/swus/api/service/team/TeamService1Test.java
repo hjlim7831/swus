@@ -8,9 +8,11 @@ import com.ssaky.swus.api.response.group.MyTeamResp;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.common.error.exception.BusinessException;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
+import com.ssaky.swus.db.entity.team.Board;
 import com.ssaky.swus.db.entity.team.MemberTeam;
 import com.ssaky.swus.db.entity.team.Team;
 import com.ssaky.swus.db.repository.member.MemberRepository;
+import com.ssaky.swus.db.repository.team.BoardRepository1;
 import com.ssaky.swus.db.repository.team.MemberTeamRepository;
 import com.ssaky.swus.db.repository.team.TeamRepository1;
 import org.junit.jupiter.api.AfterEach;
@@ -43,6 +45,7 @@ class TeamService1Test {
     @Autowired TeamService1 teamService;
     @Autowired TeamRepository1 teamRepository;
     @Autowired MemberTeamRepository memberTeamRepository;
+    @Autowired BoardRepository1 boardRepository;
 
     static int leaderId;
     static int memberId2;
@@ -102,7 +105,16 @@ class TeamService1Test {
         teamRepository.save(team);
         teamId = team.getTeamId();
 
-        // [2] 팀, 사용자 연관 테이블에 추가
+        // [2] Board에 글 등록
+        Board board = Board.builder()
+                .title("JPA 뿌실분들 구합니다")
+                .memberId(leaderId)
+                .teamId(teamId)
+                .number(6)
+                .build();
+        boardRepository.save(board);
+
+        // [3] 팀, 사용자 연관 테이블에 추가
         MemberTeam memberTeam = MemberTeam.builder()
                 .memberId(leaderId)
                 .teamId(teamId)
@@ -182,11 +194,8 @@ class TeamService1Test {
         assertEquals("JPA 스터디", teamService.getTeamName(teamId).getTeamName());
     }
 
-    // TODO
     @Test
     public void 팀_상세_정보조회() {
-        // 보드 테이블 생성해서 확인해보기
-        
         MyTeamDetailResp teamDetailInfo = teamService.getTeamDetailInfo(teamId, memberId2);
         System.out.println(teamDetailInfo);
 
