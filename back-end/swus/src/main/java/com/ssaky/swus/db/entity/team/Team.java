@@ -1,5 +1,7 @@
 package com.ssaky.swus.db.entity.team;
 
+import com.ssaky.swus.api.request.team.UpdateBoardReq;
+import com.ssaky.swus.api.request.team.WriteBoardReq;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ public class Team extends BaseDateEntity {
     @Lob
     private String teamInfo;       // 그룹설명
 
+    @NotBlank(message = "카테고리를 입력해주세요")
     private String category;        // 카테고리 "S"/"M"
 
     private LocalDate beginAt;      // 시작날짜
@@ -43,13 +46,18 @@ public class Team extends BaseDateEntity {
     private String team_done;      // 그룹 스터디완료여부
 
     @Builder
-    public Team(int teamId, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalTime finishTime) {
+    public Team(int teamId) {
         this.teamId = teamId;
-        this.beginAt = beginAt;
-        this.endAt = endAt;
-        this.day = day;
-        this.startTime = startTime;
-        this.finishTime = finishTime;
+    }
+
+    @Builder
+    public Team(WriteBoardReq req) {
+        this.category = req.getCategory();
+        this.day = req.getDay();
+        this.beginAt = req.getBeginAt();
+        this.endAt = req.getEndAt();
+        this.startTime = req.getStartTime();
+        this.finishTime = req.getFinishTime();
     }
 
     @Builder
@@ -65,6 +73,15 @@ public class Team extends BaseDateEntity {
         this.finishTime = finishTime;
         this.number = number;
         this.team_done = team_done;
+    }
+
+    public void update(UpdateBoardReq updateBoardReq) {
+        this.category = updateBoardReq.getCategory();
+        this.day = updateBoardReq.getDay();
+        this.beginAt = updateBoardReq.getBeginAt();
+        this.endAt = updateBoardReq.getEndAt();
+        this.startTime = updateBoardReq.getStartTime();
+        this.finishTime = updateBoardReq.getFinishTime();
     }
 
     //    // 일대일 양방향 관계 매핑, 읽기 전용 필드
