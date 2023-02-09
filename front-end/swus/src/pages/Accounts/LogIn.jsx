@@ -57,7 +57,11 @@ export default function SignInSide() {
         axios(config)
           // .post("http://localhost:8081/auth/login", payload)
           .then((response) => {
-            console.log(response.data.token);
+            // console.log(response.data.token);
+
+            sessionStorage.setItem("token", response.data.access_token);
+            // token은 sessionStorage에 저장
+            // sessionStorage는 브라우저를 닫으면 clear됨.
 
             // 로컬스토리지에 저장    localStorage.setItem
             // 로컬스토리지 출력     localStorage.getItem
@@ -66,15 +70,12 @@ export default function SignInSide() {
             //rememberme를 위해 이메일은 => localStorage에 저장
             localStorage.setItem("nickname", response.data.nickname);
 
-            sessionStorage.setItem("token", response.data.access_token);
-            // token은 sessionStorage에 저장
-            // sessionStorage는 브라우저를 닫으면 clear됨.
-            
             //열람실에서 공부시간 띄워주기 위해 저장하는 누적공부시간
             localStorage.setItem("totalH", 0);
             localStorage.setItem("totalM", 0);
-
-            navigate("/studyroom/");
+          })
+          .then(() => {
+            navigate("/mypage/profile");
           })
           .catch((error) => {
             alert("존재하는 아이디가 아닙니다.");

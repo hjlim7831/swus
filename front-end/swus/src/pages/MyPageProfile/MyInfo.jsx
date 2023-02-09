@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -8,10 +8,25 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 
+import axios from "../../Utils/index";
+
 function MyInfo() {
-  const [name, setName] = useState("김싸피");
-  const [email, setEmail] = useState("ksf@gmail.com");
-  const [pw, setPw] = useState("123456");
+  const [nickname, setNickName] = useState(localStorage.getItem("nickname"));
+  const [email, setEmail] = useState(localStorage.getItem("id"));
+  const [pw, setPw] = useState("");
+
+  useEffect(() => {
+    const config = {
+      method: "get",
+      url: "/users/my-info",
+    };
+
+    axios(config).then((response) => {
+      setEmail(response.data.email);
+      setNickName(response.data.nickname);
+      console.log(response.data);
+    });
+  });
 
   //각각 개인정보 수정 모달/탈퇴 확인 모달 열고 닫는 상태 useState
   const [infoUpdateMOpen, setInfoUpdateMOpen] = useState(false);
@@ -69,7 +84,7 @@ function MyInfo() {
               <Typography variant="body1">닉네임</Typography>
             </Grid>
             <Grid item xs={8}>
-              <Typography variant="body1">{name}</Typography>
+              <Typography variant="body1">{nickname}</Typography>
             </Grid>
           </Grid>
           <Grid container>
@@ -101,7 +116,7 @@ function MyInfo() {
             margin="dense"
             id="outlined-helperText"
             label="닉네임"
-            defaultValue={name}
+            defaultValue={nickname}
           />
           <TextField
             autoFocus
@@ -120,8 +135,16 @@ function MyInfo() {
             label="현재 비밀번호"
             defaultValue=""
           />
-          <TextField id="outlined-helperText" label="Helper text" defaultValue="Default Value" />
-          <TextField id="outlined-helperText" label="비밀번호 확인" defaultValue="" />
+          {/* <TextField
+            id="outlined-helperText"
+            label="Helper text"
+            defaultValue="Default Value"
+          /> */}
+          <TextField
+            id="outlined-helperText"
+            label="비밀번호 확인"
+            defaultValue=""
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={iumClose}>Save</Button>
@@ -135,7 +158,9 @@ function MyInfo() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"정말 탈퇴하시겠습니까?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {"정말 탈퇴하시겠습니까?"}
+        </DialogTitle>
         <DialogActions>
           <Button onClick={qmClose}>Disagree</Button>
           <Button onClick={qmClose} autoFocus>

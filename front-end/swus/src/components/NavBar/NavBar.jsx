@@ -53,10 +53,6 @@ function DrawerAppBar(props) {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const logout = () => {
-    sessionStorage.clear();
-  };
-
   const drawer = (
     // 햄거버 -> side 바
     <Box
