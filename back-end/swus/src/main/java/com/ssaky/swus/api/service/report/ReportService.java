@@ -34,8 +34,8 @@ public class ReportService {
         }
 
 
-            //그룹원으로 반복문 돌려야함
-            //그룹원으로 모든 투두리스트 불러왔으면 해당 회차에 add해주기
+        //그룹원으로 반복문 돌려야함
+        //그룹원으로 모든 투두리스트 불러왔으면 해당 회차에 add해주기
         //멤버의 해당 회차에 투두리스트가 없을수도 있음!
 
         //진행한 회차 수 구하기
@@ -64,6 +64,27 @@ public class ReportService {
         }
 
         return rounds;
+    }
+
+    //진행해야할 회차 불러오기
+    public RoundGetResp getRound(int teamId) {
+        //그룹의 모든 회차를 오름차순으로 불러오기
+        List<RoundGetResp> rounds = todoGrRepo.findTodoGroups(teamId);
+
+        //진행한 회차 수 구하기
+        int notNullRound = 0; //회차수 저장할 변수
+        for(int i=0, endi=rounds.size(); i<endi; i++){
+            if(rounds.get(i).getStudyAt()==null) { //해당 회차에 진행 날짜가 null이라면
+                notNullRound = i; //해당회차-1개만큼 진행한 것
+                break;
+            }
+        }
+
+        if(rounds.size()==notNullRound){
+            return null;
+        } else {
+            return rounds.get(notNullRound);
+        }
     }
 
     public void setDone(int round, int teamId) {
