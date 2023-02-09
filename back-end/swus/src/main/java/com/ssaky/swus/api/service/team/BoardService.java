@@ -43,7 +43,10 @@ public class BoardService {
     public int writeBoard(int memberId, WriteBoardReq req) {
         log.info("[Service writeBoard] : memberId = {}, WriteBoardReq = {}", memberId, req);
         Team team = new Team(req);
+        log.info("team.category = {}, team.day = {}, team.finish_time = {}", team.getCategory(), team.getDay(), team.getFinishTime());
         team.addNumber();           // 인원수 증가
+
+        int teamId = teamRepository.save(team).getTeamId();
 
         // MemberTeam 연관 테이블에 팀장 추가
         MemberTeam memberTeam = MemberTeam.builder()
@@ -52,8 +55,6 @@ public class BoardService {
                 .build();
         memberTeam.setLeader();
         memberTeamRepository.save(memberTeam);
-
-        int teamId = teamRepository.save(team).getTeamId();
 
         Board board = Board.builder()
                 .memberId(memberId)

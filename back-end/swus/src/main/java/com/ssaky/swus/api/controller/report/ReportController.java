@@ -45,4 +45,15 @@ public class ReportController {
         resultMap.put("rounds", rounds);
         return ResponseEntity.ok(resultMap);
     }
+
+    //해당 회차 완료처리하여 레포트에 날짜 반영하고 회차에 투두리스트 출력
+    @GetMapping("/{teamId}/rounds/{round}")
+    public ResponseEntity<?> setDoneRound(Authentication authentication,
+                                          @PathVariable int teamId, @PathVariable int round) {
+        reportService.setDone(teamId, round);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("rounds", "success_set_done_round");
+
+        return ResponseEntity.ok(resultMap);
+    }
 }
