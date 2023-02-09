@@ -35,13 +35,6 @@ function NSRoomCard(props) {
 
   const navigate = useNavigate();
   const handleToEnter = () => {
-    // axios
-    //   .post(`http://i8a302.p.ssafy.io:8081/studyrooms/${sessionName}`, {})
-    //   .then((response) => {
-    //     console.log(response);
-    //     console.log("enter room");
-    //   });
-
     //입장시 api
     console.log("axios post NSRoomCard");
 

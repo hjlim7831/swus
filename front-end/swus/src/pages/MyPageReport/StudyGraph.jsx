@@ -22,10 +22,10 @@ function StudyGraph() {
     });
   }, []);
 
-  const monday = list.monday;
-  console.log(monday);
-  const today = new Date(list.monday);
-  console.log(today);
+  // const monday = list.monday;
+  // console.log(monday);
+  // const today = new Date(list.monday);
+  // console.log(today);
 
   const data = [
     {

@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import OpenViduApp from "../OpenVidu/OpenViduApp";
 import MyTodo from "../MyPageReport/MyTodo";
-import MyTime from "../MyPageReport/MyTime";
+import MyTimeBlock from "../MyPageReport/MyTimeBlock";
 import NSRoomCard from "./RoomScroll/NSRoomCard";
 import FTRoomCard from "./RoomScroll/FTRoomCard";
 import { useNavigate } from "react-router-dom";
@@ -178,13 +178,20 @@ function StudyRoomMain() {
           {/* 그리드 컴포넌트 사이 넓이 */}
           <Grid item xs={3} style={{}}>
             {/* todo& 목표 공부시간 묶는 div */}
-            <Grid item xs={8} sx={{ marginTop: 3, marginX: "auto", paddingLeft: "20px" }}>
-              <Typography variant="h5" sx={{ fontSize: 20, color: "white", marginTop: 2 }}>
+            <Grid
+              item
+              xs={12}
+              sx={{ marginTop: 3, marginX: "auto", paddingLeft: "30px" }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ fontSize: 20, color: "white", marginTop: 2 }}
+              >
                 Todo List
               </Typography>
               <Grid
                 item
-                xs={11}
+                xs={10}
                 sx={{
                   backgroundColor: "#F4EFE6",
                   borderRadius: 2,
@@ -194,7 +201,7 @@ function StudyRoomMain() {
                 <MyTodo />
               </Grid>
             </Grid>
-            <Grid item xs={8} sx={{ marginX: "auto", paddingLeft: "20px" }}>
+            <Grid item xs={12} sx={{ marginX: "auto", paddingLeft: "30px" }}>
               {/* 목표 공부시간 div */}
               <Typography
                 variant="h5"
@@ -202,21 +209,20 @@ function StudyRoomMain() {
                   fontSize: 20,
                   color: "white",
                   marginTop: 2,
-                  marginBottom: -2,
                 }}
               >
                 목표 공부 시간
               </Typography>
               <Grid
                 item
-                xs={11}
+                xs={10}
                 sx={{
                   backgroundColor: "#F4EFE6",
                   borderRadius: 2,
                   paddingX: "10px",
                 }}
               >
-                <MyTime />
+                <MyTimeBlock />
               </Grid>
             </Grid>
           </Grid>
@@ -231,7 +237,10 @@ function StudyRoomMain() {
             }}
           >
             <Grid item xs={12}>
-              <Typography variant="h1" sx={{ fontSize: 30, color: "white", marginTop: 2 }}>
+              <Typography
+                variant="h1"
+                sx={{ fontSize: 30, color: "white", marginTop: 2 }}
+              >
                 STUDY ROOM
               </Typography>
             </Grid>
