@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../Utils/index";
 
 const BASE_URL = "http://i8a302.p.ssafy.io:8081"
 
@@ -31,8 +31,16 @@ const createStudyRoom = createAsyncThunk(
 	}
 )
 
-const checkedSlice = createSlice({
-	name: "checked",
+// const getGroupBoard = createAsyncThunk(
+// 	"groupBoardSlice/getGroupBoard",
+// 	axios(config)
+// 		.then((response) => {
+// 			console.log(response.data)
+// 		})
+// )
+
+const groupBoardSlice = createSlice({
+	name: "groupBoard",
 	initialState: { 
 		days: [false, false, false, false, false, false, false], 
 		day: "", 
@@ -85,11 +93,11 @@ const checkedSlice = createSlice({
 			console.log("글 작성!")
 			console.log(action.payload)
 		})
-		builder.addCase(createStudyRoom.rejected, (state, action) => {
-			alert("악!")
-		})
+		// builder.addCase(getGroupBoard.fulfilled, (state, action) => {
+
+		// })
 	}
 });
 
-export default checkedSlice;
+export default groupBoardSlice;
 export { getStudyRoom, createStudyRoom };

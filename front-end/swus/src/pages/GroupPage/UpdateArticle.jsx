@@ -3,7 +3,7 @@ import { Checkbox, FormControlLabel, TextField, Divider, Grid } from '@mui/mater
 import { MenuItem, Select, Button } from '@mui/material';
 import { Container } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
-import checkedSlice from '../../store/CheckedSlice';
+import checkedSlice from '../../store/GroupBoardSlice';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
