@@ -14,8 +14,8 @@ export default class UserVideoComponent extends Component {
 
     this.state = {
       d: new Date(),
-      todo: this.props.todo,
-      done: this.props.done,
+      // todo: this.props.todo,
+      // done: this.props.done,
     };
   }
 
@@ -35,8 +35,12 @@ export default class UserVideoComponent extends Component {
 
   getNicknameTag() {
     // Gets the nickName of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data)
-      .clientData;
+    return JSON.parse(this.props.streamManager.stream.connection.data).clientData;
+  }
+
+  getEnterTime() {
+    //Gets the enterTime of the user
+    return JSON.parse(this.props.streamManager.stream.connection.data).enterTime;
   }
 
   render() {
@@ -88,9 +92,7 @@ export default class UserVideoComponent extends Component {
         {this.props.streamManager !== undefined ? (
           <div style={{ display: "flex" }}>
             <div className="streamcomponent">
-              <OpenViduVideoComponent
-                streamManager={this.props.streamManager}
-              />
+              <OpenViduVideoComponent streamManager={this.props.streamManager} />
               <Grid
                 container
                 sx={{
@@ -155,10 +157,7 @@ export default class UserVideoComponent extends Component {
                         mr: "0.3%",
                       }}
                     >
-                      <Typography
-                        variant="h6"
-                        sx={{ textAlign: "center", color: "black" }}
-                      >
+                      <Typography variant="h6" sx={{ textAlign: "center", color: "black" }}>
                         :
                       </Typography>
                     </Box>
@@ -207,7 +206,8 @@ export default class UserVideoComponent extends Component {
                       <CheckBoxOutlinedIcon />
                     </Grid>
                     <Grid item xs={7}>
-                      {this.state.done}/{this.state.todo}
+                      1/10
+                      {/* {this.state.done}/{this.state.todo} */}
                     </Grid>
                   </Grid>
                 </Grid>

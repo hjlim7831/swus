@@ -45,10 +45,11 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
+      enterTime: props.enterTime,
       d: new Date(), //시계
       open: false, //모달
-      todo: 0, //투두리스트 할 목록 개수
-      done: 0, //투두 리스트 한 목록 개수
+      // todo: 0, //투두리스트 할 목록 개수
+      // done: 0, //투두 리스트 한 목록 개수
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -100,12 +101,12 @@ class OpenViduApp extends Component {
   };
 
   ////
-  getTodoCount = (todoProps, doneProps) => {
-    this.setState({
-      todo: todoProps,
-      done: doneProps,
-    });
-  };
+  // getTodoCount = (todoProps, doneProps) => {
+  //   this.setState({
+  //     todo: todoProps,
+  //     done: doneProps,
+  //   });
+  // };
 
   onbeforeunload(event) {
     this.leaveSession();
@@ -164,6 +165,7 @@ class OpenViduApp extends Component {
           this.setState({
             subscribers: subscribers,
           });
+          console.log(subscribers);
         });
 
         // On every Stream destroyed...
@@ -185,7 +187,7 @@ class OpenViduApp extends Component {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
-            .connect(token, { clientData: this.state.myUserName })
+            .connect(token, { clientData: this.state.myUserName, enterTime: this.state.enterTime })
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
@@ -208,9 +210,7 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter(
-                (device) => device.kind === "videoinput"
-              );
+              var videoDevices = devices.filter((device) => device.kind === "videoinput");
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -402,9 +402,7 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>
-                  공용 열람실{mySessionId}
-                </h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>공용 열람실{mySessionId}</h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -421,10 +419,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {hoursTen}
                         </Typography>
                       </Box>
@@ -438,10 +433,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {hoursOne}
                         </Typography>
                       </Box>
@@ -466,10 +458,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {minutesTen}
                         </Typography>
                       </Box>
@@ -484,10 +473,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {minutesOne}
                         </Typography>
                       </Box>
@@ -512,10 +498,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {secondsTen}
                         </Typography>
                       </Box>
@@ -529,19 +512,14 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {secondsOne}
                         </Typography>
                       </Box>
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
-                  To-do list
-                </h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -549,7 +527,8 @@ class OpenViduApp extends Component {
                     padding: 5,
                   }}
                 >
-                  <MyTodoPublicIn parentFunction={this.getTodoCount} />
+                  <MyTodoPublicIn />
+                  {/* <MyTodoPublicIn parentFunction={this.getTodoCount} /> */}
                 </div>
                 <div>
                   <Button
@@ -589,14 +568,12 @@ class OpenViduApp extends Component {
                       {this.state.publisher !== undefined ? (
                         <div
                           className="stream-container"
-                          onClick={() =>
-                            this.handleMainVideoStream(this.state.publisher)
-                          }
+                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
                         >
                           <UserVideoComponent
                             streamManager={this.state.publisher}
-                            todoTodo={this.state.todo}
-                            todoDone={this.state.done}
+                            // todoTodo={this.state.todo}
+                            // todoDone={this.state.done}
                           />
                         </div>
                       ) : null}
@@ -608,8 +585,8 @@ class OpenViduApp extends Component {
                         >
                           <UserVideoComponent
                             streamManager={sub}
-                            todoTodo={this.state.todo}
-                            todoDone={this.state.done}
+                            // todoTodo={this.state.todo}
+                            // todoDone={this.state.done}
                           />
                         </div>
                       ))}
@@ -620,16 +597,12 @@ class OpenViduApp extends Component {
             </Grid>
           </Grid>
           {/*정각이 되었을때 알림을 주는 모달창 */}
-          {this.state.d.getMinutes() === 22 &&
-          this.state.d.getSeconds() === 30 ? (
+          {this.state.d.getMinutes() === 22 && this.state.d.getSeconds() === 30 ? (
             <div></div>
           ) : null}
 
           {/*정각이 되었을때 알림을 주는 모달창 */}
-          {this.state.d.getMinutes() === 0 &&
-          this.state.d.getSeconds() === 0 ? (
-            <div></div>
-          ) : null}
+          {this.state.d.getMinutes() === 0 && this.state.d.getSeconds() === 0 ? <div></div> : null}
         </Box>
       </>
     );

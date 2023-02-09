@@ -11,13 +11,14 @@ import axios from "../../../Utils/index";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodoList } from "../../../store/TodoList";
 
-function MyTodoPublicIn({ parentFunction }) {
+function MyTodoPublicIn() {
+  //{ parentFunction }
   const dispatch = useDispatch();
   // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
-  const [todoCnt, setTodoCnt] = useState(0);
-  const [doneCnt, setDoneCnt] = useState(0);
+  // const [todoCnt, setTodoCnt] = useState(0);
+  // const [doneCnt, setDoneCnt] = useState(0);
 
   useEffect(() => {
     const config = {
@@ -49,12 +50,12 @@ function MyTodoPublicIn({ parentFunction }) {
   //   setDoneCnt(todoData.filter((todo) => todo.todo_done === true));
   // }, []);
 
-  const childFunction = () => {
-    parentFunction(
-      todoData.length,
-      todoData.filter((todo) => todo.todo_done === true).length
-    );
-  };
+  // const childFunction = () => {
+  //   parentFunction(
+  //     todoData.length,
+  //     todoData.filter((todo) => todo.todo_done === true).length
+  //   );
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -92,11 +93,7 @@ function MyTodoPublicIn({ parentFunction }) {
       >
         <Grid container>
           <Grid item xs={12} sx={{ marginTop: "8%" }}>
-            <MyTodoForm
-              handleSubmit={handleSubmit}
-              value={value}
-              setValue={setValue}
-            />
+            <MyTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
             <Box
               sx={{
                 position: "relative",
@@ -109,7 +106,7 @@ function MyTodoPublicIn({ parentFunction }) {
                 marginTop: "2%",
               }}
             >
-              {childFunction()}
+              {/* {childFunction()} */}
               <MyTodoList
                 todoData={todoData}
                 setTodoData={setTodoData}
