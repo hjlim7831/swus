@@ -5,6 +5,7 @@ import com.ssaky.swus.api.request.study.CoreTimeReq;
 import com.ssaky.swus.api.request.study.TargetTimeReq;
 import com.ssaky.swus.api.request.study.TotalTimeReq;
 import com.ssaky.swus.api.response.study.TimeJandiResp;
+import com.ssaky.swus.api.response.study.WeeklyTimeResp;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.db.entity.study.Study;
 import com.ssaky.swus.db.repository.study.JandiStudyRepository;
@@ -98,10 +99,16 @@ public class StudyDailyUpdateServiceTest {
     }
 
     @Test
-    public void 일주일데이터_가져오기(){
+    public void 일주일데이터_더하고_가져오기(){
         List<Study> studyTimeList = studyRepository.findAll();
         ReflectionTestUtils.invokeMethod(studyService, "saveAllDailyStudyTime", studyTimeList);
         System.out.println(studyService.getOneWeekData(memberId));
+    }
+
+    @Test
+    public void 일주일데이터_가져오기() {
+        WeeklyTimeResp resp = studyService.getOneWeekData(7);
+        System.out.println(resp);
     }
 
 
