@@ -30,7 +30,7 @@ function Report (props) {
 
 		function getMemberTodos(member) {
 			// 여기서 members를 todos로 바꾸기
-			return member.members.map((todo) => {
+			return member.todos.map((todo) => {
 				return (
 					<>
 						<p style={{ margin: 0}}>

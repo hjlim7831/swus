@@ -161,6 +161,15 @@ function MyGroupList() {
                 </TableCell>
               </TableRow>
             </TableHead>
+            <TableHead>
+							<TableRow>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}></TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}>그룹 종류</TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}>그룹 이름</TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}>스터디 시간</TableCell>
+								<TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center"}}></TableCell>
+							</TableRow>
+						</TableHead>
             <TableBody style={{ textAlign: "center" }}>
               {(value === 0) ? getIngGroups() : getFinishedGroups()}
             </TableBody>
