@@ -83,14 +83,24 @@ public class RoomService {
         //기능1 순공, 총공시간 갱신
         //아직 구현 안함
 
-        //기능2 room_id의 참가자 1 감소시키기
-        roomRepository.updateCount(publicExitReq.getRoomId(), -1);
+        //기능2 room_id의 참가자 1명일때 퇴장하면 방 없애기
+        //      2명이상일때는 인원수 감소시키기
+        PublicRoom room = roomRepository.findPublicOne(publicExitReq.getRoomId());
+        if(room.getCount()<=1){
+            roomRepository.delete(room);
+        } else {
+            roomRepository.updateCount(publicExitReq.getRoomId(), -1);
+        }
 
-        //기능3. Participant에서 Delete해주기
+
+        //기능4. Participant에서 Delete해주기
         PublicParticipant participant = participantRepository.findByMemberId(publicExitReq.getMemberId()).get();
         log.debug("삭제할 참가자 id : "+publicExitReq.getMemberId());
         log.debug("삭제할 참가자 : "+participant);
         participantRepository.exit(participant);
+
+        //기능5. 방에 참가되어 있는 사용자가 없다면 방 제거하기
+
     }
 
     public List<ParticipantResp> getParticipants(int roomId) {

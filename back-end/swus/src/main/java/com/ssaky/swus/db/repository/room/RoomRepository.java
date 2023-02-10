@@ -41,5 +41,8 @@ public class RoomRepository {
         int updateCnt = publicRoom.getCount()+count;
         publicRoom.setCount(updateCnt);
     }
+    public void delete(PublicRoom room) {
+        em.remove(room);
+    }
 
 }
