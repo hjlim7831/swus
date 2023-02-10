@@ -13,20 +13,20 @@ import axios from "./../../Utils/index";
 import { useNavigate } from "react-router-dom";
 
 export default function SignInSide() {
-
   // 이메일 기억하는 변수
-  const remember = localStorage.getItem("remember")
+  const remember = localStorage.getItem("remember");
   let check = remember && remember === "true" ? true : false;
   const [rememberCheck, setRememberCheck] = useState(check);
 
   // remember me 체크하면, 값 저장하는 함수.
   const saveRemember = () => {
-    check = !check
+    check = !check;
     setRememberCheck(check);
-    check ? localStorage.setItem("remember", "true") : localStorage.removeItem("remember");
+    check
+      ? localStorage.setItem("remember", "true")
+      : localStorage.removeItem("remember");
   };
-  
-  
+
   // const navigate = useNavigate();
 
   // 이메일, 비밀번호 저장 변수
@@ -93,7 +93,7 @@ export default function SignInSide() {
             localStorage.setItem("totalM", 0);
           })
           .then(() => {
-            window.location = "http://localhost:3000/studyroom/"
+            window.location = "http://localhost:3000/studyroom/";
           })
           .catch((error) => {
             alert("존재하는 아이디가 아닙니다.");
@@ -134,28 +134,32 @@ export default function SignInSide() {
       </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
         아이디 (이메일)
-        { (rememberCheck) ? <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          onChange={inputSubmit}
-          defaultValue = {localStorage.getItem('id')}
-        /> : <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          onChange={inputSubmit}
-        /> }
+        {rememberCheck ? (
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            onChange={inputSubmit}
+            defaultValue={localStorage.getItem("id")}
+          />
+        ) : (
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            onChange={inputSubmit}
+          />
+        )}
         비밀번호
         <TextField
           margin="normal"
@@ -169,10 +173,10 @@ export default function SignInSide() {
           onChange={inputSubmit}
         />
         <FormControlLabel
-          control={<Checkbox value="remember" color="primary"/>}
+          control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
           checked={rememberCheck}
-          onClick={ saveRemember }
+          onClick={saveRemember}
         />
         <Button
           type="submit"
