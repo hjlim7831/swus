@@ -2,17 +2,22 @@ package com.ssaky.swus.api.service.team;
 
 import com.ssaky.swus.api.request.team.TeamInfoUpdateReq;
 import com.ssaky.swus.api.request.team.TeamInviteReq;
+import com.ssaky.swus.api.request.team.TeamTodoListUpdateReq;
+import com.ssaky.swus.api.request.team.TeamTodoUpdateReq;
 import com.ssaky.swus.api.response.group.MyTeamDetailResp;
 import com.ssaky.swus.api.response.group.MyTeamResp;
 import com.ssaky.swus.api.response.group.TeamNameResp;
+import com.ssaky.swus.api.response.group.TodoGroupResp;
 import com.ssaky.swus.common.error.exception.BusinessException;
 import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
 import com.ssaky.swus.db.entity.member.Member;
+import com.ssaky.swus.db.entity.report.TodoGroup;
 import com.ssaky.swus.db.entity.team.Board;
 import com.ssaky.swus.db.entity.team.MemberTeam;
 import com.ssaky.swus.db.entity.team.Team;
 import com.ssaky.swus.db.repository.member.MemberRepository;
+import com.ssaky.swus.db.repository.report.TodoGroupRepositoryI;
 import com.ssaky.swus.db.repository.team.BoardRepository1;
 import com.ssaky.swus.db.repository.team.MemberTeamRepository;
 import com.ssaky.swus.db.repository.team.TeamRepository1;
@@ -35,6 +40,7 @@ public class TeamService1 {
     private final TeamRepository1 teamRepository;
     private final MemberRepository memberRepository;
     private final BoardRepository1 boardRepository;
+    private final TodoGroupRepositoryI todoGroupRepository;
 
     /**
      * 내 팀 목록 가져오기
@@ -254,5 +260,32 @@ public class TeamService1 {
                 }
         );
         return restMemberTeams;
+    }
+
+    @Transactional
+    public void updateTeamTodos(int teamId, int memberId, TeamTodoListUpdateReq req) {
+        // [1] 수정하는 사람이 리더인지 확인
+        isLeader(teamId, memberId);
+        
+        // [2] 수정 시작
+        for(TeamTodoUpdateReq tt: req.getTeamTodoList()) {
+            int round = tt.getRound();
+            Optional<TodoGroup> todoGroupO = todoGroupRepository.findByIdRoundAndIdTeamId(round, teamId, TodoGroup.class);
+            // [2]-1 이미 DB에 저장되어 있는 경우, UPDATE
+            if (todoGroupO.isPresent()) {
+                todoGroupO.get().updateContent(tt);
+            }
+            // [2]-2 DB에 없는 경우 INSERT
+            else {
+                TodoGroup todoGroup = TodoGroup.builder()
+                        .teamId(teamId).round(round).content(tt.getContent()).build();
+                todoGroupRepository.save(todoGroup);
+            }
+        }
+    }
+
+    public List<TodoGroupResp> getTeamTodos(int teamId, int memberId) {
+        // Repository에서 가져오기
+        return null;
     }
 }

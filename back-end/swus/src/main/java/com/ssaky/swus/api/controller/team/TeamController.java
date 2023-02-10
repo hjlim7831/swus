@@ -1,5 +1,6 @@
 package com.ssaky.swus.api.controller.team;
 
+import com.ssaky.swus.api.request.team.TeamTodoListUpdateReq;
 import com.ssaky.swus.api.request.team.TeamInfoUpdateReq;
 import com.ssaky.swus.api.request.team.TeamInviteReq;
 import com.ssaky.swus.api.service.team.TeamService1;
@@ -24,7 +25,7 @@ public class TeamController {
 
     // 그룹 정보 수정
     @PutMapping("{team_id}")
-    public ResponseEntity<?> updateTeamInfo(Authentication authentication, @PathVariable("team_id") int teamId, TeamInfoUpdateReq req) {
+    public ResponseEntity<?> updateTeamInfo(Authentication authentication, @PathVariable("team_id") int teamId, @RequestBody TeamInfoUpdateReq req) {
         Map<String, Object> resultMap = new HashMap<>();
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
@@ -32,9 +33,21 @@ public class TeamController {
         resultMap.put("team_id", teamId);
         return ResponseEntity.ok(resultMap);
     }
+    
+    // 그룹 투두 수정
+    @PutMapping("{team_id}/team-todos")
+    public ResponseEntity<?> updateGroupTodos(Authentication authentication, @PathVariable("team_id") int teamId, @RequestBody TeamTodoListUpdateReq req) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        System.out.println(req);
+        teamService.updateTeamTodos(teamId, memberId, req);
+        resultMap.put("team_id", teamId);
+        return ResponseEntity.ok(resultMap);
+    }
 
     @PostMapping("{team_id}/invite")
-    public ResponseEntity<?> inviteMember(Authentication authentication, @PathVariable("team_id") int teamId, TeamInviteReq req) {
+    public ResponseEntity<?> inviteMember(Authentication authentication, @PathVariable("team_id") int teamId, @RequestBody TeamInviteReq req) {
         Map<String, Object> resultMap = new HashMap<>();
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
