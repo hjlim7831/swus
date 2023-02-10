@@ -5,7 +5,9 @@ import com.ssaky.swus.api.request.team.UpdateBoardReq;
 import com.ssaky.swus.api.request.team.WriteBoardReq;
 import com.ssaky.swus.api.service.member.MemberService;
 import com.ssaky.swus.db.entity.team.Board;
+import com.ssaky.swus.db.entity.team.Team;
 import com.ssaky.swus.db.repository.team.BoardRepository;
+import com.ssaky.swus.db.repository.team.TeamRepository1;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,6 +30,9 @@ public class BoardServiceTest {
 
     @Autowired
     BoardRepository boardRepository;
+
+    @Autowired
+    TeamRepository1 teamRepository;
 
     @Autowired
     BoardService boardService;
@@ -80,8 +86,20 @@ public class BoardServiceTest {
         // when
         int boardId = boardService.writeBoard(memberId, writeBoardReq);
 
+
         // then
-        Board board = boardRepository.findAll().get(0);
+        Board board = boardRepository.findByBoardId(boardId, Board.class).get();
+        int teamId = board.getTeam().getTeamId();
+
+        Team team = teamRepository.findByTeamId(teamId, Team.class).get();
+        System.out.println(team.getTeamDone());
+        System.out.println(team.getBeginAt());
+        System.out.println(team.getEndAt());
+        System.out.println(team.getFinishTime());
+        System.out.println(team.getStartTime());
+        assertEquals("2023-01-16");
+
+
         System.out.println("board : " + board);
         assertEquals(boardId, board.getBoardId());
         assertEquals("React 공부스터디", board.getTitle());
