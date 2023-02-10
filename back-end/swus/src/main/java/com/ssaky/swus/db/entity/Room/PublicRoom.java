@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
+@ToString
 @Table(name="public_room")
 @NoArgsConstructor
 @AllArgsConstructor

@@ -48,8 +48,6 @@ public class RoomService {
     @Transactional
     public void enterPublic(int room_id, int user_id){
         PublicRoom room = roomRepository.findPublicOne(room_id);
-        //Optional<T>를 쓰면 T가 null인 경우를 방지해줌
-        Optional<Member> member = memberRepository.findById(user_id, Member.class);
 
         //기능1. 방 정원을 넘는지 검사
         if (room.getCount() >= LIMIT) {
@@ -61,11 +59,16 @@ public class RoomService {
 
         //기능3. 만약 비정상적으로 종료한 사용자가 Participant에 남아있다면 삭제
         Optional<PublicParticipant> unnomalUser = participantRepository.findByMemberId(user_id);
+        log.debug("비정상적인 입장을 요청한 사용자가 있습니까? "+unnomalUser.isPresent());
         if(unnomalUser.isPresent()){
-            participantRepository.exit(unnomalUser.get());
+            log.debug("위 사용자를 삭제합니다.");
+            int roomId = unnomalUser.get().getRoom().getId();
+            int memberId = unnomalUser.get().getMember().getId();
+            this.exitPublic(new PublicExitReq(roomId, memberId));
         }
 
         //기능4. user를 Paricipant에 insert해주기
+        Optional<Member> member = memberRepository.findById(user_id, Member.class); //Optional<T>를 쓰면 T가 null인 경우를 방지해줌
         PublicParticipant participant = PublicParticipant.builder()
                 .room(room)
                 .member(member.get())
