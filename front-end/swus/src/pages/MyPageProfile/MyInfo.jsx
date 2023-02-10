@@ -50,6 +50,20 @@ function MyInfo() {
     setQuitMOpen(false);
   };
 
+  const deleteUser = () => {
+    const config = {
+      method: "delete",
+      url: "/users/my-info",
+    };
+
+    axios(config).then((response) => {
+      // console.log(response.data);
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location = "http://localhost:3000/";
+    });
+  };
+
   return (
     <>
       <Box
@@ -162,9 +176,9 @@ function MyInfo() {
           {"정말 탈퇴하시겠습니까?"}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={qmClose}>Disagree</Button>
+          <Button onClick={deleteUser}>Agree</Button>
           <Button onClick={qmClose} autoFocus>
-            Agree
+            Disagree
           </Button>
         </DialogActions>
       </Dialog>

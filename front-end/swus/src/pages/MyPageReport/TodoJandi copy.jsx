@@ -3,13 +3,19 @@ import { Box } from "@mui/system";
 import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Grid } from "@mui/material";
+import Button from "@mui/material/Button";
 
 import axios from "./../../Utils/index";
 
 function TodoJandi() {
   //  Heatmap Data
+  const checkColor = localStorage.getItem("jandi")
+    ? localStorage.getItem("jandi")
+    : "github";
+
   const [values, setValues] = useState([]);
   const [startDate, setStartDate] = useState();
+  const [color, setColor] = useState(checkColor);
 
   //  기간 설정 (1년 전 ~ today)
   // Lazy Initialization (state 정의될 때 한 번만 실행)
@@ -55,41 +61,21 @@ function TodoJandi() {
             classValue: value,
           };
         });
-        console.log(newData);
+        // console.log("new", newData);
         setValues(newData);
-        // setStartDate(`${response.data.year}-01-01`);
-        // setEndDate(`${response.data.year}-12-31`);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [color]);
 
-  //  마운트 됐을 때 데이터 가져옴
-  //  배열에 날짜, 퍼센트, 클래스(색) 저장
-  // useEffect(() => {
-  //   fetch(`/testData/heatMapData.json`)
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       const jsonData = res.result;
-  //       const newArray = [];
-  //       for (let element of jsonData) {
-  //         const { date, percentage } = element;
-  //         let classValue = 0;
-  //         if (percentage >= 80) classValue = 4;
-  //         else if (percentage >= 60) classValue = 3;
-  //         else if (percentage >= 40) classValue = 2;
-  //         else if (percentage >= 20) classValue = 1;
-  //         newArray.push({ date, percentage, classValue });
-  //       }
-  //       setValues(newArray);
-  //     });
-  // }, []);
+  const colorChange = (name) => {
+    localStorage.setItem("jandi", name);
+    setColor(name);
+    // console.log(color);
+  };
 
   // const color = ["grey", "#BDACFB", "#7A5DDF", "#4926C1", "#2A117D"];
-  console.log("new", values);
-  console.log(startDate);
-  console.log(endDate);
   return (
     <>
       <Box
@@ -106,6 +92,17 @@ function TodoJandi() {
         <Grid container>
           <Grid item xs={12}>
             <h3 style={{ marginLeft: "40px" }}>000일의 Todo 달성 기록</h3>
+            <Button
+              sx={{
+                backgroundColor: "#1e6823",
+                // hover: "#1e6823",
+                // "&&hover": "#1e6823",
+              }}
+              name="git"
+              onClick={() => {
+                colorChange("git");
+              }}
+            ></Button>
           </Grid>
           <StyledContainer style={{ width: 1200, marginLeft: "8%" }}>
             <CalendarHeatmap
@@ -116,9 +113,9 @@ function TodoJandi() {
               //classForValue로 색깔이 될 클래스 지정
               classForValue={(value) => {
                 if (!value) {
-                  return `color-github-0`;
+                  return `color-${color}-0`;
                 }
-                return `color-github-${value.classValue}`;
+                return `color-${color}-${value.classValue}`;
               }}
             />
           </StyledContainer>
@@ -143,21 +140,21 @@ const StyledContainer = styled.div`
  * Github color scale
  */
 
-  // .react-calendar-heatmap .color-github-0 {
-  //   fill: #eeeeee;
-  // }
-  // .react-calendar-heatmap .color-github-1 {
-  //   fill: #d6e685;
-  // }
-  // .react-calendar-heatmap .color-github-2 {
-  //   fill: #8cc665;
-  // }
-  // .react-calendar-heatmap .color-github-3 {
-  //   fill: #44a340;
-  // }
-  // .react-calendar-heatmap .color-github-4 {
-  //   fill: #1e6823;
-  // }
+  .react-calendar-heatmap .color-git-0 {
+    fill: #eeeeee;
+  }
+  .react-calendar-heatmap .color-git-1 {
+    fill: #d6e685;
+  }
+  .react-calendar-heatmap .color-git-2 {
+    fill: #8cc665;
+  }
+  .react-calendar-heatmap .color-git-3 {
+    fill: #44a340;
+  }
+  .react-calendar-heatmap .color-git-4 {
+    fill: #1e6823;
+  }
 
   .react-calendar-heatmap .color-github-0 {
     fill: #eeeeee;

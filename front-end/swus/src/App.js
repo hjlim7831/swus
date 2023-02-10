@@ -33,7 +33,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* landingPage */}
-          {/* <Route exact path="/" /> */}
+          <Route exact path="/" />
           {/* 공용 열람실 관련 주소 */}
           <Route exact path="/studyroom">
             <Route exact path="" element={<StudyRoomMain />} />

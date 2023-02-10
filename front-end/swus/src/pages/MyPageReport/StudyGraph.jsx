@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { ResponsiveBar } from "@nivo/bar";
 import { Grid } from "@mui/material";
-import axios from "axios";
+import axios from "./../../Utils/index";
 
 const Token = sessionStorage.getItem("token");
 
@@ -10,15 +10,17 @@ function StudyGraph() {
   const [list, setList] = useState();
 
   useEffect(() => {
-    axios({
+    const config = {
       method: "get",
-      url: "http://i8a302.p.ssafy.io:8081/my-studies/one-week",
-      headers: {
-        Authorization: `Bearer ${Token}`,
-      },
-    }).then((res) => {
-      console.log(res.data);
-      setList(res.data);
+      url: "/my-studies/one-week",
+    };
+
+    axios(config).then((response) => {
+      console.log(response.data);
+      const mon = response.data.monday;
+      const newData = response.data.weekly_records.map((data) => {
+        console.log(data.id_study_at);
+      });
     });
   }, []);
 
@@ -31,51 +33,37 @@ function StudyGraph() {
     {
       type: "Mon",
       목표시간: 8,
-      // 목표시간Color: "hsl(119, 70%, 50%)",
       공부시간: 12,
-      // 공부시간Color: "hsl(203, 70%, 50%)",
     },
     {
       type: "Tue",
       목표시간: 4,
-      // 목표시간Color: "hsl(257, 70%, 50%)",
       공부시간: 2,
-      // 공부시간Color: "hsl(203, 70%, 50%)",
     },
     {
       type: "Wed",
       목표시간: 12,
-      // 목표시간Color: "hsl(265, 70%, 50%)",
       공부시간: 8,
-      // 공부시간Color: "hsl(203, 70%, 50%)",
     },
     {
       type: "Thu",
       목표시간: 17,
-      // 목표시간Color: "hsl(291, 70%, 50%)",
       공부시간: 12,
-      // 공부시간Color: "hsl(203, 70%, 50%)",
     },
     {
       type: "Fri",
       목표시간: 2,
-      // 목표시간Color: "hsl(251, 70%, 50%)",
       공부시간: 21,
-      // 공부시간Color: "hsl(203, 70%, 50%)",
     },
     {
       type: "Sat",
       목표시간: 6,
-      // 목표시간Color: "hsl(51, 70%, 50%)",
       공부시간: 5,
-      // 공부시간Color: "hsl(203, 70%, 50%)",
     },
     {
       type: "Sun",
       목표시간: 1,
-      // 목표시간Color: "hsl(77, 70%, 50%)",
       공부시간: 3,
-      // 공부시간Color: "hsl(203, 70%, 50%)",
     },
   ];
 

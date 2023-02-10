@@ -34,7 +34,7 @@ function TodoJandi() {
 
   useEffect(() => {
     const config = {
-      url: "/my-studies/jandi",
+      url: "/my-todos/jandi",
       method: "get",
     };
 
@@ -43,16 +43,16 @@ function TodoJandi() {
         console.log(response.data);
         // {id_study_at: '2023-02-01', todo_done_count: 3}
         // 1 <= , 3 <=, 5<= , 7 <=
-        const newData = response.data.time_records.map((data) => {
+        const newData = response.data.todo_records.map((data) => {
           let value = 0;
 
-          if (data.total_time >= 7 * 60) {
+          if (data.todo_done_count >= 7) {
             value = 4;
-          } else if (data.total_time >= 5 * 60) {
+          } else if (data.todo_done_count >= 5) {
             value = 3;
-          } else if (data.total_time >= 3 * 60) {
+          } else if (data.todo_done_count >= 3) {
             value = 2;
-          } else if (data.total_time >= 1) {
+          } else if (data.todo_done_count >= 1) {
             value = 1;
           }
 
@@ -61,7 +61,7 @@ function TodoJandi() {
             classValue: value,
           };
         });
-        console.log("new", newData);
+        // console.log("new", newData);
         setValues(newData);
       })
       .catch((error) => {
@@ -69,11 +69,11 @@ function TodoJandi() {
       });
   }, [color]);
 
-  // const colorChange = (name) => {
-  //   localStorage.setItem("jandi", name);
-  //   setColor(name);
-  //   // console.log(color);
-  // };
+  const colorChange = (name) => {
+    localStorage.setItem("jandi", name);
+    setColor(name);
+    // console.log(color);
+  };
 
   // const color = ["grey", "#BDACFB", "#7A5DDF", "#4926C1", "#2A117D"];
   return (
@@ -99,7 +99,9 @@ function TodoJandi() {
                 // "&&hover": "#1e6823",
               }}
               name="git"
-              // onClick={colorChange("git")}
+              onClick={() => {
+                colorChange("git");
+              }}
             ></Button>
           </Grid>
           <StyledContainer style={{ width: 1200, marginLeft: "8%" }}>
