@@ -35,42 +35,61 @@ export default class UserVideoComponent extends Component {
 
   getNicknameTag() {
     // Gets the nickName of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data).clientData;
+    return JSON.parse(this.props.streamManager.stream.connection.data)
+      .clientData;
   }
 
-  getEnterTime() {
-    //Gets the enterTime of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data).enterTime;
+  getTotalTime() {
+    return JSON.parse(this.props.streamManager.stream.connection.data)
+      .totalTime;
+  }
+
+  getEnterMin() {
+    return JSON.parse(this.props.streamManager.stream.connection.data).enterMin;
+  }
+
+  getEnterHour() {
+    return JSON.parse(this.props.streamManager.stream.connection.data)
+      .enterHour;
   }
 
   render() {
-    //누적된 총 시간
-    const totalH = parseInt(localStorage.getItem("totalH"));
-    const totalM = parseInt(localStorage.getItem("totalM"));
+    //지금까지의 누적 시간( 분 )
+    const totalTime = this.getTotalTime();
 
-    //입장 시간
-    const inH = parseInt(localStorage.getItem("inHour"));
-    const inM = parseInt(localStorage.getItem("inMin"));
+    // //나의 로컬 스토리지에 누적된 총 시간 => 이걸로 계산을 하면, 그사람의 입장시간 + 나의 그동안의 공부시간
+    // const totalH = parseInt(localStorage.getItem("totalH"));
+    // const totalM = parseInt(localStorage.getItem("totalM"));
+
+    const totalH = parseInt(totalTime / 60);
+    const totalM = parseInt(totalTime % 60);
+
+    //비디오로 보이는 '그' 사람의 입장 시간
+    const enterHour = parseInt(this.getEnterHour());
+    const enterMin = parseInt(this.getEnterMin());
+
+    // //입장 시간
+    // const inH = parseInt(localStorage.getItem("inHour"));
+    // const inM = parseInt(localStorage.getItem("inMin"));
 
     //현재 시간
     const nowH = parseInt(this.state.d.getHours());
     const nowM = parseInt(this.state.d.getMinutes());
 
     //계산한 시간 (시+분)
-    let cal = 0;
 
     //계산한 시간 sumH, sumM
     let sumH = 0;
     let sumM = 0;
 
-    if (inH <= nowH) {
+    if (enterHour <= nowH) {
       //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
-      const cal = nowH * 60 + nowM - (inH * 60 + inM);
+      const cal = nowH * 60 + nowM - (enterHour * 60 + enterMin);
       sumH = parseInt(cal / 60);
       sumM = cal % 60;
     } else {
       //앞시간이 더 큰 숫자일 경우 ex 18시~1시
-      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
+      const cal = 24 * 60 - (enterHour * 60 + enterMin) + (nowH * 60 + nowM);
       sumH = parseInt(cal / 60);
       sumM = cal % 60;
     }
@@ -92,7 +111,9 @@ export default class UserVideoComponent extends Component {
         {this.props.streamManager !== undefined ? (
           <div style={{ display: "flex" }}>
             <div className="streamcomponent">
-              <OpenViduVideoComponent streamManager={this.props.streamManager} />
+              <OpenViduVideoComponent
+                streamManager={this.props.streamManager}
+              />
               <Grid
                 container
                 sx={{
@@ -157,7 +178,10 @@ export default class UserVideoComponent extends Component {
                         mr: "0.3%",
                       }}
                     >
-                      <Typography variant="h6" sx={{ textAlign: "center", color: "black" }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ textAlign: "center", color: "black" }}
+                      >
                         :
                       </Typography>
                     </Box>

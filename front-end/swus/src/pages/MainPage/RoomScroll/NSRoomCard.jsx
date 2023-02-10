@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
@@ -21,7 +21,7 @@ function NSRoomCard(props) {
   const [count, setCount] = useState(props.partici);
   const [roomId, setRoomId] = useState(props.id);
 
-  console.log();
+  const Token = sessionStorage.getItem("token");
 
   const handleToOpen = () => {
     setOpen(true);
@@ -30,8 +30,6 @@ function NSRoomCard(props) {
   const hadleToClose = () => {
     setOpen(false);
   };
-
-  const Token = sessionStorage.getItem("token");
 
   const navigate = useNavigate();
   const handleToEnter = () => {
@@ -50,21 +48,26 @@ function NSRoomCard(props) {
         console.log(response);
         console.log("is here?");
         navigate(`/studyroom/${sessionName}`, {
-          state: { roomName: sessionName, roomId: roomId },
+          state: {
+            roomName: sessionName,
+            roomId: roomId,
+          },
         }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
       } else {
         alert("잠시 후 다시 입장해주세요");
       }
     });
 
-    navigate(`/studyroom/${sessionName}`, {
-      state: { roomName: sessionName, roomId: roomId },
-    }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+    // navigate(`/studyroom/${sessionName}`, {
+    //   state: { roomName: sessionName, roomId: roomId },
+    // }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
   };
 
   return (
     <>
-      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
+      <Card
+        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
+      >
         <div
           style={{
             width: 200,
@@ -124,7 +127,9 @@ function NSRoomCard(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Non-Stop 열람실 #{sessionName} 입장하기</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          Non-Stop 열람실 #{sessionName} 입장하기
+        </DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>
