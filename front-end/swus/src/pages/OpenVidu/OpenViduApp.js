@@ -144,7 +144,7 @@ class OpenViduApp extends Component {
     // --- 1) Get an OpenVidu object ---
     //오픈비두 객체 생성
     this.OV = new OpenVidu();
-
+    console.log(this.props);
     // --- 2) Init a session ---
 
     this.setState(

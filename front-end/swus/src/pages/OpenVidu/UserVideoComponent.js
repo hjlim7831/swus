@@ -57,6 +57,9 @@ export default class UserVideoComponent extends Component {
     //지금까지의 누적 시간( 분 )
     const totalTime = this.getTotalTime();
 
+    console.log("토탈타임");
+    console.log(totalTime);
+
     // //나의 로컬 스토리지에 누적된 총 시간 => 이걸로 계산을 하면, 그사람의 입장시간 + 나의 그동안의 공부시간
     // const totalH = parseInt(localStorage.getItem("totalH"));
     // const totalM = parseInt(localStorage.getItem("totalM"));

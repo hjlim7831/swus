@@ -26,20 +26,23 @@ function NSRoom() {
   const enterHour = new Date().getHours();
   const enterMin = new Date().getMinutes();
   //여기까지 잘 온다.
+  // true - 값이 있을 때, boolean true
+  // false - undefiend, null, 0, false
   return (
     <>
       {console.log("totalTime")}
       {console.log(totalTime)}
       {console.log("NSROOM")}
-      {totalTime ? (
-        <OpenViduApp
-          sessionId={roomName}
-          roomId={roomId}
-          totalTime={totalTime}
-          enterHour={enterHour}
-          enterMin={enterMin}
-        />
-      ) : null}
+      {/* {totalTime !== undefined ? (
+        
+      ) : null} */}
+      <OpenViduApp
+        sessionId={roomName}
+        roomId={roomId}
+        totalTime={totalTime}
+        enterHour={enterHour}
+        enterMin={enterMin}
+      />
     </>
   );
 }
