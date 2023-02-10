@@ -24,7 +24,7 @@ public class TodoGroupMemberController {
 
     //나의 그룹 투두리스트 조회
     @GetMapping("{groupId}/round/{round}")
-    public ResponseEntity<?> getTodoList(Authentication authentication, @PathVariable int groupId, @PathVariable int round){
+    public ResponseEntity<?> getTodoList(Authentication authentication, @PathVariable int groupId, @PathVariable int round) {
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
         return ResponseEntity.ok(todoGroupMemberService.getList(memberId,groupId,round));

@@ -69,7 +69,7 @@ public class ReportService {
 
         //진행한 회차 수 구하기
         int notNullRound = 0; //회차수 저장할 변수
-        for(int i=0, endi=rounds.size(); i<endi; i++){
+        for(int i=0, endi=rounds.size(); i<endi; i++) {
             if(rounds.get(i).getStudyAt()==null) { //해당 회차에 진행 날짜가 null이라면
                 notNullRound = i; //해당회차-1개만큼 진행한 것
                 break;
