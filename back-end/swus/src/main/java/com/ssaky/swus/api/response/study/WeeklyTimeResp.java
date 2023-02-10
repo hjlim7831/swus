@@ -12,6 +12,5 @@ import java.util.List;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class WeeklyTimeResp {
-    private String monday;
-    private List<DailyTimeResp> weeklyRecords;
+    private List<DailyWeekdayTimeResp> weeklyRecords;
 }
