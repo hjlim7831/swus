@@ -103,17 +103,15 @@ public class TodoService {
         
         // 서울 ZoneId로 가져오기
         LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
-        // 올해 년도 가져오기
-        int year = now.getYear();
-        String fromDateStr = String.valueOf(year)+"-01-01";
-        String toDateStr = String.valueOf(year)+"-12-31";
+        // 1년 전 날짜 가져오기
+        LocalDate before = now.minusYears(1);
 
-        Date fromDate = Date.valueOf(fromDateStr);
-        Date toDate = Date.valueOf(toDateStr);
+        Date fromDate = Date.valueOf(before);
+        Date toDate = Date.valueOf(now);
 
         List<DailyTodoResp> todoRecords = jandiTodoRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTodoResp.class);
 
-        TodoJandiResp resp = TodoJandiResp.builder().year(year).todoRecords(todoRecords).build();
+        TodoJandiResp resp = TodoJandiResp.builder().todoRecords(todoRecords).build();
 
         return resp;
     }

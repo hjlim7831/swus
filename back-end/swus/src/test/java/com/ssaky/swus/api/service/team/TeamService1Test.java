@@ -1,8 +1,7 @@
 package com.ssaky.swus.api.service.team;
 
 import com.ssaky.swus.api.request.auth.SignUpReq;
-import com.ssaky.swus.api.request.team.TeamInfoUpdateReq;
-import com.ssaky.swus.api.request.team.TeamInviteReq;
+import com.ssaky.swus.api.request.team.*;
 import com.ssaky.swus.api.response.group.MyTeamDetailResp;
 import com.ssaky.swus.api.response.group.MyTeamResp;
 import com.ssaky.swus.api.service.member.MemberService;
@@ -30,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +46,7 @@ class TeamService1Test {
     @Autowired TeamRepository1 teamRepository;
     @Autowired MemberTeamRepository memberTeamRepository;
     @Autowired BoardRepository1 boardRepository;
+    @Autowired BoardService boardService;
 
     static int leaderId;
     static int memberId2;
@@ -61,6 +62,7 @@ class TeamService1Test {
         
         // DB 초기화
         memberTeamRepository.deleteAll();
+        boardRepository.deleteAll();
         teamRepository.deleteAll();
         memberRepository.deleteAll();
         
@@ -92,42 +94,26 @@ class TeamService1Test {
         LocalTime startTime = LocalTime.of(12, 30);
         LocalTime finishTime = LocalTime.of(16, 0);
 
-        Team team = Team.builder().teamName("JPA 스터디")
-                .category("S").teamInfo("JPA 뿌시기")
-                .teamDone("N").number(2)
+        WriteBoardReq writeBoardReq = WriteBoardReq.builder()
+                .boardNumber(6)
                 .beginAt(beginAt)
                 .endAt(endAt)
-                .day("1111000")
                 .startTime(startTime)
                 .finishTime(finishTime)
+                .category("S")
+                .title("JPA 뿌시기")
+                .content("JPA 뿌실사람 구합니다.")
+                .day("1111000")
                 .build();
-        // [1] 팀 테이블에 추가
-        teamRepository.save(team);
-        teamId = team.getTeamId();
 
-        // [2] Board에 글 등록
-        Board board = Board.builder()
-                .title("JPA 뿌실분들 구합니다")
-                .memberId(leaderId)
-                .teamId(teamId)
-                .number(6)
-                .build();
-        boardRepository.save(board);
+        int boardId = boardService.writeBoard(leaderId, writeBoardReq);
+        Optional<Board> boardO = boardRepository.findByBoardId(boardId, Board.class);
 
-        // [3] 팀, 사용자 연관 테이블에 추가
-        MemberTeam memberTeam = MemberTeam.builder()
-                .memberId(leaderId)
-                .teamId(teamId)
-                .build();
-        memberTeam.setLeader();
-        memberTeamRepository.save(memberTeam);
+        teamId = boardO.get().getTeam().getTeamId();
 
-        MemberTeam memberTeam2 = MemberTeam.builder()
-                .memberId(memberId2)
-                .teamId(teamId)
-                .build();
-        memberTeamRepository.save(memberTeam2);
+        TeamInviteReq teamInviteReq = TeamInviteReq.builder().email(email2).build();
 
+        teamService.inviteMember(teamId, leaderId, teamInviteReq);
     }
 
 //    @AfterEach
@@ -139,7 +125,7 @@ class TeamService1Test {
 //    }
 
     @Test
-    public void 리더여부_확인() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void 리더여부_확인() {
         Throwable e1 = assertThrows(InvalidValueException.class, () -> {
             teamService.isLeader(teamId, memberId3);
         });
@@ -186,12 +172,12 @@ class TeamService1Test {
     public void 내팀_목록_조회() {
         List<MyTeamResp> teamList = teamService.getTeamList(leaderId);
         assertEquals(1, teamList.size());
-        assertEquals("JPA 스터디", teamList.get(0).getTeamName());
+        assertEquals("JPA 뿌시기", teamList.get(0).getTeamName());
     }
 
     @Test
     public void 그룹명_조회() {
-        assertEquals("JPA 스터디", teamService.getTeamName(teamId).getTeamName());
+        assertEquals("JPA 뿌시기", teamService.getTeamName(teamId).getTeamName());
     }
 
     @Test
@@ -280,6 +266,32 @@ class TeamService1Test {
 
         Optional<Team> teamO = teamRepository.findByTeamId(teamId, Team.class);
         assertEquals(1, teamO.get().getNumber());
+    }
+
+    @Test
+    public void 팀투두_추가() {
+
+        List<TeamTodoUpdateReq> teamTodoList = new ArrayList<>();
+        TeamTodoUpdateReq teamTodo1 = TeamTodoUpdateReq.builder()
+                .round(1).content("JPA 1강 듣기").build();
+        TeamTodoUpdateReq teamTodo2 = TeamTodoUpdateReq.builder()
+                .round(2).content("JPA 2강 듣기").build();
+        TeamTodoUpdateReq teamTodo3 = TeamTodoUpdateReq.builder()
+                .round(3).content("JPA 3강 듣기").build();
+
+        teamTodoList.add(teamTodo1);
+        teamTodoList.add(teamTodo2);
+        teamTodoList.add(teamTodo3);
+
+        TeamTodoListUpdateReq req = new TeamTodoListUpdateReq(teamTodoList);
+
+        teamService.updateTeamTodos(teamId, leaderId, req);
+
+
+    }
+
+    @Test
+    public void 팀투두_수정() {
 
     }
 

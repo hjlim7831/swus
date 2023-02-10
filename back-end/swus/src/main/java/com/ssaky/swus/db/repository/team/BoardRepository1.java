@@ -10,6 +10,8 @@ public interface BoardRepository1 extends JpaRepository<Board, Integer> {
 
     <T> Optional<T> findByTeamTeamId(int teamId, Class<T> type);
 
+    <T> Optional<T> findByBoardId(int boardId, Class<T> type);
+
     @Transactional
     Board save(Board board);
 }
