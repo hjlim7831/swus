@@ -124,4 +124,10 @@ public class TodoDailyUpdateServiceTest {
         System.out.println(jandiTodoRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTodoResp.class));
 
     }
+
+    @Test
+    public void 잔디기록_가져오기() {
+//        System.out.println(todoService.getJandiRecords(memberId));
+        System.out.println(todoService.getJandiRecords(7));
+    }
 }

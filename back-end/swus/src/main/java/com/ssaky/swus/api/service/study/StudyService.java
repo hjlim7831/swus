@@ -52,16 +52,14 @@ public class StudyService {
         // 서울 ZoneId로 가져오기
         LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
         // 올해 년도 가져오기
-        int year = now.getYear();
-        String fromDateStr = String.valueOf(year)+"-01-01";
-        String toDateStr = String.valueOf(year)+"-12-31";
+        LocalDate before = now.minusYears(1);
 
-        Date fromDate = Date.valueOf(fromDateStr);
-        Date toDate = Date.valueOf(toDateStr);
+        Date fromDate = Date.valueOf(before);
+        Date toDate = Date.valueOf(now);
 
         List<DailyTotalTimeResp> timeRecords = jandiStudyRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTotalTimeResp.class);
 
-        TimeJandiResp resp = TimeJandiResp.builder().year(year).timeRecords(timeRecords).build();
+        TimeJandiResp resp = TimeJandiResp.builder().timeRecords(timeRecords).build();
 
         return resp;
     }
