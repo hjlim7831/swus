@@ -48,13 +48,15 @@ public class RoomController {
     @PostMapping("/studyrooms/{room_id}")
     public ResponseEntity<?> enterPublic (Authentication authentication, @PathVariable int room_id){
         //참가하고 있는 참여자 목록 불러와서 결과값에 넣어주기
-        Map<String, Object> resultMap = new HashMap<>();
-        List<ParticipantResp> participants = roomService.getParticipants(room_id);
-        resultMap.put("participants", participants);
+
 
         Claims claims = (Claims) authentication.getPrincipal();
         int userId = TokenUtils.getmemberIdFromToken(claims);
         roomService.enterPublic(room_id,userId);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        List<ParticipantResp> participants = roomService.getParticipants(room_id);
+        resultMap.put("participants", participants);
         return ResponseEntity.ok(resultMap);
     }
 

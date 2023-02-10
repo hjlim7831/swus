@@ -64,7 +64,10 @@ public class RoomService {
             log.debug("위 사용자를 삭제합니다.");
             int roomId = unnomalUser.get().getRoom().getId();
             int memberId = unnomalUser.get().getMember().getId();
-            this.exitPublic(new PublicExitReq(roomId, memberId));
+            this.exitPublic(new PublicExitReq(roomId, memberId)); //비정상 사용자가 속했던 방에서 퇴장처리
+
+            Optional<PublicParticipant> delParti = participantRepository.findByMemberId(memberId);
+            log.debug("호출 후 검사 > "+(!delParti.isPresent()?"삭제된 참가자 입니다.":"삭제되지 않았습니다."));
         }
 
         //기능4. user를 Paricipant에 insert해주기
