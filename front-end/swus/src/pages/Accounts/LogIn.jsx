@@ -73,8 +73,9 @@ export default function SignInSide() {
             //열람실에서 공부시간 띄워주기 위해 저장하는 누적공부시간
             localStorage.setItem("totalH", 0);
             localStorage.setItem("totalM", 0);
-
-            navigate("/studyroom/");
+          })
+          .then(()=> {
+            window.location = "http://localhost:3000/studyroom/"
           })
           .catch((error) => {
             alert("존재하는 아이디가 아닙니다.");

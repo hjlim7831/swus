@@ -36,7 +36,6 @@ const navItems = token
 
 const logout = () => {
   sessionStorage.clear();
-  localStorage.clear();
   localStorage.removeItem("totalM");
   localStorage.removeItem("totalH");
   localStorage.removeItem("inHour");
