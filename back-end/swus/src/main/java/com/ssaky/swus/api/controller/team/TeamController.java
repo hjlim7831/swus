@@ -44,8 +44,15 @@ public class TeamController {
         teamService.updateTeamTodos(teamId, memberId, req);
         resultMap.put("team_id", teamId);
         return ResponseEntity.ok(resultMap);
-
     }
+
+    @GetMapping("{team_id}/team-todos")
+    public ResponseEntity<?> getGroupTodos(Authentication authentication, @PathVariable("team_id") int teamId) {
+        Claims claims = (Claims) authentication.getPrincipal();
+        int memberId = TokenUtils.getmemberIdFromToken(claims);
+        return ResponseEntity.ok(teamService.getTeamTodos(teamId, memberId));
+    }
+
 
     @PostMapping("{team_id}/invite")
     public ResponseEntity<?> inviteMember(Authentication authentication, @PathVariable("team_id") int teamId, @RequestBody TeamInviteReq req) {

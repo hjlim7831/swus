@@ -7,6 +7,7 @@ import com.ssaky.swus.api.request.team.TeamTodoUpdateReq;
 import com.ssaky.swus.api.response.group.MyTeamDetailResp;
 import com.ssaky.swus.api.response.group.MyTeamResp;
 import com.ssaky.swus.api.response.group.TeamNameResp;
+import com.ssaky.swus.api.response.group.TodoGroupResp;
 import com.ssaky.swus.common.error.exception.BusinessException;
 import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
@@ -281,5 +282,10 @@ public class TeamService1 {
                 todoGroupRepository.save(todoGroup);
             }
         }
+    }
+
+    public List<TodoGroupResp> getTeamTodos(int teamId, int memberId) {
+        // Repository에서 가져오기
+        return null;
     }
 }

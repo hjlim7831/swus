@@ -1,16 +1,12 @@
-package com.ssaky.swus.api.request.team;
+package com.ssaky.swus.api.response.group;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.*;
+import lombok.Value;
 
-@Getter
-@ToString
+@Value
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class TeamTodoUpdateReq {
+public class TodoGroupResp {
     private int round;
     private String content;
 }
