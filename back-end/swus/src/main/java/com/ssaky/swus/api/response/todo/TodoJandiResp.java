@@ -15,8 +15,5 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class TodoJandiResp {
-
-    private int year;
     private List<DailyTodoResp> todoRecords;
-
 }
