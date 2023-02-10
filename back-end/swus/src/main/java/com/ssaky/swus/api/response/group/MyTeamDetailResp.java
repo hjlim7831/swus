@@ -42,7 +42,8 @@ public class MyTeamDetailResp {
         this.day = team.getDay();
         this.startTime = team.getStartTime();
         this.finishTime = team.getFinishTime();
-        this.teamNumber = team.getNumber();
+        this.teamNumber = team.getTeamNumber();
+        this.recruitmentNumber = team.getRecruitmentNumber();
         this.teamInfo = team.getTeamInfo();
     }
 

@@ -165,7 +165,7 @@ class TeamService1Test {
 
         // team.number 증가 확인
         assertEquals(3, list.size());
-        assertEquals(3, team.get().getNumber());
+        assertEquals(3, team.get().getTeamNumber());
     }
 
     @Test
@@ -251,7 +251,7 @@ class TeamService1Test {
         
         assertEquals("Y", memberTeams.get(0).getIsLeader());
         Optional<Team> teamO = teamRepository.findByTeamId(teamId, Team.class);
-        assertEquals(1, teamO.get().getNumber());
+        assertEquals(1, teamO.get().getTeamNumber());
 
 
     }
@@ -265,7 +265,7 @@ class TeamService1Test {
         assertEquals("Y", memberTeams.get(0).getIsLeader());
 
         Optional<Team> teamO = teamRepository.findByTeamId(teamId, Team.class);
-        assertEquals(1, teamO.get().getNumber());
+        assertEquals(1, teamO.get().getTeamNumber());
     }
 
     @Test

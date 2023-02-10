@@ -39,7 +39,6 @@ public class TeamService1 {
     private final MemberTeamRepository memberTeamRepository;
     private final TeamRepository1 teamRepository;
     private final MemberRepository memberRepository;
-    private final BoardRepository1 boardRepository;
     private final TodoGroupRepositoryI todoGroupRepository;
 
     /**
@@ -98,12 +97,6 @@ public class TeamService1 {
             }
         }
         resp.setMemberList(memberList);
-        
-        // [4] Board 테이블에서 모집 인원 가져오기
-        Optional<Board> boardO = boardRepository.findByTeamTeamId(teamId, Board.class);
-        if (boardO.isPresent()) {
-            resp.updateRecruitmentNumber(boardO.get().getNumber());
-        }
 
         return resp;
     }
@@ -282,10 +275,5 @@ public class TeamService1 {
                 todoGroupRepository.save(todoGroup);
             }
         }
-    }
-
-    public List<TodoGroupResp> getTeamTodos(int teamId, int memberId) {
-        // Repository에서 가져오기
-        return null;
     }
 }

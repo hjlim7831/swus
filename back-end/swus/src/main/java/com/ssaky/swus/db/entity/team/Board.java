@@ -37,11 +37,8 @@ public class Board extends BaseDateEntity {
 
     private int views;      // 조회수
 
-    @Column(nullable = false)
-    private int number;     // 최종모집인원
-
     @Builder
-    public Board(int memberId, int teamId, String title, String content, int number) {
+    public Board(int memberId, int teamId, String title, String content) {
         Member member = Member.builder().id(memberId).build();
         Team team = Team.builder().teamId(teamId).build();
         this.team = team;
@@ -50,7 +47,6 @@ public class Board extends BaseDateEntity {
         this.title = title;
         this.content = content;
         this.views = 0;
-        this.number = number;
     }
 
     @Builder
@@ -61,7 +57,6 @@ public class Board extends BaseDateEntity {
     public void update(UpdateBoardReq updaterBoardReq) {
         this.title = updaterBoardReq.getTitle();
         this.content = updaterBoardReq.getContent();
-        this.number = updaterBoardReq.getBoardNumber();
     }
 
     public void updateView(int views) {

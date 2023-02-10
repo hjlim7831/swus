@@ -102,7 +102,6 @@ public class BoardServiceTest {
         Board board = Board.builder()
                 .title("Spring 스터디 모집")
                 .content("Spring 그 자체가 되실분 구해요")
-                .number(5)
                 .build();
         boardRepository.save(board);
 
@@ -129,7 +128,6 @@ public class BoardServiceTest {
         Board board = Board.builder()
                 .title("Spring 스터디 모집")
                 .content("Spring 그 자체가 되실분 구해요")
-                .number(5)
                 .build();
         boardRepository.save(board);
 
@@ -146,7 +144,6 @@ public class BoardServiceTest {
         Board board = Board.builder()
                 .title("Spring 스터디 모집")
                 .content("Spring 그 자체가 되실분 구해요")
-                .number(5)
                 .build();
         boardRepository.save(board);
 
