@@ -6,11 +6,23 @@ function Example(props)
 {
     var items = [
         {
-            name: "Random Name #1",
+            name: "바로 로그인",
             description: "Probably the most random thing you have ever seen!"
         },
         {
-            name: "Random Name #2",
+            name: "공용 열람실",
+            description: "Probably the most random thing you have ever seen!"
+        },
+        {
+            name: "마이 페이지",
+            description: "Probably the most random thing you have ever seen!"
+        },
+        {
+            name: "그룹 스터디",
+            description: "Probably the most random thing you have ever seen!"
+        },
+        {
+            name: "휴게실",
             description: "Hello World!"
         }
     ]
@@ -32,7 +44,7 @@ function Item(props)
             <p>{props.item.description}</p>
 
             <Button className="CheckButton">
-                Check it out!
+                LOG IN!
             </Button>
         </Paper>
     )

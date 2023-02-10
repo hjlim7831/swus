@@ -28,13 +28,15 @@ import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import LandingPage from "./pages/LandingPage/LandingPage";  
+
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
           {/* landingPage */}
-          {/* <Route exact path="/" /> */}
+          <Route exact path="/" element={<LandingPage />} />
           {/* 공용 열람실 관련 주소 */}
           <Route exact path="/studyroom">
             <Route exact path="" element={<StudyRoomMain />} />
