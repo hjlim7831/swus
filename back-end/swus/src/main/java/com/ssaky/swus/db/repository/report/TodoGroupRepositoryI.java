@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,5 +16,7 @@ public interface TodoGroupRepositoryI extends JpaRepository<TodoGroup, TodoGroup
     TodoGroup save(TodoGroup todoGroup);
 
     <T> Optional<T> findByIdRoundAndIdTeamId(int round, int teamId, Class<T> type);
+
+    <T> List<T> findByIdTeamId(int teamId, Class<T> type);
 
 }

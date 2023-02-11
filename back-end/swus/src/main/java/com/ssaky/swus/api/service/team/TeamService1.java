@@ -4,10 +4,7 @@ import com.ssaky.swus.api.request.team.TeamInfoUpdateReq;
 import com.ssaky.swus.api.request.team.TeamInviteReq;
 import com.ssaky.swus.api.request.team.TeamTodoListUpdateReq;
 import com.ssaky.swus.api.request.team.TeamTodoUpdateReq;
-import com.ssaky.swus.api.response.group.MyTeamDetailResp;
-import com.ssaky.swus.api.response.group.MyTeamResp;
-import com.ssaky.swus.api.response.group.TeamNameResp;
-import com.ssaky.swus.api.response.group.TodoGroupResp;
+import com.ssaky.swus.api.response.group.*;
 import com.ssaky.swus.common.error.exception.BusinessException;
 import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
@@ -97,6 +94,10 @@ public class TeamService1 {
             }
         }
         resp.setMemberList(memberList);
+        
+        // [4] 그룹 투두 목록 가져오기
+        List<GroupTodoResp> todolist = todoGroupRepository.findByIdTeamId(teamId, GroupTodoResp.class);
+        resp.setTodoList(todolist);
 
         return resp;
     }

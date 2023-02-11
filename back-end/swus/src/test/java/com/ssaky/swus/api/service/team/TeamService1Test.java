@@ -279,6 +279,8 @@ class TeamService1Test {
 
         teamService.updateTeamTodos(teamId, leaderId, req);
 
+        MyTeamDetailResp teamDetailInfo = teamService.getTeamDetailInfo(teamId, leaderId);
+        System.out.println(teamDetailInfo);
 
     }
 
