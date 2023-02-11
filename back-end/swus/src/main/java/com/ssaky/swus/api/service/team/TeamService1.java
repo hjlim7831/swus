@@ -4,10 +4,7 @@ import com.ssaky.swus.api.request.team.TeamInfoUpdateReq;
 import com.ssaky.swus.api.request.team.TeamInviteReq;
 import com.ssaky.swus.api.request.team.TeamTodoListUpdateReq;
 import com.ssaky.swus.api.request.team.TeamTodoUpdateReq;
-import com.ssaky.swus.api.response.group.MyTeamDetailResp;
-import com.ssaky.swus.api.response.group.MyTeamResp;
-import com.ssaky.swus.api.response.group.TeamNameResp;
-import com.ssaky.swus.api.response.group.TodoGroupResp;
+import com.ssaky.swus.api.response.group.*;
 import com.ssaky.swus.common.error.exception.BusinessException;
 import com.ssaky.swus.common.error.exception.ErrorCode;
 import com.ssaky.swus.common.error.exception.InvalidValueException;
@@ -39,7 +36,6 @@ public class TeamService1 {
     private final MemberTeamRepository memberTeamRepository;
     private final TeamRepository1 teamRepository;
     private final MemberRepository memberRepository;
-    private final BoardRepository1 boardRepository;
     private final TodoGroupRepositoryI todoGroupRepository;
 
     /**
@@ -99,11 +95,9 @@ public class TeamService1 {
         }
         resp.setMemberList(memberList);
         
-        // [4] Board 테이블에서 모집 인원 가져오기
-        Optional<Board> boardO = boardRepository.findByTeamTeamId(teamId, Board.class);
-        if (boardO.isPresent()) {
-            resp.updateRecruitmentNumber(boardO.get().getNumber());
-        }
+        // [4] 그룹 투두 목록 가져오기
+        List<GroupTodoResp> todolist = todoGroupRepository.findByIdTeamId(teamId, GroupTodoResp.class);
+        resp.setTodoList(todolist);
 
         return resp;
     }
@@ -282,10 +276,5 @@ public class TeamService1 {
                 todoGroupRepository.save(todoGroup);
             }
         }
-    }
-
-    public List<TodoGroupResp> getTeamTodos(int teamId, int memberId) {
-        // Repository에서 가져오기
-        return null;
     }
 }

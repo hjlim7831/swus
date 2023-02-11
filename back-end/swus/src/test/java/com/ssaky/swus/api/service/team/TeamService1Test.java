@@ -116,14 +116,6 @@ class TeamService1Test {
         teamService.inviteMember(teamId, leaderId, teamInviteReq);
     }
 
-//    @AfterEach
-//    void afterEach() {
-//        memberTeamRepository.deleteAll();
-//        teamRepository.deleteAll();
-//        memberRepository.deleteAll();
-//
-//    }
-
     @Test
     public void 리더여부_확인() {
         Throwable e1 = assertThrows(InvalidValueException.class, () -> {
@@ -165,7 +157,7 @@ class TeamService1Test {
 
         // team.number 증가 확인
         assertEquals(3, list.size());
-        assertEquals(3, team.get().getNumber());
+        assertEquals(3, team.get().getTeamNumber());
     }
 
     @Test
@@ -251,7 +243,7 @@ class TeamService1Test {
         
         assertEquals("Y", memberTeams.get(0).getIsLeader());
         Optional<Team> teamO = teamRepository.findByTeamId(teamId, Team.class);
-        assertEquals(1, teamO.get().getNumber());
+        assertEquals(1, teamO.get().getTeamNumber());
 
 
     }
@@ -265,7 +257,7 @@ class TeamService1Test {
         assertEquals("Y", memberTeams.get(0).getIsLeader());
 
         Optional<Team> teamO = teamRepository.findByTeamId(teamId, Team.class);
-        assertEquals(1, teamO.get().getNumber());
+        assertEquals(1, teamO.get().getTeamNumber());
     }
 
     @Test
@@ -287,6 +279,8 @@ class TeamService1Test {
 
         teamService.updateTeamTodos(teamId, leaderId, req);
 
+        MyTeamDetailResp teamDetailInfo = teamService.getTeamDetailInfo(teamId, leaderId);
+        System.out.println(teamDetailInfo);
 
     }
 

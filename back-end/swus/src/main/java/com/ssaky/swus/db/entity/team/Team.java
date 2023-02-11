@@ -42,7 +42,10 @@ public class Team extends BaseDateEntity {
     @Column(nullable = false)
     private LocalTime finishTime;   // 종료시간
 
-    private int number;             // 현그룹인원(유동)
+    private int teamNumber;             // 현그룹인원(유동)
+
+    @Column(nullable = false)
+    private int recruitmentNumber;     // 최종모집인원
 
     private String teamDone;      // 그룹 스터디완료여부
 
@@ -61,11 +64,12 @@ public class Team extends BaseDateEntity {
         this.day = req.getDay();
         this.startTime = req.getStartTime();
         this.finishTime = req.getFinishTime();
+        this.recruitmentNumber = req.getBoardNumber();
         this.teamDone = "N";
     }
 
     @Builder
-    public Team(int teamId, String teamName, String teamInfo, String category, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalTime finishTime, int number, String teamDone) {
+    public Team(int teamId, String teamName, String teamInfo, String category, LocalDate beginAt, LocalDate endAt, String day, LocalTime startTime, LocalTime finishTime, int teamNumber, int recruitmentNumber, String teamDone) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.teamInfo = teamInfo;
@@ -75,16 +79,17 @@ public class Team extends BaseDateEntity {
         this.day = day;
         this.startTime = startTime;
         this.finishTime = finishTime;
-        this.number = number;
+        this.teamNumber = teamNumber;
+        this.recruitmentNumber = recruitmentNumber;
         this.teamDone = teamDone;
     }
 
     public void addNumber() {
-        this.number = this.number + 1;
+        this.teamNumber = this.teamNumber + 1;
     }
 
     public void subtractNumber() {
-        this.number = this.number - 1;
+        this.teamNumber = this.teamNumber - 1;
     }
 
     public void isDone() {
@@ -108,6 +113,9 @@ public class Team extends BaseDateEntity {
         this.endAt = updateBoardReq.getEndAt();
         this.startTime = updateBoardReq.getStartTime();
         this.finishTime = updateBoardReq.getFinishTime();
+        this.recruitmentNumber = updateBoardReq.getBoardNumber();
+        this.teamInfo = updateBoardReq.getContent();
+        this.teamName = updateBoardReq.getTitle();
     }
 
     //    // 일대일 양방향 관계 매핑, 읽기 전용 필드

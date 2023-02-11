@@ -69,6 +69,7 @@ public class MemberService {
         return member.getId();
     }
 
+    @Transactional
     public String updateInfo(int memberId, MemberUpdateReq req){
         log.debug("기존 비밀번호:{}",req.getOldPassword());
         System.out.println(req.getOldPassword());

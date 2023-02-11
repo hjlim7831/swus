@@ -32,6 +32,8 @@ public class MyTeamDetailResp {
     private int teamNumber;
     private int recruitmentNumber;
     private String teamInfo;
+    private List<GroupTodoResp> todolist;
+
 
     public void setTeamInfo(Team team) {
         this.teamName = team.getTeamName();
@@ -42,7 +44,8 @@ public class MyTeamDetailResp {
         this.day = team.getDay();
         this.startTime = team.getStartTime();
         this.finishTime = team.getFinishTime();
-        this.teamNumber = team.getNumber();
+        this.teamNumber = team.getTeamNumber();
+        this.recruitmentNumber = team.getRecruitmentNumber();
         this.teamInfo = team.getTeamInfo();
     }
 
@@ -55,8 +58,8 @@ public class MyTeamDetailResp {
         this.memberList = memberList;
     }
 
-    public void updateRecruitmentNumber(int recruitmentNumber) {
-        this.recruitmentNumber = recruitmentNumber;
+    public void setTodoList(List<GroupTodoResp> todolist) {
+        this.todolist = todolist;
     }
 
 }
