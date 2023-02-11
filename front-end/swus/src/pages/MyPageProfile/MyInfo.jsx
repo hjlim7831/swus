@@ -198,7 +198,7 @@ export default function MyInfo() {
             onChange={inputSubmit}
             error={inputData.password && 
               (inputData.password.length < 8 | 
-                !(/[A-Za-z]+[0-9]/.test(inputData.password)))}
+                !(passwordCheck.test(inputData.password)))}
             helperText="비밀번호는 문자, 숫자 포함한 8자 이상이어야 합니다."
           />
           {/* <TextField
@@ -214,7 +214,7 @@ export default function MyInfo() {
               onChange={inputSubmit}
               error={inputData.newPassword && 
                 (inputData.newPassword.length < 8 | 
-                  !(/[A-Za-z]+[0-9]/.test(inputData.newPassword)))
+                  !(passwordCheck.test(inputData.newPassword)))
                 }
               sx= {{ mt: 2, width: 260}}
             />
@@ -225,7 +225,7 @@ export default function MyInfo() {
               onChange={inputSubmit}
               error={inputData.newPasswordConfirm && 
                 (inputData.newPasswordConfirm.length < 8 | 
-                  !(/[A-Za-z]+[0-9]/.test(inputData.newPasswordConfirm)))
+                  !(passwordCheck.test(inputData.newPasswordConfirm)))
                 }
               helperText = {inputData.newPassword != inputData.newPasswordConfirm ? "입력하신 비밀번호와 다릅니다." : ""} 
               sx= {{ mt: 2, marginLeft: 3, width: 260}}

@@ -31,7 +31,7 @@ export default function SignInSide() {
 
   // 이메일, 비밀번호 저장 변수
   const [inputData, setInputData] = useState({
-    email: "",
+    email: check ? localStorage.getItem("id") : "",
     password: "",
   });
 
@@ -51,6 +51,8 @@ export default function SignInSide() {
       email: inputData.email,
       password: inputData.password,
     };
+
+    console.log(payload);
 
     const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
     const passwordCheck = /[A-Za-z]+[0-9]/;
@@ -73,9 +75,7 @@ export default function SignInSide() {
         };
 
         axios(config)
-          // .post("http://localhost:8081/auth/login", payload)
           .then((response) => {
-            // console.log(response.data.token);
 
             sessionStorage.setItem("token", response.data.access_token);
             // token은 sessionStorage에 저장
