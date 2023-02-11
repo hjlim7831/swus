@@ -10,6 +10,8 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 
 import axios from "../../Utils/index";
 
+import Swal from 'sweetalert2'
+
 export default function MyInfo() {
   const [nickname, setNickName] = useState(localStorage.getItem("nickname"));
   const [email, setEmail] = useState(localStorage.getItem("id"));
@@ -84,8 +86,8 @@ export default function MyInfo() {
 
     const payload = {
       nickname: inputData.nickname,
-      password: inputData.password,
-      newPassword: inputData.newPassword,
+      old_password: inputData.password,
+      new_password: inputData.newPassword,
     }
 
     // const newPasswordConfirm = inputData.newPasswordConfirm;
@@ -96,12 +98,27 @@ export default function MyInfo() {
       data: payload,
     }
 
+    console.log(payload)
+
     axios(config)
       .then((response) => {
-        console.log(response.data);
+        iumClose();
+        Swal.fire({
+          icon: 'success',
+          title: '정보가 수정되었습니다.',
+          showConfirmButton: false,
+          timer: 1000,
+        })
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        // Swal.fire({
+        //   position: '',
+        //   icon: 'error',
+        //   title: '비밀번호가 다릅니다.',
+        //   showConfirmButton: false,
+        //   timer: 1000,
+        // })
       })
   }
 

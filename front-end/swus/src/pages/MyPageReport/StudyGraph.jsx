@@ -4,10 +4,58 @@ import { ResponsiveBar } from "@nivo/bar";
 import { Grid } from "@mui/material";
 import axios from "./../../Utils/index";
 
-const Token = sessionStorage.getItem("token");
+// const Token = sessionStorage.getItem("token");
 
 function StudyGraph() {
-  const [list, setList] = useState();
+  const [timeData, setTimeData] = useState(
+    [
+      {
+        type: "Mon",
+        목표시간: 0,
+        공부시간: 0,
+      },
+      {
+        type: "Tue",
+        목표시간: 0,
+        공부시간: 0,
+      },
+      {
+        type: "Wed",
+        목표시간: 0,
+        공부시간: 0,
+      },
+      {
+        type: "Thu",
+        목표시간: 0,
+        공부시간: 0,
+      },
+      {
+        type: "Fri",
+        목표시간: 0,
+        공부시간: 0,
+      },
+      {
+        type: "Sat",
+        목표시간: 0,
+        공부시간: 0,
+      },
+      {
+        type: "Sun",
+        목표시간: 0,
+        공부시간: 0,
+      },
+    ]
+  );
+
+  const check = {
+    1: 'Mon',
+    2: 'Tue',
+    3: 'Wed',
+    4: 'Thur',
+    5: 'Fri',
+    6: 'Sat',
+    7: 'Sun',
+  }
 
   useEffect(() => {
     const config = {
@@ -16,11 +64,19 @@ function StudyGraph() {
     };
 
     axios(config).then((response) => {
-      console.log(response.data);
-      const mon = response.data.monday;
-      const newData = response.data.weekly_records.map((data) => {
-        console.log(data.id_study_at);
+      // console.log(response.data);
+      response.data.weekly_records.map((data) => {
+        const date = check[data.weekday];
+
+        timeData[data.weekday - 1] = {
+          type: date,
+          목표시간: (data.target_time / 60).toFixed(2),
+          공부시간: (data.total_time / 60).toFixed(2),
+        }
+        
+        setTimeData(timeData)
       });
+      console.log(timeData)
     });
   }, []);
 
@@ -28,44 +84,6 @@ function StudyGraph() {
   // console.log(monday);
   // const today = new Date(list.monday);
   // console.log(today);
-
-  const data = [
-    {
-      type: "Mon",
-      목표시간: 8,
-      공부시간: 12,
-    },
-    {
-      type: "Tue",
-      목표시간: 4,
-      공부시간: 2,
-    },
-    {
-      type: "Wed",
-      목표시간: 12,
-      공부시간: 8,
-    },
-    {
-      type: "Thu",
-      목표시간: 17,
-      공부시간: 12,
-    },
-    {
-      type: "Fri",
-      목표시간: 2,
-      공부시간: 21,
-    },
-    {
-      type: "Sat",
-      목표시간: 6,
-      공부시간: 5,
-    },
-    {
-      type: "Sun",
-      목표시간: 1,
-      공부시간: 3,
-    },
-  ];
 
   return (
     <>
@@ -93,7 +111,7 @@ function StudyGraph() {
             }}
           >
             <ResponsiveBar
-              data={data}
+              data={timeData}
               keys={["공부시간", "목표시간"]}
               indexBy="type"
               margin={{ top: 50, right: 60, bottom: 50, left: 60 }}

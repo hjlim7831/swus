@@ -19,7 +19,7 @@ export default function MiniDrawer(props) {
 
   const navigate = useNavigate();
 
-  const sideItems = window.location.pathname.slice(7, 12) === "profile"
+  const sideItems = window.location.pathname.slice(8, 15) === "profile"
     ? [
       { name: "PROFILE", path: `profile`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
       { name: "MY REPORT", path: `myreport`, backgroundColor: "#1A1E33", color: "white"}

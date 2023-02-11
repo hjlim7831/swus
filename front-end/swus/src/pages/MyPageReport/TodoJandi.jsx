@@ -4,6 +4,11 @@ import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Grid } from "@mui/material";
 import PaletteIcon from '@mui/icons-material/Palette';
+import ViewTimelineIcon from '@mui/icons-material/ViewTimeline';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import axios from "./../../Utils/index";
 
@@ -93,8 +98,8 @@ function TodoJandi() {
           <Grid item xs={12} sx={{ display:"flex", justifyContent: "space-between" }}>
             <h3 style={{ marginLeft: "40px" }}>000일의 Todo 달성 기록</h3>
             <div>
-              <PaletteIcon name="git" sx={{ color: "#1e6823", mt: '17px', marginLeft: "10px", cursor: "pointer" }} onClick={() => { colorChange("git") }} />
-              <PaletteIcon name="git" sx={{ color: "#2a117d", mt: '17px', marginLeft: "10px", cursor: "pointer" }} onClick={() => { colorChange("github") }} />
+              <ViewTimelineIcon name="git" sx={{ color: "#1e6823", mt: '17px', marginLeft: "10px", cursor: "pointer" }} onClick={() => { colorChange("git") }} />
+              <WifiProtectedSetupIcon  name="github" sx={{ color: "#2a117d", mt: '17px', marginLeft: "10px", cursor: "pointer" }} onClick={() => { colorChange("github") }} />
             </div>
             
           </Grid>
