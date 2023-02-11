@@ -52,7 +52,6 @@ function GroupPage() {
 
 		axios(config)
 			.then((response) => {
-				console.log(response.data)
 				dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
 			})
 			.then((response) => {

@@ -65,7 +65,11 @@ function MyGroupList() {
     axios(config)
       .then((response) => {
         console.log(response.data)
+        dispatch(myGroupListSlice.actions.saveGroupId(teamId))
         dispatch(myGroupListSlice.actions.getGroupDetails(response.data))
+      })
+      .then((response) => {
+        navigate(`group/${teamId}`);
       })
   };
 

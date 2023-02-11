@@ -4,6 +4,7 @@ import { Button, Grid, Divider, Typography, FormControlLabel, Checkbox } from "@
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Icon from '@mui/material/Icon';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
@@ -12,27 +13,13 @@ import Icon from '@mui/material/Icon';
 function GroupDetailUpdate() {
 
 	const navigate = useNavigate();
-	const category = "스터디";
-  const filterCategory = /스터디/;
-
-	const [inputs, setInputs] = useState({
-		title: "Figma숙달방",
-		beginAt: "2023-05-01",
-		endAt: "2023-05-31",
-		day: "1010100",
-		days: [true, false, true, false, true, false, false],
-		startTime: "09:00",
-		finishTime: "12:00",
-		groupInfo: "공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부",
-		todolist: [
-			"1주차 계획",
-			"2주차 계획",
-			"3주차 계획",
-			"4주차 계획"
-		]
+	const dispatch = useDispatch();
+	const teamDetails = useSelector(state => {
+		return state.myGroupList.info
 	});
+  const filterCategory = /S/;
 
-	// const [todos, setTodos] = useState(inputs.todolist.length);
+	const [inputs, setInputs] = useState(teamDetails);
 
 	function getWeekTopics() {
 		return inputs.todolist.map((todo, index) => {
