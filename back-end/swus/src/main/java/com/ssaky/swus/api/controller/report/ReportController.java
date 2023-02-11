@@ -33,8 +33,8 @@ public class ReportController {
     public ResponseEntity<?> getReports(Authentication authentication, @PathVariable int teamId) {
         Map<String, Object> resultMap = new HashMap<>();
 
-        //team에 속한 members (memberId, nickname) 불러오기
-        //id불러오고, id로 닉네임 불러와서 members에 저장하기
+        // team에 속한 members (memberId, nickname) 불러오기
+        // id불러오고, id로 닉네임 불러와서 members에 저장하기
         List<MemberTeam> memberTeams = memberTeamRepository.findByIdTeamId(teamId, MemberTeam.class);
         List<MemberNicknameReq> members = new ArrayList<>();
         for (MemberTeam memberTeam : memberTeams) {
