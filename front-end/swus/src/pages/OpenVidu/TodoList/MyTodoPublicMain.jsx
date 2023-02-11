@@ -6,12 +6,12 @@ import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
 
-import axios from "./../../Utils/index";
+import axios from "../../../Utils/index";
 
 import { useSelector, useDispatch } from "react-redux";
-import { addTodoList } from "./../../store/TodoList";
+import { addTodoList } from "../../../store/TodoList";
 
-function MyTodoBlock() {
+function MyTodoPublicMain() {
   const dispatch = useDispatch();
   // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
@@ -73,42 +73,28 @@ function MyTodoBlock() {
         sx={{
           width: "100%",
           height: 500,
-          backgroundColor: "white",
-          borderRadius: 2,
           padding: "10px",
-          boxShadow: "2px 2px 7px 1px grey",
         }}
       >
         <Grid container>
-          <Grid item xs={4}>
-            <h3 style={{ marginLeft: "40px" }}>To-Do List</h3>
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              color="black"
-              aria-label="change view"
-              sx={{ paddingTop: "20px" }}
-            >
-              <AutorenewIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ marginTop: "8%" }}>
+            <MyTodoForm
+              handleSubmit={handleSubmit}
+              value={value}
+              setValue={setValue}
+            />
             <Box
               sx={{
                 position: "relative",
                 overflow: "auto",
                 overflowX: "hidden",
-                width: "85%",
+                width: "100%",
                 marginX: "auto",
-                height: 320,
+                height: 400,
                 backgroundColor: "#F4EFE6",
+                marginTop: "2%",
               }}
             >
-              <MyTodoForm
-                handleSubmit={handleSubmit}
-                value={value}
-                setValue={setValue}
-              />
               <MyTodoList
                 todoData={todoData}
                 setTodoData={setTodoData}
@@ -125,4 +111,4 @@ function MyTodoBlock() {
   );
 }
 
-export default MyTodoBlock;
+export default MyTodoPublicMain;
