@@ -28,11 +28,10 @@ public class MemberController {
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);
         return ResponseEntity.ok(memberService.findOneInfo(memberId));
-
     }
 
     @PutMapping("my-info")
-    public ResponseEntity<?> updateInfo(Authentication authentication, MemberUpdateReq req){
+    public ResponseEntity<?> updateInfo(Authentication authentication, @RequestBody MemberUpdateReq req){
         Map<String, Object> resultMap = new HashMap<>();
         Claims claims = (Claims) authentication.getPrincipal();
         int memberId = TokenUtils.getmemberIdFromToken(claims);

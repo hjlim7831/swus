@@ -72,14 +72,23 @@ public class StudyService {
         // 이번 주 월요일 날짜 구하기
         cal.add(Calendar.DATE, 2 - cal.get(Calendar.DAY_OF_WEEK));
         String mondayStr = SDF.format(cal.getTime());
+        System.out.println(mondayStr);
         Date monday = Date.valueOf(mondayStr);
 
         // 이번 주 일요일 날짜 구하기
         cal.add(Calendar.DATE, 8 - cal.get(Calendar.DAY_OF_WEEK));
         String sundayStr = SDF.format(cal.getTime());
+        System.out.println(sundayStr);
         Date sunday = Date.valueOf(sundayStr);
         List<DailyTimeResp> weeklyRecords = jandiStudyRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, monday, sunday, DailyTimeResp.class);
-        WeeklyTimeResp resp = WeeklyTimeResp.builder().weeklyRecords(weeklyRecords).monday(mondayStr).build();
+        List<DailyWeekdayTimeResp> weeklyWeekdayRecords = new ArrayList<>();
+        for(DailyTimeResp resp: weeklyRecords) {
+            LocalDate studyAt = new java.sql.Date(resp.getIdStudyAt().getTime()).toLocalDate();
+            int weekday = studyAt.getDayOfWeek().getValue();
+            weeklyWeekdayRecords.add(new DailyWeekdayTimeResp(weekday, resp));
+        }
+
+        WeeklyTimeResp resp = WeeklyTimeResp.builder().weeklyRecords(weeklyWeekdayRecords).build();
         return resp;
 
     }

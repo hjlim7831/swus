@@ -15,6 +15,5 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class TimeJandiResp {
-    private int year;
     private List<DailyTotalTimeResp> timeRecords;
 }

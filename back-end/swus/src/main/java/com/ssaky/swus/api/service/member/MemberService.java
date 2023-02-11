@@ -69,7 +69,10 @@ public class MemberService {
         return member.getId();
     }
 
+    @Transactional
     public String updateInfo(int memberId, MemberUpdateReq req){
+        log.debug("기존 비밀번호:{}",req.getOldPassword());
+        System.out.println(req.getOldPassword());
         Optional<Member> memberO = memberRepository.findById(memberId);
         // 1. memberId에 해당하는 회원이 없을 경우
         if (memberO.isEmpty()){
@@ -82,7 +85,7 @@ public class MemberService {
         }
 
         // 3. oldPassword가 비어있을 경우 -> 비밀번호는 수정하지 않음
-        if (memberO.get().getPassword().equals("") || memberO.get().getPassword() == null) {
+        if (req.getOldPassword().equals("") || req.getOldPassword() == null) {
             memberO.get().updateNickname(req);
             return "success_change_nickname";
         }
