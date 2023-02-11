@@ -94,63 +94,21 @@ function StudyGraph() {
           >
             <ResponsiveBar
               data={data}
-              keys={["목표시간", "공부시간"]}
+              keys={["공부시간", "목표시간"]}
               indexBy="type"
               margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
-              padding={0.5}
-              innerPadding={2}
+              padding={0.6}       // 막대 폭
+              innerPadding={3}
               maxValue={24}
               groupMode="grouped"
               valueScale={{ type: "linear" }}
               indexScale={{ type: "band", round: true }}
-              colors={{ scheme: "nivo" }}
-              defs={[
-                {
-                  id: "dots",
-                  type: "patternDots",
-                  background: "inherit",
-                  color: "#38bcb2",
-                  size: 4,
-                  padding: 1,
-                  stagger: true,
-                },
-                {
-                  id: "lines",
-                  type: "patternLines",
-                  background: "inherit",
-                  color: "#eed312",
-                  rotation: -45,
-                  lineWidth: 6,
-                  spacing: 10,
-                },
-              ]}
-              fill={[
-                {
-                  match: {
-                    id: "fries",
-                  },
-                  id: "dots",
-                },
-                {
-                  match: {
-                    id: "sandwich",
-                  },
-                  id: "lines",
-                },
-              ]}
+              colors={{ scheme: "pastel1" }}
               borderRadius={2}
-              borderColor={{
-                from: "color",
-                modifiers: [["darker", 1.6]],
-              }}
               enableGridX={true}
               enableLabel={false}
               labelSkipWidth={12}
               labelSkipHeight={12}
-              labelTextColor={{
-                from: "color",
-                modifiers: [["darker", 1.6]],
-              }}
               legends={[
                 //위에 목표시간 공부시간 어떤색인지 알려주는 지표
                 {

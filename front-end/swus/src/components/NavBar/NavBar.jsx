@@ -27,9 +27,9 @@ const nickname = localStorage.getItem("nickname");
 const navItems = token
   ? [
       { name: "Study Room", path: "/studyroom" },
-      { name: "Group", path: `/group/mystudy/${nickname}` },
+      { name: "Group", path: `/group/mystudy` },
       { name: "Lounge", path: "/lounge" },
-      { name: "Mypage", path: `/mypage/profile/${nickname}` },
+      { name: "Mypage", path: `/mypage/profile` },
       { name: "Logout", path: "/" },
     ]
   : [{ name: "Login", path: "/account/login" }];

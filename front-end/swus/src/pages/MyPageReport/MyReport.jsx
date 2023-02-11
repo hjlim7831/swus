@@ -9,7 +9,7 @@ import MyTime from "./MyTime";
 function MyReport() {
   return (
     <>
-      <Grid container sx={{ marginLeft: "5%" }}>
+      <Grid container sx={{ marginLeft: "1%" }}>
         <Grid container spacing={4}>
           <Grid item xs={4}>
             <Box sx={{ position: "relative" }}>

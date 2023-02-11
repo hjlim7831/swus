@@ -41,10 +41,8 @@ function App() {
           </Route>
           {/* 마이 페이지 관련 주소 */}
           <Route exact path="/mypage" element={<MyPageMain />}>
-            {/* <Route path="profile/:userId" /> */}
             <Route path="profile" element={<MyProfileMain />} />
-            <Route path="myreport/" element={<MyReport />} />
-            {/* <Route path="myreport/:userId" /> */}
+            <Route path="myreport" element={<MyReport />} />
           </Route>
 
           {/* 그룹 페이지(게시판) 관련 주소 */}

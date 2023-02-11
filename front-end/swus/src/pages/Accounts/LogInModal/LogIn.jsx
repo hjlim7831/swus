@@ -92,7 +92,7 @@ export default function SignInSide() {
             localStorage.setItem("totalM", 0);
           })
           .then(() => {
-            window.location = "http://localhost:3000/studyroom/"
+            window.location = `${window.location.origin}/studyroom`;
           })
           .catch((error) => {
             alert("존재하는 아이디가 아닙니다.");

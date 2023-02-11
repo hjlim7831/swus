@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Grid } from "@mui/material";
-import Button from "@mui/material/Button";
+import PaletteIcon from '@mui/icons-material/Palette';
 
 import axios from "./../../Utils/index";
 
@@ -90,19 +90,13 @@ function TodoJandi() {
         }}
       >
         <Grid container>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ display:"flex", justifyContent: "space-between" }}>
             <h3 style={{ marginLeft: "40px" }}>000일의 Todo 달성 기록</h3>
-            <Button
-              sx={{
-                backgroundColor: "#1e6823",
-                // hover: "#1e6823",
-                // "&&hover": "#1e6823",
-              }}
-              name="git"
-              onClick={() => {
-                colorChange("git");
-              }}
-            ></Button>
+            <div>
+              <PaletteIcon name="git" sx={{ color: "#1e6823", mt: '17px', marginLeft: "10px", cursor: "pointer" }} onClick={() => { colorChange("git") }} />
+              <PaletteIcon name="git" sx={{ color: "#2a117d", mt: '17px', marginLeft: "10px", cursor: "pointer" }} onClick={() => { colorChange("github") }} />
+            </div>
+            
           </Grid>
           <StyledContainer style={{ width: 1200, marginLeft: "8%" }}>
             <CalendarHeatmap
