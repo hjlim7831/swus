@@ -114,6 +114,8 @@ public class Team extends BaseDateEntity {
         this.startTime = updateBoardReq.getStartTime();
         this.finishTime = updateBoardReq.getFinishTime();
         this.recruitmentNumber = updateBoardReq.getBoardNumber();
+        this.teamInfo = updateBoardReq.getContent();
+        this.teamName = updateBoardReq.getTitle();
     }
 
     //    // 일대일 양방향 관계 매핑, 읽기 전용 필드
