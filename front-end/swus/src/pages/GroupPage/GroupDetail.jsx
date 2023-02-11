@@ -11,6 +11,7 @@ import Report from "../../components/modals/Report";
 import { v4 as uuidv4 } from 'uuid';
 import axios from "../../Utils/index";
 import { useDispatch, useSelector } from 'react-redux';
+import myGroupListSlice from '../../store/MyGroupListSlice';
 
 
 
@@ -28,23 +29,17 @@ function GroupDetail() {
     return state.myGroupList.groupId
   })
 
-  const [teamDetails, setTeamDetails] = useState([]);
+  const [teamDetails, setTeamDetails] = useState(teamInfos);
 
-  const [reportData, setReportData] = useState([]);
+  const [reportData, setReportData] = useState(teamInfos.todolist);
 
   useEffect(() => {
 
     setTeamDetails(teamInfos)
 
-    const config = {
-      url: `my-reports/${teamId}/member-todos`,
-      method: "GET",
-    }
-
-    axios(config)
-      .then((response) => {
-        setReportData(response.data.rounds);
-      })
+    setReportData(teamInfos.todolist)
+    console.log("팀 정보s")
+    console.log(teamDetails)
   }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -60,29 +55,31 @@ function GroupDetail() {
   const filterCategory = /S/;
 
   function getWeekTopics() {
-    return reportData.map((topics) => {
-      return (
-        <Grid container sx={{ padding: 2, display: "flex", alignItems: "center"}} key={uuidv4()}>
-          <Grid item xs={3}>
-            <div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex"}}>
-              <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.round}주차</span>
-            </div>
+    if (Array.isArray(reportData) && reportData.length > 0) {
+      return reportData.map((topics) => {
+        return (
+          <Grid container sx={{ padding: 2, display: "flex", alignItems: "center"}} key={uuidv4()}>
+            <Grid item xs={3}>
+              <div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex"}}>
+                <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.round}주차</span>
+              </div>
+            </Grid>
+            <Grid item xs={8}>
+              <div style={{  padding: 5, marginLeft: 3, backgroundColor: "#F4EFE6", height: "35px", borderRadius: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.content}</span>
+              </div>
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            <div style={{  padding: 5, marginLeft: 3, backgroundColor: "#F4EFE6", height: "35px", borderRadius: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.content}</span>
-            </div>
-          </Grid>
-        </Grid>
-      )
-    })
+        )
+      })
+    } else {
+      return
+    }
   }
 
 
   function getMembers() {
-    if (!teamDetails.member_list) {
-      return null
-    } else {
+    if (Array.isArray(teamDetails.member_list) && teamDetails.member_list.length > 0) {
       return teamDetails.member_list.map((member) => {
         return (
           <div 
@@ -93,10 +90,12 @@ function GroupDetail() {
                       marginInline: 10,
                       paddingInline: 10,
                       fontWeight: "bold"
-                   }}>{member.nickname}
+                   }}>{member}
           </div>
         )
       });
+    } else {
+      return null
     }
   }
 
@@ -105,7 +104,6 @@ function GroupDetail() {
       <Container sx={{ border: "1px grey solid", borderRadius: "10px" }}>
         <Grid container sx={{ px: 2, paddingTop: 2 }}>
           <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
-
             <p style={{ fontWeight: "bold", fontSize: "25px" }}>
               {filterCategory.test(teamDetails.category) 
                 ? <span style={{ color: "red", marginRight: 10 }}>[스터디]</span>
@@ -125,7 +123,7 @@ function GroupDetail() {
               ? <Button
                   variant="contained"
                   sx={{ height: 30, backgroundColor: "green", "&:hover" : { backgroundColor: "green" } }}
-                  onClick={inviteMember}>초대하기</Button>
+                  onClick={() => {inviteMember(teamId)}}>초대하기</Button>
               : null}
           </Grid>
           <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
@@ -140,7 +138,7 @@ function GroupDetail() {
             <Button
               variant="contained"
               sx={{ height: 30, backgroundColor: "#E2B9B3", color: "black", "&:hover" : { backgroundColor: "#E2B9B3" } }}
-              onClick={leaveGroup}
+              onClick={() => {leaveGroup(teamId)}}
             >탈퇴하기</Button>
           </Grid>
           <Grid item xs={0.5} sx={{ display: "flex", alignItems: "center", justifyContent: "right" }}>

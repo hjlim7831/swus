@@ -62,14 +62,27 @@ function MyGroupList() {
       method: "GET",
     };
 
+    // const config2 = {
+    //   url: `/my-reports/${teamId}/member-todos`,
+    //   method: "GET",
+    // };
+
     axios(config)
       .then((response) => {
-        console.log(response.data)
         dispatch(myGroupListSlice.actions.saveGroupId(teamId))
         dispatch(myGroupListSlice.actions.getGroupDetails(response.data))
       })
+      // .then((response) => {
+      //   axios(config2)
+      //     .then((response) => {
+      //       dispatch(myGroupListSlice.actions.saveGroupTodos(response.data.rounds))
+      //     })
+      // })
       .then((response) => {
         navigate(`group/${teamId}`);
+      })
+      .catch((error) => {
+        console.log(error)
       })
   };
 

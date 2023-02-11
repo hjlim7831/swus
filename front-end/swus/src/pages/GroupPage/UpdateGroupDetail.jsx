@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container } from "@mui/system";
 import { Button, Grid, Divider, Typography, FormControlLabel, Checkbox } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Icon from '@mui/material/Icon';
 import { useDispatch, useSelector } from 'react-redux';
-
-
+import { v4 as uuidv4 } from "uuid";
 
 
 
@@ -17,32 +16,47 @@ function GroupDetailUpdate() {
 	const teamDetails = useSelector(state => {
 		return state.myGroupList.info
 	});
+	const teamTodos = useSelector(state => {
+		return state.myGroupList.groupTodos
+	})
   const filterCategory = /S/;
 
 	const [inputs, setInputs] = useState(teamDetails);
+	const [todoList, setTodoList] = useState(teamTodos)
+
+	useEffect(() => {
+		console.log(inputs)
+	}, [])
+
+	const teamId = useSelector(state => {
+		return state.myGroupList.teamId
+	})
 
 	function getWeekTopics() {
-		return inputs.todolist.map((todo, index) => {
-			return (
-				<>
-					<Grid item xs={2} sx={{ marginBlock: 1 }}>
-						<div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex", marginTop: 5}}>
-							<span style={{ marginRight: 30, display: "inline-block"}}>{index + 1}주차</span>
-						</div>
-					</Grid>
-					<Grid item xs={9} sx={{ marginBlock: 1, marginLeft: 1.5 }}>
-						<TextField
-							variant='outlined'
-							name={"todolist" + String(index)}
-							value={inputs.todolist[index]}
-							fullWidth
-							onChange={onHandleInput}
-						/>
-					</Grid>
-					<Divider orientation='horizontal' flexItem />
-				</>
-			)
-		})
+		if (Array.isArray(todoList) && todoList.length > 0) {
+			return todoList.map((round, index) => {
+				return (
+					<>
+						<Grid item xs={2} sx={{ marginBlock: 1 }}>
+							<div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex", marginTop: 5}}>
+								<span style={{ marginRight: 30, display: "inline-block"}}>{round.round}주차</span>
+							</div>
+						</Grid>
+						<Grid item xs={9} sx={{ marginBlock: 1, marginLeft: 1.5 }}>
+							<TextField
+								variant='outlined'
+								name={"todolist" + String(index)}
+								value={round.content}
+								fullWidth
+								onChange={onHandleInput}
+							/>
+						</Grid>
+					</>
+				)
+			});
+		}	else {
+			return
+		}
 	}
 
 	const onHandleInput = (event) => {
@@ -60,22 +74,94 @@ function GroupDetailUpdate() {
 			setInputs({...inputs, [date] : newDay})
 		}	else if (name.slice(0, 8) === "todolist") {
 			const idx = Number(name.slice(8, 9))
-			const newTodoList = [...inputs.todolist]
-			newTodoList[idx] = value
-			setInputs({...inputs, ["todolist"] : newTodoList })
+			const newTodoList = [...todoList]
+			const round = newTodoList[idx].round
+			// { round: todoList.length + 1, content: ""}
+			newTodoList[idx] = { round: round, content: value }
+			setTodoList(newTodoList)
 		}	else	{
 			setInputs({...inputs, [name] : value})
 		}
-	}
+	};
+
+	const blank = /^\s+|\s+$/g;
 
 	const onHandleSubmit = (event) => {
 		event.preventDefault();
-		navigate("/mypage/group/:groupId");
-	}
+
+		let selectedDays = "";
+		for (let i = 0; i < 7; i++) {
+			if (inputs.days[i]) {
+				selectedDays += "1"
+			}	else {
+				selectedDays += "0"
+			}
+		}
+
+		const today = new Date();
+		const year = today.getFullYear();
+		let month = today.getMonth + 1;
+		if (month < 10) {
+			month = "0" + `${month}`;
+		}
+		let day = today.getDate();
+		if (day < 10)	{ 
+			day = "0" + `${day}`;
+		}
+		const nowDate = `${year}` + `${month}` + `${day}`;
+
+		if (!inputs.team_name.replace(blank, "")) {
+			alert("팀 이름을 입력해주세요.")
+      return
+		}	else if (!inputs.start_time.replace(blank, "")) {
+			alert("시작 시간을 입력해주세요.")
+      return
+		}	else if (!inputs.finish_time.replace(blank, "")) {
+			alert("종료 시간을 입력해주세요.")
+			return
+		}	else if (!selectedDays.replace(/0/gi, ""))	{
+			alert("요일을 선택해주세요.")
+			return
+		}	else if (inputs.board_number < 2) {
+			alert("2명 이상의 모집인원을 선택해주세요.")
+			return
+		}	else if (Number(inputs.start_time.replace(/:/gi, "") > Number(inputs.finish_time.replace(/:/gi, "")))) {
+			alert("시작 시간이 종료 시간보다 늦습니다!")
+			return
+		}	else if (Number(inputs.begin_at.replace(/-/gi, "") > Number(inputs.end_at.replace(/-/gi, "")))) {
+			alert("스터디 시작 날짜가 종료 날짜보다 늦습니다!")
+			return
+		}	else if (Number(nowDate) > Number(inputs.begin_at.replace(/-/gi,""))) {
+			alert("스터디 시작 날짜가 이미 지났습니다!")
+			return
+		}
+
+		const payload = {
+			team_name: inputs.team_name,
+			begin_at: inputs.begin_at,
+			end_at: inputs.end_at,
+			day: selectedDays,
+			start_time: inputs.start_time,
+			finish_time: inputs.finish_time,
+			team_info: inputs.team_info,
+		}
+
+		navigate(`/group/mystudy/group/${teamId}`);
+	};
 
 	const addTopic = () => {
-		setInputs({...inputs, todolist: [...inputs.todolist, ""]})
-	}
+		setTodoList([...todoList, { round: todoList.length + 1, content: ""}])
+	};
+
+	const dayItems = [
+		{ name: "day0", label: "월" },
+		{ name: "day1", label: "화" },
+		{ name: "day2", label: "수" },
+		{ name: "day3", label: "목" },
+		{ name: "day4", label: "금" },
+		{ name: "day5", label: "토" },
+		{ name: "day6", label: "일" }
+	]
 
 
   return (
@@ -98,14 +184,14 @@ function GroupDetailUpdate() {
 						<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 3, backgroundColor: "gray"}}/>
 					<Grid container sx={{ alignItems: "center", display: "flex",  textAlign: "center", fontWeight: "bold" }}>
 						<Grid item xs={2}>
-							<p>제목</p>
+							<p>팀 이름</p>
 						</Grid>
 						<Divider orientation="vertical" flexItem sx={{ mr: 3 }} />
 						<div style={{ display: "flex", alignItems: "center" }}>
 							<TextField
-								id="title"
-								name="title"
-								value={inputs.title}
+								id="team_name"
+								name="team_name"
+								value={inputs.team_name}
 								variant="outlined"
 								size="small"
 								fullWidth
@@ -121,8 +207,8 @@ function GroupDetailUpdate() {
 						<Divider orientation='vertical' flexItem sx={{ mr: 3 }}/>
 						<div style={{ display: "flex", alignItems: "center"}}>
 							<TextField
-								name="beginAt"
-								value={inputs.beginAt}
+								name="begin_at"
+								value={inputs.begin_at}
 								type="date"
 								InputLabelProps={{
 									shrink: true,
@@ -133,8 +219,8 @@ function GroupDetailUpdate() {
 							/>
 							 ~ 
 							<TextField
-								name="endAt"
-								value={inputs.endAt}
+								name="end_at"
+								value={inputs.end_at}
 								type="date"
 								InputLabelProps={{
 									shrink: true,
@@ -153,8 +239,8 @@ function GroupDetailUpdate() {
 						<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 						<div style={{ display: "flex", alignItems: "center"}}>
 							<TextField
-								name="startTime"
-								value={inputs.startTime}
+								name="start_time"
+								value={inputs.start_time}
 								type="time"
 								InputLabelProps={{
 									shrink: true,
@@ -165,8 +251,8 @@ function GroupDetailUpdate() {
 							/>
 							~
 							<TextField
-								name="finishTime"
-								value={inputs.finishTime}
+								name="finish_time"
+								value={inputs.finish_time}
 								type="time"
 								InputLabelProps={{
 									shrink: true,
@@ -184,61 +270,30 @@ function GroupDetailUpdate() {
 						</Grid>
 						<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 						<div style={{ display: "flex", alignItems: "center"}}>
-							<FormControlLabel
-								name="day0"
-								label="월"
-								value={inputs.days[0]}
-								control={<Checkbox checked={inputs.days[0]} onChange={onHandleInput}/>}
-							/>
-							<FormControlLabel
-								name="day1"
-								label="화"
-								value={inputs.days[1]}
-								control={<Checkbox checked={inputs.days[1]} onChange={onHandleInput}/>}
-							/>
-							<FormControlLabel
-								name="day2"
-								label="수"
-								value={inputs.days[2]}
-								control={<Checkbox checked={inputs.days[2]} onChange={onHandleInput}/>}
-							/>
-							<FormControlLabel
-								name="day3"
-								label="목"
-								value={inputs.days[3]}
-								control={<Checkbox checked={inputs.days[3]} onChange={onHandleInput}/>}
-							/>
-							<FormControlLabel
-								name="day4"
-								label="금"
-								value={inputs.days[4]}
-								control={<Checkbox checked={inputs.days[4]} onChange={onHandleInput}/>}
-							/>
-							<FormControlLabel
-								name="day5"
-								label="토"
-								value={inputs.days[5]}
-								control={<Checkbox checked={inputs.days[5]} onChange={onHandleInput}/>}
-							/>
-							<FormControlLabel
-								name="day6"
-								label="일"
-								value={inputs.days[6]}
-								control={<Checkbox checked={inputs.days[6]} onChange={onHandleInput}/>}
-							/>
-						</div>
+								{dayItems.map((item, index) => {
+									return (
+										<FormControlLabel
+										 key={uuidv4()}
+										 name={item.name}
+										 label={item.label}
+										 value={inputs.days[index]}
+										 control={<Checkbox checked={inputs.days[index]} onChange={onHandleInput} />}
+										/>
+									)
+								})}
+							</div>
 					</Grid>
 						<Divider orientation='horizontal' flexItem />
 					<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
 						<Grid item xs={2} sx={{ justifyContent: "center", alignContent: "center", alignItems: "center", justifyItems: "center" }}>
-							<p>상세 내용 </p>
+							<p>팀 정보</p>
 						</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 						<Grid item xs={9}>
 							<TextField  
 								variant='outlined' 
-								name="groupInfo"
-								value={inputs.groupInfo}
+								name="team_info"
+								value={inputs.team_info}
 								sx={{ my: "14px" }} 
 								size="small"
 								multiline

@@ -24,6 +24,10 @@ function UpdateArticleForm() {
 		return state.groupBoard.boardId
 	});
 
+	useEffect(() => {
+		console.log("인풋을 받아오는 곳")
+		console.log(inputs)
+	})
 	const onHandleInput = (event) => {
 		const name = event.target.name
 		const value = event.target.value
