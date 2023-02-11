@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Icon from '@mui/material/Icon';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from "uuid";
-
-
+import axios from "../../Utils/index";
+import myGroupListSlice from "../../store/MyGroupListSlice";
 
 function GroupDetailUpdate() {
 
@@ -17,20 +17,23 @@ function GroupDetailUpdate() {
 		return state.myGroupList.info
 	});
 	const teamTodos = useSelector(state => {
-		return state.myGroupList.groupTodos
+		return state.myGroupList.info.todolist
 	})
   const filterCategory = /S/;
 
 	const [inputs, setInputs] = useState(teamDetails);
 	const [todoList, setTodoList] = useState(teamTodos)
+	const teamId = useSelector(state => {
+		return state.myGroupList.groupId
+	})
 
 	useEffect(() => {
 		console.log(inputs)
+		console.log("여기가 투두")
+		console.log(todoList)
+		console.log(teamId)
 	}, [])
 
-	const teamId = useSelector(state => {
-		return state.myGroupList.teamId
-	})
 
 	function getWeekTopics() {
 		if (Array.isArray(todoList) && todoList.length > 0) {
@@ -76,8 +79,8 @@ function GroupDetailUpdate() {
 			const idx = Number(name.slice(8, 9))
 			const newTodoList = [...todoList]
 			const round = newTodoList[idx].round
-			// { round: todoList.length + 1, content: ""}
 			newTodoList[idx] = { round: round, content: value }
+			console.log(todoList)
 			setTodoList(newTodoList)
 		}	else	{
 			setInputs({...inputs, [name] : value})
@@ -144,13 +147,48 @@ function GroupDetailUpdate() {
 			start_time: inputs.start_time,
 			finish_time: inputs.finish_time,
 			team_info: inputs.team_info,
+			todolist: todoList,
+		};
+
+		const config = {
+			url: `/my-teams/${teamId}`,
+			method: "PUT",
+			data: payload
+		};
+
+		const config2 = {
+			url: `/my-teams/${teamId}/team-todos`,
+			method: "PUT",
+			data: {
+				team_todo_list: todoList
+			},
 		}
 
-		navigate(`/group/mystudy/group/${teamId}`);
+		console.log("여기다!!")
+		console.log(payload)
+
+		axios(config)
+			.then((response) => {
+				console.log(teamId)
+				axios(config2)
+					// .then((response) => {
+					// 	dispatch(myGroupListSlice.actions.getGroupDetails(response.data))
+					// })
+					.then((response) => {
+						navigate(`/group/mystudy/group/${teamId}`);
+					})
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 	};
 
 	const addTopic = () => {
-		setTodoList([...todoList, { round: todoList.length + 1, content: ""}])
+		if (!todoList) {
+			setTodoList([{ round: 1, content: "" }])
+		}	else	{
+			setTodoList([...todoList, { round: todoList.length + 1, content: ""}])
+		}
 	};
 
 	const dayItems = [

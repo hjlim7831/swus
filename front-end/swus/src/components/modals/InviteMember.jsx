@@ -36,6 +36,11 @@ function inviteMember(teamId) {
       Swal.fire({
         title: `${result.value}`
       })
+      .then((res) => {
+        if (res.isConfirmed) {
+          window.location.replace(`/group/mystudy/group/${teamId}`);
+        }
+      })
     }
   })
 };

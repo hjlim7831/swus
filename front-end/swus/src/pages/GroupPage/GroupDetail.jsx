@@ -20,26 +20,67 @@ function GroupDetail() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const teamId = window.location.pathname.slice(21, window.location.pathname.length + 1)
 
-  const teamInfos = useSelector(state => {
-    return state.myGroupList.info
-  })
+  const [teamDetails, setTeamDetails] = useState([]);
 
-  const teamId = useSelector(state => {
-    return state.myGroupList.groupId
-  })
+  const [reportData, setReportData] = useState([]);
 
-  const [teamDetails, setTeamDetails] = useState(teamInfos);
-
-  const [reportData, setReportData] = useState(teamInfos.todolist);
+  const [start_time, setStart_time] = useState();
+  const [finish_time, setFinish_time] = useState();
+  const [studyDays, setStudyDays] = useState();
 
   useEffect(() => {
 
-    setTeamDetails(teamInfos)
+    const config = {
+      url: `/users/my-groups/${teamId}`,
+      method: "GET",
+    };
 
-    setReportData(teamInfos.todolist)
-    console.log("팀 정보s")
-    console.log(teamDetails)
+    const config2 = {
+      url: `/my-reports/${teamId}/member-todos`,
+      method: "GET",
+    }
+
+    axios(config)
+      .then((response) => {
+        console.log(response.data)
+        setTeamDetails(response.data)
+        setStart_time(response.data.start_time.slice(0, 5))
+        setFinish_time(response.data.finish_time.slice(0, 5))
+        let date = "";
+        for (let i = 0; i < 7; i++) {
+          if (response.data.day[i] === "1") {
+            if (i === 0)  {
+              date += "월"
+            } else if (i === 1) {
+              date += "화"
+            } else if (i === 2) {
+              date += "수"
+            } else if (i === 3) {
+              date += "목"
+            } else if (i === 4) {
+              date += "금"
+            } else if (i === 5) {
+              date += "토"
+            } else if (i === 6) {
+              date += "일"
+            } 
+          }
+        }
+        setStudyDays(date)
+      })
+      .then((response) => {
+        axios(config2)
+          .then((response) => {
+            console.log("리포트 정보")
+            console.log(response.data)
+            setReportData(response.data)
+          })
+      })
+
+      dispatch(myGroupListSlice.actions.saveGroupId(teamId))
+    
   }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -101,134 +142,141 @@ function GroupDetail() {
 
   return (
     <>
-      <Container sx={{ border: "1px grey solid", borderRadius: "10px" }}>
-        <Grid container sx={{ px: 2, paddingTop: 2 }}>
-          <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
-            <p style={{ fontWeight: "bold", fontSize: "25px" }}>
-              {filterCategory.test(teamDetails.category) 
-                ? <span style={{ color: "red", marginRight: 10 }}>[스터디]</span>
-                : <span style={{ color: "blue", marginRight: 10 }}>[메이트]</span>} 
-             {teamDetails.team_name}</p>
-            {(teamDetails.leader_email === localStorage.getItem("id")) 
-              ? <p style={{ paddingLeft: 30, paddingTop: 5 }}>
-                  <EditOutlinedIcon
-                    sx={{ fontSize: 30, "&:hover" : { cursor: "pointer" } }}
-                    onClick={() => {navigate(`update`)}}
-                  /></p>
-              : null}
-          </Grid>
-          <Grid item xs={1.6}></Grid>
-          <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
-            {(teamDetails.leader_email === localStorage.getItem("id"))
-              ? <Button
+      {teamDetails ? (
+        <>
+          <Container sx={{ border: "1px grey solid", borderRadius: "10px" }}>
+            <Grid container sx={{ px: 2, paddingTop: 2 }}>
+              <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
+                <p style={{ fontWeight: "bold", fontSize: "25px" }}>
+                  {filterCategory.test(teamDetails.category) 
+                    ? <span style={{ color: "red", marginRight: 10 }}>[스터디]</span>
+                    : <span style={{ color: "blue", marginRight: 10 }}>[메이트]</span>} 
+                {teamDetails.team_name}
+                {(teamDetails.team_done === "Y") ? <span style={{ marginInline: 10, color: "red" }}>[완료]</span> : null}</p>
+                {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N") 
+                  ? <p style={{ paddingLeft: 30, paddingTop: 5 }}>
+                      <EditOutlinedIcon
+                        sx={{ fontSize: 30, "&:hover" : { cursor: "pointer" } }}
+                        onClick={() => {navigate(`update`)}}
+                      /></p>
+                  : null}
+              </Grid>
+              <Grid item xs={1.6}></Grid>
+              <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
+                {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N")
+                  ? <Button
+                      variant="contained"
+                      sx={{ height: 30, backgroundColor: "green", "&:hover" : { backgroundColor: "green" } }}
+                      onClick={() => {inviteMember(teamId)}}>초대하기</Button>
+                  : null}
+              </Grid>
+              <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
+                {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N")
+                  ? <Button
+                      variant="contained"
+                      sx={{ height: 30, backgroundColor: "red", "&:hover" : { backgroundColor: "red" } }}
+                      onClick={() => {endGroup(teamId)}}>종료하기</Button>
+                  : null}
+              </Grid>
+              <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
+                <Button
                   variant="contained"
-                  sx={{ height: 30, backgroundColor: "green", "&:hover" : { backgroundColor: "green" } }}
-                  onClick={() => {inviteMember(teamId)}}>초대하기</Button>
-              : null}
-          </Grid>
-          <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
-            {(teamDetails.leader_email === localStorage.getItem("id"))
-              ? <Button
-                  variant="contained"
-                  sx={{ height: 30, backgroundColor: "red", "&:hover" : { backgroundColor: "red" } }}
-                  onClick={endGroup}>종료하기</Button>
-              : null}
-          </Grid>
-          <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
-            <Button
-              variant="contained"
-              sx={{ height: 30, backgroundColor: "#E2B9B3", color: "black", "&:hover" : { backgroundColor: "#E2B9B3" } }}
-              onClick={() => {leaveGroup(teamId)}}
-            >탈퇴하기</Button>
-          </Grid>
-          <Grid item xs={0.5} sx={{ display: "flex", alignItems: "center", justifyContent: "right" }}>
-            <ArrowBackIcon
-              sx={{ "&:hover" : { cursor: "pointer" } }}
-              onClick={() => {navigate("/group/mystudy")}} 
-            />
-          </Grid>
-        </Grid>
-        <Divider orientation='horizontal' flexItem/>
-        <Grid container sx={{ padding: 2}}>
-          <Grid item xs={2} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ marginInline: 10, padding: 5 }}>그룹장 </div>
-            <div style={{ borderRadius: "20px", 
-                          border: "1px solid grey", 
-                          backgroundColor: "#E2B9B3", 
-                          padding: 5, 
-                          marginInline: 10, 
-                          paddingInline: 10, 
-                          fontWeight: "bold" }}>{teamDetails.leader}</div>
-          </Grid>
-            <Divider orientation='vertical' flexItem sx={{ background: "grey", borderWidth: 1, marginInline: 3 }}/>
-          <Grid item xs={9} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ marginInline: 10, padding: 5}}>그룹원 </div>
-            {getMembers()}
-          </Grid>
-        </Grid>
-          <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
-        <Grid container sx={{ padding: 2 }}>
-          <Grid item xs={4} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ fontWeight: "bold", marginInline: 5, padding: 5 }}>스터디 일정</div>
-            <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.begin_at} ~ {teamDetails.end_at}</div>
-          </Grid>
-          <Grid item xs={5} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>스터디 시간</div>
-            <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.day} {teamDetails.start_time} ~ {teamDetails.finish_time}</div>
-          </Grid>
-          <Grid item xs={3} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>인원</div>
-            <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</div>
-          </Grid>
-          <Grid container sx={{ padding: 2 }}>
-            <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
-              <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
-              <Typography style={{ margin: 10, padding: 35, minHeight: "30px", wordBreak: "break-all", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>
-                {teamDetails.team_info}
-              </Typography>
+                  sx={{ height: 30, backgroundColor: "#E2B9B3", color: "black", "&:hover" : { backgroundColor: "#E2B9B3" } }}
+                  onClick={() => {leaveGroup(teamId)}}
+                >탈퇴하기</Button>
+              </Grid>
+              <Grid item xs={0.5} sx={{ display: "flex", alignItems: "center", justifyContent: "right" }}>
+                <ArrowBackIcon
+                  sx={{ "&:hover" : { cursor: "pointer" } }}
+                  onClick={() => {navigate("/group/mystudy")}} 
+                />
+              </Grid>
             </Grid>
-          </Grid>
-          <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 15 }}>
-            <div style={{ paddingInline: 20, fontWeight: "bold", fontSize: "20px" }}>
-              회차별 주제
-            </div>
-            <div>
-              <Button variant="outlined" onClick={openModal}>
-                리포트 보기
-              </Button>
-              <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
-                {
-                  <>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
-                        {filterCategory.test(teamDetails.category) 
-                          ? <span style={{ color: "red" }}>[스터디]</span>
-                          : <span style={{ color: "blue"}}>[메이트]</span>} 
-                        <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
-                      </p>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
-                      <div style={{ borderRadius: "20px", 
-                                    border: "1px solid grey", 
-                                    backgroundColor: "#E2B9B3", 
-                                    padding: 5, 
-                                    marginInline: 10, 
-                                    paddingInline: 10, 
-                                    fontWeight: "bold"
-                                   }}>{teamDetails.leader}</div>
-                      {getMembers()}
-                    </div>
-                  </>
-                } 
-              </Report>
-            </div>
+            <Divider orientation='horizontal' flexItem/>
+            <Grid container sx={{ padding: 2}}>
+              <Grid item xs={2} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ marginInline: 10, padding: 5 }}>그룹장 </div>
+                <div style={{ borderRadius: "20px", 
+                              border: "1px solid grey", 
+                              backgroundColor: "#E2B9B3", 
+                              padding: 5, 
+                              marginInline: 10, 
+                              paddingInline: 10, 
+                              fontWeight: "bold" }}>{teamDetails.leader}</div>
+              </Grid>
+                <Divider orientation='vertical' flexItem sx={{ background: "grey", borderWidth: 1, marginInline: 3 }}/>
+              <Grid item xs={9} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ marginInline: 10, padding: 5}}>그룹원 </div>
+                {getMembers()}
+              </Grid>
+            </Grid>
+              <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
+            <Grid container sx={{ padding: 2 }}>
+              <Grid item xs={4} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ fontWeight: "bold", marginInline: 5, padding: 5 }}>스터디 일정</div>
+                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.begin_at} ~ {teamDetails.end_at}</div>
+              </Grid>
+              <Grid item xs={5} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>스터디 시간</div>
+                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{studyDays} {start_time} ~ {finish_time}</div>
+              </Grid>
+              <Grid item xs={3} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>인원</div>
+                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</div>
+              </Grid>
+              <Grid container sx={{ padding: 2 }}>
+                <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
+                  <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
+                  <Typography style={{ margin: 10, padding: 35, minHeight: "30px", wordBreak: "break-all", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>
+                    {teamDetails.team_info}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 15 }}>
+                <div style={{ paddingInline: 20, fontWeight: "bold", fontSize: "20px" }}>
+                  회차별 주제
+                </div>
+                <div>
+                  <Button variant="outlined" onClick={openModal}>
+                    리포트 보기
+                  </Button>
+                  <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
+                    {
+                      <>
+                        <div style={{ display: "flex", justifyContent: "center" }}>
+                          <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
+                            {filterCategory.test(teamDetails.category) 
+                              ? <span style={{ color: "red" }}>[스터디]</span>
+                              : <span style={{ color: "blue"}}>[메이트]</span>} 
+                            <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                          </p>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+                          <div style={{ borderRadius: "20px", 
+                                        border: "1px solid grey", 
+                                        backgroundColor: "#E2B9B3", 
+                                        padding: 5, 
+                                        marginInline: 10, 
+                                        paddingInline: 10, 
+                                        fontWeight: "bold"
+                                      }}>{teamDetails.leader}</div>
+                          {getMembers()}
+                        </div>
+                      </>
+                    } 
+                  </Report>
+                </div>
+              </Container>
+              <br/>
+              <Container style={{ overflowY: "scroll", height: "250px" }}>
+                {getWeekTopics()}
+              </Container>
+            </Grid>
           </Container>
-          <br/>
-          <Container style={{ overflowY: "scroll", height: "250px" }}>
-            {getWeekTopics()}
-          </Container>
-        </Grid>
-      </Container>
+        </>
+      )
+      : <div>loading</div>
+      }
     </>
   )
 }

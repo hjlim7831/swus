@@ -62,22 +62,11 @@ function MyGroupList() {
       method: "GET",
     };
 
-    // const config2 = {
-    //   url: `/my-reports/${teamId}/member-todos`,
-    //   method: "GET",
-    // };
-
     axios(config)
       .then((response) => {
         dispatch(myGroupListSlice.actions.saveGroupId(teamId))
         dispatch(myGroupListSlice.actions.getGroupDetails(response.data))
       })
-      // .then((response) => {
-      //   axios(config2)
-      //     .then((response) => {
-      //       dispatch(myGroupListSlice.actions.saveGroupTodos(response.data.rounds))
-      //     })
-      // })
       .then((response) => {
         navigate(`group/${teamId}`);
       })
@@ -124,7 +113,11 @@ function MyGroupList() {
               ? <span style={{ color: "red" }}>[스터디]</span> 
               : <span style={{ color: "blue" }}>[메이트]</span>} 
           </TableCell>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_name}</TableCell>
+          <TableCell 
+            style={{ textAlign: "center", fontSize: "15px" }}
+            onClick={() => {goGroupDetail(group.team_id)}}>
+              <span style={{ cursor: "pointer" }}>{group.team_name}</span>
+          </TableCell>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
             {group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}
           </TableCell>

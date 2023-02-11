@@ -23,7 +23,6 @@ const myGroupListSlice = createSlice({
       days: [false, false, false, false, false, false, false],
       todolist: [],
     },
-    // groupTodos: [],
   },
   reducers: {
     getGroupDetails: (state, action) => {
