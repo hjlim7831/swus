@@ -88,7 +88,7 @@ function StudyGraph() {
             sx={{
               position: "relative",
               width: "100%",
-              height: 350,
+              height: 420,
               textColor: "white",
             }}
           >

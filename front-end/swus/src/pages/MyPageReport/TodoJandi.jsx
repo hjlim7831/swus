@@ -98,7 +98,7 @@ function TodoJandi() {
             </div>
             
           </Grid>
-          <StyledContainer style={{ width: 1200, marginLeft: "8%" }}>
+          <StyledContainer style={{ width: 1400, marginLeft: "3.5rem", fontSize: "8px" }}>
             <CalendarHeatmap
               endDate={endDate}
               startDate={startDate}
@@ -166,4 +166,4 @@ const StyledContainer = styled.div`
     fill: #2a117d;
   }
 `;
-// "#BDACFB", "#7A5DDF", "#4926C1", "#2A117D"
+// 1, 5, 6, 11
