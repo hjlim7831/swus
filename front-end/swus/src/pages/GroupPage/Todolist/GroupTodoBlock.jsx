@@ -1,25 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import MyTodoList from "./MyTodoList";
-import MyTodoForm from "./MyTodoForm";
+import GroupTodoList from "./GroupTodoList";
+import GroupTodoForm from "./GroupTodoForm";
 import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
 
 import axios from "./../../Utils/index";
 
-import { useSelector, useDispatch } from "react-redux";
-import { addTodoList } from "./../../store/TodoList";
+// import { useSelector, useDispatch } from "react-redux";
+// import { addTodoList } from "./../../store/TodoList";
 
-function MyTodoBlock() {
-  const dispatch = useDispatch();
+function GroupTodoBlock() {
+  // const dispatch = useDispatch();
   // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
 
+  // ---------------------------------------------------------------------
+  // 나중에 처리해야 하는 곳
+  // 1. groupId 받아서 저장
+  // 2. round 받아서 저장
+  const groupId = 1;
+  const round = 1;
+
   useEffect(() => {
     const config = {
-      url: "/my-todos",
+      url: `/my-groups/${groupId}/round/${round}`,
       method: "get",
     };
 
@@ -48,9 +55,9 @@ function MyTodoBlock() {
     const content = value;
 
     const config = {
-      url: "/my-todos",
+      url: `/my-groups/${groupId}/round/${round}`,
       method: "post",
-      data: { todo_done: "N", content },
+      data: { content },
     };
 
     axios(config).then((response) => {
@@ -100,20 +107,22 @@ function MyTodoBlock() {
                 overflowX: "hidden",
                 width: "85%",
                 marginX: "auto",
-                height: 320,
+                height: 360,
                 backgroundColor: "#F4EFE6",
               }}
             >
-              <MyTodoForm
+              <GroupTodoForm
                 handleSubmit={handleSubmit}
                 value={value}
                 setValue={setValue}
               />
-              <MyTodoList
+              <GroupTodoList
                 todoData={todoData}
                 setTodoData={setTodoData}
                 value={value}
                 setValue={setValue}
+                groupId={groupId}
+                round={round}
               />
               {/*todoData라는 state를 내려줌 List.js에 */}
               {/*자녀컴포넌트에서는 props 파라미터로 받음 */}
@@ -125,4 +134,4 @@ function MyTodoBlock() {
   );
 }
 
-export default MyTodoBlock;
+export default GroupTodoBlock;

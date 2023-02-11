@@ -50,7 +50,7 @@ function NSRoomCard(props) {
         console.log(response);
         console.log("is here?");
         navigate(`/studyroom/${sessionName}`, {
-          state: { roomName: sessionName },
+          state: { roomName: sessionName, roomId: roomId },
         }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
       } else {
         alert("잠시 후 다시 입장해주세요");
@@ -64,9 +64,7 @@ function NSRoomCard(props) {
 
   return (
     <>
-      <Card
-        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
-      >
+      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
         <div
           style={{
             width: 200,
@@ -126,9 +124,7 @@ function NSRoomCard(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          Non-Stop 열람실 #{sessionName} 입장하기
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Non-Stop 열람실 #{sessionName} 입장하기</DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>

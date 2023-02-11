@@ -6,33 +6,29 @@ import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
 
-import axios from "./../../Utils/index";
+import axios from "../../../Utils/index";
 
-// import { useSelector, useDispatch } from "react-redux";
-// import { addTodoList } from "./../../store/TodoList";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodoList } from "../../../store/TodoList";
 
-function GroupTodoBlock() {
-  // const dispatch = useDispatch();
+function MyTodoPublicIn() {
+  //{ parentFunction }
+  const dispatch = useDispatch();
   // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
-
-  // ---------------------------------------------------------------------
-  // 나중에 처리해야 하는 곳
-  // 1. groupId 받아서 저장
-  // 2. round 받아서 저장
-  const groupId = 1;
-  const round = 1;
+  // const [todoCnt, setTodoCnt] = useState(0);
+  // const [doneCnt, setDoneCnt] = useState(0);
 
   useEffect(() => {
     const config = {
-      url: `/my-groups/${groupId}/round/${round}`,
+      url: "/my-todos",
       method: "get",
     };
 
     axios(config)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {
             return {
@@ -40,7 +36,7 @@ function GroupTodoBlock() {
               todo_done: todo.todo_done === "N" ? false : true,
             };
           });
-          // console.log(updatedData);
+          console.log(updatedData);
           setTodoData(updatedData);
         }
       })
@@ -49,15 +45,27 @@ function GroupTodoBlock() {
       });
   }, []);
 
+  // useEffect(() => {
+  //   setTodoCnt(todoData.length);
+  //   setDoneCnt(todoData.filter((todo) => todo.todo_done === true));
+  // }, []);
+
+  // const childFunction = () => {
+  //   parentFunction(
+  //     todoData.length,
+  //     todoData.filter((todo) => todo.todo_done === true).length
+  //   );
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const content = value;
 
     const config = {
-      url: `/my-groups/${groupId}/round/${round}`,
+      url: "/my-todos",
       method: "post",
-      data: { content },
+      data: { todo_done: "N", content },
     };
 
     axios(config).then((response) => {
@@ -78,51 +86,32 @@ function GroupTodoBlock() {
     <>
       <Box
         sx={{
-          width: "100%",
+          width: "90%",
           height: 500,
-          backgroundColor: "white",
-          borderRadius: 2,
           padding: "10px",
-          boxShadow: "2px 2px 7px 1px grey",
         }}
       >
         <Grid container>
-          <Grid item xs={4}>
-            <h3 style={{ marginLeft: "40px" }}>To-Do List</h3>
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              color="black"
-              aria-label="change view"
-              sx={{ paddingTop: "20px" }}
-            >
-              <AutorenewIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ marginTop: "8%" }}>
+            <MyTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
             <Box
               sx={{
                 position: "relative",
                 overflow: "auto",
                 overflowX: "hidden",
-                width: "85%",
+                width: "100%",
                 marginX: "auto",
-                height: 360,
+                height: 400,
                 backgroundColor: "#F4EFE6",
+                marginTop: "2%",
               }}
             >
-              <MyTodoForm
-                handleSubmit={handleSubmit}
-                value={value}
-                setValue={setValue}
-              />
+              {/* {childFunction()} */}
               <MyTodoList
                 todoData={todoData}
                 setTodoData={setTodoData}
                 value={value}
                 setValue={setValue}
-                groupId={groupId}
-                round={round}
               />
               {/*todoData라는 state를 내려줌 List.js에 */}
               {/*자녀컴포넌트에서는 props 파라미터로 받음 */}
@@ -134,4 +123,4 @@ function GroupTodoBlock() {
   );
 }
 
-export default GroupTodoBlock;
+export default MyTodoPublicIn;

@@ -14,8 +14,7 @@ import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 
-
-import Lounge from "./pages/Lounge/Lounge";
+import Lounge from "./pages/Lounge/main";
 
 import UserModal from "./pages/Accounts/LogInModal/UserModal";
 import LogInModal from "./pages/Accounts/LogInModal/LogIn";
@@ -43,8 +42,8 @@ function App() {
           </Route>
           {/* 마이 페이지 관련 주소 */}
           <Route exact path="/mypage" element={<MyPageMain />}>
-            <Route path="profile/:userId" />
-            <Route path="myreport/:userId" />
+            <Route path="profile" element={<MyProfileMain />} />
+            <Route path="myreport" element={<MyReport />} />
           </Route>
 
           {/* 그룹 페이지(게시판) 관련 주소 */}

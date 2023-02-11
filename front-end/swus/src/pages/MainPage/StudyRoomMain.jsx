@@ -24,6 +24,7 @@ import NavBar from "../../components/NavBar/NavBar";
 
 import "./RoomScroll/hideScrollbar.css";
 import { resolveComponentProps } from "@mui/base";
+import MyTodoBlock from "../OpenVidu/TodoList/MyTodoPublicMain";
 
 // const getrooms = () =>
 //   Array(1) //카드의 개수 추정 0부터 10까지 있는 카드
@@ -113,8 +114,6 @@ function StudyRoomMain() {
         .catch((error) => {
           console.log(error);
         });
-
-      //방 입장하는 axios 이어서 작성 필요
     } else if (typeOfRoom === "N") {
       axios({
         method: "post",
@@ -155,10 +154,6 @@ function StudyRoomMain() {
     }
   };
 
-  /////로컬 스토리지 실험중//////
-  //로컬 스토리지에 시간 초기화하는 코드 일단 넣고,
-  //오픈비두 입장버튼 눌렀을 때에 입장 시간 저장 필요
-
   return (
     <>
       <NavBar />
@@ -178,15 +173,8 @@ function StudyRoomMain() {
           {/* 그리드 컴포넌트 사이 넓이 */}
           <Grid item xs={3} style={{}}>
             {/* todo& 목표 공부시간 묶는 div */}
-            <Grid
-              item
-              xs={12}
-              sx={{ marginTop: 3, marginX: "auto", paddingLeft: "30px" }}
-            >
-              <Typography
-                variant="h5"
-                sx={{ fontSize: 20, color: "white", marginTop: 2 }}
-              >
+            <Grid item xs={12} sx={{ marginTop: 3, marginX: "auto", paddingLeft: "30px" }}>
+              <Typography variant="h5" sx={{ fontSize: 20, color: "white", marginTop: 2 }}>
                 Todo List
               </Typography>
               <Grid
@@ -198,7 +186,7 @@ function StudyRoomMain() {
                   paddingX: "10px",
                 }}
               >
-                <MyTodo />
+                <MyTodoBlock />
               </Grid>
             </Grid>
             <Grid item xs={12} sx={{ marginX: "auto", paddingLeft: "30px" }}>
@@ -237,10 +225,7 @@ function StudyRoomMain() {
             }}
           >
             <Grid item xs={12}>
-              <Typography
-                variant="h1"
-                sx={{ fontSize: 30, color: "white", marginTop: 2 }}
-              >
+              <Typography variant="h1" sx={{ fontSize: 30, color: "white", marginTop: 2 }}>
                 STUDY ROOM
               </Typography>
             </Grid>
@@ -356,9 +341,9 @@ function onWheel(apiObj, ev) {
     return;
   }
 
-  if (ev.deltaY < 0) {
+  if (ev.deltaY > 0) {
     apiObj.scrollNext();
-  } else if (ev.deltaY > 0) {
+  } else if (ev.deltaY < 0) {
     apiObj.scrollPrev();
   }
 }

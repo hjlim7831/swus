@@ -45,18 +45,14 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
-      enterTime: props.enterTime,
       d: new Date(), //시계
       open: false, //모달
-      // todo: 0, //투두리스트 할 목록 개수
-      // done: 0, //투두 리스트 한 목록 개수
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
-    // this.getTodoCount = this.getTodoCount.bind(this);
   }
 
   componentDidMount() {
@@ -135,10 +131,6 @@ class OpenViduApp extends Component {
         subscribers: subscribers,
       });
     }
-
-    // audioControl(e) {
-    //   publisher.publishAudio(true);
-    // }
   }
 
   joinSession() {
@@ -191,7 +183,7 @@ class OpenViduApp extends Component {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
-            .connect(token, { clientData: this.state.myUserName })
+            .connect(token, { clientData: this.state.myUserName, enterTime: this.state.enterTime })
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
@@ -388,13 +380,7 @@ class OpenViduApp extends Component {
                 ) : (
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton
-                      aria-label="record"
-                      color="primary"
-                      onClick={() => {
-                        this.audioControl();
-                      }}
-                    >
+                    <IconButton aria-label="record" color="primary">
                       <PlayCircleOutlineIcon />
                     </IconButton>
                     <IconButton color="primary" aria-label="add an alarm">
