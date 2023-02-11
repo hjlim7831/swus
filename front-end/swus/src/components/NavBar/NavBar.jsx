@@ -27,16 +27,15 @@ const nickname = localStorage.getItem("nickname");
 const navItems = token
   ? [
       { name: "Study Room", path: "/studyroom" },
-      { name: "Group", path: `/group/mystudy/${nickname}` },
+      { name: "Group", path: `/group/mystudy` },
       { name: "Lounge", path: "/lounge" },
-      { name: "Mypage", path: "/mypage/profile/:userId" },
+      { name: "Mypage", path: `/mypage/profile` },
       { name: "Logout", path: "/" },
     ]
   : [{ name: "Login", path: "/account/login" }];
 
 const logout = () => {
   sessionStorage.clear();
-  localStorage.clear();
   localStorage.removeItem("totalM");
   localStorage.removeItem("totalH");
   localStorage.removeItem("inHour");
@@ -51,10 +50,6 @@ function DrawerAppBar(props) {
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
-  };
-
-  const logout = () => {
-    sessionStorage.clear();
   };
 
   const drawer = (

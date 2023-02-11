@@ -7,14 +7,14 @@ import UpdateGroupDetail from "./pages/GroupPage/UpdateGroupDetail";
 import GroupMain from "./pages/GroupPage/Main";
 import MyPageMain from "./pages/MyPageMain/Main";
 import MyGroupList from './pages/MyPageProfile/MyGroupList';
+import LandingPage from "./pages/LandingPage/LandingPage"
 
 import LogIn from "./pages/Accounts/LogIn";
 import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 
-
-import Lounge from "./pages/Lounge/Lounge";
+import Lounge from "./pages/Lounge/main";
 
 import UserModal from "./pages/Accounts/LogInModal/UserModal";
 import LogInModal from "./pages/Accounts/LogInModal/LogIn";
@@ -28,15 +28,13 @@ import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import LandingPage from "./pages/LandingPage/LandingPage";  
-
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
           {/* landingPage */}
-          <Route exact path="/" element={<LandingPage />} />
+          <Route exact path="/" element={<LandingPage/>}/>
           {/* 공용 열람실 관련 주소 */}
           <Route exact path="/studyroom">
             <Route exact path="" element={<StudyRoomMain />} />
@@ -44,13 +42,13 @@ function App() {
           </Route>
           {/* 마이 페이지 관련 주소 */}
           <Route exact path="/mypage" element={<MyPageMain />}>
-            <Route path="profile/:userId" />
-            <Route path="myreport/:userId" />
+            <Route path="profile" element={<MyProfileMain />} />
+            <Route path="myreport" element={<MyReport />} />
           </Route>
 
           {/* 그룹 페이지(게시판) 관련 주소 */}
           <Route exact path="/group" element={<GroupMain />}>
-            <Route path="mystudy/:userId" element={<MyGroupList/>}/>
+            <Route path="mystudy" element={<MyGroupList/>}/>
             <Route path="mystudy/group/:groupId" element={<GroupDetail/>}/>
             <Route path="mystudy/group/:groupId/update" element={<UpdateGroupDetail/>}/>
             <Route path="board" element={<GroupPage/>}/>

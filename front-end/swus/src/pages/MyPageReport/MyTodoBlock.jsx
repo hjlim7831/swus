@@ -11,21 +11,28 @@ import axios from "./../../Utils/index";
 // import { useSelector, useDispatch } from "react-redux";
 // import { addTodoList } from "./../../store/TodoList";
 
-function MyTodoBlock() {
+function GroupTodoBlock() {
   // const dispatch = useDispatch();
   // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
 
+  // ---------------------------------------------------------------------
+  // 나중에 처리해야 하는 곳
+  // 1. groupId 받아서 저장
+  // 2. round 받아서 저장
+  const groupId = 1;
+  const round = 1;
+
   useEffect(() => {
     const config = {
-      url: "/my-todos",
+      url: `/my-groups/${groupId}/round/${round}`,
       method: "get",
     };
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {
             return {
@@ -33,7 +40,7 @@ function MyTodoBlock() {
               todo_done: todo.todo_done === "N" ? false : true,
             };
           });
-          console.log(updatedData);
+          // console.log(updatedData);
           setTodoData(updatedData);
         }
       })
@@ -48,9 +55,9 @@ function MyTodoBlock() {
     const content = value;
 
     const config = {
-      url: "/my-todos",
+      url: `/my-groups/${groupId}/round/${round}`,
       method: "post",
-      data: { todo_done: "N", content },
+      data: { content },
     };
 
     axios(config).then((response) => {
@@ -114,6 +121,8 @@ function MyTodoBlock() {
                 setTodoData={setTodoData}
                 value={value}
                 setValue={setValue}
+                groupId={groupId}
+                round={round}
               />
               {/*todoData라는 state를 내려줌 List.js에 */}
               {/*자녀컴포넌트에서는 props 파라미터로 받음 */}
@@ -125,4 +134,4 @@ function MyTodoBlock() {
   );
 }
 
-export default MyTodoBlock;
+export default GroupTodoBlock;

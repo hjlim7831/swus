@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Paper,
-				Container,
-				Table,
-				TableBody,
-				TableCell,
-				TableContainer,
-				TableHead,
-				TableRow,
-				TableFooter,
-				TablePagination,
-				Button,
-				Grid,
-			 } from '@mui/material';
+import { Container,
+					Table,
+					TableBody,
+					TableCell,
+					TableContainer,
+					TableHead,
+					TableRow,
+					TableFooter,
+					TablePagination,
+					Button,
+					Grid,
+				} from '@mui/material';
+import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from "uuid";
+import groupBoardSlice from '../../store/GroupBoardSlice';
 
 
-const filterCategory = /스터디/;
+const filterCategory = /S/;
 
 function GroupPage() {
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [page, setPage] = useState(0)
 	const [articles, setArticles] = useState([]);
 
@@ -34,20 +36,39 @@ function GroupPage() {
 		axios(config)
 			.then((response) => {
 				setArticles(response.data)
-				console.log(response.data)
-				
 			})
-	}, [])
+	}, []);
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
+	};
+
+	function goArticleDetail(boardId) {
+
+		const config = {
+			url: `/boards/${boardId}`,
+			method: "GET",
+		};
+
+		axios(config)
+			.then((response) => {
+				dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
+			})
+			.then((response) => {
+				navigate(`${boardId}`)
+			})
 	}
 
 	return (
 		<>
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px", height: "85vh", marginTop: 3 }}>
-				<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
-					<p style={{ display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+				<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center", marginBlock: 20 }}>
+					<p style={{ display: "flex", 
+											alignItems: "center", 
+											fontWeight: "bold", 
+											fontSize: "30px", 
+											textAlign: "center",
+											marginLeft: 10 }}>
 						<span>스터디 모집게시판</span>
 					</p>
 					<Button 
@@ -58,7 +79,7 @@ function GroupPage() {
 						onClick={() => {navigate("/group/board/create")}}>글 작성</Button>
 				</Grid>
 
-				<TableContainer style={{ textAlign: "center"}}>
+				<TableContainer style={{ textAlign: "center", border: "2px solid #1A1E33" }}>
 					<Table style={{ textAlign: "center" }}>
 						<TableHead>
 							<TableRow>
@@ -72,7 +93,6 @@ function GroupPage() {
 						</TableHead>
 						<TableBody style={{ textAlign: "center" }}>
 							{articles
-							// .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
 							.slice(page * 10, (page + 1) * 10)
 							.map((article) => (
 								<TableRow
@@ -82,12 +102,19 @@ function GroupPage() {
 										<span>{article.board_id}</span>
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>
-										{/* <span style={filterCategory.test(article.type) ? { color: "red"} : {color: "blue"}}>
-											{article.type}</span> */}
+											<span style={{ fontWeight: "bold" }}>
+												{filterCategory.test(article.category) 
+													? <span style={{ color: "red" }}>[스터디]</span> 
+													: <span style={{ color: "blue" }}>[메이트]</span>}
+											</span>
 									</TableCell>
-									<TableCell style={{ textAlign: "center" }}>{article.title}</TableCell>
+									<TableCell 
+										style={{ textAlign: "center" }}
+										onClick={() => {goArticleDetail(article.board_id)}}>
+											<span style={{ cursor: "pointer" }}>{article.title}</span>
+									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>
-										{/* {article.is_finished} */}
+										{(article.recruitment_done === "Y") ? "모집중" : "모집 완료"}
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.write_at}</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.views}</TableCell>

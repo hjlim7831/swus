@@ -23,11 +23,11 @@ export default function MiniDrawer(props) {
 
   const sideItems = window.location.pathname.slice(7, 12) === "board"
     ? [
-      { name: "MY STUDY", path: `mystudy/${props.props.userId}`, backgroundColor: "#1A1E33", color: "white" },
+      { name: "MY STUDY", path: `mystudy`, backgroundColor: "#1A1E33", color: "white" },
       { name: "STUDY BOARD", path: `board`, backgroundColor: "#DEDCEE", color: "#1A1E33"} 
     ]
     : [
-      { name: "MY STUDY", path: `mystudy/${props.props.userId}`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
+      { name: "MY STUDY", path: `mystudy`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
       { name: "STUDY BOARD", path: `board`, backgroundColor: "#1A1E33", color: "white"}
     ]
 

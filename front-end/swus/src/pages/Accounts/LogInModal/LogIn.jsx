@@ -10,15 +10,31 @@ import Typography from "@mui/material/Typography";
 
 import axios from "./../../../Utils/index";
 
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function SignInSide() {
-  const navigate = useNavigate();
+
+  // 이메일 기억하는 변수
+  const remember = localStorage.getItem("remember")
+  let check = remember && remember === "true" ? true : false;
+  const [rememberCheck, setRememberCheck] = useState(check);
+
+  // remember me 체크하면, 값 저장하는 함수.
+  const saveRemember = () => {
+    check = !check
+    setRememberCheck(check);
+    check ? localStorage.setItem("remember", "true") : localStorage.removeItem("remember");
+  };
+  
+  // const navigate = useNavigate();
+
+  // 이메일, 비밀번호 저장 변수
   const [inputData, setInputData] = useState({
     email: "",
     password: "",
   });
 
+  // 이메일, 비밀번호 반응형 함수 (사용자 입력하는 순간순간 체크?)
   const inputSubmit = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -26,6 +42,7 @@ export default function SignInSide() {
     setInputData({ ...inputData, [name]: value });
   };
 
+  // 이메일, 비밀번호 제출 함수
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -57,7 +74,11 @@ export default function SignInSide() {
         axios(config)
           // .post("http://localhost:8081/auth/login", payload)
           .then((response) => {
-            console.log(response.data.access_token);
+            // console.log(response.data.token);
+
+            sessionStorage.setItem("token", response.data.access_token);
+            // token은 sessionStorage에 저장
+            // sessionStorage는 브라우저를 닫으면 clear됨.
 
             // 로컬스토리지에 저장    localStorage.setItem
             // 로컬스토리지 출력     localStorage.getItem
@@ -66,15 +87,12 @@ export default function SignInSide() {
             //rememberme를 위해 이메일은 => localStorage에 저장
             localStorage.setItem("nickname", response.data.nickname);
 
-            sessionStorage.setItem("token", response.data.access_token);
-            // token은 sessionStorage에 저장
-            // sessionStorage는 브라우저를 닫으면 clear됨.
-
             //열람실에서 공부시간 띄워주기 위해 저장하는 누적공부시간
             localStorage.setItem("totalH", 0);
             localStorage.setItem("totalM", 0);
-
-            navigate("/studyroom/");
+          })
+          .then(() => {
+            window.location = `${window.location.origin}/studyroom`;
           })
           .catch((error) => {
             alert("존재하는 아이디가 아닙니다.");
@@ -115,7 +133,7 @@ export default function SignInSide() {
       </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
         아이디 (이메일)
-        <TextField
+        { (rememberCheck) ? <TextField
           margin="normal"
           required
           fullWidth
@@ -125,7 +143,18 @@ export default function SignInSide() {
           autoComplete="email"
           autoFocus
           onChange={inputSubmit}
-        />
+          defaultValue = {localStorage.getItem('id')}
+        /> : <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          onChange={inputSubmit}
+        /> }
         비밀번호
         <TextField
           margin="normal"
@@ -139,8 +168,10 @@ export default function SignInSide() {
           onChange={inputSubmit}
         />
         <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
+          control={<Checkbox value="remember" color="primary"/>}
           label="Remember me"
+          checked={rememberCheck}
+          onClick={ saveRemember }
         />
         <Button
           type="submit"

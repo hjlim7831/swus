@@ -6,6 +6,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import deleteArticle from '../../components/modals/DeleteArticle';
 import axios from "../../Utils/index";
+import { useDispatch, useSelector } from 'react-redux';
+import groupBoardSlice from '../../store/GroupBoardSlice';
 
 
 
@@ -13,59 +15,39 @@ import axios from "../../Utils/index";
 function ArticleDetail() {
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
   const [article, setArticle] = useState([]);
+	const filterCategory = /S/;
 
-	// const [day, setDay] = useState("");
-	// const [studyPlan, setStudyPlan] = useState("");
+	const articleDetail = useSelector(state => {
+		return state.groupBoard.info
+	})
 
-	// useEffect(() => {
-	// 	let date = ""
-	// 	for (let i = 0; i < article.day.length; i++) {
-	// 		if (article.day[i] === "1")	{
-	// 			if (i === 0)	{
-	// 				date = date + "월"
-	// 			}	else if (i === 1)	{
-	// 				date = date + "화"
-	// 			}	else if (i === 2)	{
-	// 				date = date + "수"
-	// 			}	else if (i === 3)	{
-	// 				date = date + "목"
-	// 			}	else if (i === 4) {
-	// 				date = date + "금"
-	// 			}	else if (i === 5) {
-	// 				date = date + "토"
-	// 			}  else if (i === 6) {
-	// 				date = date + "일"
-  //       }
-	// 		}
-	// 	setDay(date)
-	// 	}
-
-	// 	if (article.beginAt === "" || article.endAt === "") {
-	// 		setStudyPlan("미정")
-	// 	}	else	{
-	// 		setStudyPlan(article.beginAt + " ~ " + article.endAt)
-	// 	}
-	// }, [article.day])
-
+	const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1)
+	
 	useEffect(() => {
-		const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1);
-		const config = {
-			url: `/boards/${boardId}`,
-			method: "GET",
-		};
-
-		axios(config)
-			.then((response) => {
-				console.log(response.data)
-				setArticle(response.data)
-			})
-			.catch((error) => {
-				navigate("/group/board")
-			})
+		setArticle(articleDetail)
+		dispatch(groupBoardSlice.actions.saveBoardId(boardId))
 	}, [])
 
-	
+	function getButtons () {
+		return (
+			<>
+				<p style={{ paddingLeft: 30, paddingTop: 5}}>
+					<EditOutlinedIcon
+						variant="contained"
+						sx={{ fontSize: 30, color: "blue", "&:hover": { cursor: "pointer"} }}
+						onClick={() => {navigate(`update`)}} />
+				</p>
+				<p style={{ paddingLeft: 10, paddingTop: 5}}>
+					<DeleteOutlinedIcon
+						onClick={deleteArticle}
+						sx={{ fontSize: 30, color: "red", "&:hover": { cursor: "pointer"} }} 
+					/>
+				</p>
+			</>
+		)
+	}
 	 
   return (
 		<>
@@ -73,21 +55,14 @@ function ArticleDetail() {
 				<Grid container sx={{ px: 2 }}>
 					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
     				<p style={{ fontWeight: "bold", fontSize: "30px"}}>
-							<span style={(article.category === "스터디") ? { color: "red" } : { color: "blue" }}>[{article.category}]</span>
+							<span style={{ fontWeight: "bold" }}>
+								{filterCategory.test(article.category) 
+									? <span style={{ color: "red" }}>[스터디]</span> 
+									: <span style={{ color: "blue" }}>[메이트]</span>}
+							</span>
 							<span style={{ marginLeft: 30 }}>{article.title}</span>
 						</p>
-						<p style={{ paddingLeft: 30, paddingTop: 5}}>
-							<EditOutlinedIcon
-								variant="contained"
-								sx={{ fontSize: 30, color: "blue" }}
-								onClick={() => {navigate("/group/board/:boardId/update")}} />
-						</p>
-						<p style={{ paddingLeft: 10, paddingTop: 5}}>
-							<DeleteOutlinedIcon
-								onClick={deleteArticle}
-								sx={{ fontSize: 30, color: "red" }} 
-							/>
-						</p>
+						{(localStorage.getItem("id") === article.email) ? getButtons() : null }
 					</Grid>
 					<Grid item xs={3}>
 					</Grid>
@@ -103,39 +78,45 @@ function ArticleDetail() {
 					</Grid>
 				</Grid>
 				<Grid container>
-					<Grid item xs={1} sx={{ textAlign: "center" }}>
-						<p>서형준</p>
+					<Grid item xs={2}>
+						<p style={{ justifyContent: "center", alignItems: "center", marginLeft: 30 }}>
+							<span style={{ fontSize: "20px", fontWeight: "bold" }}>작성자: </span>
+							<span style={{ fontSize: "20px", fontWeight: "bold" }}>{article.nickname}</span>
+						</p>
 					</Grid>
-					<Grid item xs={8} sx={{ px: 3 }}>
-						<p>{article.writedAt}</p>
+					<Grid item xs={7} sx={{ px: 3 }}>
+						<p>{article.writed_at}</p>
 					</Grid>
 					<Grid item xs={3} sx={{ textAlign: "right", display: "flex", justifyContent: "right", pr: 3 }}>
-						<p>조회수 : {article.views}</p>
+						<p style={{ fontSize: "18px" }}>조회수 : {article.views}</p>
 					</Grid>
 				</Grid>
 				<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 5 }}/>
-				{/* <Grid container>
+				<Grid container>
 					<Grid item xs={2} sx={{ alignContent: "center" }}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 일정</p>
 					</Grid>
 					<Grid item xs={3}>
-						<p>{studyPlan}</p>
+						{(article.begin_at) ? <p>{article.begin_at} ~ {article.end_at}</p> : <p>미정</p>}
 					</Grid>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2 }}/>
 					<Grid item xs={2}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 시간</p>
 					</Grid>
 					<Grid item xs={2}>
-						<p style={{ textAlign: "center" }}>{day} {article.startTime} - {article.finishTime}</p>
+						<p style={{ justifyContent: "center", alignItems: "center" }}>
+							<span style={{ textAlign: "center", marginInline: 5 }}>{article.day} </span>
+							<span style={{ textAlign: "center", marginInline: 5 }}>{article.start_time} ~ {article.finish_time}</span>
+						</p>
 					</Grid>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2 }}/>
 					<Grid item xs={1}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>인원 현황</p>
 					</Grid>
 					<Grid item xs={1}>
-						<p style={{ textAlign: "center" }}>3 / {article.recruitmentNumber}</p>
+						<p style={{ textAlign: "center" }}>{article.team_number} / {article.board_number}</p>
 					</Grid>
-				</Grid> */}
+				</Grid>
 				<Grid container>
 					<Grid item xs={2} sx={{ alignContent: "center" }}>
 						<p style={{ fontWeight: "bold", textAlign: "center" }}>상세 내용</p>
