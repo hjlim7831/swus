@@ -99,7 +99,7 @@ function MyGroupList() {
 
   return (
     <>
-      <Container style={{ border: "1px gray solid", borderRadius: "10px", height: "85vh", marginTop: 3 }}>
+      <Container style={{ border: "1px gray solid", borderRadius: "10px", height: "85vh", marginTop: "20px", backgroundColor: "white" }}>
         <Grid container style={{ justifyContent: "center", display: "flex", alignContent: "center", marginTop: 8 }}>
           <p style={{ display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
             <span>내 스터디룸</span>
