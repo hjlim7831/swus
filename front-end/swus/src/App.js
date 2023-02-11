@@ -6,7 +6,8 @@ import GroupDetail from "./pages/GroupPage/GroupDetail";
 import UpdateGroupDetail from "./pages/GroupPage/UpdateGroupDetail";
 import GroupMain from "./pages/GroupPage/Main";
 import MyPageMain from "./pages/MyPageMain/Main";
-import MyGroupList from "./pages/MyPageProfile/MyGroupList";
+import MyGroupList from './pages/MyPageProfile/MyGroupList';
+import LandingPage from "./pages/LandingPage/LandingPage"
 
 import LogIn from "./pages/Accounts/LogIn";
 import SignUp from "./pages/Accounts/SignUp";
@@ -33,7 +34,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* landingPage */}
-          <Route exact path="/" />
+          <Route exact path="/" element={<LandingPage/>}/>
           {/* 공용 열람실 관련 주소 */}
           <Route exact path="/studyroom">
             <Route exact path="" element={<StudyRoomMain />} />
@@ -47,17 +48,14 @@ function App() {
 
           {/* 그룹 페이지(게시판) 관련 주소 */}
           <Route exact path="/group" element={<GroupMain />}>
-            <Route path="mystudy/:userId" element={<MyGroupList />} />
-            <Route path="mystudy/group/:groupId" element={<GroupDetail />} />
-            <Route
-              path="mystudy/group/:groupId/update"
-              element={<UpdateGroupDetail />}
-            />
-            <Route path="board" element={<GroupPage />} />
-            <Route path="board/:boardId" element={<ArticleDetail />} />
-            <Route path="board/:boardId/update" element={<UpdateArticle />} />
-            <Route path="board/create" element={<CreateArticle />} />
-            <Route path="studyroom/:sessionName" />
+            <Route path="mystudy" element={<MyGroupList/>}/>
+            <Route path="mystudy/group/:groupId" element={<GroupDetail/>}/>
+            <Route path="mystudy/group/:groupId/update" element={<UpdateGroupDetail/>}/>
+            <Route path="board" element={<GroupPage/>}/>
+            <Route path="board/:boardId" element={<ArticleDetail />}/>
+            <Route path="board/:boardId/update" element={<UpdateArticle />}/>
+            <Route path="board/create" element={<CreateArticle />}/>
+            <Route path="studyroom/:sessionName"/>
           </Route>
           {/* 휴게실 */}
           <Route exact path="/lounge" element={<Lounge />} />
