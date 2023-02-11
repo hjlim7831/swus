@@ -6,13 +6,12 @@ import GroupDetail from "./pages/GroupPage/GroupDetail";
 import UpdateGroupDetail from "./pages/GroupPage/UpdateGroupDetail";
 import GroupMain from "./pages/GroupPage/Main";
 import MyPageMain from "./pages/MyPageMain/Main";
-import MyGroupList from './pages/MyPageProfile/MyGroupList';
+import MyGroupList from "./pages/MyPageProfile/MyGroupList";
 
 import LogIn from "./pages/Accounts/LogIn";
 import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
-
 
 import Lounge from "./pages/Lounge/Lounge";
 
@@ -42,20 +41,25 @@ function App() {
           </Route>
           {/* 마이 페이지 관련 주소 */}
           <Route exact path="/mypage" element={<MyPageMain />}>
+            <Route path="report" element={<MyReport />} />
+
             <Route path="profile/:userId" />
             <Route path="myreport/:userId" />
           </Route>
 
           {/* 그룹 페이지(게시판) 관련 주소 */}
           <Route exact path="/group" element={<GroupMain />}>
-            <Route path="mystudy/:userId" element={<MyGroupList/>}/>
-            <Route path="mystudy/group/:groupId" element={<GroupDetail/>}/>
-            <Route path="mystudy/group/:groupId/update" element={<UpdateGroupDetail/>}/>
-            <Route path="board" element={<GroupPage/>}/>
-            <Route path="board/:boardId" element={<ArticleDetail />}/>
-            <Route path="board/:boardId/update" element={<UpdateArticle />}/>
-            <Route path="board/create" element={<CreateArticle />}/>
-            <Route path="studyroom/:sessionName"/>
+            <Route path="mystudy/:userId" element={<MyGroupList />} />
+            <Route path="mystudy/group/:groupId" element={<GroupDetail />} />
+            <Route
+              path="mystudy/group/:groupId/update"
+              element={<UpdateGroupDetail />}
+            />
+            <Route path="board" element={<GroupPage />} />
+            <Route path="board/:boardId" element={<ArticleDetail />} />
+            <Route path="board/:boardId/update" element={<UpdateArticle />} />
+            <Route path="board/create" element={<CreateArticle />} />
+            <Route path="studyroom/:sessionName" />
           </Route>
           {/* 휴게실 */}
           <Route exact path="/lounge" element={<Lounge />} />
