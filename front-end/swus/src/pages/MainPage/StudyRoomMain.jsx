@@ -173,15 +173,8 @@ function StudyRoomMain() {
           {/* 그리드 컴포넌트 사이 넓이 */}
           <Grid item xs={3} style={{}}>
             {/* todo& 목표 공부시간 묶는 div */}
-            <Grid
-              item
-              xs={12}
-              sx={{ marginTop: 3, marginX: "auto", paddingLeft: "30px" }}
-            >
-              <Typography
-                variant="h5"
-                sx={{ fontSize: 20, color: "white", marginTop: 2 }}
-              >
+            <Grid item xs={12} sx={{ marginTop: 3, marginX: "auto", paddingLeft: "30px" }}>
+              <Typography variant="h5" sx={{ fontSize: 20, color: "white", marginTop: 2 }}>
                 Todo List
               </Typography>
               <Grid
@@ -232,10 +225,7 @@ function StudyRoomMain() {
             }}
           >
             <Grid item xs={12}>
-              <Typography
-                variant="h1"
-                sx={{ fontSize: 30, color: "white", marginTop: 2 }}
-              >
+              <Typography variant="h1" sx={{ fontSize: 30, color: "white", marginTop: 2 }}>
                 STUDY ROOM
               </Typography>
             </Grid>
@@ -351,9 +341,9 @@ function onWheel(apiObj, ev) {
     return;
   }
 
-  if (ev.deltaY < 0) {
+  if (ev.deltaY > 0) {
     apiObj.scrollNext();
-  } else if (ev.deltaY > 0) {
+  } else if (ev.deltaY < 0) {
     apiObj.scrollPrev();
   }
 }
