@@ -97,8 +97,13 @@ class OpenViduApp extends Component {
     });
   };
   handleClose = () => {
-    this.setOpen(false);
+    this.setState({
+      open: false,
+    });
   };
+
+  min = this.state.d.getMinutes();
+  sec = this.state.d.getSeconds();
 
   ////
   // getTodoCount = (todoProps, doneProps) => {
@@ -330,8 +335,8 @@ class OpenViduApp extends Component {
       localStorage.setItem("totalH", totalH + parseInt(cal / 60));
       localStorage.setItem("totalM", totalM + (cal % 60));
     }
-
-    window.location.href = "/studyroom";
+    window.location.replace("http://localhost:3000/studyroom");
+    // window.location.href = "/studyroom";/
   }
 
   render() {
