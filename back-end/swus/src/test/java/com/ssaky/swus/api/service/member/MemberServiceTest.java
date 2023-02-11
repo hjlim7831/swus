@@ -105,8 +105,8 @@ class MemberServiceTest {
         memberService.updateInfo(memberId, req);
 
         Member one = memberService.findOne(memberId);
-        assertEquals(one.getNickname(), nickname);
-        assertEquals(one.getPassword(), newPassword);
+        assertEquals(nickname, one.getNickname());
+        assertEquals(newPassword, one.getPassword());
     }
 
     @Test

@@ -116,14 +116,6 @@ class TeamService1Test {
         teamService.inviteMember(teamId, leaderId, teamInviteReq);
     }
 
-//    @AfterEach
-//    void afterEach() {
-//        memberTeamRepository.deleteAll();
-//        teamRepository.deleteAll();
-//        memberRepository.deleteAll();
-//
-//    }
-
     @Test
     public void 리더여부_확인() {
         Throwable e1 = assertThrows(InvalidValueException.class, () -> {
