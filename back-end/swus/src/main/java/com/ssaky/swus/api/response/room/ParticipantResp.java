@@ -1,16 +1,20 @@
-package com.ssaky.swus.api.request.room;
+package com.ssaky.swus.api.response.room;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 @Getter
-@Setter
-@AllArgsConstructor
+@ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PublicExitReq {
-    private int roomId;
+@AllArgsConstructor
+public class ParticipantResp {
+
+    private int participantId;
     private int memberId;
+    private LocalDateTime joinedAt;
 }

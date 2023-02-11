@@ -1,6 +1,7 @@
 package com.ssaky.swus.api.service.room;
 
 import com.ssaky.swus.api.request.room.PublicExitReq;
+import com.ssaky.swus.api.response.room.ParticipantResp;
 import com.ssaky.swus.common.error.exception.custom.OverCapacityException;
 import com.ssaky.swus.db.entity.Room.PublicParticipant;
 import com.ssaky.swus.db.entity.Room.PublicRoom;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,8 +48,6 @@ public class RoomService {
     @Transactional
     public void enterPublic(int room_id, int user_id){
         PublicRoom room = roomRepository.findPublicOne(room_id);
-        //Optional<T>를 쓰면 T가 null인 경우를 방지해줌
-        Optional<Member> member = memberRepository.findById(user_id, Member.class);
 
         //기능1. 방 정원을 넘는지 검사
         if (room.getCount() >= LIMIT) {
@@ -59,11 +59,19 @@ public class RoomService {
 
         //기능3. 만약 비정상적으로 종료한 사용자가 Participant에 남아있다면 삭제
         Optional<PublicParticipant> unnomalUser = participantRepository.findByMemberId(user_id);
+        log.debug("비정상적인 입장을 요청한 사용자가 있습니까? "+unnomalUser.isPresent());
         if(unnomalUser.isPresent()){
-            participantRepository.exit(unnomalUser.get());
+            log.debug("위 사용자를 삭제합니다.");
+            int roomId = unnomalUser.get().getRoom().getId();
+            int memberId = unnomalUser.get().getMember().getId();
+            this.exitPublic(new PublicExitReq(roomId, memberId)); //비정상 사용자가 속했던 방에서 퇴장처리
+
+            Optional<PublicParticipant> delParti = participantRepository.findByMemberId(memberId);
+            log.debug("호출 후 검사 > "+(!delParti.isPresent()?"삭제된 참가자 입니다.":"삭제되지 않았습니다."));
         }
 
         //기능4. user를 Paricipant에 insert해주기
+        Optional<Member> member = memberRepository.findById(user_id, Member.class); //Optional<T>를 쓰면 T가 null인 경우를 방지해줌
         PublicParticipant participant = PublicParticipant.builder()
                 .room(room)
                 .member(member.get())
@@ -75,13 +83,35 @@ public class RoomService {
         //기능1 순공, 총공시간 갱신
         //아직 구현 안함
 
-        //기능2 room_id의 참가자 1 감소시키기
-        roomRepository.updateCount(publicExitReq.getRoomId(), -1);
+        //기능2 room_id의 참가자 1명일때 퇴장하면 방 없애기
+        //      2명이상일때는 인원수 감소시키기
+        PublicRoom room = roomRepository.findPublicOne(publicExitReq.getRoomId());
+        if(room.getCount()<=1){
+            roomRepository.delete(room);
+        } else {
+            roomRepository.updateCount(publicExitReq.getRoomId(), -1);
+        }
 
-        //기능3. Participant에서 Delete해주기
+
+        //기능4. Participant에서 Delete해주기
         PublicParticipant participant = participantRepository.findByMemberId(publicExitReq.getMemberId()).get();
         log.debug("삭제할 참가자 id : "+publicExitReq.getMemberId());
         log.debug("삭제할 참가자 : "+participant);
         participantRepository.exit(participant);
+
+        //기능5. 방에 참가되어 있는 사용자가 없다면 방 제거하기
+
+    }
+
+    public List<ParticipantResp> getParticipants(int roomId) {
+        List<ParticipantResp> partiResps = new ArrayList<>();
+        List<PublicParticipant> partis = participantRepository.findByRoomId(roomId);
+        for (PublicParticipant p : partis) {
+            int partiId = p.getId();
+            int memberId = p.getMember().getId();
+            LocalDateTime joinedAt = p.getJoined_at();
+            partiResps.add(new ParticipantResp(partiId,memberId,joinedAt));
+        }
+        return partiResps;
     }
 }

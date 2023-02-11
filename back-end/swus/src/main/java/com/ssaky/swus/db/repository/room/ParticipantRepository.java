@@ -25,6 +25,13 @@ public class ParticipantRepository {
         return partis.stream().findAny();
     }
 
+    public List<PublicParticipant> findByRoomId(int roomId) {
+        List<PublicParticipant> partis = em.createQuery("select p from PublicParticipant p where p.room.id = :id", PublicParticipant.class)
+                .setParameter("id", roomId).getResultList();
+
+        return partis;
+    }
+
     public void exit(PublicParticipant participant) {
         em.remove(participant);
     }

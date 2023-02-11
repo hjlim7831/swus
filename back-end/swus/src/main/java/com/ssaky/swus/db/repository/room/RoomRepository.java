@@ -2,11 +2,13 @@ package com.ssaky.swus.db.repository.room;
 
 import com.ssaky.swus.db.entity.Room.PublicRoom;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class RoomRepository {
@@ -33,9 +35,14 @@ public class RoomRepository {
 
     //방 인원수를 count 만큼 증가 또는 감소
     public void updateCount(int id, int count){
-        PublicRoom publicRoom = em.find(PublicRoom.class, id);
+        PublicRoom publicRoom=null;
+        publicRoom = em.find(PublicRoom.class, id);
+        log.debug("id : "+id+(publicRoom==null?" 이 아이디는 널입니다. ":publicRoom.toString()));
         int updateCnt = publicRoom.getCount()+count;
         publicRoom.setCount(updateCnt);
+    }
+    public void delete(PublicRoom room) {
+        em.remove(room);
     }
 
 }

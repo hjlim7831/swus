@@ -61,7 +61,6 @@ public class BoardService {
                 .teamId(teamId)
                 .title(req.getTitle())
                 .content(req.getContent())
-                .number(req.getBoardNumber())
                 .build();
 
         return boardRepository.save(board).getBoardId();
@@ -101,14 +100,14 @@ public class BoardService {
                 .content(board.getContent())
                 .views(board.getViews())
                 .writeAt(board.getCreateAt())
-                .boardNumber(board.getNumber())
+                .boardNumber(team.getRecruitmentNumber())
                 .category(team.getCategory())
                 .beginAt(team.getBeginAt())
                 .endAt(team.getEndAt())
                 .day(team.getDay())
                 .startTime(team.getStartTime())
                 .finishTime(team.getFinishTime())
-                .teamNumber(team.getNumber())
+                .teamNumber(team.getTeamNumber())
                 .build();
     }
 
@@ -130,7 +129,7 @@ public class BoardService {
 
             // board의 최종인원과 team의 현재인원을 비교해서 모집여부를 "Y"/"N"으로 반환
             String recruitmentDone = "N";
-            if (board.getNumber() == team.getNumber())
+            if (team.getTeamNumber() == team.getRecruitmentNumber())
                 recruitmentDone = "Y";
 
             BoardListResp resp = BoardListResp.builder()
