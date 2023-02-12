@@ -33,8 +33,11 @@ public class TodoGroup {
         this.studyAt = LocalDate.now();
     }
 
-    public void updateContent(TeamTodoUpdateReq req) {
+    public void updateContent(TeamTodoUpdateReq req, int round, int teamId) {
+        TodoGroupId id = TodoGroupId.builder().teamId(teamId).round(round).build();
         this.content = req.getContent();
+        this.id = id;
+
     }
 
     @EmbeddedId //복합키 매핑을 위한 어노테이션
