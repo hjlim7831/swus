@@ -11,7 +11,10 @@ import com.ssaky.swus.db.entity.study.JandiTime;
 import com.ssaky.swus.db.entity.study.Study;
 import com.ssaky.swus.db.repository.study.JandiStudyRepository;
 import com.ssaky.swus.db.repository.study.StudyRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -64,25 +67,31 @@ public class StudyService {
         return resp;
     }
 
+
     public WeeklyTimeResp getOneWeekData(int memberId) {
-        LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA);
+        TimeZone timeZone = TimeZone.getTimeZone("Asia/Seoul");
+        System.out.println(timeZone);
+
+        Calendar cal = Calendar.getInstance(timeZone);
+        cal.add(Calendar.HOUR, -6);
+        java.util.Date time = cal.getTime();
+        log.debug("일주일 데이터 조회 기준 time: {}", time);
         final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
+        cal.add(Calendar.DATE, -1);
 
-        // 이번 주 월요일 날짜 구하기
-        cal.add(Calendar.DATE, 2 - cal.get(Calendar.DAY_OF_WEEK));
-        String mondayStr = SDF.format(cal.getTime());
-        System.out.println(mondayStr);
-        Date monday = Date.valueOf(mondayStr);
+        String toDateStr = SDF.format(cal.getTime());
+        Date toDate = Date.valueOf(toDateStr);
 
-        // 이번 주 일요일 날짜 구하기
-        cal.add(Calendar.DATE, 8 - cal.get(Calendar.DAY_OF_WEEK));
-        String sundayStr = SDF.format(cal.getTime());
-        System.out.println(sundayStr);
-        Date sunday = Date.valueOf(sundayStr);
-        List<DailyTimeResp> weeklyRecords = jandiStudyRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, monday, sunday, DailyTimeResp.class);
+        cal.add(Calendar.DATE, -6);
+
+        String fromDateStr = SDF.format(cal.getTime());
+        Date fromDate = Date.valueOf(fromDateStr);
+
+        log.debug("fromDate:{}, toDate:{}", fromDateStr, toDateStr);
+
+        List<DailyTimeResp> weeklyRecords = jandiStudyRepository.findByIdMemberIdAndIdStudyAtBetween(memberId, fromDate, toDate, DailyTimeResp.class);
         List<DailyWeekdayTimeResp> weeklyWeekdayRecords = new ArrayList<>();
-        for(DailyTimeResp resp: weeklyRecords) {
+        for (DailyTimeResp resp: weeklyRecords) {
             LocalDate studyAt = new java.sql.Date(resp.getIdStudyAt().getTime()).toLocalDate();
             int weekday = studyAt.getDayOfWeek().getValue();
             weeklyWeekdayRecords.add(new DailyWeekdayTimeResp(weekday, resp));
@@ -90,9 +99,7 @@ public class StudyService {
 
         WeeklyTimeResp resp = WeeklyTimeResp.builder().weeklyRecords(weeklyWeekdayRecords).build();
         return resp;
-
     }
-
 
     @Transactional
     protected void saveAllDailyStudyTime(List<Study> studyTimeList) {
