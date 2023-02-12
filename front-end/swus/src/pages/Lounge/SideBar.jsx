@@ -44,7 +44,11 @@ export default function MiniDrawer() {
 						height: "50px",
 						color: "#1A1E33",
 						fontSize: "20px",
+						'&:hover': {
+							backgroundColor: '#DEDCEE'
+						}
 					}}
+					
 				>
 					LOUNGE
 				</Button>
@@ -171,6 +175,9 @@ export default function MiniDrawer() {
 						height: "50px",
 						color: "#1A1E33",
 						fontSize: "20px",
+						'&:hover': {
+							backgroundColor: '#DEDCEE'
+						}
 					}}
 					onClick={() => {navigate('/studyroom')}}
 				>
