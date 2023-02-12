@@ -24,6 +24,10 @@ function UpdateArticleForm() {
 		return state.groupBoard.boardId
 	});
 
+	useEffect(() => {
+		console.log("인풋을 받아오는 곳")
+		console.log(inputs)
+	})
 	const onHandleInput = (event) => {
 		const name = event.target.name
 		const value = event.target.value
@@ -90,9 +94,6 @@ function UpdateArticleForm() {
 		}	else if (Number(inputs.begin_at.replace(/-/gi, "") > Number(inputs.end_at.replace(/-/gi, "")))) {
 			alert("스터디 시작 날짜가 종료 날짜보다 늦습니다!")
 			return
-		}	else if (Number(nowDate) > Number(inputs.begin_at.replace(/-/gi,""))) {
-			alert("스터디 시작 날짜가 이미 지났습니다!")
-			return
 		}
 
 		const payload = {
@@ -152,7 +153,7 @@ function UpdateArticleForm() {
 
 	return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", background: "white" }}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
 							<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center", paddingLeft: "20px" }}>

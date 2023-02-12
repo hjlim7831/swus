@@ -1,17 +1,10 @@
 import { React, useState } from "react";
-import axios from "./../../../Utils/index";
+import axios from "../../../Utils/index";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
-function GroupTodoList({
-  todoData,
-  setTodoData,
-  value,
-  setValue,
-  groupId,
-  round,
-}) {
+function GroupTodoList({ todoData, setTodoData, value, setValue, groupId, round }) {
   // 수정 로직
   // const [isEditing, setIsEditing] = useState(false);
 
@@ -133,9 +126,7 @@ function GroupTodoList({
             />
 
             {/* 수정 아이콘은 생성했지만, 로직 구현 아직... 필요할까? */}
-            <ModeEditOutlineOutlinedIcon
-              sx={{ fontSize: 18, cursor: "pointer", float: "right" }}
-            />
+            <ModeEditOutlineOutlinedIcon sx={{ fontSize: 18, cursor: "pointer", float: "right" }} />
           </div>
         ))}
     </div>
