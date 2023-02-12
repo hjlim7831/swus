@@ -10,7 +10,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 
 import axios from "../../Utils/index";
 
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 export default function MyInfo() {
   const [nickname, setNickName] = useState(localStorage.getItem("nickname"));
@@ -111,14 +111,12 @@ export default function MyInfo() {
         })
       })
       .catch((error) => {
-        // console.log(error);
-        // Swal.fire({
-        //   position: '',
-        //   icon: 'error',
-        //   title: '비밀번호가 다릅니다.',
-        //   showConfirmButton: false,
-        //   timer: 1000,
-        // })
+        Swal.fire({
+          icon: 'error',
+          title: '비밀번호가 다릅니다.',
+          showConfirmButton: false,
+          timer: 1000,
+        })
       })
   }
 
@@ -179,7 +177,7 @@ export default function MyInfo() {
         </Grid>
       </Box>
 
-      <Dialog open={infoUpdateMOpen} onClose={iumClose}>
+      <Dialog open={infoUpdateMOpen} onClose={iumClose} sx={{ zIndex: 2 }}>
         <DialogTitle>내 정보 수정</DialogTitle>
         <DialogContent>
           <TextField

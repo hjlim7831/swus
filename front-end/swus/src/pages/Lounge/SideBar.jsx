@@ -1,21 +1,9 @@
 import React, { useEffect, useState } from "react";
 // import { styled, useTheme } from '@mui/material/styles';
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
-const drawerWidth = "17rem";
-
-const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-});
 
 export default function MiniDrawer() {
 	const navigate = useNavigate();
@@ -44,8 +32,7 @@ export default function MiniDrawer() {
 
   return (
 		<Box
-			sx={{ display: "flex", backgroundColor: "#1A1E33", height: "100vh" }}
-			boxSizing={openedMixin}
+			sx={{ width: '17rem', display: "flex", backgroundColor: "#1A1E33", height: "100vh" }}
 		>
 
 			<Box sx={{ mt: "6rem", mx: 4, justifyContent: "center" }}>

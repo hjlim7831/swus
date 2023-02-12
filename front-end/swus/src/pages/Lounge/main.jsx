@@ -1,21 +1,35 @@
 import React from "react";
-// import { styled, useTheme } from '@mui/material/styles';
-import Box from "@mui/material/Box";
-import TodoJandi from "../MyPageReport/TodoJandi";
+import { Box } from "@mui/system";
 
 import NavBar from "../../components/NavBar/NavBar";
+import SideBar from "./SideBar"
 import Lounge from "./Lounge"
-import Sidebar from "./SideBar"
-import { Outlet } from "react-router";
 
-export default function LoungeMain() {
-  return (
-    <>
-      <NavBar />
-      <Sidebar />
-      <Box>
-        <Outlet></Outlet>
+
+function Main() {
+	return (
+		<>
+			<NavBar />
+			{/* <SideBar /> */}
+			<Box style={{ display: "flex" }}>
+				<SideBar />
+				<div style={{ marginLeft: 50, width: "80vw", marginTop: 80 }}>
+					<Lounge />
+				</div>
       </Box>
-    </>
-  );
+			{/* <div style={{ margin: 30}}>
+				<h1>
+					ccccccccccccccccc 
+					cccccccccccccccccccccc
+					cccccccccccccccccccccccccccccccccccc
+					ccccccccccccccccccccccccccccccccccccccccccccc
+					ccccccccccccccccccccccccccccccccccccccccccccccc
+					cccccccccccccccccccccccccccccccccccccccccccccccccc
+					cccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+				</h1>
+			</div> */}
+		</>	
+	)
 }
+
+export default Main;
