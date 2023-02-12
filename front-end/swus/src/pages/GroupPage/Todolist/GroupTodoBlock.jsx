@@ -23,6 +23,9 @@ function GroupTodoBlock(props) {
   // 2. round 받아서 저장
   const groupId = props.groupId;
   const round = props.round;
+  console.log("투두리스트 프롭스");
+  console.log(groupId);
+  console.log(round);
 
   useEffect(() => {
     const config = {
@@ -32,6 +35,7 @@ function GroupTodoBlock(props) {
 
     axios(config)
       .then((response) => {
+        console.log("그룹 투두 겟 api");
         console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {

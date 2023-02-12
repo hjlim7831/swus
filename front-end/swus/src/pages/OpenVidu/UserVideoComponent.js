@@ -97,7 +97,7 @@ export default class UserVideoComponent extends Component {
             >
               <Grid
                 item
-                xs={5}
+                xs={12}
                 sx={{
                   padding: "2%",
                   paddingX: "auto",
@@ -105,9 +105,11 @@ export default class UserVideoComponent extends Component {
                   borderBottomLeftRadius: "10px",
                 }}
               >
-                <div className="nameTag">{this.getNicknameTag()}</div>
+                <div className="nameTag" style={{ textAlign: "center" }}>
+                  {this.getNicknameTag()}
+                </div>
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 xs={4}
                 sx={{
@@ -185,26 +187,7 @@ export default class UserVideoComponent extends Component {
                     </Typography>
                   </Box>
                 </Box>
-              </Grid>
-              <Grid
-                item
-                xs={3}
-                sx={{
-                  padding: "2%",
-                  paddingX: "auto",
-                  borderBottomRightRadius: "10px",
-                }}
-              >
-                <Grid container>
-                  <Grid item xs={4}>
-                    <CheckBoxOutlinedIcon />
-                  </Grid>
-                  <Grid item xs={7}>
-                    1/10
-                    {/* {this.state.done}/{this.state.todo} */}
-                  </Grid>
-                </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
           </div>
         ) : null}

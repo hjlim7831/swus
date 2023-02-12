@@ -62,9 +62,7 @@ function FtoTRoom(props) {
 
   return (
     <>
-      <Card
-        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
-      >
+      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
         <div
           style={{
             width: 200,
@@ -124,9 +122,7 @@ function FtoTRoom(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          50 to 10 열람실 #{sessionName} 입장하기
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">50 to 10 열람실 #{roomId} 입장하기</DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>

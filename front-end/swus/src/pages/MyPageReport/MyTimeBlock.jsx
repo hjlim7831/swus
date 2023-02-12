@@ -117,42 +117,35 @@ function MyTime() {
                 }}
               >
                 <Grid item xs={12}>
-                  <Grid container sx={{ marginTop: "3%" }}>
-                    <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
+                  <Grid container sx={{ marginTop: "20%" }}>
+                    <Grid item xs={6} sx={{ paddingLeft: "5%" }}>
                       나의 목표 시간
                     </Grid>
-                    <Grid item xs={6} sx={{ backgroundColor: "pink" }}>
-                      <Box sx={{ marginLeft: "30%" }}>
+                    <Grid item xs={6}>
+                      <Box sx={{ marginLeft: "20%" }}>
                         {parseInt(targetTime / 60)}시간{" "}
                         {("0" + parseInt(targetTime % 60)).slice(-2)}분
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid
-                    container
-                    sx={{ backgroundColor: "red", marginTop: "2%" }}
-                  >
-                    <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
+                  <Grid container sx={{ marginTop: "2%" }}>
+                    <Grid item xs={6} sx={{ paddingLeft: "5%" }}>
                       현재 달성 시간
                     </Grid>
-                    <Grid item xs={6} sx={{ backgroundColor: "pink" }}>
-                      <Box sx={{ marginLeft: "30%" }}>
-                        {parseInt(studyTime / 60)}시간{" "}
-                        {("0" + parseInt(studyTime % 60)).slice(-2)}분
+                    <Grid item xs={6}>
+                      <Box sx={{ marginLeft: "20%" }}>
+                        {parseInt(studyTime / 60)}시간 {("0" + parseInt(studyTime % 60)).slice(-2)}
+                        분
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid
-                    container
-                    sx={{ backgroundColor: "red", marginTop: "2%" }}
-                  >
-                    <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
+                  <Grid container sx={{ marginTop: "2%" }}>
+                    <Grid item xs={6} sx={{ paddingLeft: "5%" }}>
                       남은 목표 시간
                     </Grid>
-                    <Grid item xs={6} sx={{ backgroundColor: "pink" }}>
-                      <Box sx={{ marginLeft: "30%" }}>
-                        {parseInt(restTime / 60)}시간{" "}
-                        {("0" + parseInt(restTime % 60)).slice(-2)}분
+                    <Grid item xs={6}>
+                      <Box sx={{ marginLeft: "20%" }}>
+                        {parseInt(restTime / 60)}시간 {("0" + parseInt(restTime % 60)).slice(-2)}분
                       </Box>
                     </Grid>
                   </Grid>
@@ -165,8 +158,7 @@ function MyTime() {
           <DialogTitle>목표시간 설정하기</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반
-              공부 => 10, 30 입력
+              오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반 공부 => 10, 30 입력
             </DialogContentText>
             <Grid container spacing={2}>
               <Grid item xs={6}>

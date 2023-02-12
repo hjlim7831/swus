@@ -69,10 +69,10 @@ class OpenViduApp extends Component {
     this.timeID = setInterval(() => {
       this.change();
       if (this.state.mySessionId.substr(6, 1) === "Y") {
-        if (this.state.d.getMinutes() === 33 && this.state.d.getSeconds() == 0) {
+        if (this.state.d.getMinutes() === 50 && this.state.d.getSeconds() == 0) {
           console.log("if 들어감");
           startBreak();
-        } else if (this.state.d.getMinutes() === 34 && this.state.d.getSeconds() == 0) {
+        } else if (this.state.d.getMinutes() === 0 && this.state.d.getSeconds() == 0) {
           console.log("elseif 들어감");
           endBreak();
         } else {
@@ -132,8 +132,13 @@ class OpenViduApp extends Component {
     }
   }
   audioControl() {
-    const publisher = this.state.publisher;
-    publisher.publishAudio(true);
+    let pub;
+    if (this.state.publisher.publishAudio === true) {
+      pub = this.state.publisher.publishAudio(true);
+    } else pub = this.state.publisher.publishAudio(false);
+    this.setState({
+      publisher: pub,
+    });
   }
 
   joinSession() {
@@ -168,6 +173,7 @@ class OpenViduApp extends Component {
         });
 
         // On every Stream destroyed...
+        //스트림 구독 취소
         mySession.on("streamDestroyed", (event) => {
           // Remove the stream from 'subscribers' array
           this.deleteSubscriber(event.stream.streamManager);
@@ -185,6 +191,7 @@ class OpenViduApp extends Component {
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+          //초기화 된 세션에 참가
           mySession
             .connect(token, { clientData: this.state.myUserName })
             .then(async () => {
@@ -529,6 +536,7 @@ class OpenViduApp extends Component {
                     backgroundColor: "#F4EFE6",
                     height: "100%",
                     padding: 5,
+                    borderRadius: 4,
                   }}
                 >
                   <MyTodoPublicIn />
@@ -553,44 +561,52 @@ class OpenViduApp extends Component {
                 </div>
               </Grid>
             </Grid>
-            <Grid item xs={9.6}>
+            <Grid
+              item
+              xs={9.6}
+              sx={
+                {
+                  // gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
+                  // alignContent: "stretch",
+                  // placeItems: "center",
+                }
+              }
+            >
               {this.state.session === undefined ? <div id="join">{this.joinSession()}</div> : null}
               {/* <Grid container sx={{ border: 1 }}> */}
               {this.state.session !== undefined ? (
-                <div id="session">
-                  <div
-                    id="video-container"
-                    style={
-                      {
-                        /*marginLeft: "5%"*/
-                      }
-                    }
-                  >
-                    {this.state.publisher !== undefined ? (
-                      <div
-                        className="stream-container"
-                        onClick={() => this.handleMainVideoStream(this.state.publisher)}
-                      >
-                        <UserVideoComponent streamManager={this.state.publisher} />
-                      </div>
-                    ) : null}
-                    {this.state.subscribers.map((sub, i) => (
-                      <div
-                        key={i}
-                        className="stream-container"
-                        onClick={() => this.handleMainVideoStream(sub)}
-                      >
-                        <UserVideoComponent streamManager={sub} />
-                      </div>
-                    ))}
-                  </div>
+                <div
+                  id="video-container"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
+                    alignContent: "stretch",
+                    placeItems: "center",
+                    backgroundColor: "pink",
+                  }}
+                >
+                  {this.state.publisher !== undefined ? (
+                    <div
+                      className="stream-container"
+                      onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                      style={{ width: "100%" }}
+                    >
+                      <UserVideoComponent streamManager={this.state.publisher} />
+                    </div>
+                  ) : null}
+                  {this.state.subscribers.map((sub, i) => (
+                    <div
+                      key={i}
+                      className="stream-container"
+                      onClick={() => this.handleMainVideoStream(sub)}
+                    >
+                      <UserVideoComponent streamManager={sub} />
+                    </div>
+                  ))}
                 </div>
               ) : null}
             </Grid>
           </Grid>
-
-          {this.state.open === "start" ? { startBreak } : null}
-          {this.state.open === "end" ? { endBreak } : null}
         </Box>
       </>
     );

@@ -114,13 +114,19 @@ class OpenViduApp extends Component {
     }
   }
 
-  // muteAudio() {
-  //   this.publisher.publishAudio(false);
-  // }
+  muteAudio() {
+    let publisher = this.state.publisher.publishAudio(false);
+    this.setState = {
+      publisher: publisher,
+    };
+  }
 
-  // unmuteAudio() {
-  //   this.publisher.publishAudio(true);
-  // }
+  unmuteAudio() {
+    let publisher = this.state.publisher.publishAudio(true);
+    this.setState = {
+      publisher: publisher,
+    };
+  }
 
   joinSession() {
     // --- 1) Get an OpenVidu object ---
@@ -239,7 +245,8 @@ class OpenViduApp extends Component {
 
     const Token = sessionStorage.getItem("token");
     console.log("그룹 방 퇴장");
-    console.log(this.state.roomId);
+    console.log(this.state.teamId);
+    console.log(this.state.round);
     axios({
       method: "get",
       url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
@@ -308,7 +315,7 @@ class OpenViduApp extends Component {
     //   localStorage.setItem("totalM", totalM + (cal % 60));
     // }
 
-    window.location.replace("http://localhost:3000/studyroom");
+    window.location.replace("http://localhost:3000/group/mystudy");
   }
 
   render() {
@@ -369,10 +376,14 @@ class OpenViduApp extends Component {
                       aria-label="record"
                       color="primary"
                       // onClick={() =>
-                      //   this.state.publisher ? this.unmuteAudio : this.muteAudio
+                      //   this.state.publisher.publishAudio ? this.unmuteAudio : this.muteAudio
                       // }
                     >
-                      {this.state.publisher ? <MicNoneOutlinedIcon /> : <MicOffOutlinedIcon />}
+                      {/* {this.state.publisher.publishAudio ? (
+                        <MicNoneOutlinedIcon />
+                      ) : (
+                        <MicOffOutlinedIcon />
+                      )} */}
                       <MicNoneOutlinedIcon />
                     </IconButton>
                     <IconButton color="primary" aria-label="add an alarm">
