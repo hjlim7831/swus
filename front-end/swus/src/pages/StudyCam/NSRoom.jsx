@@ -8,12 +8,11 @@ function NSRoom() {
 
   const roomName = location.state.roomName;
   const roomId = location.state.roomId;
-  const enterTime = location.state.enterTime;
   console.log("roomId");
   //여기까지 잘 온다.
   return (
     <>
-      <OpenViduApp sessionId={roomName} roomId={roomId} enterTim={enterTime} />
+      <OpenViduApp sessionId={roomName} roomId={roomId} />
     </>
   );
 }

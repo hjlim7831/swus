@@ -3,27 +3,21 @@ import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import React, { Component } from "react";
 // import "./App.css";
-import UserVideoComponent from "./UserVideoComponent";
+import GroupUserVideo from "./GroupUserVideo";
 
 //열람실 내부 컴포넌트용
 import { Box } from "@mui/system";
 import Grid from "@mui/material/Grid";
 
-import MyTodoPublicIn from "./TodoList/MyTodoPublicIn";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOffOutlinedIcon from "@mui/icons-material/MicOffOutlined";
 import Stack from "@mui/material/Stack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import Typography from "@mui/material/Typography";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
+import GroupTodoBlock from "../../GroupPage/Todolist/GroupTodoBlock";
 
 //HOC 사용용
 
@@ -33,26 +27,31 @@ const APPLICATION_SERVER_URL = "http://localhost:5000/";
 class OpenViduApp extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.navigate);
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      roomType: props.roomType,
+      roomType: props.category,
       mySessionId: props.sessionId,
       myUserName: localStorage.getItem("nickname"),
-      roomId: props.roomId,
+      teamId: props.teamId,
+      round: props.round,
+      teamName: props.teamName,
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
       d: new Date(), //시계
-      open: false, //모달
     };
+
+    console.log(this.state.teamName);
+    console.log(this.state.mySessionId);
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    // this.muteAudio = this.muteAudio.bind(this);
+    // this.unmuteAudio = this.unmuteAudio.bind(this);
   }
 
   componentDidMount() {
@@ -86,24 +85,6 @@ class OpenViduApp extends Component {
     return todayLabel;
   };
 
-  //쉬는시간 모달 열고 닫아주는함수
-  handleClickOpen = () => {
-    this.setState({
-      open: true,
-    });
-  };
-  handleClose = () => {
-    this.setOpen(false);
-  };
-
-  ////
-  // getTodoCount = (todoProps, doneProps) => {
-  //   this.setState({
-  //     todo: todoProps,
-  //     done: doneProps,
-  //   });
-  // };
-
   onbeforeunload(event) {
     this.leaveSession();
   }
@@ -133,13 +114,21 @@ class OpenViduApp extends Component {
     }
   }
 
+  // muteAudio() {
+  //   this.publisher.publishAudio(false);
+  // }
+
+  // unmuteAudio() {
+  //   this.publisher.publishAudio(true);
+  // }
+
   joinSession() {
     // --- 1) Get an OpenVidu object ---
     //오픈비두 객체 생성
     this.OV = new OpenVidu();
 
     // --- 2) Init a session ---
-
+    //세션 객체 초기화
     this.setState(
       {
         session: this.OV.initSession(),
@@ -150,6 +139,7 @@ class OpenViduApp extends Component {
         // --- 3) Specify the actions when events take place in the session ---
 
         // On every new Stream received...
+        //세션에서 생성되는 스트림 구독
         mySession.on("streamCreated", (event) => {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
@@ -158,6 +148,7 @@ class OpenViduApp extends Component {
           subscribers.push(subscriber);
 
           // Update the state with the new subscribers
+          //구독자 업데이트 setState
           this.setState({
             subscribers: subscribers,
           });
@@ -178,12 +169,12 @@ class OpenViduApp extends Component {
         // --- 4) Connect to the session with a valid user token ---
 
         // Get a token from the OpenVidu deployment
-        //토큰 생성
+        //토큰 사용하여 세션에 연결
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
-            .connect(token, { clientData: this.state.myUserName, enterTime: this.state.enterTime })
+            .connect(token, { clientData: this.state.myUserName })
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
@@ -194,7 +185,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x600", // The resolution of your video
+                resolution: "1200x800", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -247,16 +238,12 @@ class OpenViduApp extends Component {
     }
 
     const Token = sessionStorage.getItem("token");
-    console.log("방 퇴장");
+    console.log("그룹 방 퇴장");
     console.log(this.state.roomId);
     axios({
-      method: "post",
-      url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
+      method: "get",
+      url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
       headers: { Authorization: `Bearer ${Token}` },
-      data: {
-        member_id: 0,
-        room_id: this.state.roomId,
-      },
     }).then((response) => {
       console.log(response.data.message);
     });
@@ -266,64 +253,62 @@ class OpenViduApp extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
       mainStreamManager: undefined,
       publisher: undefined,
     });
 
-    //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
-    //기존 입장 시간
-    const inH = parseInt(localStorage.getItem("inHour"));
-    const inM = parseInt(localStorage.getItem("inMin"));
+    // //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
+    // //기존 입장 시간
+    // const inH = parseInt(localStorage.getItem("inHour"));
+    // const inM = parseInt(localStorage.getItem("inMin"));
 
-    //현재 시간
-    const nowH = parseInt(this.state.d.getHours());
-    const nowM = parseInt(this.state.d.getMinutes());
+    // //현재 시간
+    // const nowH = parseInt(this.state.d.getHours());
+    // const nowM = parseInt(this.state.d.getMinutes());
 
-    //누적된 총 시간
-    const totalH = parseInt(localStorage.getItem("totalH"));
-    const totalM = parseInt(localStorage.getItem("totalM"));
+    // //누적된 총 시간
+    // const totalH = parseInt(localStorage.getItem("totalH"));
+    // const totalM = parseInt(localStorage.getItem("totalM"));
 
-    if (inH <= nowH) {
-      //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
-      const cal = nowH * 60 + nowM - (inH * 60 + inM);
-      //시간 저장
-      axios({
-        method: "put",
-        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+    // if (inH <= nowH) {
+    //   //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
+    //   const cal = nowH * 60 + nowM - (inH * 60 + inM);
+    //   //시간 저장
+    //   axios({
+    //     method: "put",
+    //     url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
 
-        headers: { Authorization: `Bearer ${Token}` },
-        data: {
-          now_total_time: totalH * 60 + totalM + cal,
-        },
-      }).then((res) => {
-        console.log(res);
-      });
+    //     headers: { Authorization: `Bearer ${Token}` },
+    //     data: {
+    //       now_total_time: totalH * 60 + totalM + cal,
+    //     },
+    //   }).then((res) => {
+    //     console.log(res);
+    //   });
 
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
-    } else {
-      //앞시간이 더 큰 숫자일 경우 ex 18시~1시
-      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
-      //시간 저장
-      axios({
-        method: "put",
-        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+    //   localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+    //   localStorage.setItem("totalM", totalM + (cal % 60));
+    // } else {
+    //   //앞시간이 더 큰 숫자일 경우 ex 18시~1시
+    //   const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
+    //   //시간 저장
+    //   axios({
+    //     method: "put",
+    //     url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
 
-        headers: { Authorization: `Bearer ${Token}` },
-        data: {
-          now_total_time: totalH * 60 + totalM + cal,
-        },
-      }).then((res) => {
-        console.log(res);
-      });
+    //     headers: { Authorization: `Bearer ${Token}` },
+    //     data: {
+    //       now_total_time: totalH * 60 + totalM + cal,
+    //     },
+    //   }).then((res) => {
+    //     console.log(res);
+    //   });
 
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
-    }
+    //   localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+    //   localStorage.setItem("totalM", totalM + (cal % 60));
+    // }
 
-    window.location.href = "/studyroom";
+    window.location.replace("http://localhost:3000/studyroom");
   }
 
   render() {
@@ -357,8 +342,8 @@ class OpenViduApp extends Component {
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton aria-label="record" color="primary">
-                      <PlayCircleOutlineIcon />
+                    <IconButton aria-label="mute" color="primary">
+                      <MicNoneOutlinedIcon />
                     </IconButton>
                     <IconButton color="primary" aria-label="add an alarm">
                       <MusicNoteOutlinedIcon />
@@ -380,8 +365,15 @@ class OpenViduApp extends Component {
                 ) : (
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton aria-label="record" color="primary">
-                      <PlayCircleOutlineIcon />
+                    <IconButton
+                      aria-label="record"
+                      color="primary"
+                      // onClick={() =>
+                      //   this.state.publisher ? this.unmuteAudio : this.muteAudio
+                      // }
+                    >
+                      {this.state.publisher ? <MicNoneOutlinedIcon /> : <MicOffOutlinedIcon />}
+                      <MicNoneOutlinedIcon />
                     </IconButton>
                     <IconButton color="primary" aria-label="add an alarm">
                       <MusicNoteOutlinedIcon />
@@ -398,7 +390,7 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>공용 열람실{mySessionId}</h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>{this.state.teamName}</h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -523,8 +515,7 @@ class OpenViduApp extends Component {
                     padding: 5,
                   }}
                 >
-                  <MyTodoPublicIn />
-                  {/* <MyTodoPublicIn parentFunction={this.getTodoCount} /> */}
+                  <GroupTodoBlock groupId={this.state.teamId} round={this.state.round} />
                 </div>
                 <div>
                   <Button
@@ -566,11 +557,7 @@ class OpenViduApp extends Component {
                           className="stream-container"
                           onClick={() => this.handleMainVideoStream(this.state.publisher)}
                         >
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                            // todoTodo={this.state.todo}
-                            // todoDone={this.state.done}
-                          />
+                          <GroupUserVideo streamManager={this.state.publisher} />
                         </div>
                       ) : null}
                       {this.state.subscribers.map((sub, i) => (
@@ -579,11 +566,7 @@ class OpenViduApp extends Component {
                           className="stream-container"
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
-                          <UserVideoComponent
-                            streamManager={sub}
-                            // todoTodo={this.state.todo}
-                            // todoDone={this.state.done}
-                          />
+                          <GroupUserVideo streamManager={sub} />
                         </div>
                       ))}
                     </div>
@@ -592,13 +575,6 @@ class OpenViduApp extends Component {
               </div>
             </Grid>
           </Grid>
-          {/*정각이 되었을때 알림을 주는 모달창 */}
-          {this.state.d.getMinutes() === 22 && this.state.d.getSeconds() === 30 ? (
-            <div></div>
-          ) : null}
-
-          {/*정각이 되었을때 알림을 주는 모달창 */}
-          {this.state.d.getMinutes() === 0 && this.state.d.getSeconds() === 0 ? <div></div> : null}
         </Box>
       </>
     );
