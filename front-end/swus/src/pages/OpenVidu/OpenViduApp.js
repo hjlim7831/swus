@@ -25,6 +25,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 
+//쉬는시간 alert
+import startBreak from "../../components/modals/StartBreak";
+import endBreak from "../../components/modals/EndBreak";
+
 //HOC 사용용
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -33,7 +37,6 @@ const APPLICATION_SERVER_URL = "http://localhost:5000/";
 class OpenViduApp extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.navigate);
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
@@ -47,16 +50,13 @@ class OpenViduApp extends Component {
       subscribers: [], //다른 사람들의 활성 스트림 저장
       enterTime: props.enterTime,
       d: new Date(), //시계
-      open: false, //모달
-      // todo: 0, //투두리스트 할 목록 개수
-      // done: 0, //투두 리스트 한 목록 개수
+      open: undefined,
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
-    // this.getTodoCount = this.getTodoCount.bind(this);
   }
 
   componentDidMount() {
@@ -67,6 +67,21 @@ class OpenViduApp extends Component {
 
     //시계 구현 1 컴포넌트가 불러올 때마다 1초씩 this.Change()를 부른다.
     this.timeID = setInterval(() => this.change(), 1000);
+    if (this.state.roomType === "Y") {
+      if (this.state.d.getMinutes() === 50 && this.state.d.getSeconds() === 0) {
+        this.setState({
+          open: "start",
+        });
+      } else if (this.state.d.getMinutes() === 0 && this.state.d.getSeconds() === 0) {
+        this.setState({
+          open: "end",
+        });
+      } else {
+        this.setState({
+          open: "",
+        });
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -89,29 +104,6 @@ class OpenViduApp extends Component {
     const todayLabel = week[dayLabel];
     return todayLabel;
   };
-
-  //쉬는시간 모달 열고 닫아주는함수
-  handleClickOpen = () => {
-    this.setState({
-      open: true,
-    });
-  };
-  handleClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
-
-  min = this.state.d.getMinutes();
-  sec = this.state.d.getSeconds();
-
-  ////
-  // getTodoCount = (todoProps, doneProps) => {
-  //   this.setState({
-  //     todo: todoProps,
-  //     done: doneProps,
-  //   });
-  // };
 
   onbeforeunload(event) {
     this.leaveSession();
@@ -140,10 +132,10 @@ class OpenViduApp extends Component {
         subscribers: subscribers,
       });
     }
-
-    // audioControl(e) {
-    //   publisher.publishAudio(true);
-    // }
+  }
+  audioControl() {
+    const publisher = this.state.publisher;
+    publisher.publishAudio(true);
   }
 
   joinSession() {
@@ -340,7 +332,8 @@ class OpenViduApp extends Component {
   }
 
   render() {
-    const mySessionId = this.state.mySessionId;
+    const roomId = this.state.roomId;
+    console.log(roomId);
     const myUserName = this.state.myUserName;
 
     const year = this.state.d.getFullYear();
@@ -370,9 +363,7 @@ class OpenViduApp extends Component {
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton aria-label="record" color="primary">
-                      <PlayCircleOutlineIcon />
-                    </IconButton>
+
                     <IconButton color="primary" aria-label="add an alarm">
                       <MusicNoteOutlinedIcon />
                     </IconButton>
@@ -417,7 +408,7 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>공용 열람실{mySessionId}</h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>공용 열람실{roomId}</h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -585,11 +576,7 @@ class OpenViduApp extends Component {
                           className="stream-container"
                           onClick={() => this.handleMainVideoStream(this.state.publisher)}
                         >
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                            // todoTodo={this.state.todo}
-                            // todoDone={this.state.done}
-                          />
+                          <UserVideoComponent streamManager={this.state.publisher} />
                         </div>
                       ) : null}
                       {this.state.subscribers.map((sub, i) => (
@@ -598,11 +585,7 @@ class OpenViduApp extends Component {
                           className="stream-container"
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
-                          <UserVideoComponent
-                            streamManager={sub}
-                            // todoTodo={this.state.todo}
-                            // todoDone={this.state.done}
-                          />
+                          <UserVideoComponent streamManager={sub} />
                         </div>
                       ))}
                     </div>
@@ -611,13 +594,9 @@ class OpenViduApp extends Component {
               </div>
             </Grid>
           </Grid>
-          {/*정각이 되었을때 알림을 주는 모달창 */}
-          {this.state.d.getMinutes() === 22 && this.state.d.getSeconds() === 30 ? (
-            <div></div>
-          ) : null}
 
-          {/*정각이 되었을때 알림을 주는 모달창 */}
-          {this.state.d.getMinutes() === 0 && this.state.d.getSeconds() === 0 ? <div></div> : null}
+          {this.state.open === "start" ? <div>{startBreak}</div> : null}
+          {this.state.open === "end" ? <div>{endBreak}</div> : null}
         </Box>
       </>
     );

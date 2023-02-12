@@ -38,11 +38,6 @@ export default class UserVideoComponent extends Component {
     return JSON.parse(this.props.streamManager.stream.connection.data).clientData;
   }
 
-  getEnterTime() {
-    //Gets the enterTime of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data).enterTime;
-  }
-
   render() {
     //누적된 총 시간
     const totalH = parseInt(localStorage.getItem("totalH"));
