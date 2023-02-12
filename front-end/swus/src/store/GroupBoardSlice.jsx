@@ -22,7 +22,8 @@ const groupBoardSlice = createSlice({
 			finish_time: "",
 			team_number: "",
 			days: [false, false, false, false, false, false, false],
-		}
+		},
+		todoLists: ""
 	},
 	reducers: {
 		getArticleDetails: (state, action) => {
@@ -65,7 +66,10 @@ const groupBoardSlice = createSlice({
 			state.info.day = date;
 		},
 		saveBoardId: (state, action) => {
-			state.boardId = action.payload
+			state.boardId = action.payload;
+		},
+		saveTodoLists: (state, action) => {
+			state.todoLists = action.payload;
 		}
 	},
 	extraReducers: (builder) => {

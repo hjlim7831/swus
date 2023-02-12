@@ -1,4 +1,6 @@
-function leaveGroup() {
+import axios from "../../Utils/index";
+
+function leaveGroup(teamId) {
 
   const Swal = require("sweetalert2");
 
@@ -11,7 +13,23 @@ function leaveGroup() {
     confirmButtonText: "탈퇴하기",
     cancelButtonText: "계속하기",
     icon: "warning",
-    
+    preConfirm: () => {
+      const config = {
+        url: `/my-teams/${teamId}`,
+        method: "DELETE",
+      };
+
+      return axios(config)
+              .then((response) => {
+                console.log(response)
+              })
+              .catch((error) => {
+                Swal.showValidationMessage(
+                  `Request failed ${error}`
+                )
+              })
+    },
+    allowOutsideClick: () => !Swal.isLoading()
   }).then((res) => {
     if (res.isConfirmed) {
       Swal.fire({
@@ -19,7 +37,7 @@ function leaveGroup() {
         icon: "success"
       })
       .then((res) => {
-        window.location.reload("/mypage/group");
+        window.location.replace("/group/mystudy");
       })
     }
   })

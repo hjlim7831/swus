@@ -21,6 +21,7 @@ const myGroupListSlice = createSlice({
       start_time: "",
       finish_time: "",
       days: [false, false, false, false, false, false, false],
+      todolist: [],
     },
   },
   reducers: {
@@ -38,6 +39,7 @@ const myGroupListSlice = createSlice({
       state.info.recruitment_number = action.payload.recruitment_number;
       state.info.team_number = action.payload.team_number;
       state.info.team_done = action.payload.team_done;
+      state.info.todolist = action.payload.todolist;
 
       let date = "";
       for (let i = 0; i < 7; i++) {
@@ -65,6 +67,9 @@ const myGroupListSlice = createSlice({
     saveGroupId: (state, action) => {
       state.groupId = action.payload;
     },
+    // saveGroupTodos: (state, action) => {
+    //   state.groupTodos = action.payload
+    // },
   }
 })
 
