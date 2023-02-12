@@ -5,13 +5,7 @@ import { Grid } from "@mui/material";
 import axios from "./../../Utils/index";
 
 const ApexChart = () => {
-  const [series, setSeries] = useState([{
-    name: '공부시간',
-    data: [0, 0, 0, 0, 0, 0, 0]
-  }, {
-    name: '목표시간',
-    data: [0, 0, 0, 0, 0, 0, 0]
-  }]);
+  const [series, setSeries] = useState([]);
 
   useEffect(() => {
     const config = {
@@ -22,7 +16,13 @@ const ApexChart = () => {
     axios(config).then((response) => {
       console.log(response.data);
 
-      let updatedSeries = [...series];
+      let updatedSeries = [{
+        name: '공부시간', 
+        data: [0, 0, 0, 0, 0, 0, 0]
+      }, {
+        name: '목표시간',
+        data: [0, 0, 0, 0, 0, 0, 0]
+      }];
       
       if (response.data){
         response.data.weekly_records.map((data) => {
@@ -35,9 +35,10 @@ const ApexChart = () => {
       }
       console.log(series)
     });
-  }, []);
+  });
 
-  const [options, setOptions] = useState({
+
+  const [options] = useState({
     chart: {
       type: 'bar',
     },
@@ -62,7 +63,7 @@ const ApexChart = () => {
     yaxis:{
       min: 0,
       max: 24,
-      // tickAmount: 6,
+      tickAmount: 6,
     },
     fill: {
       opacity: 1
@@ -82,6 +83,7 @@ const ApexChart = () => {
 
   return (
     <>
+      {/* {console.log("check", series)} */}
       <Box
         sx={{
           width: "100%",
@@ -95,13 +97,13 @@ const ApexChart = () => {
         <Grid container>
           <Grid item xs={12}>
             <h3 style={{ marginLeft: "50px" }}>주간 공부 기록</h3>
+            {/* <p>{ series[0].data }</p> */}
           </Grid>
 
           <Box
             sx={{
               position: "relative",
               width: "100%",
-              height: 420,
               textColor: "white",
             }}
           >

@@ -7,9 +7,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import axios from "../../../Utils/index";
-import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export default function SignUpSide() {
   const navigate = useNavigate();
@@ -33,18 +34,29 @@ export default function SignUpSide() {
     setInputData({ ...inputData, [name]: value });
   };
 
+  const Alert = ({title, icon}) => {
+    Swal.fire({
+      icon,
+      title,
+    })
+  };
+
+  // 이메일, 비밀번호 유효성 검사 변수
+  const [emailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
+  const [passwordCheck] = useState(/^[a-zA-Z0-9]+$/);
+
   // 아이디 중복검사
   const idCheck = (event) => {
     event.preventDefault(); // 재렌더링 막아주는...
     // 이메일 가져오기
     const email = inputData.email;
 
-    // 이메일 유효성검사 -> 정규식
-    const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
-
     if (email) {
       if (!emailCheck.test(email)) {
-        alert("이메일 형식으로 작성해주세요.");
+        const title = "이메일 형식으로 작성해주세요.";
+        const icon = "error";
+        Alert({title, icon});
+
       } else {
         console.log(email);
 
@@ -59,14 +71,22 @@ export default function SignUpSide() {
           .then((response) => {
             console.log(response.data.msg);
             if (response.data.msg === "Y") {
-              alert("존재하는 아이디입니다.");
+              const title = "존재하는 아이디입니다.";
+              const icon = "error";
+              Alert({title, icon});
+              // alert("존재하는 아이디입니다.");
             } else {
-              alert("사용가능한 아이디입니다.");
+              const title = "사용가능한 아이디입니다.";
+              const icon = "success";
+              Alert({title, icon});
+              // alert("사용가능한 아이디입니다.");
             }
           });
       }
     } else {
-      alert("이메일을 작성해주세요.");
+      const title = "이메일을 작성해주세요.";
+      const icon = "error";
+      Alert({title, icon});
     }
   };
 
@@ -82,10 +102,7 @@ export default function SignUpSide() {
     };
 
     const passwordConfirm = inputData.passwordConfirm;
-
-    // const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
-    const passwordCheck = /[A-Za-z]+[0-9]/;
-
+    let icon = "error";
     // 유효성검사
     if (
       // payload.email &&
@@ -95,15 +112,23 @@ export default function SignUpSide() {
       payload.answer
     ) {
       if (payload.password.length < 8) {
-        alert("비밀번호는 8자 이상이여야 합니다.");
+        const title = "비밀번호는 8자 이상이여야 합니다."
+        Alert({title, icon})
+        // alert("비밀번호는 8자 이상이여야 합니다.");
       } else if (!passwordCheck.test(payload.password)) {
-        alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
+        const title = "비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다."
+        Alert({title, icon})
+        // alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
       } else if (payload.password != passwordConfirm) {
-        alert("비밀번호와 비밀번호 확인이 서로 다릅니다.");
+        const title = "비밀번호와 비밀번호 확인이 서로 다릅니다."
+        Alert({title, icon})
+        // alert("비밀번호와 비밀번호 확인이 서로 다릅니다.");
       } else if (
         !(2 <= payload.nickname.length && payload.nickname.length <= 10)
       ) {
-        alert("닉네임은 2글자 이상, 10글자 이하만 가능합니다.");
+        const title = "닉네임은 2글자 이상, 10글자 이하만 가능합니다."
+        Alert({title, icon})
+        // alert("닉네임은 2글자 이상, 10글자 이하만 가능합니다.");
       } else {
         console.log({
           payload,
@@ -120,146 +145,181 @@ export default function SignUpSide() {
           .then((response) => {
             // console.log("success");
             console.log(response.data);
-            navigate("accounts/login");
+            navigate("/account/login");
           })
           .catch((error) => {
             console.log(error.message);
-            alert("존재하는 회원입니다.");
+            const title = "존재하는 회원입니다.";
+            Alert({title, icon});
+            // alert("존재하는 회원입니다.");
           });
       }
     } else {
-      alert("정보를 다시 입력해주세요.");
+      const title = "정보를 다시 입력해주세요.";
+      Alert({title, icon});
+      // alert("정보를 다시 입력해주세요.");
     }
   };
 
   return (
     <>
-      <Typography
-        component="h1"
-        variant="h5"
+      <Box
         sx={{
-          mb: 3,
-          mt: 1,
+          padding: 3,
           display: "flex",
-          alignContent: "space-between",
-          color: "#5F3A42",
+          flexDirection: "column",
+          alignItems: "center",
+          background: "white",
+          borderRadius: "3%",
+          border: "1px solid",
+          // overflowY: "scroll"
         }}
       >
-        Sign Up
-        <Link
-          href="login"
+        <Typography
+          component="h1"
           variant="h5"
-          style={{
-            textDecoration: "none",
-            color: "black",
-            marginLeft: 100,
-            fontSize: 17,
+          sx={{
+            mb: 3,
+            mt: 1,
+            display: "flex",
+            alignContent: "space-between",
             color: "#5F3A42",
           }}
         >
-          Sign In
-        </Link>
-      </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-        아이디 (이메일)
-        <Button
-          type="submit"
-          sx={{ bgcolor: "#E2B9B3", color: "#5F3A42" }}
-          onClick={idCheck}
-        >
-          중복검사
-        </Button>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          // label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          variant="standard"
-          onChange={inputSubmit}
-        />
-        닉네임
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="nickname"
-          name="nickname"
-          autoComplete="nickname"
-          autoFocus
-          variant="standard"
-          helperText="닉네임은 2 ~ 10자여야 합니다."
-          onChange={inputSubmit}
-        />
-        비밀번호
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          // label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          variant="standard"
-          onChange={inputSubmit}
-          helperText="비밀번호는 문자, 숫자 포함한 8자 이상이어야 합니다."
-        />
-        비밀번호 확인
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="passwordConfirm"
-          // label="Password Confirm"
-          type="password"
-          id="passwordConfirm"
-          onChange={inputSubmit}
-          autoComplete="current-password"
-          variant="standard"
-        />
-        질문
-        <TextField
-          margin="normal"
-          select
-          fullWidth
-          id="passwordQuestion"
-          onChange={inputSubmit}
-          label="Choose a question"
-          defaultValue=""
-          name="question_id"
-        >
-          {favorite_questions.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        답
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="answer"
-          // label="answer"
-          name="answer"
-          onChange={inputSubmit}
-          autoComplete="answer"
-          autoFocus
-          variant="standard"
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2, backgroundColor: "#E2B9B3", color: "#5F3A42" }}
-        >
           Sign Up
-        </Button>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
+          <Link
+            href="login"
+            variant="h5"
+            style={{
+              textDecoration: "none",
+              color: "black",
+              marginLeft: 100,
+              fontSize: 17,
+              color: "#5F3A42",
+            }}
+          >
+            Sign In
+          </Link>
+        </Typography>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, overflowY: "scroll" }}>
+          아이디 (이메일)
+          <Button
+            type="submit"
+            sx={{ bgcolor: "#E2B9B3", color: "#5F3A42",
+              '&:hover': {
+                backgroundColor: '#E2B9B3'
+              },
+            }}
+            onClick={idCheck}
+          >
+            중복검사
+          </Button>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            // label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            variant="standard"
+            error={inputData.email && !emailCheck.test(inputData.email)}
+            onChange={inputSubmit}
+          />
+          닉네임
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="nickname"
+            name="nickname"
+            autoComplete="nickname"
+            autoFocus
+            variant="standard"
+            error={inputData.nickname && inputData.nickname.length > 10 | inputData.nickname.length < 2}
+            helperText="닉네임은 2 ~ 10자여야 합니다."
+            onChange={inputSubmit}
+          />
+          비밀번호
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            // label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            variant="standard"
+            onChange={inputSubmit}
+            error={inputData.password && 
+              (inputData.password.length < 8 | 
+                !(passwordCheck.test(inputData.password)))}
+            helperText="비밀번호는 문자, 숫자 포함한 8자 이상이어야 합니다."
+          />
+          비밀번호 확인
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="passwordConfirm"
+            // label="Password Confirm"
+            type="password"
+            id="passwordConfirm"
+            onChange={inputSubmit}
+            autoComplete="current-password"
+            variant="standard"
+            error={inputData.password && 
+              (inputData.password.length < 8 | 
+                !(passwordCheck.test(inputData.password)))}
+          />
+          질문
+          <TextField
+            margin="normal"
+            select
+            fullWidth
+            id="passwordQuestion"
+            onChange={inputSubmit}
+            label="Choose a question"
+            defaultValue=""
+            name="question_id"
+          >
+            {favorite_questions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          답
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="answer"
+            // label="answer"
+            name="answer"
+            onChange={inputSubmit}
+            autoComplete="answer"
+            autoFocus
+            variant="standard"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2, 
+              backgroundColor: "#E2B9B3", 
+              color: "#5F3A42",
+              '&:hover': {
+                backgroundColor: '#E2B9B3'
+              } 
+            }}
+          >
+            Sign Up
+          </Button>
+          {/* <Copyright sx={{ mt: 5 }} /> */}
+        </Box>
       </Box>
     </>
   );

@@ -9,8 +9,8 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import axios from "./../../../Utils/index";
+import Swal from 'sweetalert2';
 
-// import { useNavigate } from "react-router-dom";
 
 export default function SignInSide() {
 
@@ -21,16 +21,26 @@ export default function SignInSide() {
 
   // remember me 체크하면, 값 저장하는 함수.
   const saveRemember = () => {
-    check = !check
+    check = !check;
     setRememberCheck(check);
-    check ? localStorage.setItem("remember", "true") : localStorage.removeItem("remember");
+    check
+      ? localStorage.setItem("remember", "true")
+      : localStorage.removeItem("remember");
   };
-  
-  // const navigate = useNavigate();
+
+  // 알림 창 함수
+  const Alert = ({title, icon}) => {
+    Swal.fire({
+      icon,
+      title,
+      showConfirmButton: false,
+      timer: 1000,
+    })
+  };
 
   // 이메일, 비밀번호 저장 변수
   const [inputData, setInputData] = useState({
-    email: "",
+    email: check ? localStorage.getItem("id") : "",
     password: "",
   });
 
@@ -42,6 +52,10 @@ export default function SignInSide() {
     setInputData({ ...inputData, [name]: value });
   };
 
+  // 이메일, 비밀번호 유효성 검사 변수
+  const [emailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
+  const [passwordCheck] = useState(/^[a-zA-Z0-9]+$/);
+
   // 이메일, 비밀번호 제출 함수
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -51,17 +65,19 @@ export default function SignInSide() {
       password: inputData.password,
     };
 
-    const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
-    const passwordCheck = /[A-Za-z]+[0-9]/;
+    console.log(payload);
 
     // 유효성검사
     if (payload.email && payload.password) {
+      let icon = "error";
       if (!emailCheck.test(payload.email)) {
-        alert("이메일 형식을 지켜주세요.");
-      } else if (payload.password.length < 8) {
-        alert("비밀번호는 8자 이상이여야 합니다.");
-      } else if (!passwordCheck.test(payload.password)) {
-        alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
+        const title= "이메일 형식을 지켜주세요";
+        Alert({title, icon});
+        // alert("이메일 형식을 지켜주세요.");
+      // } else if (payload.password.length < 8) {
+      //   alert("비밀번호는 8자 이상이여야 합니다.");
+      // } else if (!passwordCheck.test(payload.password)) {
+      //   alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
       } else {
         console.log({ payload });
 
@@ -72,9 +88,7 @@ export default function SignInSide() {
         };
 
         axios(config)
-          // .post("http://localhost:8081/auth/login", payload)
           .then((response) => {
-            // console.log(response.data.token);
 
             sessionStorage.setItem("token", response.data.access_token);
             // token은 sessionStorage에 저장
@@ -95,99 +109,131 @@ export default function SignInSide() {
             window.location = `${window.location.origin}/studyroom`;
           })
           .catch((error) => {
-            alert("존재하는 아이디가 아닙니다.");
+            const title = "존재하는 아이디가 아닙니다.";
+            Alert({title, icon});
+            // alert("존재하는 아이디가 아닙니다.");
           });
       }
     } else {
-      alert("정보를 다시 입력해주세요.");
+      const title = "정보를 다시 입력해주세요.";
+      let icon = "error";
+      Alert({title, icon});
+      // alert("정보를 다시 입력해주세요.");
     }
   };
 
   return (
     <>
-      <Typography
-        component="h1"
-        variant="h5"
+      <Box
         sx={{
-          mb: 3,
-          mt: 1,
+          padding: 3,
           display: "flex",
-          alignContent: "space-between",
-          color: "#5F3A42",
+          flexDirection: "column",
+          alignItems: "center",
+          background: "white",
+          borderRadius: "3%",
+          border: "1px solid",
         }}
       >
-        Sign in
-        <Link
-          href="signup"
+        <Typography
+          component="h1"
           variant="h5"
-          style={{
-            textDecoration: "none",
-            color: "black",
-            marginLeft: 100,
-            fontSize: 17,
+          sx={{
+            mb: 3,
+            mt: 1,
+            display: "flex",
+            alignContent: "space-between",
             color: "#5F3A42",
           }}
         >
-          Sign Up
-        </Link>
-      </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-        아이디 (이메일)
-        { (rememberCheck) ? <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          onChange={inputSubmit}
-          defaultValue = {localStorage.getItem('id')}
-        /> : <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          onChange={inputSubmit}
-        /> }
-        비밀번호
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          onChange={inputSubmit}
-        />
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary"/>}
-          label="Remember me"
-          checked={rememberCheck}
-          onClick={ saveRemember }
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2, backgroundColor: "#E2B9B3", color: "#5F3A42" }}
-        >
-          Sign In
-        </Button>
-        <Grid container>
-          <Grid item xs>
-            <Link href="findpassword" variant="body2">
-              아이디/비밀번호 찾기
-            </Link>
+          Sign in
+          <Link
+            href="signup"
+            variant="h5"
+            style={{
+              textDecoration: "none",
+              color: "black",
+              marginLeft: 100,
+              fontSize: 17,
+              color: "#5F3A42",
+            }}
+          >
+            Sign Up
+          </Link>
+        </Typography>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          아이디 (이메일)
+          {rememberCheck ? (
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={inputSubmit}
+              error={!emailCheck.test(inputData.email)}
+              defaultValue={localStorage.getItem("id")}
+            />
+          ) : (
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              error={inputData.email && !emailCheck.test(inputData.email)}
+              onChange={inputSubmit}
+            />
+          )}
+          비밀번호
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={inputSubmit}
+            error={inputData.password && 
+              (inputData.password.length < 8 | 
+                !(passwordCheck.test(inputData.password)))}
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary"/>}
+            label="Remember me"
+            checked={rememberCheck}
+            onClick={ saveRemember }
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2, 
+              backgroundColor: "#E2B9B3", 
+              color: "#5F3A42",
+              '&:hover': {
+                backgroundColor: '#E2B9B3'
+              } 
+            }}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="findpassword" variant="body2">
+                아이디/비밀번호 찾기
+              </Link>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Box>
     </>
   );

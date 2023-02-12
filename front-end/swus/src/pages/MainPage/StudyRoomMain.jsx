@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import OpenViduApp from "../OpenVidu/OpenViduApp";
-import MyTodo from "../MyPageReport/MyTodo";
+// import MyTodo from "../MyPageReport/MyTodo";
 import MyTimeBlock from "../MyPageReport/MyTimeBlock";
 import NSRoomCard from "./RoomScroll/NSRoomCard";
 import FTRoomCard from "./RoomScroll/FTRoomCard";

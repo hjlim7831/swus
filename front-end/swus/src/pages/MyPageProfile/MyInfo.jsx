@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 export default function MyInfo() {
   const [nickname, setNickName] = useState(localStorage.getItem("nickname"));
   const [email, setEmail] = useState(localStorage.getItem("id"));
-  const [passwordCheck, setPasswordCheck] = useState(/[A-Za-z]+[0-9]/);
+  const [passwordCheck] = useState(/^[a-zA-Z0-9]+$/);
 
   useEffect(() => {
     const config = {
@@ -26,7 +26,7 @@ export default function MyInfo() {
     axios(config).then((response) => {
       setEmail(response.data.email);
       setNickName(response.data.nickname);
-      // console.log(response.data);
+      console.log(response.data);
     });
   });
 
