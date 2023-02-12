@@ -258,6 +258,7 @@ public class TeamService1 {
 
     @Transactional
     public void updateTeamTodos(int teamId, int memberId, TeamTodoListUpdateReq req) {
+        log.debug("teamId:{}, memberId:{}",teamId, memberId);
         // [1] 수정하는 사람이 리더인지 확인
         isLeader(teamId, memberId);
         
@@ -267,12 +268,15 @@ public class TeamService1 {
             Optional<TodoGroup> todoGroupO = todoGroupRepository.findByIdRoundAndIdTeamId(round, teamId, TodoGroup.class);
             // [2]-1 이미 DB에 저장되어 있는 경우, UPDATE
             if (todoGroupO.isPresent()) {
-                todoGroupO.get().updateContent(tt);
+                todoGroupO.get().updateContent(tt, round, teamId);
             }
             // [2]-2 DB에 없는 경우 INSERT
             else {
                 TodoGroup todoGroup = TodoGroup.builder()
                         .teamId(teamId).round(round).content(tt.getContent()).build();
+                System.out.println(todoGroup);
+
+                // 이쪽 오류 발생
                 todoGroupRepository.save(todoGroup);
             }
         }

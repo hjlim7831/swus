@@ -105,11 +105,7 @@ public class StudyDailyUpdateServiceTest {
         System.out.println(studyService.getOneWeekData(memberId));
     }
 
-    @Test
-    public void 일주일데이터_가져오기() {
-        WeeklyTimeResp resp = studyService.getOneWeekData(7);
-        System.out.println(resp);
-    }
+
 
 
 
