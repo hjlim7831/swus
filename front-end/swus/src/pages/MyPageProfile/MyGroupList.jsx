@@ -43,7 +43,6 @@ function MyGroupList() {
   const [teamDetails, setTeamDetails] = useState([]);
 
   const openModal = (teamId) => {
-
     const config = {
       url: `/my-reports/${teamId}/member-todos`,
       method: "GET"
