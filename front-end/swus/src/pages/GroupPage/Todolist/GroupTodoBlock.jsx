@@ -86,7 +86,6 @@ function GroupTodoBlock(props) {
               width: "100%",
               marginX: "auto",
               height: 360,
-              backgroundColor: "red",
             }}
           >
             <GroupTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />

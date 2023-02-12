@@ -555,13 +555,6 @@ class OpenViduApp extends Component {
               </div>
             </Grid>
           </Grid>
-          {/*정각이 되었을때 알림을 주는 모달창 */}
-          {this.state.d.getMinutes() === 22 && this.state.d.getSeconds() === 30 ? (
-            <div></div>
-          ) : null}
-
-          {/*정각이 되었을때 알림을 주는 모달창 */}
-          {this.state.d.getMinutes() === 0 && this.state.d.getSeconds() === 0 ? <div></div> : null}
         </Box>
       </>
     );

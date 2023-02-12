@@ -50,7 +50,7 @@ class OpenViduApp extends Component {
       subscribers: [], //다른 사람들의 활성 스트림 저장
       enterTime: props.enterTime,
       d: new Date(), //시계
-      open: undefined,
+      open: "first",
     };
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
@@ -66,22 +66,20 @@ class OpenViduApp extends Component {
     window.addEventListener("beforeunload", this.onbeforeunload);
 
     //시계 구현 1 컴포넌트가 불러올 때마다 1초씩 this.Change()를 부른다.
-    this.timeID = setInterval(() => this.change(), 1000);
-    if (this.state.roomType === "Y") {
-      if (this.state.d.getMinutes() === 50 && this.state.d.getSeconds() === 0) {
-        this.setState({
-          open: "start",
-        });
-      } else if (this.state.d.getMinutes() === 0 && this.state.d.getSeconds() === 0) {
-        this.setState({
-          open: "end",
-        });
-      } else {
-        this.setState({
-          open: "",
-        });
+    this.timeID = setInterval(() => {
+      this.change();
+      if (this.state.mySessionId.substr(6, 1) === "Y") {
+        if (this.state.d.getMinutes() === 33 && this.state.d.getSeconds() == 0) {
+          console.log("if 들어감");
+          startBreak();
+        } else if (this.state.d.getMinutes() === 34 && this.state.d.getSeconds() == 0) {
+          console.log("elseif 들어감");
+          endBreak();
+        } else {
+          console.log("else 들어감");
+        }
       }
-    }
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -556,47 +554,43 @@ class OpenViduApp extends Component {
               </Grid>
             </Grid>
             <Grid item xs={9.6}>
-              <div className="container" styled={{ paddingLeft: "10%" }}>
-                {this.state.session === undefined ? (
-                  <div id="join">{this.joinSession()}</div>
-                ) : null}
-                {/* <Grid container sx={{ border: 1 }}> */}
-                {this.state.session !== undefined ? (
-                  <div id="session">
-                    <div
-                      id="video-container"
-                      style={
-                        {
-                          /*marginLeft: "5%"*/
-                        }
+              {this.state.session === undefined ? <div id="join">{this.joinSession()}</div> : null}
+              {/* <Grid container sx={{ border: 1 }}> */}
+              {this.state.session !== undefined ? (
+                <div id="session">
+                  <div
+                    id="video-container"
+                    style={
+                      {
+                        /*marginLeft: "5%"*/
                       }
-                    >
-                      {this.state.publisher !== undefined ? (
-                        <div
-                          className="stream-container"
-                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
-                        >
-                          <UserVideoComponent streamManager={this.state.publisher} />
-                        </div>
-                      ) : null}
-                      {this.state.subscribers.map((sub, i) => (
-                        <div
-                          key={i}
-                          className="stream-container"
-                          onClick={() => this.handleMainVideoStream(sub)}
-                        >
-                          <UserVideoComponent streamManager={sub} />
-                        </div>
-                      ))}
-                    </div>
+                    }
+                  >
+                    {this.state.publisher !== undefined ? (
+                      <div
+                        className="stream-container"
+                        onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                      >
+                        <UserVideoComponent streamManager={this.state.publisher} />
+                      </div>
+                    ) : null}
+                    {this.state.subscribers.map((sub, i) => (
+                      <div
+                        key={i}
+                        className="stream-container"
+                        onClick={() => this.handleMainVideoStream(sub)}
+                      >
+                        <UserVideoComponent streamManager={sub} />
+                      </div>
+                    ))}
                   </div>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
             </Grid>
           </Grid>
 
-          {this.state.open === "start" ? <div>{startBreak}</div> : null}
-          {this.state.open === "end" ? <div>{endBreak}</div> : null}
+          {this.state.open === "start" ? { startBreak } : null}
+          {this.state.open === "end" ? { endBreak } : null}
         </Box>
       </>
     );

@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 
-import "../UserVideo.css";
+import "../GroupVideo.css";
 
 import Grid from "@mui/material/Grid";
 
@@ -14,8 +14,6 @@ export default class GroupUserVideo extends Component {
 
     this.state = {
       d: new Date(),
-      // todo: this.props.todo,
-      // done: this.props.done,
     };
   }
 
@@ -67,23 +65,14 @@ export default class GroupUserVideo extends Component {
 
               <Grid
                 item
-                xs={3}
+                xs={12}
                 sx={{
                   padding: "2%",
                   paddingX: "auto",
                   borderBottomRightRadius: "10px",
+                  textAlign: "center",
                 }}
-              >
-                <Grid container>
-                  <Grid item xs={4}>
-                    <CheckBoxOutlinedIcon />
-                  </Grid>
-                  <Grid item xs={7}>
-                    1/10
-                    {/* {this.state.done}/{this.state.todo} */}
-                  </Grid>
-                </Grid>
-              </Grid>
+              ></Grid>
             </Grid>
           </div>
         ) : null}

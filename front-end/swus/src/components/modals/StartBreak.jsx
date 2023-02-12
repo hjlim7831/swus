@@ -5,7 +5,7 @@ function startBreak() {
 
   Swal.fire({
     title: "지금은 쉬는 시간입니다!",
-    html: "이 알림은 <strong></strong> 초 후, <br/><br/>자동으로 닫힙니다.<br/><br/>",
+    html: "이 알림은 <strong></strong> 초 후, 자동으로 닫힙니다.<br/><br/>",
     timer: 10000,
     didOpen: () => {
       const content = Swal.getHtmlContainer();
