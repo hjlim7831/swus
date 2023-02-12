@@ -157,7 +157,7 @@ function CreateArticleForm() {
 
 	return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px", marginTop: 3 }}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", marginTop: 3, background: "white" }}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
 							<p style={{ paddingLeft: 10, display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>

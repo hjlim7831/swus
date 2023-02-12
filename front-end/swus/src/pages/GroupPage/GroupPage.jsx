@@ -61,7 +61,7 @@ function GroupPage() {
 
 	return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px", height: "85vh", marginTop: 3 }}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", height: "85vh", marginTop: 3, background: "white" }}>
 				<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center", marginBlock: 20 }}>
 					<p style={{ display: "flex", 
 											alignItems: "center", 
