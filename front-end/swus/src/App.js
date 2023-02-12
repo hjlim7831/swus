@@ -14,7 +14,7 @@ import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 
-import Lounge from "./pages/Lounge/main";
+import LoungeMain from "./pages/Lounge/Main"
 
 import UserModal from "./pages/Accounts/LogInModal/UserModal";
 import LogInModal from "./pages/Accounts/LogInModal/LogIn";
@@ -29,7 +29,7 @@ import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+export default function App() {
   return (
     <>
       <BrowserRouter>
@@ -59,7 +59,8 @@ function App() {
             <Route path="board/create" element={<CreateArticle />} />
           </Route>
           {/* 휴게실 */}
-          <Route exact path="/lounge" element={<Lounge />} />
+          <Route exact path="/lounge" element={<LoungeMain />} />
+          
           {/* 회원 정보 관련 주소 */}
           {/* <Route exact path="/account" element={<UserModal />}> */}
           <Route exact path="/account" element={<Account />}>
@@ -80,4 +81,4 @@ function App() {
   );
 }
 
-export default App;
+// export default App;

@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 
 import axios from "./../../Utils/index";
 
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function SignInSide() {
   // 이메일 기억하는 변수

@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import ReactApexChart from 'react-apexcharts';
 import { Box } from "@mui/system";
-import { ResponsiveBar } from "@nivo/bar";
 import { Grid } from "@mui/material";
 import axios from "./../../Utils/index";
 
-const Token = sessionStorage.getItem("token");
-
-function StudyGraph() {
-  const [list, setList] = useState();
+const ApexChart = () => {
+  const [series, setSeries] = useState([{
+    name: '공부시간',
+    data: [0, 0, 0, 0, 0, 0, 0]
+  }, {
+    name: '목표시간',
+    data: [0, 0, 0, 0, 0, 0, 0]
+  }]);
 
   useEffect(() => {
     const config = {
@@ -17,55 +21,64 @@ function StudyGraph() {
 
     axios(config).then((response) => {
       console.log(response.data);
-      const mon = response.data.monday;
-      const newData = response.data.weekly_records.map((data) => {
-        console.log(data.id_study_at);
-      });
+
+      let updatedSeries = [...series];
+      
+      if (response.data){
+        response.data.weekly_records.map((data) => {
+        // 1: Mon ~ 7: Sun
+        // data.weekday - 1
+        updatedSeries[0].data[data.weekday - 1] = (data.total_time / 60).toFixed(2);
+        updatedSeries[1].data[data.weekday - 1] = (data.target_time / 60).toFixed(2);
+        });
+        setSeries(updatedSeries);
+      }
+      console.log(series)
     });
   }, []);
 
-  // const monday = list.monday;
-  // console.log(monday);
-  // const today = new Date(list.monday);
-  // console.log(today);
-
-  const data = [
-    {
-      type: "Mon",
-      목표시간: 8,
-      공부시간: 12,
+  const [options, setOptions] = useState({
+    chart: {
+      type: 'bar',
     },
-    {
-      type: "Tue",
-      목표시간: 4,
-      공부시간: 2,
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '35%',
+        endingShape: 'rounded'
+      },
     },
-    {
-      type: "Wed",
-      목표시간: 12,
-      공부시간: 8,
+    dataLabels: {
+      enabled: false
     },
-    {
-      type: "Thu",
-      목표시간: 17,
-      공부시간: 12,
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ['transparent']
     },
-    {
-      type: "Fri",
-      목표시간: 2,
-      공부시간: 21,
+    xaxis: {
+      categories: ['Mon', 'Tue', 'Web', 'Thur', 'Fri', 'Sat', 'Sun'],
     },
-    {
-      type: "Sat",
-      목표시간: 6,
-      공부시간: 5,
+    yaxis:{
+      min: 0,
+      max: 24,
+      // tickAmount: 6,
     },
-    {
-      type: "Sun",
-      목표시간: 1,
-      공부시간: 3,
+    fill: {
+      opacity: 1
     },
-  ];
+    colors: ['#FBB4AE', '#B3CDE3'],
+    legend: {
+      position: "top"
+    },
+    tooltip: {
+      y: {
+        formatter: (val) => {
+          return val + "시간"
+        }
+      }
+    }
+  });
 
   return (
     <>
@@ -88,60 +101,16 @@ function StudyGraph() {
             sx={{
               position: "relative",
               width: "100%",
-              height: 350,
+              height: 420,
               textColor: "white",
             }}
           >
-            <ResponsiveBar
-              data={data}
-              keys={["공부시간", "목표시간"]}
-              indexBy="type"
-              margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
-              padding={0.6}       // 막대 폭
-              innerPadding={3}
-              maxValue={24}
-              groupMode="grouped"
-              valueScale={{ type: "linear" }}
-              indexScale={{ type: "band", round: true }}
-              colors={{ scheme: "pastel1" }}
-              borderRadius={2}
-              enableGridX={true}
-              enableLabel={false}
-              labelSkipWidth={12}
-              labelSkipHeight={12}
-              legends={[
-                //위에 목표시간 공부시간 어떤색인지 알려주는 지표
-                {
-                  dataFrom: "keys",
-                  anchor: "top-right",
-                  direction: "row",
-                  justify: false,
-                  translateX: 12, //지표 위치 좌표x
-                  translateY: -20,
-                  itemsSpacing: 0,
-                  itemWidth: 82,
-                  itemHeight: 20,
-                  itemDirection: "left-to-right",
-                  itemOpacity: 0.85,
-                  symbolSize: 13,
-                  effects: [
-                    {
-                      on: "hover",
-                      style: {
-                        itemOpacity: 1,
-                      },
-                    },
-                  ],
-                },
-              ]}
-              role="application"
-              ariaLabel="Nivo bar chart demo"
-            />
+            <ReactApexChart options={options} series={series} type="bar" height={400} />
           </Box>
         </Grid>
       </Box>
     </>
   );
-}
+};
 
-export default StudyGraph;
+export default ApexChart;
