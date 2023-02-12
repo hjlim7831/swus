@@ -52,7 +52,7 @@ export default class GroupUserVideo extends Component {
             >
               <Grid
                 item
-                xs={5}
+                xs={12}
                 sx={{
                   padding: "2%",
                   paddingX: "auto",
@@ -60,19 +60,10 @@ export default class GroupUserVideo extends Component {
                   borderBottomLeftRadius: "10px",
                 }}
               >
-                <div className="nameTag">{this.getNicknameTag()}</div>
+                <div className="nameTag" style={{ textAlign: "center" }}>
+                  {this.getNicknameTag()}
+                </div>
               </Grid>
-
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  padding: "2%",
-                  paddingX: "auto",
-                  borderBottomRightRadius: "10px",
-                  textAlign: "center",
-                }}
-              ></Grid>
             </Grid>
           </div>
         ) : null}

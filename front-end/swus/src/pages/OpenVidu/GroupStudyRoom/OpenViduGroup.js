@@ -11,9 +11,10 @@ import Grid from "@mui/material/Grid";
 
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOffOutlinedIcon from "@mui/icons-material/MicOffOutlined";
 import Stack from "@mui/material/Stack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import Typography from "@mui/material/Typography";
 import GroupTodoBlock from "../../GroupPage/Todolist/GroupTodoBlock";
@@ -49,6 +50,8 @@ class OpenViduApp extends Component {
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    // this.muteAudio = this.muteAudio.bind(this);
+    // this.unmuteAudio = this.unmuteAudio.bind(this);
   }
 
   componentDidMount() {
@@ -111,13 +114,21 @@ class OpenViduApp extends Component {
     }
   }
 
+  // muteAudio() {
+  //   this.publisher.publishAudio(false);
+  // }
+
+  // unmuteAudio() {
+  //   this.publisher.publishAudio(true);
+  // }
+
   joinSession() {
     // --- 1) Get an OpenVidu object ---
     //오픈비두 객체 생성
     this.OV = new OpenVidu();
 
     // --- 2) Init a session ---
-
+    //세션 객체 초기화
     this.setState(
       {
         session: this.OV.initSession(),
@@ -128,6 +139,7 @@ class OpenViduApp extends Component {
         // --- 3) Specify the actions when events take place in the session ---
 
         // On every new Stream received...
+        //세션에서 생성되는 스트림 구독
         mySession.on("streamCreated", (event) => {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
@@ -136,6 +148,7 @@ class OpenViduApp extends Component {
           subscribers.push(subscriber);
 
           // Update the state with the new subscribers
+          //구독자 업데이트 setState
           this.setState({
             subscribers: subscribers,
           });
@@ -156,12 +169,12 @@ class OpenViduApp extends Component {
         // --- 4) Connect to the session with a valid user token ---
 
         // Get a token from the OpenVidu deployment
-        //토큰 생성
+        //토큰 사용하여 세션에 연결
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
-            .connect(token, { clientData: this.state.myUserName, enterTime: this.state.enterTime })
+            .connect(token, { clientData: this.state.myUserName })
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
@@ -172,7 +185,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x600", // The resolution of your video
+                resolution: "1200x800", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -329,8 +342,8 @@ class OpenViduApp extends Component {
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton aria-label="record" color="primary">
-                      <PlayCircleOutlineIcon />
+                    <IconButton aria-label="mute" color="primary">
+                      <MicNoneOutlinedIcon />
                     </IconButton>
                     <IconButton color="primary" aria-label="add an alarm">
                       <MusicNoteOutlinedIcon />
@@ -352,8 +365,15 @@ class OpenViduApp extends Component {
                 ) : (
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton aria-label="record" color="primary">
-                      <PlayCircleOutlineIcon />
+                    <IconButton
+                      aria-label="record"
+                      color="primary"
+                      // onClick={() =>
+                      //   this.state.publisher ? this.unmuteAudio : this.muteAudio
+                      // }
+                    >
+                      {this.state.publisher ? <MicNoneOutlinedIcon /> : <MicOffOutlinedIcon />}
+                      <MicNoneOutlinedIcon />
                     </IconButton>
                     <IconButton color="primary" aria-label="add an alarm">
                       <MusicNoteOutlinedIcon />
