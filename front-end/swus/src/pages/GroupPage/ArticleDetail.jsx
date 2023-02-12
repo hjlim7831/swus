@@ -51,7 +51,7 @@ function ArticleDetail() {
 	 
   return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px", minWidth: "1000px"}}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", minWidth: "1000px", background: "white" }}>
 				<Grid container sx={{ px: 2 }}>
 					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
     				<p style={{ fontWeight: "bold", fontSize: "30px"}}>
@@ -123,9 +123,9 @@ function ArticleDetail() {
 					</Grid>
 				</Grid>
 				<Container 
-					sx={{ width: "85%", minHeight: "500px", borderRadius: "10px", backgroundColor: "rgba(244, 239, 230, 0.47)", padding: 3, mb: 3}}>
+					sx={{ width: "85%", minHeight: "480px", borderRadius: "10px", backgroundColor: "rgba(244, 239, 230, 0.47)", padding: 3, mb: 3}}>
 					<Box>
-						<div style={{ whiteSpace: "pre-wrap", paddingLeft: 10, paddingTop: 10, overflowY: "scroll", height: "500px" }}>{article.content}</div>
+						<div style={{ whiteSpace: "pre-wrap", paddingLeft: 10, paddingTop: 10, overflowY: "scroll", height: "420px" }}>{article.content}</div>
 					</Box>
 				</Container>
 			</Container>

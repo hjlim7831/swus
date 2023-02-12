@@ -13,25 +13,40 @@ function GroupDetailUpdate() {
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const teamDetails = useSelector(state => {
-		return state.myGroupList.info
-	});
-	const teamTodos = useSelector(state => {
-		return state.myGroupList.info.todolist
-	})
   const filterCategory = /S/;
 
-	const [inputs, setInputs] = useState(teamDetails);
-	const [todoList, setTodoList] = useState(teamTodos)
+	const [inputs, setInputs] = useState();
+	const [todoList, setTodoList] = useState([])
 	const teamId = useSelector(state => {
 		return state.myGroupList.groupId
 	})
 
+	const [studyDays, setStudyDays] = useState([false, false, false, false, false, false, false])
+
 	useEffect(() => {
-		console.log(inputs)
-		console.log("여기가 투두")
-		console.log(todoList)
-		console.log(teamId)
+		const config = {
+			url: `/users/my-groups/${teamId}`,
+			method: "GET",
+		};
+
+		axios(config)
+			.then((response) => {
+				setInputs(response.data)
+				const newDays = [...studyDays]
+				for (let i = 0; i < 7; i++) {
+					if (response.data.day[i] === "1")	{
+						newDays[i] = !newDays[i]
+					}
+				}
+				setStudyDays(newDays)
+				let newTodos = []
+				const plannedTodos = response.data.todolist
+				for (let i = 0; i < plannedTodos.length; i++)	{
+					console.log("반복문 출력")
+					newTodos.push({ round: plannedTodos[i].id_round, content: plannedTodos[i].content })
+					setTodoList(newTodos)
+				}
+			})
 	}, [])
 
 
@@ -68,13 +83,13 @@ function GroupDetailUpdate() {
 		if (name.slice(0, 3) === "day") {
 			const num = Number(name.slice(3, 4))
 			const date = "days"
-			const newDay = [...inputs.days]
-			for (let i = 0; i < inputs.days.length; i++) {
+			const newDay = [...studyDays]
+			for (let i = 0; i < 7; i++) {
 				if (i === num) {
 					newDay[num] = !newDay[num]
 				}
 			}
-			setInputs({...inputs, [date] : newDay})
+			setStudyDays(newDay)
 		}	else if (name.slice(0, 8) === "todolist") {
 			const idx = Number(name.slice(8, 9))
 			const newTodoList = [...todoList]
@@ -94,7 +109,7 @@ function GroupDetailUpdate() {
 
 		let selectedDays = "";
 		for (let i = 0; i < 7; i++) {
-			if (inputs.days[i]) {
+			if (studyDays[i]) {
 				selectedDays += "1"
 			}	else {
 				selectedDays += "0"
@@ -204,160 +219,166 @@ function GroupDetailUpdate() {
 
   return (
     <>
-      <Container sx={{ border: "1px solid gray", borderRadius: "10px", minHeight: "500px" }}>
-				<form>
-					<Grid container style={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
-						<p style={{ marginInline: 20, display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
-								그룹 정보 수정
-							</p>
-							<div style={{ display: "flex", alignContent: "center"}}>
-								<Button 
-									type="submit" 
-									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3, height: "40px" }}
-									size="small"
-									onClick={onHandleSubmit}>수정하기</Button>
-						</div>
-					</Grid>
-						<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 3, backgroundColor: "gray"}}/>
-					<Grid container sx={{ alignItems: "center", display: "flex",  textAlign: "center", fontWeight: "bold" }}>
-						<Grid item xs={2}>
-							<p>팀 이름</p>
-						</Grid>
-						<Divider orientation="vertical" flexItem sx={{ mr: 3 }} />
-						<div style={{ display: "flex", alignItems: "center" }}>
-							<TextField
-								id="team_name"
-								name="team_name"
-								value={inputs.team_name}
-								variant="outlined"
-								size="small"
-								fullWidth
-								onChange={onHandleInput}
-							/>
-						</div>
-					</Grid>
-						<Divider orientation='horizontal' flexItem />
-					<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
-						<Grid item xs={2}>
-							<p>스터디 일정 </p>
-						</Grid>
-						<Divider orientation='vertical' flexItem sx={{ mr: 3 }}/>
-						<div style={{ display: "flex", alignItems: "center"}}>
-							<TextField
-								name="begin_at"
-								value={inputs.begin_at}
-								type="date"
-								InputLabelProps={{
-									shrink: true,
-								}}
-								onChange={onHandleInput}
-								size="small"
-								sx={{ marginRight: 1 }}
-							/>
-							 ~ 
-							<TextField
-								name="end_at"
-								value={inputs.end_at}
-								type="date"
-								InputLabelProps={{
-									shrink: true,
-								}}
-								onChange={onHandleInput}
-								size="small"
-								sx={{ marginLeft: 1 }}
-							/>
-						</div>
-					</Grid>
-						<Divider orientation='horizontal' flexItem />
-					<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
-						<Grid item xs={2}>
-							<p>스터디 시간 </p>
-						</Grid>
-						<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
-						<div style={{ display: "flex", alignItems: "center"}}>
-							<TextField
-								name="start_time"
-								value={inputs.start_time}
-								type="time"
-								InputLabelProps={{
-									shrink: true,
-								}}
-								onChange={onHandleInput}
-								size="small"
-								sx={{ marginRight: 1 }}
-							/>
-							~
-							<TextField
-								name="finish_time"
-								value={inputs.finish_time}
-								type="time"
-								InputLabelProps={{
-									shrink: true,
-								}}
-								onChange={onHandleInput}
-								size="small"
-								sx={{ marginLeft: 1 }}
-							/>
-						</div>
-					</Grid>
-						<Divider orientation='horizontal' flexItem />
-					<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
-						<Grid item xs={2}>
-							<p>스터디 요일</p>
-						</Grid>
-						<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
-						<div style={{ display: "flex", alignItems: "center"}}>
-								{dayItems.map((item, index) => {
-									return (
-										<FormControlLabel
-										 key={uuidv4()}
-										 name={item.name}
-										 label={item.label}
-										 value={inputs.days[index]}
-										 control={<Checkbox checked={inputs.days[index]} onChange={onHandleInput} />}
-										/>
-									)
-								})}
+		{(inputs && todoList) ? (
+			<>
+				<Container sx={{ border: "1px solid gray", borderRadius: "10px", minHeight: "500px", marginTop: "20px", background: "white" }}>
+					<form>
+						<Grid container style={{ justifyContent: "space-between", display: "flex", alignItems: "center" }}>
+							<p style={{ marginInline: 20, display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+									그룹 정보 수정
+								</p>
+								<div style={{ display: "flex", alignContent: "center"}}>
+									<Button 
+										type="submit" 
+										variant='contained' 
+										sx={{ backgroundColor: "green", m: 3, height: "40px" }}
+										size="small"
+										onClick={onHandleSubmit}>수정하기</Button>
 							</div>
-					</Grid>
-						<Divider orientation='horizontal' flexItem />
-					<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
-						<Grid item xs={2} sx={{ justifyContent: "center", alignContent: "center", alignItems: "center", justifyItems: "center" }}>
-							<p>팀 정보</p>
 						</Grid>
-							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
-						<Grid item xs={9}>
-							<TextField  
-								variant='outlined' 
-								name="team_info"
-								value={inputs.team_info}
-								sx={{ my: "14px" }} 
-								size="small"
-								multiline
-								rows={10}
-								fullWidth
-								margin='dense'
-								onChange={onHandleInput}
-							/>
+							<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 3, backgroundColor: "gray"}}/>
+						<Grid container sx={{ alignItems: "center", display: "flex",  textAlign: "center", fontWeight: "bold" }}>
+							<Grid item xs={2}>
+								<p>팀 이름</p>
+							</Grid>
+							<Divider orientation="vertical" flexItem sx={{ mr: 3 }} />
+							<div style={{ display: "flex", alignItems: "center" }}>
+								<TextField
+									id="team_name"
+									name="team_name"
+									value={inputs.team_name}
+									variant="outlined"
+									size="small"
+									fullWidth
+									onChange={onHandleInput}
+								/>
+							</div>
 						</Grid>
 							<Divider orientation='horizontal' flexItem />
-					</Grid>
-						<Divider orientation='horizontal' flexItem />
-					<Container style={{ overflowY: "scroll", height: "250px" }}>
 						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
-							{getWeekTopics()}
+							<Grid item xs={2}>
+								<p>스터디 일정 </p>
+							</Grid>
+							<Divider orientation='vertical' flexItem sx={{ mr: 3 }}/>
+							<div style={{ display: "flex", alignItems: "center"}}>
+								<TextField
+									name="begin_at"
+									value={inputs.begin_at}
+									type="date"
+									InputLabelProps={{
+										shrink: true,
+									}}
+									onChange={onHandleInput}
+									size="small"
+									sx={{ marginRight: 1 }}
+								/>
+								~ 
+								<TextField
+									name="end_at"
+									value={inputs.end_at}
+									type="date"
+									InputLabelProps={{
+										shrink: true,
+									}}
+									onChange={onHandleInput}
+									size="small"
+									sx={{ marginLeft: 1 }}
+								/>
+							</div>
 						</Grid>
-						<Grid container sx={{ justifyContent: "center", display: "flex", marginBlock: 3 }}>
-							<Icon
-								color="primary"
-								sx={{ cursor: "pointer"}}
-								onClick={addTopic}
-							>add_circle</Icon>
+							<Divider orientation='horizontal' flexItem />
+						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
+							<Grid item xs={2}>
+								<p>스터디 시간 </p>
+							</Grid>
+							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
+							<div style={{ display: "flex", alignItems: "center"}}>
+								<TextField
+									name="start_time"
+									value={inputs.start_time}
+									type="time"
+									InputLabelProps={{
+										shrink: true,
+									}}
+									onChange={onHandleInput}
+									size="small"
+									sx={{ marginRight: 1 }}
+								/>
+								~
+								<TextField
+									name="finish_time"
+									value={inputs.finish_time}
+									type="time"
+									InputLabelProps={{
+										shrink: true,
+									}}
+									onChange={onHandleInput}
+									size="small"
+									sx={{ marginLeft: 1 }}
+								/>
+							</div>
 						</Grid>
-					</Container>
-				</form>
-			</Container>
+							<Divider orientation='horizontal' flexItem />
+						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
+							<Grid item xs={2}>
+								<p>스터디 요일</p>
+							</Grid>
+							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
+							<div style={{ display: "flex", alignItems: "center"}}>
+									{dayItems.map((item, index) => {
+										return (
+											<FormControlLabel
+											key={uuidv4()}
+											name={item.name}
+											label={item.label}
+											value={
+												[index]}
+											control={<Checkbox checked={studyDays[index]} onChange={onHandleInput} />}
+											/>
+										)
+									})}
+								</div>
+						</Grid>
+							<Divider orientation='horizontal' flexItem />
+						<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
+							<Grid item xs={2} sx={{ justifyContent: "center", alignContent: "center", alignItems: "center", justifyItems: "center" }}>
+								<p>팀 정보</p>
+							</Grid>
+								<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
+							<Grid item xs={9}>
+								<TextField  
+									variant='outlined' 
+									name="team_info"
+									value={inputs.team_info}
+									sx={{ my: "14px" }} 
+									size="small"
+									multiline
+									rows={10}
+									fullWidth
+									margin='dense'
+									onChange={onHandleInput}
+								/>
+							</Grid>
+								<Divider orientation='horizontal' flexItem />
+						</Grid>
+							<Divider orientation='horizontal' flexItem />
+						<Container style={{ overflowY: "scroll", height: "200px", marginBottom: 10 }}>
+							<Grid container style={{ alignContent: "center", display: "flex", textAlign: "center", fontWeight: "bold" }}>
+								{getWeekTopics()}
+							</Grid>
+							<Grid container sx={{ justifyContent: "center", display: "flex", marginBlock: 3 }}>
+								<Icon
+									color="primary"
+									sx={{ cursor: "pointer"}}
+									onClick={addTopic}
+								>add_circle</Icon>
+							</Grid>
+						</Container>
+					</form>
+				</Container>
+			</>
+		) 
+		: <div>loading</div>}
     </>
   )
 }

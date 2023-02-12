@@ -46,13 +46,13 @@ function Report (props) {
 					)
 				})
 			}	else {
-				return
+				return null
 			}
 		}
 
 		function details(index) {
-			if (Array.isArray(payload[index].members) && payload[index].members.length > 0) {
-				return payload[index].members.map((member) => {
+			if (Array.isArray(payload.rounds[index].members) && payload.rounds[index].members.length > 0) {
+				return payload.rounds[index].members.map((member) => {
 					return (
 						<>
 							<Grid container sx={{ display: "flex", alignItems: "center" }}>
@@ -91,11 +91,12 @@ function Report (props) {
 		function toggleFeature(index) {
 			const newToggles = [...toggles];
 			newToggles[index] =!newToggles[index];
+			console.log(`${newToggles[index]}`)
 			setToggles(newToggles);
 		}
 
-		if (Array.isArray(payload) && payload.length > 0) {
-			return payload.map((topic, index) => {
+		if (Array.isArray(payload.rounds) && payload.rounds.length > 0) {
+			return payload.rounds.map((topic, index) => {
 				return (
 					<>
 						<Grid container sx={{ display: "flex", alignItems: "center", marginBlock: "20px" }} key={uuidv4()}>

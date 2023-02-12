@@ -27,12 +27,11 @@ function endGroup(teamId) {
               "스터디가 성공적으로 종료되었습니다!",
               "스터디가 끝나도 리포트 조회는 가능합니다.",
               "success"
-            )
-          })
-          .then((response) => {
-            if (response.isConfirmed) {
-              window.location.replace("/group/mystudy")
-            }
+            ).then((response) => {
+              if (response.isConfirmed) {
+                window.location.replace(`/group/mystudy/group/${teamId}`)
+              }
+            })
           })
       }
     })

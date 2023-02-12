@@ -15,6 +15,7 @@ import axios from "../../Utils/index";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import myGroupListSlice from "../../store/MyGroupListSlice";
+import Report from "../../components/modals/Report";
 
 
 function MyGroupList() {
@@ -25,6 +26,39 @@ function MyGroupList() {
   const [page, setPage] = useState(0);
   const [ingGroups, setIngGroups] = useState([]);
   const [finishedGroups, setFinishedGroups] = useState([]);
+  const [reportData, setReportData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [teamDetails, setTeamDetails] = useState([]);
+
+  const openModal = (teamId) => {
+
+    const config = {
+      url: `/my-reports/${teamId}/member-todos`,
+      method: "GET"
+    };
+
+    const config2 = {
+      url: `/users/my-groups/${teamId}`,
+      method: "GET",
+    };
+
+    axios(config)
+      .then((response) => {
+        setReportData(response.data)
+
+        axios(config2)
+          .then((response) => {
+            setTeamDetails(response.data)
+          })
+      })
+      .then((response) => {
+        setModalOpen(true);
+      })
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   useEffect(() => {
     const config = {
@@ -54,27 +88,27 @@ function MyGroupList() {
 		setPage(newPage)
 	};
 
+  function getMembers() {
+    if (Array.isArray(teamDetails.member_list) && teamDetails.member_list.length > 0) {
+      return teamDetails.member_list.map((member) => {
+        return (
+          <div 
+            key={uuidv4()}
+            style={{ borderRadius: "20px", 
+                      border: "1px solid gray", 
+                      padding: 5, 
+                      marginInline: 10,
+                      paddingInline: 10,
+                      fontWeight: "bold"
+                   }}>{member}
+          </div>
+        )
+      });
+    } else {
+      return null
+    }
+  }
   
-  function goGroupDetail(teamId) {
-
-    const config = {
-      url: `/users/my-groups/${teamId}`,
-      method: "GET",
-    };
-
-    axios(config)
-      .then((response) => {
-        dispatch(myGroupListSlice.actions.saveGroupId(teamId))
-        dispatch(myGroupListSlice.actions.getGroupDetails(response.data))
-      })
-      .then((response) => {
-        navigate(`group/${teamId}`);
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  };
-
   function getIngGroups() {
     return ingGroups.slice(page * 8, (page + 1) * 8).map((group) => {
       return (
@@ -87,7 +121,7 @@ function MyGroupList() {
           </TableCell>
           <TableCell 
             style={{ textAlign: "center", fontSize: "15px" }}
-            onClick={() => {goGroupDetail(group.team_id)}}>
+            onClick={() => {navigate(`group/${group.team_id}`)}}>
               <span style={{ cursor: "pointer" }}>{group.team_name}</span>
           </TableCell>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
@@ -115,16 +149,46 @@ function MyGroupList() {
           </TableCell>
           <TableCell 
             style={{ textAlign: "center", fontSize: "15px" }}
-            onClick={() => {goGroupDetail(group.team_id)}}>
+            onClick={() => {navigate(`group/${group.team_id}`)}}>
               <span style={{ cursor: "pointer" }}>{group.team_name}</span>
           </TableCell>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
             {group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}
           </TableCell>
           <TableCell style={{ textAlign: "center" }}>
-            <Button variant="contained" style={{ width: "130px" }}>
+            <Button 
+              variant="contained" 
+              style={{ width: "130px" }}
+              onClick={() => openModal(group.team_id)}>
               리포트 보기
             </Button>
+            <div>
+              <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
+                {
+                  <>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
+                      {(teamDetails.category === "S")
+                        ? <span style={{ color: "red" }}>[스터디]</span> 
+                        : <span style={{ color: "blue" }}>[메이트]</span>} 
+                        <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                      </p>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+                      <div style={{ borderRadius: "20px", 
+                                    border: "1px solid grey", 
+                                    backgroundColor: "#E2B9B3", 
+                                    padding: 5, 
+                                    marginInline: 10, 
+                                    paddingInline: 10, 
+                                    fontWeight: "bold"
+                                  }}>{teamDetails.leader}</div>
+                      {getMembers()}
+                    </div>
+                  </>
+                } 
+              </Report>
+            </div>
           </TableCell>
         </TableRow>
       )

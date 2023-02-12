@@ -44,7 +44,6 @@ function GroupDetail() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data)
         setTeamDetails(response.data)
         setStart_time(response.data.start_time.slice(0, 5))
         setFinish_time(response.data.finish_time.slice(0, 5))
@@ -96,13 +95,13 @@ function GroupDetail() {
   const filterCategory = /S/;
 
   function getWeekTopics() {
-    if (Array.isArray(reportData) && reportData.length > 0) {
-      return reportData.map((topics) => {
+    if (Array.isArray(teamDetails.todolist) && teamDetails.todolist.length > 0) {
+      return teamDetails.todolist.map((topics) => {
         return (
           <Grid container sx={{ padding: 2, display: "flex", alignItems: "center"}} key={uuidv4()}>
             <Grid item xs={3}>
               <div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex"}}>
-                <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.round}주차</span>
+                <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.id_round}주차</span>
               </div>
             </Grid>
             <Grid item xs={8}>
@@ -144,7 +143,7 @@ function GroupDetail() {
     <>
       {teamDetails ? (
         <>
-          <Container sx={{ border: "1px grey solid", borderRadius: "10px" }}>
+          <Container sx={{ border: "1px grey solid", borderRadius: "10px", background: "white", marginTop: "20px" }}>
             <Grid container sx={{ px: 2, paddingTop: 2 }}>
               <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
                 <p style={{ fontWeight: "bold", fontSize: "25px" }}>
@@ -179,11 +178,43 @@ function GroupDetail() {
                   : null}
               </Grid>
               <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
-                <Button
-                  variant="contained"
-                  sx={{ height: 30, backgroundColor: "#E2B9B3", color: "black", "&:hover" : { backgroundColor: "#E2B9B3" } }}
-                  onClick={() => {leaveGroup(teamId)}}
-                >탈퇴하기</Button>
+                {(teamDetails.team_done === "N")
+                  ?  <Button
+                        variant="contained"
+                        sx={{ height: 30, backgroundColor: "#E2B9B3", color: "black", "&:hover" : { backgroundColor: "#E2B9B3" } }}
+                        onClick={() => {leaveGroup(teamId)}}
+                      >탈퇴하기</Button>
+                  : <div>
+                      <Button variant="outlined" onClick={openModal}>
+                        리포트 보기
+                      </Button>
+                      <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
+                        {
+                          <>
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                              <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
+                                {filterCategory.test(teamDetails.category) 
+                                  ? <span style={{ color: "red" }}>[스터디]</span>
+                                  : <span style={{ color: "blue"}}>[메이트]</span>} 
+                                <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                              </p>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+                              <div style={{ borderRadius: "20px", 
+                                            border: "1px solid grey", 
+                                            backgroundColor: "#E2B9B3", 
+                                            padding: 5, 
+                                            marginInline: 10, 
+                                            paddingInline: 10, 
+                                            fontWeight: "bold"
+                                          }}>{teamDetails.leader}</div>
+                              {getMembers()}
+                            </div>
+                          </>
+                        } 
+                      </Report>
+                    </div>
+                }
               </Grid>
               <Grid item xs={0.5} sx={{ display: "flex", alignItems: "center", justifyContent: "right" }}>
                 <ArrowBackIcon
@@ -236,39 +267,42 @@ function GroupDetail() {
                 <div style={{ paddingInline: 20, fontWeight: "bold", fontSize: "20px" }}>
                   회차별 주제
                 </div>
-                <div>
-                  <Button variant="outlined" onClick={openModal}>
-                    리포트 보기
-                  </Button>
-                  <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
-                    {
-                      <>
-                        <div style={{ display: "flex", justifyContent: "center" }}>
-                          <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
-                            {filterCategory.test(teamDetails.category) 
-                              ? <span style={{ color: "red" }}>[스터디]</span>
-                              : <span style={{ color: "blue"}}>[메이트]</span>} 
-                            <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
-                          </p>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
-                          <div style={{ borderRadius: "20px", 
-                                        border: "1px solid grey", 
-                                        backgroundColor: "#E2B9B3", 
-                                        padding: 5, 
-                                        marginInline: 10, 
-                                        paddingInline: 10, 
-                                        fontWeight: "bold"
-                                      }}>{teamDetails.leader}</div>
-                          {getMembers()}
-                        </div>
-                      </>
-                    } 
-                  </Report>
-                </div>
+                {(teamDetails.team_done === "N")
+                  ? <div>
+                      <Button variant="outlined" onClick={openModal}>
+                        리포트 보기
+                      </Button>
+                      <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
+                        {
+                          <>
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                              <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
+                                {filterCategory.test(teamDetails.category) 
+                                  ? <span style={{ color: "red" }}>[스터디]</span>
+                                  : <span style={{ color: "blue"}}>[메이트]</span>} 
+                                <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                              </p>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+                              <div style={{ borderRadius: "20px", 
+                                            border: "1px solid grey", 
+                                            backgroundColor: "#E2B9B3", 
+                                            padding: 5, 
+                                            marginInline: 10, 
+                                            paddingInline: 10, 
+                                            fontWeight: "bold"
+                                          }}>{teamDetails.leader}</div>
+                              {getMembers()}
+                            </div>
+                          </>
+                        } 
+                      </Report>
+                    </div>
+                  : null
+                }
               </Container>
               <br/>
-              <Container style={{ overflowY: "scroll", height: "250px" }}>
+              <Container style={{ overflowY: "scroll", height: "300px" }}>
                 {getWeekTopics()}
               </Container>
             </Grid>
