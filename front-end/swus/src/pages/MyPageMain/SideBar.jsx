@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
-import "./SideBar.css";
+// import "./SideBar.css";
 import { useNavigate } from "react-router-dom";
 
 
@@ -19,14 +19,14 @@ export default function MiniDrawer(props) {
 
   const navigate = useNavigate();
 
-  const sideItems = window.location.pathname.slice(7, 12) === "profile"
+  const sideItems = window.location.pathname.slice(8, 15) === "profile"
     ? [
-      { name: "PROFILE", path: `mystudy/${props.props.userId}`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
-      { name: "MY REPORT", path: `board`, backgroundColor: "#1A1E33", color: "white"}
+      { name: "PROFILE", path: `profile`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
+      { name: "MY REPORT", path: `myreport`, backgroundColor: "#1A1E33", color: "white"}
     ]
     : [
-      { name: "PROFILE", path: `mystudy/${props.props.userId}`, backgroundColor: "#1A1E33", color: "white" },
-      { name: "MY REPORT", path: `board`, backgroundColor: "#DEDCEE", color: "#1A1E33"} 
+      { name: "PROFILE", path: `profile`, backgroundColor: "#1A1E33", color: "white" },
+      { name: "MY REPORT", path: `myreport`, backgroundColor: "#DEDCEE", color: "#1A1E33"} 
     ]
 
 

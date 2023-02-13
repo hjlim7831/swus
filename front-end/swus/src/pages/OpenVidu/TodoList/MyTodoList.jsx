@@ -1,17 +1,10 @@
 import { React, useState } from "react";
-import axios from "./../../Utils/index";
+import axios from "../../../Utils/index";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
-function MyTodoList({
-  todoData,
-  setTodoData,
-  value,
-  setValue,
-  groupId,
-  round,
-}) {
+function MyTodoList({ todoData, setTodoData, value, setValue }) {
   // 수정 로직
   // const [isEditing, setIsEditing] = useState(false);
 
@@ -64,7 +57,7 @@ function MyTodoList({
 
     // 수정 axios 요청
     const config = {
-      url: `/my-groups/${groupId}/round/${round}/num/${num}`,
+      url: `my-todos/${newTodoData[i].num}`,
       method: "put",
       data: { content: newTodoData[i].content, todo_done: done },
     };
@@ -81,7 +74,7 @@ function MyTodoList({
     //name를 파라미터로 가져옴
 
     const config = {
-      url: `/my-groups/${num}`,
+      url: `my-todos/${num}`,
       method: "delete",
     };
 

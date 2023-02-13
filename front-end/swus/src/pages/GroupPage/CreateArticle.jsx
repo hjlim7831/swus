@@ -2,27 +2,29 @@ import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, TextField, Divider, Grid, OutlinedInput } from '@mui/material';
 import { MenuItem, Select, Button, InputLabel, FormControl } from '@mui/material';
 import { Container } from '@mui/system';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
+import { v4 as uuidv4 } from 'uuid';
+import groupBoardSlice from '../../store/GroupBoardSlice';
+
 
 
 function CreateArticleForm() {
 
 	const navigate = useNavigate();
-
+	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		category: "",
 		title: "",
 		content: "",
 		day: "",
 		days: [false, false, false, false, false, false, false],
-		boardNumber: 0,
-		beginAt: "",
-		endAt: "",
-		startTime: "",
-		finishTime: "",
-		writedAt: "",
+		board_number: 0,
+		begin_at: "",
+		end_at: "",
+		start_time: "",
+		finish_time: "",
 	})
 
 	const onHandleInput = (event) => {
@@ -37,6 +39,7 @@ function CreateArticleForm() {
 					newDay[num] = !newDay[num]
 				}
 			}
+			console.log(newDay)
 			setInputs({...inputs, [date] : newDay})
 		}	else	{
 			setInputs({...inputs, [name] : value})
@@ -60,7 +63,6 @@ function CreateArticleForm() {
 				selectedDays += "0"
 			}
 		}
-
 		const today = new Date();
 
 		const year = today.getFullYear();
@@ -78,55 +80,69 @@ function CreateArticleForm() {
 		}	else if (!inputs.title.replace(blank, "")) {
 			alert("제목을 입력해주세요.")
       return
-		}	else if (!inputs.startTime.replace(blank, "")) {
+		}	else if (!inputs.start_time.replace(blank, "")) {
 			alert("시작 시간을 입력해주세요.")
       return
-		}	else if (!inputs.finishTime.replace(blank, "")) {
+		}	else if (!inputs.finish_time.replace(blank, "")) {
 			alert("종료 시간을 입력해주세요.")
 			return
 		}	else if (!selectedDays.replace(/0/gi, ""))	{
 			alert("요일을 선택해주세요.")
 			return
-		}	else if (inputs.boardNumber < 2) {
+		}	else if (inputs.board_number < 2) {
 			alert("2명 이상의 모집인원을 선택해주세요.")
 			return
-		}	else if (Number(inputs.startTime.replace(/:/gi, "") > Number(inputs.finishTime.replace(/:/gi, "")))) {
+		}	else if (Number(inputs.start_time.replace(/:/gi, "") > Number(inputs.finish_time.replace(/:/gi, "")))) {
 			alert("시작 시간이 종료 시간보다 늦습니다!")
 			return
-		}	else if (Number(inputs.beginAt.replace(/-/gi, "") > Number(inputs.endAt.replace(/-/gi, "")))) {
+		}	else if (Number(inputs.begin_at.replace(/-/gi, "") > Number(inputs.end_at.replace(/-/gi, "")))) {
 			alert("스터디 시작 날짜가 종료 날짜보다 늦습니다!")
 			return
-		}	else if (Number(nowDate) > Number(inputs.beginAt.replace(/-/gi,""))) {
+		}	else if (Number(nowDate) > Number(inputs.begin_at.replace(/-/gi,""))) {
 			alert("스터디 시작 날짜가 이미 지났습니다!")
 			return
 		}
 
 		const payload = {
-			// category: inputs.category,
+			category: inputs.category,
 			title: inputs.title,
 			content: inputs.content,
-			// day: inputs.day,
-			boardNumber: inputs.boardNumber,
-			// beginAt: inputs.beginAt,
-			// endAt: inputs.endAt,
-			// startTime: inputs.startTime,
-			// finishTime: inputs.finishTime,
+			day: selectedDays,
+			board_number: inputs.board_number,
+			begin_at: inputs.begin_at,
+			end_at: inputs.end_at,
+			start_time: inputs.start_time,
+			finish_time: inputs.finish_time,
 		}
 
 		const config = {
 			url: `/boards`,
 			method: "POST",
 			data: payload,
-		}
+		};
 
+		
 		axios(config)
-			.then((response) => {
-				console.log("success")
-				console.log(response.data)
-				console.log(response.data.msg)
-				console.log(response.data.board_id)
-				navigate(`/group/board/${response.data.board_id}`);
-			})
+		.then((response) => {
+
+			const boardId = response.data.board_id
+			const config2 = {
+				url: `/boards/${boardId}`,
+				method: "GET",
+			};
+
+			axios(config2)
+				.then((response) => {
+					dispatch(groupBoardSlice.actions.saveBoardId(boardId))
+					dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
+				})
+				.then((response) => {
+					navigate(`/group/board/${boardId}`);
+				})
+		})
+		.catch((error) => {
+			console.log(error);
+		})
 	}
 
 	const dayItems = [
@@ -141,7 +157,7 @@ function CreateArticleForm() {
 
 	return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px", marginTop: 3 }}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", marginTop: 3, background: "white" }}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
 							<p style={{ paddingLeft: 10, display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
@@ -217,8 +233,8 @@ function CreateArticleForm() {
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
 								<TextField
-									name="beginAt"
-									value={inputs.beginAt}
+									name="begin_at"
+									value={inputs.begin_at}
 									type="date"
 									InputLabelProps={{
 										shrink: true,
@@ -234,8 +250,8 @@ function CreateArticleForm() {
 								/>
 								~
 								<TextField
-									name="endAt"
-									value={inputs.endAt}
+									name="end_at"
+									value={inputs.end_at}
 									type="date"
 									InputLabelProps={{
 										shrink: true,
@@ -259,11 +275,11 @@ function CreateArticleForm() {
 								<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 								<div style={{ display: "flex", alignItems: "center"}}>
 									<TextField
-										name="startTime"
-										value={inputs.startTime}
+										name="start_time"
+										value={inputs.start_time}
 										type="time"
 										label="시작시간"
-										error={!inputs.startTime.replace(blank, "")}
+										error={!inputs.start_time.replace(blank, "")}
 										InputLabelProps={{
 											shrink: true,
 											style: {
@@ -277,8 +293,8 @@ function CreateArticleForm() {
 									/>
 									~
 									<TextField
-										name="finishTime"
-										value={inputs.finishTime}
+										name="finish_time"
+										value={inputs.finish_time}
 										type="time"
 										label="종료시간"
 										InputLabelProps={{
@@ -288,7 +304,7 @@ function CreateArticleForm() {
 												marginTop: 3
 											}
 										}}
-										error={!inputs.finishTime.replace(blank, "")}
+										error={!inputs.finish_time.replace(blank, "")}
 										variant="outlined"
 										onChange={onHandleInput}
 										size="small"
@@ -306,10 +322,11 @@ function CreateArticleForm() {
 								{dayItems.map((item, index) => {
 									return (
 										<FormControlLabel
+										 key={uuidv4()}
 										 name={item.name}
 										 label={item.label}
-										 value={inputs.day[index]}
-										 control={<Checkbox checked={inputs.day[index]} onChange={onHandleInput} />}
+										 value={inputs.days[index]}
+										 control={<Checkbox checked={inputs.days[index]} onChange={onHandleInput} />}
 										/>
 									)
 								})}
@@ -323,11 +340,11 @@ function CreateArticleForm() {
 							<Divider orientation='vertical' flexItem sx={{ mr: 3 }}/>
 							<div style={{ display: "flex", alignItems: "center" }}>
 								<Select
-									name="boardNumber"
-									value={inputs.boardNumber}
+									name="board_number"
+									value={inputs.board_number}
 									onChange={onHandleInput}
 									size="small"
-									error={inputs.boardNumber < 2}
+									error={inputs.board_number < 2}
 								>
 									<MenuItem value={0}>0</MenuItem>
 									<MenuItem value="1">1</MenuItem>

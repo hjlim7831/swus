@@ -34,7 +34,7 @@ function deleteArticle() {
           .then((res) => {
             if (res.isConfirmed) {
               console.log("목록?")
-              window.location.reload("http://localhost:3000/group/board");
+              window.location.replace("/group/board");
             }
           })
         ])

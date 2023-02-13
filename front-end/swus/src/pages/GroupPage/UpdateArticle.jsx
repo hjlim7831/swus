@@ -3,10 +3,11 @@ import { Checkbox, FormControlLabel, TextField, Divider, Grid } from '@mui/mater
 import { MenuItem, Select, Button } from '@mui/material';
 import { Container } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
-import checkedSlice from '../../store/GroupBoardSlice';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { v4 as uuidv4 } from "uuid";
+import groupBoardSlice from '../../store/GroupBoardSlice';
+import axios from "../../Utils/index";
 
 
 function UpdateArticleForm() {
@@ -14,18 +15,19 @@ function UpdateArticleForm() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const articleDetail = useSelector(state => {
-		return state.checkDays
-	});
+		return state.groupBoard.info
+	})
 
 	const [inputs, setInputs] = useState(articleDetail);
 
+	const boardId = useSelector(state => {
+		return state.groupBoard.boardId
+	});
+
 	useEffect(() => {
-		setInputs(articleDetail);
-	}, [articleDetail]);
-
-
-
-
+		console.log("인풋을 받아오는 곳")
+		console.log(inputs)
+	})
 	const onHandleInput = (event) => {
 		const name = event.target.name
 		const value = event.target.value
@@ -50,13 +52,23 @@ function UpdateArticleForm() {
 		event.preventDefault();
 		let selectedDays = "";
 
-		for (let i = 0; i < inputs.days.length; i++) {
+		for (let i = 0; i < inputs.days.length; i++)	{
 			if (inputs.days[i]) {
 				selectedDays += "1"
-			}	else {
+      }	else {
 				selectedDays += "0"
 			}
 		}
+		const today = new Date();
+
+		const year = today.getFullYear();
+		const month = today.getMonth() + 1;
+		let day = today.getDate();
+		if (day < 10) {
+			day = "0" + `${day}`;
+    }
+		const nowDate = `${year}` + `0${month}` + `${day}`;
+
 
 		if (!inputs.category.replace(blank, "")) {
 			alert("스터디 유형을 선택해주세요.")
@@ -64,35 +76,84 @@ function UpdateArticleForm() {
 		}	else if (!inputs.title.replace(blank, "")) {
 			alert("제목을 입력해주세요.")
       return
-		}	else if (!inputs.startTime.replace(blank, "")) {
+		}	else if (!inputs.start_time.replace(blank, "")) {
 			alert("시작 시간을 입력해주세요.")
       return
-		}	else if (!inputs.finishTime.replace(blank, "")) {
+		}	else if (!inputs.finish_time.replace(blank, "")) {
 			alert("종료 시간을 입력해주세요.")
 			return
 		}	else if (!selectedDays.replace(/0/gi, ""))	{
 			alert("요일을 선택해주세요.")
 			return
-		}	else if (inputs.recruitmentNumber < 2) {
+		}	else if (inputs.board_number < 2) {
 			alert("2명 이상의 모집인원을 선택해주세요.")
 			return
-		}	else if (Number(inputs.startTime.replace(/:/gi, "") > Number(inputs.finishTime.replace(/:/gi, "")))) {
+		}	else if (Number(inputs.start_time.replace(/:/gi, "") > Number(inputs.finish_time.replace(/:/gi, "")))) {
 			alert("시작 시간이 종료 시간보다 늦습니다!")
 			return
-		}	else if (Number(inputs.beginAt.replace(/-/gi, "") > Number(inputs.endAt.replace(/-/gi, "")))) {
+		}	else if (Number(inputs.begin_at.replace(/-/gi, "") > Number(inputs.end_at.replace(/-/gi, "")))) {
 			alert("스터디 시작 날짜가 종료 날짜보다 늦습니다!")
 			return
 		}
 
-		dispatch(checkedSlice.actions.writeArticle(inputs))
-		navigate("/group/board/:boardId");
+		const payload = {
+			category: inputs.category,
+			title: inputs.title,
+			content: inputs.content,
+			day: selectedDays,
+			board_number: inputs.board_number,
+			begin_at: inputs.begin_at,
+			end_at: inputs.end_at,
+			start_time: inputs.start_time,
+			finish_time: inputs.finish_time,
+		}
+
+		console.log(payload)
+		console.log(boardId)
+
+		const config = {
+			url: `/boards/${boardId}`,
+			method: "PATCH",
+			data: payload,
+		};
+
+		const config2 = {
+			url: `/boards/${boardId}`,
+			method: "GET",
+		};
+
+		axios(config)
+			.then((response) => {
+				console.log(response.data);
+
+
+				axios(config2)
+					.then((response) => {
+						dispatch(groupBoardSlice.actions.saveBoardId(boardId))
+						dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
+					})
+					.then((response) => {
+						navigate(`/group/board/${boardId}`)
+					})
+			})
+			.catch((error) => {
+				console.log(error);
+			})
 	}
 
-
+	const dayItems = [
+		{ name: "day0", label: "월" },
+		{ name: "day1", label: "화" },
+		{ name: "day2", label: "수" },
+		{ name: "day3", label: "목" },
+		{ name: "day4", label: "금" },
+		{ name: "day5", label: "토" },
+		{ name: "day6", label: "일" }
+	]
 
 	return (
 		<>
-			<Container sx={{ border: "1px gray solid", borderRadius: "10px"}}>
+			<Container sx={{ border: "1px gray solid", borderRadius: "10px", background: "white" }}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
 							<p style={{ display: "flex", alignContent: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center", paddingLeft: "20px" }}>
@@ -122,8 +183,8 @@ function UpdateArticleForm() {
 									size="small"
 									InputProps={{ readOnly: true }}
 								>
-									<MenuItem value="스터디">스터디</MenuItem>
-									<MenuItem value="메이트">메이트</MenuItem>
+									<MenuItem value="S">스터디</MenuItem>
+									<MenuItem value="M">메이트</MenuItem>
 								</TextField>
 							</div>
 						</Grid>
@@ -157,8 +218,8 @@ function UpdateArticleForm() {
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
 								<TextField
-									name="beginAt"
-									value={inputs.beginAt}
+									name="begin_at"
+									value={inputs.begin_at}
 									type="date"
 									label="시작일자"
 									InputLabelProps={{
@@ -174,8 +235,8 @@ function UpdateArticleForm() {
 								/>
 								~
 								<TextField
-									name="endAt"
-									value={inputs.endAt}
+									name="end_at"
+									value={inputs.end_at}
 									type="date"
 									label="종료일자"
 									InputLabelProps={{
@@ -199,8 +260,8 @@ function UpdateArticleForm() {
 								<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 								<div style={{ display: "flex", alignItems: "center"}}>
 									<TextField
-										name="startTime"
-										value={inputs.startTime}
+										name="start_time"
+										value={inputs.start_time}
 										type="time"
 										label="시작시간"
 										InputLabelProps={{
@@ -210,15 +271,15 @@ function UpdateArticleForm() {
 												marginTop: 3
 											}
 										}}
-										error={!inputs.startTime.replace(blank, "")}
+										error={!inputs.start_time.replace(blank, "")}
 										onChange={onHandleInput}
 										size="small"
 										style={{ marginRight: 10 }}
 									/>
 									~
 									<TextField
-										name="finishTime"
-										value={inputs.finishTime}
+										name="finish_time"
+										value={inputs.finish_time}
 										type="time"
 										label="종료시간"
 										InputLabelProps={{
@@ -228,7 +289,7 @@ function UpdateArticleForm() {
 												marginTop: 3
 											}
 										}}
-										error={!inputs.finishTime.replace(blank, "")}
+										error={!inputs.finish_time.replace(blank, "")}
 										variant="outlined"
 										onChange={onHandleInput}
 										size="small"
@@ -243,48 +304,17 @@ function UpdateArticleForm() {
 							</Grid>
 							<Divider orientation='vertical' flexItem sx={{ mr: 3}}/>
 							<div style={{ display: "flex", alignItems: "center"}}>
-								<FormControlLabel
-									name="day0"
-									label="월"
-									value={inputs.days[0]}
-									control={<Checkbox checked={inputs.days[0]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day1"
-									label="화"
-									value={inputs.days[1]}
-									control={<Checkbox checked={inputs.days[1]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day2"
-									label="수"
-									value={inputs.days[2]}
-									control={<Checkbox checked={inputs.days[2]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day3"
-									label="목"
-									value={inputs.days[3]}
-									control={<Checkbox checked={inputs.days[3]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day4"
-									label="금"
-									value={inputs.days[4]}
-									control={<Checkbox checked={inputs.days[4]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day5"
-									label="토"
-									value={inputs.days[5]}
-									control={<Checkbox checked={inputs.days[5]} onChange={onHandleInput}/>}
-								/>
-								<FormControlLabel
-									name="day6"
-									label="일"
-									value={inputs.days[6]}
-									control={<Checkbox checked={inputs.days[6]} onChange={onHandleInput}/>}
-								/>
+								{dayItems.map((item, index) => {
+									return (
+										<FormControlLabel
+										 key={uuidv4()}
+										 name={item.name}
+										 label={item.label}
+										 value={inputs.days[index]}
+										 control={<Checkbox checked={inputs.days[index]} onChange={onHandleInput} />}
+										/>
+									)
+								})}
 							</div>
 						</Grid>
 					<Divider orientation='horizontal' flexItem />
@@ -296,10 +326,10 @@ function UpdateArticleForm() {
 							<div style={{ display: "flex", alignItems: "center"}}>
 								<Select
 									name="recruitmentNumber"
-									value={inputs.recruitmentNumber}
+									value={inputs.board_number}
 									onChange={onHandleInput}
 									size="small"
-									error={inputs.recruitmentNumber < 2}
+									error={inputs.board_number < 2}
 								>
 									<MenuItem value={0}>0</MenuItem>
 									<MenuItem value="1">1</MenuItem>

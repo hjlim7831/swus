@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Box } from "@mui/system";
 import { Button, Grid, Divider, Typography, TextField } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -9,6 +9,9 @@ import leaveGroup from '../../components/modals/LeaveGroup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Report from "../../components/modals/Report";
 import { v4 as uuidv4 } from 'uuid';
+import axios from "../../Utils/index";
+import { useDispatch, useSelector } from 'react-redux';
+import myGroupListSlice from '../../store/MyGroupListSlice';
 
 
 
@@ -16,234 +19,68 @@ import { v4 as uuidv4 } from 'uuid';
 function GroupDetail() {
 
   const navigate = useNavigate();
-  const members = [
-    "서형준",
-    "이정현"
-  ];
+  const dispatch = useDispatch();
+  const teamId = window.location.pathname.slice(21, window.location.pathname.length + 1)
 
-  const message = "공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부공부 합시다`/n` 겅부겅부"
+  const [teamDetails, setTeamDetails] = useState([]);
 
-  const weekTopics = [
-    {
-      round: 1,
-      content: "1주차 계획",
-      members: [
-        {
-          "nickname": "조혜진",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "서형준",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "이정현",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            },
-            {
-              "num": 3,
-              "content": "todo3",
-              "todoDone": "Y",
-            },
-            {
-              "num": 4,
-              "content": "todo4",
-              "todoDone": "Y",
-            },
-            {
-              "num": 5,
-              "content": "todo5",
-              "todoDone": "Y",
-            },
-          ]
-        }
-      ]
-    },
-    {
-      round: 2,
-      content: "2주차 계획",
-      members: [
-        {
-          "nickname": "조혜진",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "서형준",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "이정현",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        }
-      ]
-    },
-    {
-      round: 3,
-      content: "3주차 계획",
-      members: [
-        {
-          "nickname": "조혜진",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "서형준",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "이정현",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        }
-      ]
-    },
-    {
-      round: 4,
-      content: "4주차 계획",
-      members: [
-        {
-          "nickname": "조혜진",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "서형준",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        },
-        {
-          "nickname": "이정현",
-          "todos": [
-            {
-              "num": 1,
-              "content": "todo1",
-              "todoDone": "Y",
-            },
-            {
-              "num": 2,
-              "content": "todo2",
-              "todoDone": "N",
-            }
-          ]
-        }
-      ]
+  const [reportData, setReportData] = useState([]);
+
+  const [start_time, setStart_time] = useState();
+  const [finish_time, setFinish_time] = useState();
+  const [studyDays, setStudyDays] = useState();
+
+  useEffect(() => {
+
+    const config = {
+      url: `/users/my-groups/${teamId}`,
+      method: "GET",
+    };
+
+    const config2 = {
+      url: `/my-reports/${teamId}/member-todos`,
+      method: "GET",
     }
-  ];
+
+    axios(config)
+      .then((response) => {
+        setTeamDetails(response.data)
+        setStart_time(response.data.start_time.slice(0, 5))
+        setFinish_time(response.data.finish_time.slice(0, 5))
+        let date = "";
+        for (let i = 0; i < 7; i++) {
+          if (response.data.day[i] === "1") {
+            if (i === 0)  {
+              date += "월"
+            } else if (i === 1) {
+              date += "화"
+            } else if (i === 2) {
+              date += "수"
+            } else if (i === 3) {
+              date += "목"
+            } else if (i === 4) {
+              date += "금"
+            } else if (i === 5) {
+              date += "토"
+            } else if (i === 6) {
+              date += "일"
+            } 
+          }
+        }
+        setStudyDays(date)
+      })
+      .then((response) => {
+        axios(config2)
+          .then((response) => {
+            console.log("리포트 정보")
+            console.log(response.data)
+            setReportData(response.data)
+          })
+      })
+
+      dispatch(myGroupListSlice.actions.saveGroupId(teamId))
+    
+  }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -255,173 +92,225 @@ function GroupDetail() {
     setModalOpen(false);
   };
 
-  const category = "스터디";
-
-  const filterCategory = /스터디/;
-
-  const [member, setMember] = useState("")
+  const filterCategory = /S/;
 
   function getWeekTopics() {
-    return weekTopics.map((topics) => {
-      return (
-        <Grid container sx={{ padding: 2, display: "flex", alignItems: "center"}} key={uuidv4()}>
-          <Grid item xs={3}>
-            <div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex"}}>
-              <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.round}주차</span>
-            </div>
+    if (Array.isArray(teamDetails.todolist) && teamDetails.todolist.length > 0) {
+      return teamDetails.todolist.map((topics) => {
+        return (
+          <Grid container sx={{ padding: 2, display: "flex", alignItems: "center"}} key={uuidv4()}>
+            <Grid item xs={3}>
+              <div style={{ fontWeight: "bold", margineInline: 5, padding: 5, textAlign: "center", alignItems: "center", height: "40px", justifyContent: "center", display: "flex"}}>
+                <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.id_round}주차</span>
+              </div>
+            </Grid>
+            <Grid item xs={8}>
+              <div style={{  padding: 5, marginLeft: 3, backgroundColor: "#F4EFE6", height: "35px", borderRadius: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.content}</span>
+              </div>
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            <div style={{  padding: 5, marginLeft: 3, backgroundColor: "#F4EFE6", height: "35px", borderRadius: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <span style={{ verticalAlign: "middle", display: "inline-block"}}>{topics.content}</span>
-            </div>
-          </Grid>
-        </Grid>
-      )
-    })
+        )
+      })
+    } else {
+      return
+    }
   }
 
 
   function getMembers() {
-    return members.map((member, index) => {
-      return (
-        <div 
-          key={index}
-          style={{ borderRadius: "20px", 
-                    border: "1px solid gray", 
-                    padding: 5, 
-                    marginInline: 10,
-                    paddingInline: 10,
-                    fontWeight: "bold"
-                 }}>{member}
-        </div>
-      )
-    });
-  }
-
-  function getMember(event) {
-    const value = event.target.value
-    setMember(value)
+    if (Array.isArray(teamDetails.member_list) && teamDetails.member_list.length > 0) {
+      return teamDetails.member_list.map((member) => {
+        return (
+          <div 
+            key={uuidv4()}
+            style={{ borderRadius: "20px", 
+                      border: "1px solid gray", 
+                      padding: 5, 
+                      marginInline: 10,
+                      paddingInline: 10,
+                      fontWeight: "bold"
+                   }}>{member}
+          </div>
+        )
+      });
+    } else {
+      return null
+    }
   }
 
   return (
     <>
-      <Container sx={{ border: "1px grey solid", borderRadius: "10px" }}>
-        <Grid container sx={{ px: 2, paddingTop: 2 }}>
-          <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
-            <p style={{ fontWeight: "bold", fontSize: "25px" }}> <span style={filterCategory.test(category) ? { color: "red"} : { color: "blue" }}>[{category}]</span> Figma 숙달방</p>
-            <p style={{ paddingLeft: 30, paddingTop: 5 }}>
-              <EditOutlinedIcon
-                sx={{ fontSize: 30, "&:hover" : { cursor: "pointer" } }}
-                onClick={() => {navigate("/mypage/group/:groupId/update")}}
-              />
-            </p>
-          </Grid>
-          <Grid item xs={1.6}></Grid>
-          <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
-            {/* {3 === 3 ? <p></p> : <Button
-                          variant="contained"
-                          sx={{ height: 30, backgroundColor: "green" }}
-                          onClick={inviteMember}
-                        >초대하기</Button>} */}
-            <Button
-              variant="contained"
-              sx={{ height: 30, backgroundColor: "green", "&:hover" : { backgroundColor: "green" } }}
-              onClick={inviteMember}
-            >초대하기</Button>
-          </Grid>
-          <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
-            <Button
-              variant="contained"
-              sx={{ height: 30, backgroundColor: "red", "&:hover" : { backgroundColor: "red" } }}
-              onClick={endGroup}
-            >종료하기</Button>
-          </Grid>
-          <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
-            <Button
-              variant="contained"
-              sx={{ height: 30, backgroundColor: "#E2B9B3", color: "black", "&:hover" : { backgroundColor: "#E2B9B3" } }}
-              onClick={leaveGroup}
-            >탈퇴하기</Button>
-          </Grid>
-          <Grid item xs={0.5} sx={{ display: "flex", alignItems: "center", justifyContent: "right" }}>
-            <ArrowBackIcon
-              sx={{ "&:hover" : { cursor: "pointer" } }}
-              onClick={() => {navigate("/group/mystudy/:userId")}} 
-            />
-          </Grid>
-        </Grid>
-        <Divider orientation='horizontal' flexItem/>
-        <Grid container sx={{ padding: 2}}>
-          <Grid item xs={2} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ marginInline: 10, padding: 5 }}>그룹장 </div>
-            <div style={{ borderRadius: "20px", border: "1px solid grey", backgroundColor: "#E2B9B3", padding: 5, marginInline: 10, paddingInline: 10, fontWeight: "bold" }}>조혜진</div>
-          </Grid>
-            <Divider orientation='vertical' flexItem sx={{ background: "grey", borderWidth: 1, marginInline: 3 }}/>
-          <Grid item xs={9} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ marginInline: 10, padding: 5}}>그룹원 </div>
-            {getMembers()}
-          </Grid>
-        </Grid>
-          <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
-        <Grid container sx={{ padding: 2 }}>
-          <Grid item xs={4} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ fontWeight: "bold", marginInline: 5, padding: 5 }}>스터디 일정</div>
-            <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>2023-05-01 ~ 2023-05-31</div>
-          </Grid>
-          <Grid item xs={5} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>스터디 시간</div>
-            <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>월수금 12:00 ~ 15:00</div>
-          </Grid>
-          <Grid item xs={3} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-            <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>인원</div>
-            <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>3 / 6</div>
-          </Grid>
-          <Grid container sx={{ padding: 2 }}>
-            <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
-              <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
-              <Typography style={{ margin: 10, padding: 35, minHeight: "30px", wordBreak: "break-all", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>{message}
-              </Typography>
+      {teamDetails ? (
+        <>
+          <Container sx={{ border: "1px grey solid", borderRadius: "10px", background: "white", marginTop: "20px" }}>
+            <Grid container sx={{ px: 2, paddingTop: 2 }}>
+              <Grid item xs={6} sx={{ display: "flex", alignItems: "center" }}>
+                <p style={{ fontWeight: "bold", fontSize: "25px" }}>
+                  {filterCategory.test(teamDetails.category) 
+                    ? <span style={{ color: "red", marginRight: 10 }}>[스터디]</span>
+                    : <span style={{ color: "blue", marginRight: 10 }}>[메이트]</span>} 
+                {teamDetails.team_name}
+                {(teamDetails.team_done === "Y") ? <span style={{ marginInline: 10, color: "red" }}>[완료]</span> : null}</p>
+                {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N") 
+                  ? <p style={{ paddingLeft: 30, paddingTop: 5 }}>
+                      <EditOutlinedIcon
+                        sx={{ fontSize: 30, "&:hover" : { cursor: "pointer" } }}
+                        onClick={() => {navigate(`update`)}}
+                      /></p>
+                  : null}
+              </Grid>
+              <Grid item xs={1.6}></Grid>
+              <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
+                {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N")
+                  ? <Button
+                      variant="contained"
+                      sx={{ height: 30, backgroundColor: "green", "&:hover" : { backgroundColor: "green" } }}
+                      onClick={() => {inviteMember(teamId)}}>초대하기</Button>
+                  : null}
+              </Grid>
+              <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
+                {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N")
+                  ? <Button
+                      variant="contained"
+                      sx={{ height: 30, backgroundColor: "red", "&:hover" : { backgroundColor: "red" } }}
+                      onClick={() => {endGroup(teamId)}}>종료하기</Button>
+                  : null}
+              </Grid>
+              <Grid item xs={1.3} sx={{ display: "flex", alignItems: "center", justifyContent: "right"}}>
+                {(teamDetails.team_done === "N")
+                  ?  <Button
+                        variant="contained"
+                        sx={{ height: 30, backgroundColor: "#E2B9B3", color: "black", "&:hover" : { backgroundColor: "#E2B9B3" } }}
+                        onClick={() => {leaveGroup(teamId)}}
+                      >탈퇴하기</Button>
+                  : <div>
+                      <Button variant="outlined" onClick={openModal}>
+                        리포트 보기
+                      </Button>
+                      <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
+                        {
+                          <>
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                              <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
+                                {filterCategory.test(teamDetails.category) 
+                                  ? <span style={{ color: "red" }}>[스터디]</span>
+                                  : <span style={{ color: "blue"}}>[메이트]</span>} 
+                                <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                              </p>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+                              <div style={{ borderRadius: "20px", 
+                                            border: "1px solid grey", 
+                                            backgroundColor: "#E2B9B3", 
+                                            padding: 5, 
+                                            marginInline: 10, 
+                                            paddingInline: 10, 
+                                            fontWeight: "bold"
+                                          }}>{teamDetails.leader}</div>
+                              {getMembers()}
+                            </div>
+                          </>
+                        } 
+                      </Report>
+                    </div>
+                }
+              </Grid>
+              <Grid item xs={0.5} sx={{ display: "flex", alignItems: "center", justifyContent: "right" }}>
+                <ArrowBackIcon
+                  sx={{ "&:hover" : { cursor: "pointer" } }}
+                  onClick={() => {navigate("/group/mystudy")}} 
+                />
+              </Grid>
             </Grid>
-          </Grid>
-          <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 15 }}>
-            <div style={{ paddingInline: 20, fontWeight: "bold", fontSize: "20px" }}>
-              회차별 주제
-            </div>
-            <div>
-              <Button variant="outlined" onClick={openModal}>
-                리포트 보기
-              </Button>
-              <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={weekTopics}>
-                {
-                  <>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
-                        <span style={ filterCategory.test(category) ? { color: "red"} : { color: "blue" }}>[{category}]</span> 
-                        <span style={{ marginInline: "10px" }}>Figma 숙달방</span>
-                      </p>
+            <Divider orientation='horizontal' flexItem/>
+            <Grid container sx={{ padding: 2}}>
+              <Grid item xs={2} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ marginInline: 10, padding: 5 }}>그룹장 </div>
+                <div style={{ borderRadius: "20px", 
+                              border: "1px solid grey", 
+                              backgroundColor: "#E2B9B3", 
+                              padding: 5, 
+                              marginInline: 10, 
+                              paddingInline: 10, 
+                              fontWeight: "bold" }}>{teamDetails.leader}</div>
+              </Grid>
+                <Divider orientation='vertical' flexItem sx={{ background: "grey", borderWidth: 1, marginInline: 3 }}/>
+              <Grid item xs={9} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ marginInline: 10, padding: 5}}>그룹원 </div>
+                {getMembers()}
+              </Grid>
+            </Grid>
+              <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
+            <Grid container sx={{ padding: 2 }}>
+              <Grid item xs={4} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ fontWeight: "bold", marginInline: 5, padding: 5 }}>스터디 일정</div>
+                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.begin_at} ~ {teamDetails.end_at}</div>
+              </Grid>
+              <Grid item xs={5} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>스터디 시간</div>
+                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{studyDays} {start_time} ~ {finish_time}</div>
+              </Grid>
+              <Grid item xs={3} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+                <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>인원</div>
+                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</div>
+              </Grid>
+              <Grid container sx={{ padding: 2 }}>
+                <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
+                  <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
+                  <Typography style={{ margin: 10, padding: 35, minHeight: "30px", wordBreak: "break-all", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>
+                    {teamDetails.team_info}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 15 }}>
+                <div style={{ paddingInline: 20, fontWeight: "bold", fontSize: "20px" }}>
+                  회차별 주제
+                </div>
+                {(teamDetails.team_done === "N")
+                  ? <div>
+                      <Button variant="outlined" onClick={openModal}>
+                        리포트 보기
+                      </Button>
+                      <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
+                        {
+                          <>
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                              <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
+                                {filterCategory.test(teamDetails.category) 
+                                  ? <span style={{ color: "red" }}>[스터디]</span>
+                                  : <span style={{ color: "blue"}}>[메이트]</span>} 
+                                <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                              </p>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+                              <div style={{ borderRadius: "20px", 
+                                            border: "1px solid grey", 
+                                            backgroundColor: "#E2B9B3", 
+                                            padding: 5, 
+                                            marginInline: 10, 
+                                            paddingInline: 10, 
+                                            fontWeight: "bold"
+                                          }}>{teamDetails.leader}</div>
+                              {getMembers()}
+                            </div>
+                          </>
+                        } 
+                      </Report>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
-                      <div style={{ borderRadius: "20px", 
-                                    border: "1px solid grey", 
-                                    backgroundColor: "#E2B9B3", 
-                                    padding: 5, 
-                                    marginInline: 10, 
-                                    paddingInline: 10, 
-                                    fontWeight: "bold"
-                                   }}>조혜진</div>
-                      {getMembers()}
-                    </div>
-                  </>
-                } 
-              </Report>
-            </div>
+                  : null
+                }
+              </Container>
+              <br/>
+              <Container style={{ overflowY: "scroll", height: "300px" }}>
+                {getWeekTopics()}
+              </Container>
+            </Grid>
           </Container>
-          <br/>
-          <Container style={{ overflowY: "scroll", height: "250px" }}>
-            {getWeekTopics()}
-          </Container>
-        </Grid>
-      </Container>
+        </>
+      )
+      : <div>loading</div>
+      }
     </>
   )
 }
