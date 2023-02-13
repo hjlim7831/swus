@@ -9,8 +9,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import axios from "./../../Utils/index";
-import Swal from 'sweetalert2';
-
+import Swal from "sweetalert2";
 
 export default function SignInSide() {
   // 이메일 기억하는 변수
@@ -28,11 +27,11 @@ export default function SignInSide() {
   };
 
   // 알림 창 함수
-  const Alert = ({title, icon}) => {
+  const Alert = ({ title, icon }) => {
     Swal.fire({
       icon,
       title,
-    })
+    });
   };
 
   // 이메일, 비밀번호 저장 변수
@@ -50,7 +49,9 @@ export default function SignInSide() {
   };
 
   // 이메일, 비밀번호 유효성 검사 변수
-  const [emailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
+  const [emailCheck] = useState(
+    /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/
+  );
   const [passwordCheck] = useState(/^[a-zA-Z0-9]+$/);
 
   // 이메일, 비밀번호 제출 함수
@@ -68,13 +69,13 @@ export default function SignInSide() {
     if (payload.email && payload.password) {
       let icon = "error";
       if (!emailCheck.test(payload.email)) {
-        const title= "이메일 형식을 지켜주세요";
-        Alert({title, icon});
+        const title = "이메일 형식을 지켜주세요";
+        Alert({ title, icon });
         // alert("이메일 형식을 지켜주세요.");
-      // } else if (payload.password.length < 8) {
-      //   alert("비밀번호는 8자 이상이여야 합니다.");
-      // } else if (!passwordCheck.test(payload.password)) {
-      //   alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
+        // } else if (payload.password.length < 8) {
+        //   alert("비밀번호는 8자 이상이여야 합니다.");
+        // } else if (!passwordCheck.test(payload.password)) {
+        //   alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
       } else {
         console.log({ payload });
 
@@ -86,7 +87,6 @@ export default function SignInSide() {
 
         axios(config)
           .then((response) => {
-
             sessionStorage.setItem("token", response.data.access_token);
             // token은 sessionStorage에 저장
             // sessionStorage는 브라우저를 닫으면 clear됨.
@@ -107,14 +107,14 @@ export default function SignInSide() {
           })
           .catch((error) => {
             const title = "존재하는 아이디가 아닙니다.";
-            Alert({title, icon});
+            Alert({ title, icon });
             // alert("존재하는 아이디가 아닙니다.");
           });
       }
     } else {
       const title = "정보를 다시 입력해주세요.";
       let icon = "error";
-      Alert({title, icon});
+      Alert({ title, icon });
       // alert("정보를 다시 입력해주세요.");
     }
   };
@@ -188,9 +188,11 @@ export default function SignInSide() {
           id="password"
           autoComplete="current-password"
           onChange={inputSubmit}
-          error={inputData.password && 
-            (inputData.password.length < 8 | 
-              !(passwordCheck.test(inputData.password)))}
+          error={
+            inputData.password &&
+            (inputData.password.length < 8) |
+              !passwordCheck.test(inputData.password)
+          }
         />
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
@@ -202,10 +204,14 @@ export default function SignInSide() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2, backgroundColor: "#E2B9B3", color: "#5F3A42", 
-            '&:hover': {
-              backgroundColor: '#E2B9B3'
-            } 
+          sx={{
+            mt: 3,
+            mb: 2,
+            backgroundColor: "#E2B9B3",
+            color: "#5F3A42",
+            "&:hover": {
+              backgroundColor: "#E2B9B3",
+            },
           }}
         >
           Sign In

@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import { Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -12,40 +9,50 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 // import { ResponsivePie } from "@nivo/pie";
+import PieChart from "./PieChart";
 
-import axios from "axios";
+import axios from "./../../Utils/index";
 
 function MyTime() {
+  // 입력 시간
   const [inputHour, setInputHour] = useState();
+  // 입력 분
   const [inputMin, setInputMin] = useState();
 
+  // 모달 열기?
   const [open, setOpen] = React.useState(false);
+  // 목표시간
   const [targetTime, setTargetTime] = useState();
+  // 공부시간
   const [studyTime, setStudyTime] = useState();
-  const Token = sessionStorage.getItem("token");
 
   useEffect(() => {
-    //목표시간 가져오기 (분)
-    axios({
+    let config = {
       method: "get",
-      url: "http://i8a302.p.ssafy.io:8081/my-studies/target-time",
-      headers: {
-        Authorization: `Bearer ${Token}`,
-      },
-    }).then((res) => {
-      setTargetTime(res.data.target_time);
-    });
-
-    //총 공부시간 가져오기 (분)
-    axios({
-      method: "get",
-      url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-      headers: {
-        Authorization: `Bearer ${Token}`,
-      },
-    }).then((res) => {
-      setStudyTime(res.data.now_total_time);
-    });
+      url: "/my-studies/target-time",
+    };
+    // 목표시간 가져오기 (분)
+    axios(config)
+      .then((res) => {
+        const Time = res.data.target_time;
+        setTargetTime(Time);
+        console.log("여기 데이터");
+        console.log(res.data);
+        setInputHour(Math.floor(Time / 60));
+        setInputMin(Time % 60);
+      })
+      .then((res) => {
+        const config2 = {
+          method: "get",
+          url: "/my-studies/now-total-time",
+        };
+        // 총 공부시간 가져오기 (분)
+        axios(config2).then((res) => {
+          console.log("여기는 공부시간");
+          console.log(res.data.now_total_time);
+          setStudyTime(res.data.now_total_time);
+        });
+      });
   }, []);
 
   let restTime = targetTime - studyTime;
@@ -62,27 +69,25 @@ function MyTime() {
   };
 
   const changeH = (event) => {
-    let value = event.target.value;
+    const value = event.target.value;
     setInputHour(value);
   };
   const changeM = (event) => {
-    let value = event.target.value;
+    const value = event.target.value;
     setInputMin(value);
   };
 
   const target_time = parseInt(inputHour) * 60 + parseInt(inputMin);
+
   const save = (event) => {
-    axios({
-      method: "put",
-      url: "http://i8a302.p.ssafy.io:8081/my-studies/target-time",
-      headers: {
-        Authorization: `Bearer ${Token}`,
-      },
-      data: {
-        target_time: target_time,
-      },
-    }).then((res) => {
-      console.log(res);
+    const config = {
+      method: "PUT",
+      url: "/my-studies/target-time",
+      data: { target_time },
+    };
+    axios(config).then((res) => {
+      // console.log(res);
+      setTargetTime(target_time);
     });
     setOpen(false);
   };
@@ -112,44 +117,38 @@ function MyTime() {
                   overflow: "auto",
                   overflowX: "hidden",
                   width: "100%",
-                  height: "180px",
+                  height: "15rem",
                   backgroundColor: "F4EFE6",
                 }}
               >
                 <Grid item xs={12}>
                   <Grid container sx={{ marginTop: "3%" }}>
-                    <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
+                    <Grid item xs={6}>
                       나의 목표 시간
                     </Grid>
-                    <Grid item xs={6} sx={{ backgroundColor: "pink" }}>
+                    <Grid item xs={6}>
                       <Box sx={{ marginLeft: "30%" }}>
                         {parseInt(targetTime / 60)}시간{" "}
                         {("0" + parseInt(targetTime % 60)).slice(-2)}분
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid
-                    container
-                    sx={{ backgroundColor: "red", marginTop: "2%" }}
-                  >
-                    <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
+                  <Grid container sx={{ marginTop: "2%" }}>
+                    <Grid item xs={6}>
                       현재 달성 시간
                     </Grid>
-                    <Grid item xs={6} sx={{ backgroundColor: "pink" }}>
+                    <Grid item xs={6}>
                       <Box sx={{ marginLeft: "30%" }}>
                         {parseInt(studyTime / 60)}시간{" "}
                         {("0" + parseInt(studyTime % 60)).slice(-2)}분
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid
-                    container
-                    sx={{ backgroundColor: "red", marginTop: "2%" }}
-                  >
-                    <Grid item xs={6} sx={{ backgroundColor: "skyblue" }}>
+                  <Grid container sx={{ marginTop: "2%" }}>
+                    <Grid item xs={6}>
                       남은 목표 시간
                     </Grid>
-                    <Grid item xs={6} sx={{ backgroundColor: "pink" }}>
+                    <Grid item xs={6}>
                       <Box sx={{ marginLeft: "30%" }}>
                         {parseInt(restTime / 60)}시간{" "}
                         {("0" + parseInt(restTime % 60)).slice(-2)}분
@@ -157,6 +156,8 @@ function MyTime() {
                     </Grid>
                   </Grid>
                 </Grid>
+
+                <PieChart />
               </Box>
             </Grid>
           </Grid>
