@@ -2,29 +2,53 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
+import { useSelector } from "react-redux";
 
 export default function Lounge() {
-  const vedio_id = "p8300mqnSI0";
-  const url = `https://www.youtube.com/embed/${vedio_id}?autoplay=1&mutes=1`;
+  const loungeurl = useSelector((state) => state.loungeurl);
+  const [urlId, setUrlId] = useState()
+  const [randomNum, setRandomNum] = useState(0);
+  
+  const RandomNum = () => {
+    setRandomNum(Math.floor(Math.random() * 6));
+  }
+
+  useEffect(() => {
+    RandomNum();
+    console.log(randomNum)
+    setUrlId(loungeurl.motivation[randomNum]);
+  }, [])
+
+  const url = `https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`;
+
+  // const ChooseUrl = (name) => {
+  //   RandomNum();
+  //   setUrlId(loungeurl.neck[randomNum]);
+  // }
 
   const stretching = [
     {
+      id: "neck",
       name: "목",
       color: "#FFE0E0",
     },
     {
+      id: "back",
       name: "등",
       color: "#EBEBEB",
     },
     {
+      id: "shoulder",
       name: "어깨",
       color: "#FFECDA",
     },
     {
+      id: "waist",
       name: "허리",
       color: "#EBEBEB",
     },
     {
+      id: "leg",
       name: "다리",
       color: "#FFFBED",
     },
@@ -111,6 +135,7 @@ export default function Lounge() {
                     display: "flex",
                     justifyContent: "flex-start",
                   }}
+                  // onClick={ChooseUrl(data.id)}
                 >
                   <span>{data.name} 운동하기</span>
                 </Button>
@@ -171,6 +196,7 @@ export default function Lounge() {
                     backgroundColor: "#F4EFE6",
                   },
                 }}
+                // onClick={ChooseUrl("motivation")}
               >
                 GO!
               </Button>

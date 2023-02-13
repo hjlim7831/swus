@@ -24,7 +24,7 @@ function TodoJandi() {
 
   //  기간 설정 (1년 전 ~ today)
   // Lazy Initialization (state 정의될 때 한 번만 실행)
-  const [endDate] = useState(() => {
+  const [endDate, setEndDate] = useState(() => {
     const now = new Date();
     const year = now.getFullYear();
     let month = now.getMonth() + 1;

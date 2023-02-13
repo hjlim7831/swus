@@ -14,7 +14,7 @@ import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 
-import LoungeMain from "./pages/Lounge/main";
+import LoungeMain from "./pages/Lounge/Main";
 
 import UserModal from "./pages/Accounts/LogInModal/UserModal";
 import LogInModal from "./pages/Accounts/LogInModal/LogIn";

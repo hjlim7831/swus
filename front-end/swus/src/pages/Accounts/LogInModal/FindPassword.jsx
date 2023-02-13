@@ -37,7 +37,7 @@ export default function FindPassword() {
   };
 
   // 이메일, 비밀번호 유효성 검사 변수
-  const [emailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
+  const [emailCheck, setEmailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
 
   const idSubmit = (event) => {
     event.preventDefault();

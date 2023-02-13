@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 export default function MyInfo() {
   const [nickname, setNickName] = useState(localStorage.getItem("nickname"));
   const [email, setEmail] = useState(localStorage.getItem("id"));
-  const [passwordCheck] = useState(/^[a-zA-Z0-9]+$/);
+  const [passwordCheck, setPasswordCheck] = useState(/^[a-zA-Z0-9]+$/);
 
   useEffect(() => {
     const config = {

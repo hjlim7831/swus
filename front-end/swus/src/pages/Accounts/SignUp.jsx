@@ -42,8 +42,8 @@ export default function SignUpSide() {
   };
 
   // 이메일, 비밀번호 유효성 검사 변수
-  const [emailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
-  const [passwordCheck] = useState(/^[a-zA-Z0-9]+$/);
+  const [emailCheck, setEmailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
+  const [passwordCheck, setPasswordCheck] = useState(/^[a-zA-Z0-9]+$/);
 
   // 아이디 중복검사
   const idCheck = (event) => {
