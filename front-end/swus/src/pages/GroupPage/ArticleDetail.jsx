@@ -17,6 +17,8 @@ function ArticleDetail() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
   const [article, setArticle] = useState([]);
+	const [startTime, setStartTime] = useState();
+	const [finishTime, setFinishTime] = useState();
 	const filterCategory = /S/;
 
 	const articleDetail = useSelector(state => {
@@ -26,7 +28,17 @@ function ArticleDetail() {
 	const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1)
 	
 	useEffect(() => {
-		setArticle(articleDetail)
+		const config = {
+			url: `/boards/${boardId}`,
+			method: "GET",
+		}
+
+		axios(config)
+			.then((response) => {
+				setArticle(response.data)
+				setStartTime(response.data.start_time.slice(0, 5))
+				setFinishTime(response.data.finish_time.slice(0, 5))
+			})
 		dispatch(groupBoardSlice.actions.saveBoardId(boardId))
 	}, [])
 
@@ -48,13 +60,45 @@ function ArticleDetail() {
 			</>
 		)
 	}
+
+	function getStudyDays() {
+		if (article.day) {
+			let checked = [false, false, false, false, false, false, false]
+			for (let i = 0; i < 7; i++) {
+				if (article.day[i] === "1") {
+					checked[i] = true;
+				}
+			}
+			const days = ["월", "화", "수", "목", "금", "토", "일"]
+			return days.map((date, index) => {
+				const style = {
+					background: checked[index] ? "#9EC2F8" : "white",
+					// color: checked[index] ? "white" : "black",
+					marginInline: 3,
+					borderRadius: 5,
+					padding: "1px",
+					fontWeight: "bold",
+				}
+				return (
+					<>
+						<span 
+							style={style}>{date}</span>
+					</>
+				)
+			});
+		}	else {
+			return null
+		}
+	}
 	 
   return (
-		<>
+	<>
+		{article ? (
+			<>
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px", minWidth: "1000px", background: "white" }}>
-				<Grid container sx={{ px: 2 }}>
-					<Grid item xs={6} sx={{ display: "flex", alignItems: "center", justifyContent: ""}}>
-    				<p style={{ fontWeight: "bold", fontSize: "30px"}}>
+				<Grid container sx={{ px: 2, mt: 3 }}>
+					<Grid item xs={9} sx={{ display: "flex", alignItems: "center", justifyContent: "" }}>
+    				<p style={{ fontWeight: "bold", fontSize: "30px", marginLeft: "10px" }}>
 							<span style={{ fontWeight: "bold" }}>
 								{filterCategory.test(article.category) 
 									? <span style={{ color: "red" }}>[스터디]</span> 
@@ -63,8 +107,6 @@ function ArticleDetail() {
 							<span style={{ marginLeft: 30 }}>{article.title}</span>
 						</p>
 						{(localStorage.getItem("id") === article.email) ? getButtons() : null }
-					</Grid>
-					<Grid item xs={3}>
 					</Grid>
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 5}}>
 					</Grid>
@@ -92,29 +134,33 @@ function ArticleDetail() {
 					</Grid>
 				</Grid>
 				<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 5 }}/>
-				<Grid container>
+				<Grid container sx={{ display: "flex", alignItems: "center"}}>
 					<Grid item xs={2} sx={{ alignContent: "center" }}>
-						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 일정</p>
+						<p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 일정</p>
 					</Grid>
 					<Grid item xs={3}>
-						{(article.begin_at) ? <p>{article.begin_at} ~ {article.end_at}</p> : <p>미정</p>}
+						{(article.begin_at && article.end_at) 
+							? <p style={{ textAlign: "center", fontSize: "20px" }}>{article.begin_at} ~ {article.end_at}</p> 
+							: <p style={{ textAlign: "center", fontSize: "20px" }}>미정</p>}
 					</Grid>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2 }}/>
 					<Grid item xs={2}>
-						<p style={{ fontWeight: "bold", textAlign: "center" }}>스터디 시간</p>
+						<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+							<p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 시간</p>
+						</div>
 					</Grid>
 					<Grid item xs={2}>
-						<p style={{ justifyContent: "center", alignItems: "center" }}>
-							<span style={{ textAlign: "center", marginInline: 5 }}>{article.day} </span>
-							<span style={{ textAlign: "center", marginInline: 5 }}>{article.start_time} ~ {article.finish_time}</span>
+						<p style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+							<p style={{ textAlign: "center", marginInline: 5 }}>{getStudyDays()} </p>
+							<p style={{ textAlign: "center", marginInline: 5 }}>{startTime} ~ {finishTime}</p>
 						</p>
 					</Grid>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2 }}/>
 					<Grid item xs={1}>
-						<p style={{ fontWeight: "bold", textAlign: "center" }}>인원 현황</p>
+						<p style={{ fontWeight: "bold", textAlign: "center", fontSize: "18px" }}>인원 현황</p>
 					</Grid>
 					<Grid item xs={1}>
-						<p style={{ textAlign: "center" }}>{article.team_number} / {article.board_number}</p>
+						<p style={{ textAlign: "center", fontSize: "18px" }}>{article.team_number} / {article.board_number}</p>
 					</Grid>
 				</Grid>
 				<Grid container>
@@ -130,6 +176,10 @@ function ArticleDetail() {
 				</Container>
 			</Container>
 		</>
+		) 
+		: <div>loading</div>
+		}
+	</>
   )
 }
 

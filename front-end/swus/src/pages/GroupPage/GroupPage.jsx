@@ -68,8 +68,8 @@ function GroupPage() {
 											fontWeight: "bold", 
 											fontSize: "30px", 
 											textAlign: "center",
-											marginLeft: 10 }}>
-						<span>스터디 모집게시판</span>
+											marginLeft: 20 }}>
+						<span>✏️스터디 모집게시판</span>
 					</p>
 					<Button 
 						type="submit" 
@@ -104,8 +104,8 @@ function GroupPage() {
 									<TableCell style={{ textAlign: "center" }}>
 											<span style={{ fontWeight: "bold" }}>
 												{filterCategory.test(article.category) 
-													? <span style={{ color: "red" }}>[스터디]</span> 
-													: <span style={{ color: "blue" }}>[메이트]</span>}
+													? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
+													: <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
 											</span>
 									</TableCell>
 									<TableCell 
@@ -114,7 +114,7 @@ function GroupPage() {
 											<span style={{ cursor: "pointer" }}>{article.title}</span>
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>
-										{(article.recruitment_done === "Y") ? "모집중" : "모집 완료"}
+										{(article.recruitment_done === "Y") ? "📢모집중" : "✔모집 완료"}
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.write_at}</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.views}</TableCell>
