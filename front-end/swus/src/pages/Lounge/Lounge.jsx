@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Grid } from "@mui/material";
 
-import { ResponsiveCalendar } from "@nivo/calendar";
+// import { ResponsiveCalendar } from "@nivo/calendar";
 
 import axios from "../../Utils/index";
 
@@ -100,7 +100,7 @@ export default function TodoJandi() {
       <Box>
         <Grid container></Grid>
       </Box>
-      <ResponsiveCalendar
+      {/* <ResponsiveCalendar
         data={data}
         from="2015-03-01"
         to="2016-07-12"
@@ -123,7 +123,7 @@ export default function TodoJandi() {
             itemDirection: "right-to-left",
           },
         ]}
-      />
+      /> */}
     </>
   );
 }

@@ -59,20 +59,17 @@ function DrawerAppBar(props) {
       sx={{ textAlign: "center", backgroundColor: "#1A1E33", height: "100vh" }}
     >
       <Typography variant="h6" sx={{ my: 2 }}>
-        <img
-          src={logo}
-          width="65px"
-          heigth="58px"
-          alt="react"
-          onClick={() => navigate("/")}
-        />
+        <img src={logo} width="65px" heigth="58px" alt="react" onClick={() => navigate("/")} />
       </Typography>
       <Divider />
       <List>
         {navItems.map((item) => (
           <ListItem key={item.name} disablePadding>
             <ListItemButton
-              sx={{ textAlign: "center", color: "white" }}
+              sx={{
+                textAlign: "center",
+                color: "white",
+              }}
               onClick={() => {
                 if (item.name === "Logout") {
                   logout();
@@ -88,8 +85,7 @@ function DrawerAppBar(props) {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -105,13 +101,7 @@ function DrawerAppBar(props) {
             sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
-            <img
-              src={logo}
-              width="65px"
-              heigth="58px"
-              alt="react"
-              onClick={() => navigate("/")}
-            />
+            <img src={logo} width="65px" heigth="58px" alt="react" onClick={() => navigate("/")} />
           </IconButton>
 
           {/* 메인페이지 */}
@@ -120,13 +110,7 @@ function DrawerAppBar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            <img
-              src={logo}
-              width="65px"
-              heigth="58px"
-              alt="react"
-              onClick={() => navigate("/")}
-            />
+            <img src={logo} width="65px" heigth="58px" alt="react" onClick={() => navigate("/")} />
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>

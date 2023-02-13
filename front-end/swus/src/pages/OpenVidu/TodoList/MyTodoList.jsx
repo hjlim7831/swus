@@ -3,6 +3,11 @@ import axios from "../../../Utils/index";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+// 정환 추가 start
+import Checkbox from "@mui/material/Checkbox";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+// 정환 추가 end
 
 function MyTodoList({ todoData, setTodoData, value, setValue }) {
   // 수정 로직
@@ -95,12 +100,16 @@ function MyTodoList({ todoData, setTodoData, value, setValue }) {
         todoData.map((data, i) => (
           <div style={getStyle(data.todo_done)} key={i}>
             {/*함수이므로 ()필수, key속성에는 객체의 유니크 값 넣어줘야*/}
+            {/* 정환 추가 start */}
+            {/* 정환 추가 end */}
+            {/* 정환 삭제 start
             <input
               type="checkbox"
               // defaultChecked={false}
               checked={data.todo_done}
               onChange={() => hadleCompleteChange(data.num)}
             />
+            정환 삭제 end */}
             {/*어떤 아이디 값 클릭됐는지*/}
 
             {/* {
@@ -117,18 +126,27 @@ function MyTodoList({ todoData, setTodoData, value, setValue }) {
                 </>
               )
             } */}
-            {data.content}
+            {/* 정환 수정 start */}
+            <Stack direction="row" spacing={0} alignItems="center">
+              <Checkbox
+                size="small"
+                checked={data.todo_done}
+                onChange={() => hadleCompleteChange(data.num)}
+              />
+              <Box sx={{ width: 1 }}>{data.content}</Box>
 
-            <RemoveCircleOutlineIcon
-              color="error"
-              sx={{ fontSize: 18, cursor: "pointer", float: "right" }}
-              onClick={() => handleClick(data.num)}
-            />
+              <RemoveCircleOutlineIcon
+                color="error"
+                sx={{ fontSize: 24, cursor: "pointer", flexShrink: 0 }}
+                onClick={() => handleClick(data.num)}
+              />
 
-            {/* 수정 아이콘은 생성했지만, 로직 구현 아직... 필요할까? */}
-            <ModeEditOutlineOutlinedIcon
-              sx={{ fontSize: 18, cursor: "pointer", float: "right" }}
-            />
+              {/* 수정 아이콘은 생성했지만, 로직 구현 아직... 필요할까? */}
+              <ModeEditOutlineOutlinedIcon
+                sx={{ fontSize: 24, cursor: "pointer", flexShrink: 0 }}
+              />
+            </Stack>
+            {/* 정환 수정 end */}
           </div>
         ))}
     </div>

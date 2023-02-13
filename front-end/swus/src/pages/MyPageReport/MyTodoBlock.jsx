@@ -91,11 +91,7 @@ function GroupTodoBlock() {
             <h3 style={{ marginLeft: "40px" }}>To-Do List</h3>
           </Grid>
           <Grid item xs={2}>
-            <IconButton
-              color="black"
-              aria-label="change view"
-              sx={{ paddingTop: "20px" }}
-            >
+            <IconButton color="black" aria-label="change view" sx={{ paddingTop: "20px" }}>
               <AutorenewIcon />
             </IconButton>
           </Grid>
@@ -111,11 +107,7 @@ function GroupTodoBlock() {
                 backgroundColor: "#F4EFE6",
               }}
             >
-              <MyTodoForm
-                handleSubmit={handleSubmit}
-                value={value}
-                setValue={setValue}
-              />
+              <MyTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
               <MyTodoList
                 todoData={todoData}
                 setTodoData={setTodoData}
