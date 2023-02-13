@@ -52,6 +52,7 @@ class OpenViduApp extends Component {
     this.onbeforeunload = this.onbeforeunload.bind(this);
     // this.muteAudio = this.muteAudio.bind(this);
     // this.unmuteAudio = this.unmuteAudio.bind(this);
+    this.leaveCheck = this.leaveCheck.bind(this);
   }
 
   componentDidMount() {
@@ -112,6 +113,25 @@ class OpenViduApp extends Component {
         subscribers: subscribers,
       });
     }
+  }
+
+  leaveCheck() {
+    const Token = sessionStorage.getItem("token");
+    console.log("그룹 방 퇴장");
+    console.log(this.state.teamId);
+    console.log(this.state.round);
+    axios({
+      method: "get",
+      url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
+      headers: { Authorization: `Bearer ${Token}` },
+    }).then((response) => {
+      console.log(response.data.message);
+    });
+  }
+
+  moveToLounge() {
+    this.leaveCheck();
+    window.location.replace("http://localhost:3000/lounge");
   }
 
   muteAudio() {
@@ -203,7 +223,9 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter((device) => device.kind === "videoinput");
+              var videoDevices = devices.filter(
+                (device) => device.kind === "videoinput"
+              );
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -243,17 +265,7 @@ class OpenViduApp extends Component {
       mySession.disconnect(); //연결 끊고
     }
 
-    const Token = sessionStorage.getItem("token");
-    console.log("그룹 방 퇴장");
-    console.log(this.state.teamId);
-    console.log(this.state.round);
-    axios({
-      method: "get",
-      url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
-      headers: { Authorization: `Bearer ${Token}` },
-    }).then((response) => {
-      console.log(response.data.message);
-    });
+    this.leaveCheck();
 
     // Empty all properties... 초기화
     this.OV = null;
@@ -401,7 +413,9 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>{this.state.teamName}</h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                  {this.state.teamName}
+                </h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -418,7 +432,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {hoursTen}
                         </Typography>
                       </Box>
@@ -432,7 +449,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {hoursOne}
                         </Typography>
                       </Box>
@@ -457,7 +477,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {minutesTen}
                         </Typography>
                       </Box>
@@ -472,7 +495,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {minutesOne}
                         </Typography>
                       </Box>
@@ -497,7 +523,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {secondsTen}
                         </Typography>
                       </Box>
@@ -511,14 +540,19 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {secondsOne}
                         </Typography>
                       </Box>
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                  To-do list
+                </h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -526,7 +560,10 @@ class OpenViduApp extends Component {
                     padding: 5,
                   }}
                 >
-                  <GroupTodoBlock groupId={this.state.teamId} round={this.state.round} />
+                  <GroupTodoBlock
+                    groupId={this.state.teamId}
+                    round={this.state.round}
+                  />
                 </div>
                 <div>
                   <Button
@@ -557,27 +594,43 @@ class OpenViduApp extends Component {
                   <div id="session">
                     <div
                       id="video-container"
-                      style={
-                        {
-                          /*marginLeft: "5%"*/
-                        }
-                      }
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(31%, auto))",
+                        alignContent: "stretch",
+                        justifyContent: "stretch",
+                        placeItems: "center",
+                        backgroundColor: "pink",
+                        padding: "30px",
+                        // flexWrap: "wrap",
+                      }}
                     >
                       {this.state.publisher !== undefined ? (
                         <div
                           className="stream-container"
-                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                          onClick={() =>
+                            this.handleMainVideoStream(this.state.publisher)
+                          }
+                          style={{ width: "100%", height: "100%" }}
                         >
-                          <GroupUserVideo streamManager={this.state.publisher} />
+                          <GroupUserVideo
+                            streamManager={this.state.publisher}
+                            style={{ width: "100%" }}
+                          />
                         </div>
                       ) : null}
                       {this.state.subscribers.map((sub, i) => (
                         <div
                           key={i}
                           className="stream-container"
+                          style={{ width: "100%", height: "100%" }}
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
-                          <GroupUserVideo streamManager={sub} />
+                          <GroupUserVideo
+                            streamManager={sub}
+                            style={{ width: "100%" }}
+                          />
                         </div>
                       ))}
                     </div>

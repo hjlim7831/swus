@@ -57,6 +57,7 @@ class OpenViduApp extends Component {
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.leaveCheck = this.leaveCheck.bind(this);
   }
 
   componentDidMount() {
@@ -147,6 +148,82 @@ class OpenViduApp extends Component {
     });
   }
 
+  //스터디 종료 처리 및 시간 저장하는 함수
+  leaveCheck() {
+    //방 퇴장 알리는 통신
+    const Token = sessionStorage.getItem("token");
+    console.log("방 퇴장");
+    console.log(this.state.roomId);
+    axios({
+      method: "post",
+      url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
+      headers: { Authorization: `Bearer ${Token}` },
+      data: {
+        member_id: 0,
+        room_id: this.state.roomId,
+      },
+    }).then((response) => {
+      console.log(response.data.message);
+    });
+
+    //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
+    //기존 입장 시간
+    const inH = parseInt(localStorage.getItem("inHour"));
+    const inM = parseInt(localStorage.getItem("inMin"));
+
+    //현재 시간
+    const nowH = parseInt(this.state.d.getHours());
+    const nowM = parseInt(this.state.d.getMinutes());
+
+    //누적된 총 시간
+    const totalH = parseInt(localStorage.getItem("totalH"));
+    const totalM = parseInt(localStorage.getItem("totalM"));
+
+    if (inH <= nowH) {
+      //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
+      const cal = nowH * 60 + nowM - (inH * 60 + inM);
+      //시간 저장
+      axios({
+        method: "put",
+        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+
+        headers: { Authorization: `Bearer ${Token}` },
+        data: {
+          now_total_time: totalH * 60 + totalM + cal,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+
+      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      localStorage.setItem("totalM", totalM + (cal % 60));
+    } else {
+      //앞시간이 더 큰 숫자일 경우 ex 18시~1시
+      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
+      //시간 저장
+      axios({
+        method: "put",
+        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+
+        headers: { Authorization: `Bearer ${Token}` },
+        data: {
+          now_total_time: totalH * 60 + totalM + cal,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+
+      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      localStorage.setItem("totalM", totalM + (cal % 60));
+    }
+  }
+
+  //라운지 이동
+  moveToLounge() {
+    this.leaveCheck();
+    window.location.replace("http://localhost:3000/lounge");
+  }
+
   joinSession() {
     // --- 1) Get an OpenVidu object ---
     //오픈비두 객체 생성
@@ -210,7 +287,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x350", // The resolution of your video
+                resolution: "1200x330", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -264,20 +341,8 @@ class OpenViduApp extends Component {
       mySession.disconnect(); //연결 끊고
     }
 
-    const Token = sessionStorage.getItem("token");
-    console.log("방 퇴장");
-    console.log(this.state.roomId);
-    axios({
-      method: "post",
-      url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
-      headers: { Authorization: `Bearer ${Token}` },
-      data: {
-        member_id: 0,
-        room_id: this.state.roomId,
-      },
-    }).then((response) => {
-      console.log(response.data.message);
-    });
+    //스터디 종료 처리 및 시간 저장하는 함수
+    this.leaveCheck();
 
     // Empty all properties... 초기화
     this.OV = null;
@@ -290,56 +355,6 @@ class OpenViduApp extends Component {
       publisher: undefined,
     });
 
-    //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
-    //기존 입장 시간
-    const inH = parseInt(localStorage.getItem("inHour"));
-    const inM = parseInt(localStorage.getItem("inMin"));
-
-    //현재 시간
-    const nowH = parseInt(this.state.d.getHours());
-    const nowM = parseInt(this.state.d.getMinutes());
-
-    //누적된 총 시간
-    const totalH = parseInt(localStorage.getItem("totalH"));
-    const totalM = parseInt(localStorage.getItem("totalM"));
-
-    if (inH <= nowH) {
-      //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
-      const cal = nowH * 60 + nowM - (inH * 60 + inM);
-      //시간 저장
-      axios({
-        method: "put",
-        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-        headers: { Authorization: `Bearer ${Token}` },
-        data: {
-          now_total_time: totalH * 60 + totalM + cal,
-        },
-      }).then((res) => {
-        console.log(res);
-      });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
-    } else {
-      //앞시간이 더 큰 숫자일 경우 ex 18시~1시
-      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
-      //시간 저장
-      axios({
-        method: "put",
-        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-        headers: { Authorization: `Bearer ${Token}` },
-        data: {
-          now_total_time: totalH * 60 + totalM + cal,
-        },
-      }).then((res) => {
-        console.log(res);
-      });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
-    }
     window.location.replace("http://localhost:3000/studyroom");
     // window.location.href = "/studyroom";/
   }
@@ -591,17 +606,7 @@ class OpenViduApp extends Component {
                 </div>
               </Grid>
             </Grid>
-            <Grid
-              item
-              xs={9.6}
-              sx={
-                {
-                  // gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
-                  // alignContent: "stretch",
-                  // placeItems: "center",
-                }
-              }
-            >
+            <Grid item xs={9.6}>
               {this.state.session === undefined ? (
                 <div id="join">{this.joinSession()}</div>
               ) : null}
@@ -612,9 +617,11 @@ class OpenViduApp extends Component {
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
-                    // alignContent: "stretch",
-                    // placeItems: "center",
+                    alignContent: "stretch",
+                    justifyContent: "stretch",
+                    placeItems: "center",
                     backgroundColor: "pink",
+                    padding: "0.5%",
                     // flexWrap: "wrap",
                   }}
                 >
