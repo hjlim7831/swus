@@ -7,6 +7,7 @@ import com.ssaky.swus.api.response.report.TodoGroupMemberGetResp;
 import com.ssaky.swus.db.repository.report.TodoGroupMemberRepository;
 import com.ssaky.swus.db.repository.report.TodoGroupRepository;
 import com.ssaky.swus.db.entity.report.TodoGroup;
+import com.ssaky.swus.db.repository.report.TodoGroupRepositoryI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -23,6 +25,7 @@ public class ReportService {
 
     private final TodoGroupMemberRepository todoGrMemRepo;
     private final TodoGroupRepository todoGrRepo;
+    private final TodoGroupRepositoryI todoGrRepoI;
 
     //그룹의 모든회차 레포트 불러오기
     public List<RoundGetResp> getReports(int teamId, List<MemberNicknameReq> reqs) {
@@ -87,8 +90,11 @@ public class ReportService {
     //변경감지를 이용해서 날짜 등록하여 완료로 처리
     @Transactional
     public void setDone(int teamId, int round) {
-        TodoGroup todoGroup = todoGrRepo.findOne(teamId, round);
-        todoGroup.done();
-        log.debug(todoGroup.getId().getRound()+"회차("+todoGroup.getContent()+")를 "+todoGroup.getStudyAt()+"로 완료 처리했습니다.");
+        Optional<TodoGroup> todoGroupOptional = todoGrRepoI.findByIdRoundAndIdTeamId(round, teamId, TodoGroup.class);
+        TodoGroup todoGroup = todoGroupOptional.get();
+        if (todoGroup.getStudyAt() == null) {
+            todoGroup.done();
+            log.debug(todoGroup.getId().getRound()+"회차("+todoGroup.getContent()+")를 "+todoGroup.getStudyAt()+"로 완료 처리했습니다.");
+        }
     }
 }
