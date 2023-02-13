@@ -28,7 +28,7 @@ import { TransitionProps } from "@mui/material/transitions";
 //쉬는시간 alert
 import startBreak from "../../components/modals/StartBreak";
 import endBreak from "../../components/modals/EndBreak";
-
+import { v4 as uuidv4 } from "uuid";
 //HOC 사용용
 
 const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -69,10 +69,16 @@ class OpenViduApp extends Component {
     this.timeID = setInterval(() => {
       this.change();
       if (this.state.mySessionId.substr(6, 1) === "Y") {
-        if (this.state.d.getMinutes() === 50 && this.state.d.getSeconds() == 0) {
+        if (
+          this.state.d.getMinutes() === 50 &&
+          this.state.d.getSeconds() == 0
+        ) {
           console.log("if 들어감");
           startBreak();
-        } else if (this.state.d.getMinutes() === 0 && this.state.d.getSeconds() == 0) {
+        } else if (
+          this.state.d.getMinutes() === 0 &&
+          this.state.d.getSeconds() == 0
+        ) {
           console.log("elseif 들어감");
           endBreak();
         } else {
@@ -204,7 +210,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x600", // The resolution of your video
+                resolution: "1200x350", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -216,7 +222,9 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter((device) => device.kind === "videoinput");
+              var videoDevices = devices.filter(
+                (device) => device.kind === "videoinput"
+              );
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -413,7 +421,9 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>공용 열람실{roomId}</h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                  공용 열람실{roomId}
+                </h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -430,7 +440,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {hoursTen}
                         </Typography>
                       </Box>
@@ -444,7 +457,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {hoursOne}
                         </Typography>
                       </Box>
@@ -469,7 +485,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {minutesTen}
                         </Typography>
                       </Box>
@@ -484,7 +503,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {minutesOne}
                         </Typography>
                       </Box>
@@ -509,7 +531,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {secondsTen}
                         </Typography>
                       </Box>
@@ -523,14 +548,19 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {secondsOne}
                         </Typography>
                       </Box>
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                  To-do list
+                </h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -572,7 +602,9 @@ class OpenViduApp extends Component {
                 }
               }
             >
-              {this.state.session === undefined ? <div id="join">{this.joinSession()}</div> : null}
+              {this.state.session === undefined ? (
+                <div id="join">{this.joinSession()}</div>
+              ) : null}
               {/* <Grid container sx={{ border: 1 }}> */}
               {this.state.session !== undefined ? (
                 <div
@@ -580,27 +612,37 @@ class OpenViduApp extends Component {
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
-                    alignContent: "stretch",
-                    placeItems: "center",
+                    // alignContent: "stretch",
+                    // placeItems: "center",
                     backgroundColor: "pink",
+                    // flexWrap: "wrap",
                   }}
                 >
                   {this.state.publisher !== undefined ? (
                     <div
                       className="stream-container"
-                      onClick={() => this.handleMainVideoStream(this.state.publisher)}
-                      style={{ width: "100%" }}
+                      onClick={() =>
+                        this.handleMainVideoStream(this.state.publisher)
+                      }
+                      style={{ width: "100%", height: "100%" }}
                     >
-                      <UserVideoComponent streamManager={this.state.publisher} />
+                      <UserVideoComponent
+                        streamManager={this.state.publisher}
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   ) : null}
                   {this.state.subscribers.map((sub, i) => (
                     <div
                       key={i}
                       className="stream-container"
+                      style={{ width: "100%", height: "100%" }}
                       onClick={() => this.handleMainVideoStream(sub)}
                     >
-                      <UserVideoComponent streamManager={sub} />
+                      <UserVideoComponent
+                        streamManager={sub}
+                        style={{ width: "100%" }}
+                      />
                     </div>
                   ))}
                 </div>
