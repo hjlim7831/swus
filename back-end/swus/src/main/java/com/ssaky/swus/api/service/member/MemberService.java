@@ -75,12 +75,12 @@ public class MemberService {
         System.out.println(req.getOldPassword());
         Optional<Member> memberO = memberRepository.findById(memberId);
         // 1. memberId에 해당하는 회원이 없을 경우
-        if (memberO.isEmpty()){
+        if (memberO.isEmpty()) {
             throw new InvalidValueException("Invalid memberId. Check Token");
         }
         
         // 2. 닉네임이 입력되어 있지 않을 경우
-        if (memberO.get().getNickname().equals("") || memberO.get().getNickname() == null){
+        if (req.getNickname().equals("") || req.getNickname() == null) {
             throw new InvalidValueException("닉네임을 입력해주세요.");
         }
 
