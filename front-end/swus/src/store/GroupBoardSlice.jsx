@@ -1,103 +1,79 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../Utils/index";
-
-const BASE_URL = "http://i8a302.p.ssafy.io:8081"
+import { createSlice } from "@reduxjs/toolkit";
 
 
-const getStudyRoom = createAsyncThunk(
-	"checkedSlice/getStudyRoom",
-	async () => {
-		try {
-			console.log("res:");
-			const res =  await fetch(`${BASE_URL}/studyrooms`);
-			const data = await res.json();
-			console.log("res:" + res);
-			return data
-		}	catch (err) {
-			console.log(err);
-		}
-	}
-)
-
-const createStudyRoom = createAsyncThunk(
-	"checkedSlice/createStudyRoom",
-	async (data) => {
-		try {
-			const res = await axios.post(`${BASE_URL}/studyrooms`, data);
-			return res;
-		} catch (err) {
-			console.log(err);
-		}
-	}
-)
-
-// const getGroupBoard = createAsyncThunk(
-// 	"groupBoardSlice/getGroupBoard",
-// 	axios(config)
-// 		.then((response) => {
-// 			console.log(response.data)
-// 		})
-// )
 
 const groupBoardSlice = createSlice({
 	name: "groupBoard",
 	initialState: { 
-		days: [false, false, false, false, false, false, false], 
-		day: "", 
-		category: "", 
-		data: "", 
-		title: "", 
-		content: "", 
-		recruitmentNumber: 0,
-		beginAt: "",
-		endAt: "",
-		startTime: "",
-		finishTime: "",
-		writedAt: "",
+		boardId: 0,
+		info: {
+			day: "",
+			category: "",
+			title: "",
+			content: "",
+			board_number: 0,
+			email: "",
+			nickname: "",
+			views: 0,
+			write_at: "",
+			begin_at: "",
+			end_at: "",
+			start_time: "",
+			finish_time: "",
+			team_number: "",
+			days: [false, false, false, false, false, false, false],
+		},
+		todoLists: ""
 	},
 	reducers: {
-		writeArticle: (state, action) => {
-			const time = new Date().toISOString().slice(0, 10)
-			state.writedAt = time
-			state.category = action.payload.category;
-			if (state.category === "study") {
-				state.category = "스터디";
-			}	else if (state.category === "mate")	{
-				state.category = "메이트";
-			}
-			state.title = action.payload.title;
-			state.content = action.payload.content;
-			state.recruitmentNumber = action.payload.recruitmentNumber;
-			state.beginAt = action.payload.beginAt;
-			state.endAt = action.payload.endAt;
-			state.startTime = action.payload.startTime;
-			state.finishTime = action.payload.finishTime;
-			state.days = action.payload.days;
-			state.day = "";
-			for (let i = 0; i < state.days.length; i++)	{
-				if (state.days[i] === true) {
-          state.day = state.day + "1";
-        } else if (state.days[i] === false) {
-          state.day = state.day + "0";
-        }
-			}
+		getArticleDetails: (state, action) => {
+			state.info.category = action.payload.category;
+			state.info.title = action.payload.title;
+			state.info.content = action.payload.content;
+			state.info.board_number = action.payload.board_number;
+			state.info.email = action.payload.email;
+			state.info.nickname = action.payload.nickname;
+			state.info.views = action.payload.views;
+			state.info.write_at = action.payload.write_at;
+			state.info.begin_at = action.payload.begin_at;
+			state.info.end_at = action.payload.end_at;
+			state.info.start_time = action.payload.start_time.slice(0, 5);
+			state.info.finish_time = action.payload.finish_time.slice(0, 5);
+			state.info.team_number = action.payload.team_number;
+
+			let date = "";
+			for (let i = 0; i < 7; i++) {
+				if (action.payload.day[i] === "1")	{
+					if (i === 0)	{
+						date = date + "월"
+					}	else if (i === 1)	{
+						date = date + "화"
+					}	else if (i === 2)	{
+						date = date + "수"
+					}	else if (i === 3)	{
+						date = date + "목"
+					}	else if (i === 4) {
+						date = date + "금"
+					}	else if (i === 5) {
+						date = date + "토"
+					}  else if (i === 6) {
+						date = date + "일"
+					}
+					state.info.days[i] = true
+				}
+			};
+
+			state.info.day = date;
 		},
+		saveBoardId: (state, action) => {
+			state.boardId = action.payload;
+		},
+		saveTodoLists: (state, action) => {
+			state.todoLists = action.payload;
+		}
 	},
 	extraReducers: (builder) => {
-		builder.addCase(getStudyRoom.fulfilled, (state, action) => {
-			// action.payload 에 위에서 선언한 thunk에서 return된 값이 저장
-			console.log("연결 성공적")
-			console.log(action.payload);
-		})
-		builder.addCase(createStudyRoom.fulfilled, (state, action) => {
-			console.log("글 작성!")
-			console.log(action.payload)
-		})
-		// builder.addCase(getGroupBoard.fulfilled, (state, action) => {
-
-		// })
 	}
 });
 
 export default groupBoardSlice;
-export { getStudyRoom, createStudyRoom };
