@@ -14,7 +14,7 @@ import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 
-import LoungeMain from "./pages/Lounge/main";
+import LoungeMain from "./pages/Lounge/Main";
 
 import UserModal from "./pages/Accounts/LogInModal/UserModal";
 import LogInModal from "./pages/Accounts/LogInModal/LogIn";
@@ -52,7 +52,10 @@ export default function App() {
           <Route exact path="/group" element={<GroupMain />}>
             <Route path="mystudy" element={<MyGroupList />} />
             <Route path="mystudy/group/:groupId" element={<GroupDetail />} />
-            <Route path="mystudy/group/:groupId/update" element={<UpdateGroupDetail />} />
+            <Route
+              path="mystudy/group/:groupId/update"
+              element={<UpdateGroupDetail />}
+            />
             <Route path="board" element={<GroupPage />} />
             <Route path="board/:boardId" element={<ArticleDetail />} />
             <Route path="board/:boardId/update" element={<UpdateArticle />} />
@@ -60,7 +63,7 @@ export default function App() {
           </Route>
           {/* 휴게실 */}
           <Route exact path="/lounge" element={<LoungeMain />} />
-          
+
           {/* 회원 정보 관련 주소 */}
           {/* <Route exact path="/account" element={<UserModal />}> */}
           <Route exact path="/account" element={<Account />}>
