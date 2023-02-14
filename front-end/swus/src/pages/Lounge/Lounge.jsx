@@ -43,7 +43,7 @@ export default function Lounge() {
 
   const stretching = [
     {
-      id: "necks",
+      id: "neck",
       name: "목",
       color: "#FFE0E0",
     },
