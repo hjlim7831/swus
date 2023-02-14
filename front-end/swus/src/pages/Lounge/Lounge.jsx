@@ -7,9 +7,17 @@ import { useSelector } from "react-redux";
 export default function Lounge() {
   const loungeurl = useSelector((state) => state.loungeurl);
 
-  const [randomNum, setRandomNum] = useState();
-  const [urlId, setUrlId] = useState();
-  const [url, setUrl] = useState();
+  // const [randomNum, setRandomNum] = useState(0);
+  // const [urlId, setUrlId] = useState();
+  const [url, setUrl] = useState(
+    `https://www.youtube.com/embed/JqJv79l_4GM?autoplay=1&mutes=1`
+  );
+  const necks = `https://www.youtube.com/embed/FMOISIlhLEY?autoplay=1&mutes=1`;
+  const backs = `https://www.youtube.com/embed/mJuwKvxkfX4?autoplay=1&mutes=1`;
+  const waists = `https://www.youtube.com/embed/QhRcs9d2Y9E?autoplay=1&mutes=1`;
+  const legs = `https://www.youtube.com/embed/LZWORB39zQk?autoplay=1&mutes=1`;
+  const shoulders = `https://www.youtube.com/embed/XT1dHyI86eQ?autoplay=1&mutes=1`;
+  const motivations = `https://www.youtube.com/embed/p8300mqnSI0?autoplay=1&mutes=1`;
 
   // const RandomUrl = async () => {
   //   setRandomNum(await Math.floor(Math.random() * 6));
@@ -17,22 +25,33 @@ export default function Lounge() {
   //   setUrl(await `https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`);
   // };
 
-  useEffect(() => {
-    const RandomUrl = async () => {
-      setRandomNum(await Math.floor(Math.random() * 6));
-      setUrlId(await loungeurl.motivation[randomNum]);
-      setUrl(await `https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`);
-      console.log("끝?");
-    };
-    RandomUrl();
-  }, []);
+  // useEffect(() => {
+  //   setRandomNum(Math.floor(Math.random() * 6));
+  //   setUrlId(motivations[randomNum]);
+  //   setUrl(`https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`);
+  // }, []);
 
   // const url = `https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`;
 
-  // const ChooseUrl = (name) => {
-  //   RandomNum();
-  //   setUrlId(loungeurl.neck[randomNum]);
-  // }
+  const ChooseUrl = (name) => {
+    // setRandomNum(Math.floor(Math.random() * 6));
+
+    if (name === "neck") {
+      setUrl(necks);
+    } else if (name === "back") {
+      setUrl(backs);
+    } else if (name === "waist") {
+      setUrl(waists);
+    } else if (name === "leg") {
+      setUrl(legs);
+    } else if (name === "shoulder") {
+      setUrl(shoulders);
+    } else if (name === "motivation") {
+      setUrl(motivations);
+    }
+
+    //   setUrl(`https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`);
+  };
 
   const stretching = [
     {
@@ -143,7 +162,9 @@ export default function Lounge() {
                     display: "flex",
                     justifyContent: "flex-start",
                   }}
-                  // onClick={ChooseUrl(data.id)}
+                  onClick={() => {
+                    ChooseUrl(data.id);
+                  }}
                 >
                   <span>{data.name} 운동하기</span>
                 </Button>
@@ -204,7 +225,9 @@ export default function Lounge() {
                     backgroundColor: "#F4EFE6",
                   },
                 }}
-                // onClick={ChooseUrl("motivation")}
+                onClick={() => {
+                  ChooseUrl("motivation");
+                }}
               >
                 GO!
               </Button>

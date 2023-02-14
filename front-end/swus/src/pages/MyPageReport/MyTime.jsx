@@ -16,7 +16,7 @@ import PieChart from "./PieChart";
 
 import axios from "./../../Utils/index";
 
-function MyTime() {
+function MyTime({ setType }) {
   // 입력 시간
   const [inputHour, setInputHour] = useState();
   // 입력 분
@@ -126,6 +126,9 @@ function MyTime() {
               color="black"
               aria-label="change view"
               sx={{ marginLeft: "50%", marginTop: "10px" }}
+              onClick={() => {
+                setType("todo");
+              }}
             >
               <AutorenewIcon />
             </IconButton>

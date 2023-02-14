@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const questions = createSlice({
-  name: "questions",
+const loungeurl = createSlice({
+  name: "loungeurl",
   initialState: {
     neck: [
       "FMOISIlhLEY",
@@ -55,4 +55,4 @@ const questions = createSlice({
   },
 });
 
-export default questions;
+export default loungeurl;

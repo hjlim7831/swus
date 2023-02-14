@@ -3,7 +3,12 @@ import { Box } from "@mui/system";
 import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Grid } from "@mui/material";
-import PaletteIcon from '@mui/icons-material/Palette';
+import PaletteIcon from "@mui/icons-material/Palette";
+import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import WifiProtectedSetupIcon from "@mui/icons-material/WifiProtectedSetup";
+import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 
 import axios from "./../../Utils/index";
 
@@ -12,6 +17,8 @@ function TodoJandi() {
   const checkColor = localStorage.getItem("jandi")
     ? localStorage.getItem("jandi")
     : "github";
+
+  const nickname = localStorage.getItem("nickname");
 
   const [values, setValues] = useState([]);
   const [startDate, setStartDate] = useState();
@@ -90,15 +97,42 @@ function TodoJandi() {
         }}
       >
         <Grid container>
-          <Grid item xs={12} sx={{ display:"flex", justifyContent: "space-between" }}>
-            <h3 style={{ marginLeft: "40px" }}>000일의 Todo 달성 기록</h3>
+          <Grid
+            item
+            xs={12}
+            sx={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <h3 style={{ marginLeft: "40px" }}>{nickname}의 공부시간 기록</h3>
             <div>
-              <PaletteIcon name="git" sx={{ color: "#1e6823", mt: '17px', marginLeft: "10px", cursor: "pointer" }} onClick={() => { colorChange("git") }} />
-              <PaletteIcon name="git" sx={{ color: "#2a117d", mt: '17px', marginLeft: "10px", cursor: "pointer" }} onClick={() => { colorChange("github") }} />
+              <ViewTimelineIcon
+                name="git"
+                sx={{
+                  color: "#1e6823",
+                  mt: "17px",
+                  marginLeft: "10px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  colorChange("git");
+                }}
+              />
+              <WifiProtectedSetupIcon
+                name="github"
+                sx={{
+                  color: "#2a117d",
+                  mt: "17px",
+                  marginLeft: "10px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  colorChange("github");
+                }}
+              />
             </div>
-            
           </Grid>
-          <StyledContainer style={{ width: 1200, marginLeft: "8%", fontSize: "10px" }}>
+          <StyledContainer
+            style={{ width: 1400, marginLeft: "3.5rem", fontSize: "8px" }}
+          >
             <CalendarHeatmap
               endDate={endDate}
               startDate={startDate}
