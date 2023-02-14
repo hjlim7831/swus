@@ -22,7 +22,7 @@ const loungeurl = createSlice({
     waist: [
       "QhRcs9d2Y9E",
       "2YFY91RB05o",
-      "JzaMksAeew",
+      "unuUpEh6WQE",
       "P3qqOclVFQ8",
       "EN3wkYAQNss",
       "iyTd09JlB0k",
