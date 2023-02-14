@@ -113,7 +113,7 @@ function ArticleDetail() {
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 4}}>
 						<Button 
 							variant="contained" 
-							sx={{ height: "40px" }} 
+							sx={{ height: "40px", backgroundColor: "#9EC2F8", color: "black", fontWeight: "bold", fontSize: "15px" }} 
 							onClick={() => {						
 								navigate("/group/board");
 								}}>목록 보기</Button>

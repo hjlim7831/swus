@@ -16,8 +16,9 @@ video {
   display: inline-block;
   background-color: #f4efe6;
   /* background-color: white; */
-  width: 31%;
-  height: 30hv;
+  /* width: 31%; */
+  width: 100%;
+  /* height: 30hv; */
   margin-top: 1%;
   margin-right: 2%;
   border: 10px;

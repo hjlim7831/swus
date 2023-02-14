@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "./../../logo.png";
 
 const drawerWidth = 240;
-// const mainItems = ["Login"];
+const position = window.location.pathname
 const token = sessionStorage.getItem("token");
 const nickname = localStorage.getItem("nickname");
 const navItems = token
@@ -40,6 +40,7 @@ const logout = () => {
   localStorage.removeItem("totalH");
   localStorage.removeItem("inHour");
   localStorage.removeItem("inMin");
+  window.location = `${window.location.origin}`;
 };
 
 function DrawerAppBar(props) {
@@ -56,7 +57,8 @@ function DrawerAppBar(props) {
     // 햄거버 -> side 바
     <Box
       onClick={handleDrawerToggle}
-      sx={{ textAlign: "center", backgroundColor: "#1A1E33", height: "100vh" }}
+      sx={{ textAlign: "center",
+            height: "100vh" }}
     >
       <Typography variant="h6" sx={{ my: 2 }}>
         <img
@@ -133,7 +135,7 @@ function DrawerAppBar(props) {
             {navItems.map((item) => (
               <Button
                 key={item.name}
-                sx={{ color: "#fff" }}
+                sx={{ color: "#fff", fontSize: "22px", marginInline: "15px", fontFamily: "italic", fontWeight: "bold" }}
                 onClick={() => {
                   if (item.name === "Logout") {
                     logout();
