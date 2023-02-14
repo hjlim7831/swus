@@ -373,7 +373,7 @@ class OpenViduApp extends Component {
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
-                  <Stack direction="row">
+                  <Stack direction="row" sx={{ display: "flex", justifyContent: "flex-end"}}>
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
                     <IconButton aria-label="mute" color="primary">
                       <MicNoneOutlinedIcon />
@@ -427,15 +427,15 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                <h1 style={{ color: "white", paddingTop: "5px" }}>
                   {this.state.teamName}
                 </h1>
-                <div style={{ height: 100, paddingTop: "20px" }}>
+                <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
-                    <Box sx={{ height: "100%", mt: "5px" }}>
+                    <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start" }}>
                       <Box
                         sx={{
                           display: "inline-block",
@@ -593,7 +593,7 @@ class OpenViduApp extends Component {
                       fontSize: "20px",
                     }}
                   >
-                    휴게실 바로가기
+                    스터디 종료하기
                   </Button>
                 </div>
               </Grid>

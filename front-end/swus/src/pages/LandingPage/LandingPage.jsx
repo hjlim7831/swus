@@ -9,7 +9,7 @@ import ForestIcon from '@mui/icons-material/Forest';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router';
 import studyroom from "../../image/studyroom.gif";
-import groups from "../../image/groups.png";
+import groups from "../../image/g.png";
 import lounge from "../../image/lounge.gif";
 import report from "../../image/report.gif";
 
@@ -34,7 +34,7 @@ function Example(props) {
 			description: "친구와 함께 공부해요",
 			img: groups,
 			icon: GroupIcon,
-			color: "black",
+			color: "white",
 			url: "/group/mystudy",
 			text: "공부하러가기"
 		},
@@ -44,6 +44,7 @@ function Example(props) {
 			description: "얼마나 공부했을까요?",
 			img: report,
 			icon:BarChartIcon,
+			color: "white",
 			url: "/mypage/profile",
 			text: "내 기록 보기"
 		},
@@ -86,6 +87,9 @@ function Item(props) {
 				justifyContent: "center",
 				display: "flex",
 				flexDirection: "column",
+				opacity: "50%",
+				position: "absolute",
+				width: "100vw",
 			},
 			
 	}
@@ -102,42 +106,43 @@ function Item(props) {
 		<>
 			<div style={{ background: "#1A1E33", height: "100vh"}}>
 				<Card style={ styles.categoryCard }>
-					<Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-						{props.item.name === "그룹 스터디" 
-							?	<div style={{ position: "absolute",
-							width: "40%",
-							height: "40%",
-							opacity: "45%",
-							borderRadius: "20px",
-							backgroundColor: "white"}}></div>
-							: null }
-						<div style={{ display: "flex", flexDirection: "column", justifyContent: "center", position: "relative" }}>
-							<Typography align="center" mt={10} variant="h4" style={{color: `${props.item.color}`, fontSize: "80px"}}>
-								{props.item.name}
-							</Typography>
-							<Typography align="center" mt={3} variant="body2" style={{color: `${props.item.color}`, fontSize: "35px"}}>
-								{props.item.description}
-							</Typography>
-							<div style={{ marginTop: 50 }}>
-							<Button
-							variant="fulfilled"
-							style={{ color:"black", 
-												background: "#DEDCEE",
-												// height: "100px",
-												// width: "180px",
-												fontSize: "30px",
-												borderRadius: "15px",
-												fontWeight: "bold",
-												paddingInline: "20px",
-												paddingBlock: "10px" }}
-							onClick={() => {getStart(props.item.url)}}
-							size="large">
-									{props.item.text}
-							</Button>
-							</div>
-						</div>
-					</Box>
 				</Card>
+				<Box sx={{ display: "flex", justifyContent: "space-evenly", position: "relative" }}>
+					{/* {props.item.name === "그룹 스터디" 
+						?	<div style={{ position: "absolute",
+						width: "40%",
+						height: "40%",
+						opacity: "45%",
+						borderRadius: "20px",
+						backgroundColor: "white"}}></div>
+						: null } */}
+					<div style={{ position: "absolute", width: "40%", height: "400px", opacity: "20%", backgroundColor: "gray", borderRadius: "20px", top: 60 }}></div>
+					<div style={{ display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", alignItems: "center" }}>
+						<Typography align="center" mt={10} variant="h4" style={{color: `${props.item.color}`, fontSize: "80px"}}>
+							{props.item.name}
+						</Typography>
+						<Typography align="center" mt={3} variant="body2" style={{color: `${props.item.color}`, fontSize: "35px"}}>
+							{props.item.description}
+						</Typography>
+						<div style={{ marginTop: 50 }}>
+						<Button
+						variant="fulfilled"
+						style={{ color:"black", 
+											background: "#DEDCEE",
+											// height: "100px",
+											// width: "180px",
+											fontSize: "30px",
+											borderRadius: "15px",
+											fontWeight: "bold",
+											paddingInline: "20px",
+											paddingBlock: "10px" }}
+						onClick={() => {getStart(props.item.url)}}
+						size="large">
+								{props.item.text}
+						</Button>
+						</div>
+					</div>
+				</Box>
 			</div>
 		</>
 	)

@@ -83,7 +83,7 @@ export default function Lounge() {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
         <Grid
           item
           xs={8}
@@ -94,6 +94,9 @@ export default function Lounge() {
             boxShadow: "2px 2px 7px 1px grey",
             borderRadius: 2,
             mt: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
           }}
         >
           <Typography
@@ -108,15 +111,15 @@ export default function Lounge() {
           </Typography>
           {/* width="560" height="315"  */}
           <iframe
-            width="850"
-            height="500"
+            width="90%"
+            height="70%"
             src={url}
             title="YouTube video player"
             allowFullScreen
-            style={{ marginLeft: "40px" }}
+            // style={{ marginInline: "1rem" }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={2}>
           <Box
             sx={{
               display: "flex",

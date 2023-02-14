@@ -32,7 +32,7 @@ export default function MiniDrawer() {
 
   return (
 		<Box
-			sx={{ width: '17rem', display: "flex", backgroundColor: "#1A1E33", height: "100vh" }}
+			sx={{ width: '14rem', display: "flex", backgroundColor: "#1A1E33", height: "100vh" }}
 		>
 
 			<Box sx={{ mt: "6rem", mx: 4, justifyContent: "center" }}>
@@ -40,7 +40,7 @@ export default function MiniDrawer() {
 					variant="contained"
 					sx={{
 						backgroundColor: "#DEDCEE",
-						width: "210px",
+						width: "100%",
 						height: "50px",
 						color: "#1A1E33",
 						fontSize: "20px",
@@ -53,16 +53,14 @@ export default function MiniDrawer() {
 					LOUNGE
 				</Button>
 
-				<Typography sx={{ mt: "2rem", color: "white", fontSize: "17px" }}>
+				<Typography sx={{ mt: "2rem", color: "white", fontSize: "14px", width: "100%" }}>
 					열람실 이동까지 남은 시간
 				</Typography>
 				
 				{/* 박스 시계 구현 */}
-				<Box>
+				<Box sx={{ display: "flex", justifyContent: "center", mt: 3, width: "100%"}}>
 					<Box
 						sx={{
-							mt: 2,
-							mx: 2,
 							display: "inline-block",
 							width: "2rem",
 							mr: "0.5rem",
@@ -126,7 +124,7 @@ export default function MiniDrawer() {
 				</Box>
 				
 
-				<Typography sx={{ mt: "3rem", color: "white", fontSize: "18px" }}>휴게실 이용 방법</Typography>
+				<Typography sx={{ mt: "2rem", color: "white", fontSize: "18px" }}>휴게실 이용 방법</Typography>
 
 				<Box
 					variant="contained"
@@ -136,6 +134,7 @@ export default function MiniDrawer() {
 						backgroundColor: "#F4EFE6",
 						height: "30rem",
 						borderRadius: "7px",
+						width: "100%"
 					}}
 				>
 					<Typography style={{ wordBreak: "break-all", fontSize: "16px", marginBottom:10 }}>
@@ -153,9 +152,9 @@ export default function MiniDrawer() {
 					<Typography style={{ wordBreak: "break-all", fontSize: "16px", marginBottom:10 }}>
 						5. 동기부여 영상은 다양한 영상이 랜덤으로 제공됩니다.
 					</Typography>
-					<Typography style={{ wordBreak: "break-all", fontSize: "16px", marginBottom:10 }}>
+					{/* <Typography style={{ wordBreak: "break-all", fontSize: "16px", marginBottom:10 }}>
 						6. 실시간 채팅에서는 매너를 지켜주세요.
-					</Typography>
+					</Typography> */}
 					{/* <Typography style={{ wordBreak: "break-all", fontSize: "15px" }}>
 						1. 휴게실은 최대 30분 이용 가능합니다. {<br />}
 						2. 이용시간 30분이 지나면 열람실로 이동합니다. {<br />}
@@ -171,7 +170,7 @@ export default function MiniDrawer() {
 					sx={{
 						mt: "2rem",
 						backgroundColor: "#DEDCEE",
-						width: "210px",
+						width: "100%",
 						height: "50px",
 						color: "#1A1E33",
 						fontSize: "20px",
