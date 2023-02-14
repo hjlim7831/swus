@@ -101,7 +101,7 @@ function Report (props) {
 				return (
 					<>
 						<Grid container sx={{ display: "flex", alignItems: "center", marginBlock: "20px" }} key={uuidv4()}>
-							<Grid item xs={3}>
+							<Grid item xs={3} sx={{ marginBottom: 5}}>
 								<div style={{ fontWeight: "bold", 
 															margineInline: 5, 
 															padding: 5, 
@@ -109,17 +109,19 @@ function Report (props) {
 															alignItems: "center", 
 															height: "40px", 
 															justifyContent: "center", 
-															display: "flex"}}>
-									<span style={{ verticalAlign: "middle", display: "inline-block"}}>{topic.round}주차</span>
+															display: "flex",
+															flexDirection: "column" }}>
+									<span style={{ verticalAlign: "middle", display: "inline-block", marginBlock: 5 }}>{topic.round}주차</span>
+									<span style={{ marginBlock: 5 }}>2023-02-24</span>
 								</div>
 							</Grid>
-							<Grid item xs={8}>
+							<Grid item xs={8} sx={{ marginBottom: 5}}>
 								<div style={{  padding: 5, marginLeft: 3, backgroundColor: "#F4EFE6", height: "35px", borderRadius: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
 									<span 
 										style={{ verticalAlign: "middle", display: "inline-block", "&:hover": { cursor: "pointer" } }}>{topic.content}</span>
 								</div>
 							</Grid>
-							<Grid item xs={1}>
+							<Grid item xs={1} sx={{ marginBottom: 5}}>
 								<Icon 
 									sx={{ "&:hover": { cursor: "pointer" }, marginLeft: 2, marginTop: 1, color: "#7468CF" }}
 									onClick={() => toggleFeature(index)}>
