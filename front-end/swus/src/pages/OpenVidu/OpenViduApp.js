@@ -31,11 +31,8 @@ import endBreak from "../../components/modals/EndBreak";
 import { v4 as uuidv4 } from "uuid";
 //HOC 사용용
 
+const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
-
-const OPENVIDU_SERVER_URL = "https://i8a302.p.ssafy.io:8443/";
-const OPENVIDU_SERVER_SECRET = "SWUS";
 
 class OpenViduApp extends Component {
   constructor(props) {
@@ -686,7 +683,7 @@ class OpenViduApp extends Component {
 
   async createSession(sessionId) {
     const response = await axios.post(
-      OPENVIDU_SERVER_URL + "api/sessions",
+      APPLICATION_SERVER_URL + "api/sessions",
       { customSessionId: sessionId },
       {
         headers: { "Content-Type": "application/json" },
@@ -697,7 +694,7 @@ class OpenViduApp extends Component {
 
   async createToken(sessionId) {
     const response = await axios.post(
-      OPENVIDU_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
       {},
       {
         headers: { "Content-Type": "application/json" },
