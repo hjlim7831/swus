@@ -23,8 +23,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import Report from "../../components/modals/Report";
 
-
-
 function MyGroupList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -45,7 +43,7 @@ function MyGroupList() {
   const openModal = (teamId) => {
     const config = {
       url: `/my-reports/${teamId}/member-todos`,
-      method: "GET"
+      method: "GET",
     };
 
     const config2 = {
@@ -55,22 +53,20 @@ function MyGroupList() {
 
     axios(config)
       .then((response) => {
-        setReportData(response.data)
+        setReportData(response.data);
 
-        axios(config2)
-          .then((response) => {
-            setTeamDetails(response.data)
-          })
+        axios(config2).then((response) => {
+          setTeamDetails(response.data);
+        });
       })
       .then((response) => {
         setModalOpen(true);
-      })
+      });
   };
 
   const closeModal = () => {
     setModalOpen(false);
   };
-
 
   useEffect(() => {
     const config = {
@@ -99,7 +95,6 @@ function MyGroupList() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
 
   function goGroupDetail(teamId) {
     const config = {
@@ -152,33 +147,35 @@ function MyGroupList() {
           teamId: response.data.teamId,
           category: teamCategory,
           teamName: teamName,
+          content: response.data.content,
         },
       });
     });
   };
 
-
   function getMembers() {
     if (Array.isArray(teamDetails.member_list) && teamDetails.member_list.length > 0) {
       return teamDetails.member_list.map((member) => {
         return (
-          <div 
+          <div
             key={uuidv4()}
-            style={{ borderRadius: "20px", 
-                      border: "1px solid gray", 
-                      padding: 5, 
-                      marginInline: 10,
-                      paddingInline: 10,
-                      fontWeight: "bold"
-                   }}>{member}
+            style={{
+              borderRadius: "20px",
+              border: "1px solid gray",
+              padding: 5,
+              marginInline: 10,
+              paddingInline: 10,
+              fontWeight: "bold",
+            }}
+          >
+            {member}
           </div>
-        )
+        );
       });
     } else {
-      return null
+      return null;
     }
   }
-  
 
   function getIngGroups() {
     return ingGroups.slice(page * 8, (page + 1) * 8).map((group) => {
@@ -186,16 +183,19 @@ function MyGroupList() {
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
           <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
-            {group.category === "S"
-             ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
-             : <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
+            {group.category === "S" ? (
+              <span style={{ color: "red" }}>[스터디]</span>
+            ) : (
+              <span style={{ color: "blue" }}>[메이트]</span>
+            )}
           </TableCell>
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
-
-            onClick={() => {navigate(`/group/mystudy/group/${group.team_id}`)}}>
-              <span style={{ cursor: "pointer" }}>{group.team_name}</span>
-
+            onClick={() => {
+              navigate(`group/${group.team_id}`);
+            }}
+          >
+            <span style={{ cursor: "pointer" }}>{group.team_name}</span>
           </TableCell>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
             {group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}
@@ -225,50 +225,76 @@ function MyGroupList() {
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
           <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
-            {group.category === "S"
-              ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
-              : <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
+            {group.category === "S" ? (
+              <span style={{ color: "red" }}>[스터디]</span>
+            ) : (
+              <span style={{ color: "blue" }}>[메이트]</span>
+            )}
           </TableCell>
-          <TableCell 
+          <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
-            onClick={() => {navigate(`/group/mystudy/group/${group.team_id}`)}}>
-              <span style={{ cursor: "pointer" }}>{group.team_name}</span>
+            onClick={() => {
+              navigate(`group/${group.team_id}`);
+            }}
+          >
+            <span style={{ cursor: "pointer" }}>{group.team_name}</span>
           </TableCell>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
             {group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}
           </TableCell>
           <TableCell style={{ textAlign: "center" }}>
-            <Button 
-              variant="contained" 
+            <Button
+              variant="contained"
               style={{ width: "130px" }}
-              onClick={() => openModal(group.team_id)}>
+              onClick={() => openModal(group.team_id)}
+            >
               리포트 보기
             </Button>
             <div>
-              <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
+              <Report
+                open={modalOpen}
+                close={closeModal}
+                header="우리 팀의 REPORT"
+                payload={reportData}
+              >
                 {
                   <>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                      <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
-                      {(teamDetails.category === "S")
-                        ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 5, paddingInline: 10 }}>스터디</span> 
-                        : <span style={{ borderRadius: 8, backgroundColor: "#67A4FF", paddingBlock: 5, paddingInline: 10, color: "#F4EFE6" }}>메이트</span>}
+                      <p
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "25px",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        {teamDetails.category === "S" ? (
+                          <span style={{ color: "red" }}>[스터디]</span>
+                        ) : (
+                          <span style={{ color: "blue" }}>[메이트]</span>
+                        )}
                         <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
                       </p>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
-                      <div style={{ borderRadius: "20px", 
-                                    border: "1px solid grey", 
-                                    backgroundColor: "#E2B9B3", 
-                                    padding: 5, 
-                                    marginInline: 10, 
-                                    paddingInline: 10, 
-                                    fontWeight: "bold"
-                                  }}>{teamDetails.leader}</div>
+                    <div
+                      style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}
+                    >
+                      <div
+                        style={{
+                          borderRadius: "20px",
+                          border: "1px solid grey",
+                          backgroundColor: "#E2B9B3",
+                          padding: 5,
+                          marginInline: 10,
+                          paddingInline: 10,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {teamDetails.leader}
+                      </div>
                       {getMembers()}
                     </div>
                   </>
-                } 
+                }
               </Report>
             </div>
           </TableCell>
@@ -310,13 +336,11 @@ function MyGroupList() {
               textAlign: "center",
             }}
           >
-            <span>📖 내 스터디룸</span>
+            <span>내 스터디룸</span>
           </p>
         </Grid>
-        <TableContainer style={{ textAlign: "center", 
-                                 borderTop: "1px solid gray",
-                                 border: "1px solid gray", }}>
-          <Table style={{ textAlign: "center", border: "1px solid gray", }}>
+        <TableContainer style={{ textAlign: "center" }}>
+          <Table style={{ textAlign: "center" }}>
             <TableHead>
               <TableRow>
                 <TableCell colSpan={8}>
