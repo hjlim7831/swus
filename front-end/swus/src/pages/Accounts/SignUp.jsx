@@ -7,10 +7,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import { useSelector } from "react-redux";
-
 import { useNavigate } from "react-router-dom";
 
 import axios from "../../Utils/index";
+import Swal from 'sweetalert2';
 
 export default function SignUpSide() {
   const navigate = useNavigate();
@@ -34,18 +34,29 @@ export default function SignUpSide() {
     setInputData({ ...inputData, [name]: value });
   };
 
+  const Alert = ({title, icon}) => {
+    Swal.fire({
+      icon,
+      title,
+    })
+  };
+
+  // 이메일, 비밀번호 유효성 검사 변수
+  const [emailCheck, setEmailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
+  const [passwordCheck, setPasswordCheck] = useState(/^[a-zA-Z0-9]+$/);
+
   // 아이디 중복검사
   const idCheck = (event) => {
     event.preventDefault(); // 재렌더링 막아주는...
     // 이메일 가져오기
     const email = inputData.email;
 
-    // 이메일 유효성검사 -> 정규식
-    const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
-
     if (email) {
       if (!emailCheck.test(email)) {
-        alert("이메일 형식으로 작성해주세요.");
+        const title = "이메일 형식으로 작성해주세요.";
+        const icon = "error";
+        Alert({title, icon});
+
       } else {
         console.log(email);
 
@@ -60,14 +71,22 @@ export default function SignUpSide() {
           .then((response) => {
             console.log(response.data.msg);
             if (response.data.msg === "Y") {
-              alert("존재하는 아이디입니다.");
+              const title = "존재하는 아이디입니다.";
+              const icon = "error";
+              Alert({title, icon});
+              // alert("존재하는 아이디입니다.");
             } else {
-              alert("사용가능한 아이디입니다.");
+              const title = "사용가능한 아이디입니다.";
+              const icon = "success";
+              Alert({title, icon});
+              // alert("사용가능한 아이디입니다.");
             }
           });
       }
     } else {
-      alert("이메일을 작성해주세요.");
+      const title = "이메일을 작성해주세요.";
+      const icon = "error";
+      Alert({title, icon});
     }
   };
 
@@ -83,10 +102,7 @@ export default function SignUpSide() {
     };
 
     const passwordConfirm = inputData.passwordConfirm;
-
-    // const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
-    const passwordCheck = /[A-Za-z]+[0-9]/;
-
+    let icon = "error";
     // 유효성검사
     if (
       // payload.email &&
@@ -96,15 +112,23 @@ export default function SignUpSide() {
       payload.answer
     ) {
       if (payload.password.length < 8) {
-        alert("비밀번호는 8자 이상이여야 합니다.");
+        const title = "비밀번호는 8자 이상이여야 합니다."
+        Alert({title, icon})
+        // alert("비밀번호는 8자 이상이여야 합니다.");
       } else if (!passwordCheck.test(payload.password)) {
-        alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
+        const title = "비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다."
+        Alert({title, icon})
+        // alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
       } else if (payload.password != passwordConfirm) {
-        alert("비밀번호와 비밀번호 확인이 서로 다릅니다.");
+        const title = "비밀번호와 비밀번호 확인이 서로 다릅니다."
+        Alert({title, icon})
+        // alert("비밀번호와 비밀번호 확인이 서로 다릅니다.");
       } else if (
         !(2 <= payload.nickname.length && payload.nickname.length <= 10)
       ) {
-        alert("닉네임은 2글자 이상, 10글자 이하만 가능합니다.");
+        const title = "닉네임은 2글자 이상, 10글자 이하만 가능합니다."
+        Alert({title, icon})
+        // alert("닉네임은 2글자 이상, 10글자 이하만 가능합니다.");
       } else {
         console.log({
           payload,
@@ -125,11 +149,15 @@ export default function SignUpSide() {
           })
           .catch((error) => {
             console.log(error.message);
-            alert("존재하는 회원입니다.");
+            const title = "존재하는 회원입니다.";
+            Alert({title, icon});
+            // alert("존재하는 회원입니다.");
           });
       }
     } else {
-      alert("정보를 다시 입력해주세요.");
+      const title = "정보를 다시 입력해주세요.";
+      Alert({title, icon});
+      // alert("정보를 다시 입력해주세요.");
     }
   };
 
@@ -165,7 +193,12 @@ export default function SignUpSide() {
         아이디 (이메일)
         <Button
           type="submit"
-          sx={{ bgcolor: "#E2B9B3", color: "#5F3A42" }}
+          sx={{ bgcolor: "#E2B9B3", color: "#5F3A42",
+            '&:hover': {
+              backgroundColor: '#E2B9B3'
+            },
+            marginLeft: 30
+          }}
           onClick={idCheck}
         >
           중복검사
@@ -180,6 +213,7 @@ export default function SignUpSide() {
           autoComplete="email"
           autoFocus
           variant="standard"
+          error={inputData.email && !emailCheck.test(inputData.email)}
           onChange={inputSubmit}
         />
         닉네임
@@ -192,6 +226,7 @@ export default function SignUpSide() {
           autoComplete="nickname"
           autoFocus
           variant="standard"
+          error={inputData.nickname && inputData.nickname.length > 10 | inputData.nickname.length < 2}
           helperText="닉네임은 2 ~ 10자여야 합니다."
           onChange={inputSubmit}
         />
@@ -207,6 +242,9 @@ export default function SignUpSide() {
           autoComplete="current-password"
           variant="standard"
           onChange={inputSubmit}
+          error={inputData.password && 
+            (inputData.password.length < 8 | 
+              !(passwordCheck.test(inputData.password)))}
           helperText="비밀번호는 문자, 숫자 포함한 8자 이상이어야 합니다."
         />
         비밀번호 확인
@@ -221,6 +259,9 @@ export default function SignUpSide() {
           onChange={inputSubmit}
           autoComplete="current-password"
           variant="standard"
+          error={inputData.password && 
+            (inputData.password.length < 8 | 
+              !(passwordCheck.test(inputData.password)))}
         />
         질문
         <TextField
@@ -256,7 +297,13 @@ export default function SignUpSide() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2, backgroundColor: "#E2B9B3", color: "#5F3A42" }}
+          sx={{ mt: 3, mb: 2, 
+            backgroundColor: "#E2B9B3", 
+            color: "#5F3A42",
+            '&:hover': {
+              backgroundColor: '#E2B9B3'
+            } 
+          }}
         >
           Sign Up
         </Button>
