@@ -1,36 +1,12 @@
 import { React, useState } from "react";
 import axios from "../../../Utils/index";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+
+import Checkbox from "@mui/material/Checkbox";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 
 function MyTodoList({ todoData, setTodoData, value, setValue }) {
-  // 수정 로직
-  // const [isEditing, setIsEditing] = useState(false);
-
-  // const editTile = (e) => {
-  //   setValue(e.target.value);
-  // }
-
-  // const todoUpdate = (num) => {
-  //   const i = todoData.findIndex((e) => e.num === num)
-  //   const newTodoData = [...todoData];
-
-  //   newTodoData[i].content = value;
-
-  //   setTodoData(newTodoData)
-  //   setIsEditing(false);
-  // }
-
-  // const btnStyle = {
-  //   color: "#fff",
-  //   border: "none",
-  //   padding: "5px, 9px",
-  //   borderRadius: "50%" /*원래 css는 border-Radius지만 여기는 JSX*/,
-  //   cursor: "pointer",
-  //   float: "right",
-  // };
-
   const getStyle = (todo_done) => {
     return {
       padding: "10px",
@@ -95,40 +71,20 @@ function MyTodoList({ todoData, setTodoData, value, setValue }) {
         todoData.map((data, i) => (
           <div style={getStyle(data.todo_done)} key={i}>
             {/*함수이므로 ()필수, key속성에는 객체의 유니크 값 넣어줘야*/}
-            <input
-              type="checkbox"
-              // defaultChecked={false}
-              checked={data.todo_done}
-              onChange={() => hadleCompleteChange(data.num)}
-            />
-            {/*어떤 아이디 값 클릭됐는지*/}
+            <Stack direction="row" spacing={0} alignItems="center">
+              <Checkbox
+                size="small"
+                checked={data.todo_done}
+                onChange={() => hadleCompleteChange(data.num)}
+              />
+              <Box sx={{ width: 1 }}>{data.content}</Box>
 
-            {/* {
-              (isEditing) ? (
-                <>
-                  <input type="text" value={ data.content } onChange={ editTile } />
-                  <CheckCircleOutlinedIcon sx={{ fontSize: 18, cursor: "pointer", float: "right"}} onClick={ todoUpdate(data.num) }/>
-                </>
-                
-              ) : (
-                <>
-                  { data.content }
-                  <ModeEditOutlineOutlinedIcon sx={{ fontSize: 18, cursor: "pointer", float: "right"}} onClick={() => setIsEditing(true)} />
-                </>
-              )
-            } */}
-            {data.content}
-
-            <RemoveCircleOutlineIcon
-              color="error"
-              sx={{ fontSize: 18, cursor: "pointer", float: "right" }}
-              onClick={() => handleClick(data.num)}
-            />
-
-            {/* 수정 아이콘은 생성했지만, 로직 구현 아직... 필요할까? */}
-            <ModeEditOutlineOutlinedIcon
-              sx={{ fontSize: 18, cursor: "pointer", float: "right" }}
-            />
+              <RemoveCircleOutlineIcon
+                color="error"
+                sx={{ fontSize: 24, cursor: "pointer", flexShrink: 0 }}
+                onClick={() => handleClick(data.num)}
+              />
+            </Stack>
           </div>
         ))}
     </div>
