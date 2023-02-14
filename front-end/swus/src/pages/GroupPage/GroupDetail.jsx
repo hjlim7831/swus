@@ -44,6 +44,7 @@ function GroupDetail() {
 
     axios(config)
       .then((response) => {
+        console.log(response.data);
         setTeamDetails(response.data)
         setStart_time(response.data.start_time.slice(0, 5))
         setFinish_time(response.data.finish_time.slice(0, 5))
@@ -93,6 +94,36 @@ function GroupDetail() {
   };
 
   const filterCategory = /S/;
+
+  function getStudyDays() {
+		if (teamDetails.day) {
+			let checked = [false, false, false, false, false, false, false]
+			for (let i = 0; i < 7; i++) {
+				if (teamDetails.day[i] === "1") {
+					checked[i] = true;
+				}
+			}
+			const days = ["월", "화", "수", "목", "금", "토", "일"]
+			return days.map((date, index) => {
+				const style = {
+					background: checked[index] ? "#9EC2F8" : "white",
+					// color: checked[index] ? "white" : "black",
+					marginInline: 3,
+					borderRadius: 5,
+					padding: "1px",
+					fontWeight: "bold",
+				}
+				return (
+					<>
+						<span 
+							style={style}>{date}</span>
+					</>
+				)
+			});
+		}	else {
+			return null
+		}
+	}
 
   function getWeekTopics() {
     if (Array.isArray(teamDetails.todolist) && teamDetails.todolist.length > 0) {
@@ -243,7 +274,7 @@ function GroupDetail() {
             </Grid>
               <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
             <Grid container sx={{ padding: 2 }}>
-              <Grid item xs={4} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+              {/* <Grid item xs={4} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
                 <div style={{ fontWeight: "bold", marginInline: 5, padding: 5 }}>스터디 일정</div>
                 <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.begin_at} ~ {teamDetails.end_at}</div>
               </Grid>
@@ -262,8 +293,37 @@ function GroupDetail() {
                     {teamDetails.team_info}
                   </Typography>
                 </Grid>
+              </Grid> */}
+              <Grid container sx={{ display: "flex", alignItems: "center"}}>
+                <Grid item xs={2} sx={{ alignContent: "center" }}>
+                  <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 일정</p>
+                </Grid>
+                <Grid item xs={3}>
+                  {(teamDetails.begin_at && teamDetails.end_at) 
+                    ? <p style={{ textAlign: "center", fontSize: "20px" }}>{teamDetails.begin_at} ~ {teamDetails.end_at}</p> 
+                    : <p style={{ textAlign: "center", fontSize: "20px" }}>미정</p>}
+                </Grid>
+                <Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2 }}/>
+                <Grid item xs={2}>
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 시간</p>
+                  </div>
+                </Grid>
+                <Grid item xs={2}>
+                  <p style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+                    <p style={{ textAlign: "center", marginInline: 5 }}>{getStudyDays()} </p>
+                    <p style={{ textAlign: "center", marginInline: 5 }}>{start_time} ~ {finish_time}</p>
+                  </p>
+                </Grid>
+                <Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2 }}/>
+                <Grid item xs={1}>
+                  <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "18px" }}>인원 현황</p>
+                </Grid>
+                <Grid item xs={1}>
+                  <p style={{ textAlign: "center", fontSize: "18px" }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</p>
+                </Grid>
               </Grid>
-              <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 15 }}>
+              <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlock: 30 }}>
                 <div style={{ paddingInline: 20, fontWeight: "bold", fontSize: "20px" }}>
                   회차별 주제
                 </div>

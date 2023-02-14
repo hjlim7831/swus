@@ -1,6 +1,8 @@
 import { OpenVidu } from "openvidu-browser";
-
+import { encode, decode } from "js-base64";
+import { Base64 } from "js-base64";
 import axios from "axios";
+import axiosUtils from "./../../../Utils/index";
 import React, { Component } from "react";
 // import "./App.css";
 import GroupUserVideo from "./GroupUserVideo";
@@ -19,10 +21,11 @@ import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import Typography from "@mui/material/Typography";
 import GroupTodoBlock from "../../GroupPage/Todolist/GroupTodoBlock";
 
-//HOC 사용용
-
-const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
+// const APPLICATION_SERVER_URL = "http://localhost:5000/";
+
+const OPENVIDU_SERVER_URL = "https://i8a302.p.ssafy.io:8443";
+const OPENVIDU_SERVER_SECRET = "SWUS";
 
 class OpenViduApp extends Component {
   constructor(props) {
@@ -39,6 +42,7 @@ class OpenViduApp extends Component {
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
+      audiostate: false,
       subscribers: [], //다른 사람들의 활성 스트림 저장
       d: new Date(), //시계
     };
@@ -52,6 +56,7 @@ class OpenViduApp extends Component {
     this.onbeforeunload = this.onbeforeunload.bind(this);
     // this.muteAudio = this.muteAudio.bind(this);
     // this.unmuteAudio = this.unmuteAudio.bind(this);
+    this.leaveCheck = this.leaveCheck.bind(this);
   }
 
   componentDidMount() {
@@ -114,13 +119,48 @@ class OpenViduApp extends Component {
     }
   }
 
-  // muteAudio() {
-  //   this.publisher.publishAudio(false);
-  // }
+  leaveCheck() {
+    const Token = sessionStorage.getItem("token");
+    console.log("그룹 방 퇴장");
+    console.log(this.state.teamId);
+    console.log(this.state.round);
 
-  // unmuteAudio() {
-  //   this.publisher.publishAudio(true);
-  // }
+    const config = {
+      method: "get",
+      url: `/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
+    };
+
+    axiosUtils(config).then((res) => {
+      console.log(res.data.message);
+    });
+
+    // axios({
+    //   method: "get",
+    //   url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
+    //   headers: { Authorization: `Bearer ${Token}` },
+    // }).then((response) => {
+    //   console.log(response.data.message);
+    // });
+  }
+
+  moveToLounge() {
+    this.leaveCheck();
+    window.location.replace("http://localhost:3000/lounge");
+  }
+
+  muteAudio() {
+    let publisher = this.state.publisher.publishAudio(false);
+    this.setState = {
+      publisher: publisher,
+    };
+  }
+
+  unmuteAudio() {
+    let publisher = this.state.publisher.publishAudio(true);
+    this.setState = {
+      publisher: publisher,
+    };
+  }
 
   joinSession() {
     // --- 1) Get an OpenVidu object ---
@@ -185,7 +225,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x800", // The resolution of your video
+                resolution: "1200x540", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -197,7 +237,9 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter((device) => device.kind === "videoinput");
+              var videoDevices = devices.filter(
+                (device) => device.kind === "videoinput"
+              );
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -237,16 +279,7 @@ class OpenViduApp extends Component {
       mySession.disconnect(); //연결 끊고
     }
 
-    const Token = sessionStorage.getItem("token");
-    console.log("그룹 방 퇴장");
-    console.log(this.state.roomId);
-    axios({
-      method: "get",
-      url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
-      headers: { Authorization: `Bearer ${Token}` },
-    }).then((response) => {
-      console.log(response.data.message);
-    });
+    this.leaveCheck();
 
     // Empty all properties... 초기화
     this.OV = null;
@@ -308,7 +341,7 @@ class OpenViduApp extends Component {
     //   localStorage.setItem("totalM", totalM + (cal % 60));
     // }
 
-    window.location.replace("http://localhost:3000/studyroom");
+    window.location.replace("http://localhost:3000/group/mystudy");
   }
 
   render() {
@@ -369,10 +402,14 @@ class OpenViduApp extends Component {
                       aria-label="record"
                       color="primary"
                       // onClick={() =>
-                      //   this.state.publisher ? this.unmuteAudio : this.muteAudio
+                      //   this.state.publisher.publishAudio ? this.unmuteAudio : this.muteAudio
                       // }
                     >
-                      {this.state.publisher ? <MicNoneOutlinedIcon /> : <MicOffOutlinedIcon />}
+                      {/* {this.state.publisher.publishAudio ? (
+                        <MicNoneOutlinedIcon />
+                      ) : (
+                        <MicOffOutlinedIcon />
+                      )} */}
                       <MicNoneOutlinedIcon />
                     </IconButton>
                     <IconButton color="primary" aria-label="add an alarm">
@@ -390,7 +427,9 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>{this.state.teamName}</h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                  {this.state.teamName}
+                </h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -407,7 +446,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {hoursTen}
                         </Typography>
                       </Box>
@@ -421,7 +463,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {hoursOne}
                         </Typography>
                       </Box>
@@ -446,7 +491,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {minutesTen}
                         </Typography>
                       </Box>
@@ -461,7 +509,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {minutesOne}
                         </Typography>
                       </Box>
@@ -486,7 +537,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {secondsTen}
                         </Typography>
                       </Box>
@@ -500,14 +554,19 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {secondsOne}
                         </Typography>
                       </Box>
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                  To-do list
+                </h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -515,7 +574,10 @@ class OpenViduApp extends Component {
                     padding: 5,
                   }}
                 >
-                  <GroupTodoBlock groupId={this.state.teamId} round={this.state.round} />
+                  <GroupTodoBlock
+                    groupId={this.state.teamId}
+                    round={this.state.round}
+                  />
                 </div>
                 <div>
                   <Button
@@ -546,27 +608,43 @@ class OpenViduApp extends Component {
                   <div id="session">
                     <div
                       id="video-container"
-                      style={
-                        {
-                          /*marginLeft: "5%"*/
-                        }
-                      }
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(31%, auto))",
+                        alignContent: "stretch",
+                        justifyContent: "stretch",
+                        placeItems: "center",
+                        backgroundColor: "pink",
+                        padding: "30px",
+                        // flexWrap: "wrap",
+                      }}
                     >
                       {this.state.publisher !== undefined ? (
                         <div
                           className="stream-container"
-                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                          onClick={() =>
+                            this.handleMainVideoStream(this.state.publisher)
+                          }
+                          style={{ width: "100%", height: "100%" }}
                         >
-                          <GroupUserVideo streamManager={this.state.publisher} />
+                          <GroupUserVideo
+                            streamManager={this.state.publisher}
+                            style={{ width: "100%" }}
+                          />
                         </div>
                       ) : null}
                       {this.state.subscribers.map((sub, i) => (
                         <div
                           key={i}
                           className="stream-container"
+                          style={{ width: "100%", height: "100%" }}
                           onClick={() => this.handleMainVideoStream(sub)}
                         >
-                          <GroupUserVideo streamManager={sub} />
+                          <GroupUserVideo
+                            streamManager={sub}
+                            style={{ width: "100%" }}
+                          />
                         </div>
                       ))}
                     </div>
@@ -602,10 +680,15 @@ class OpenViduApp extends Component {
 
   async createSession(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      OPENVIDU_SERVER_URL + "/api/sessions",
       { customSessionId: sessionId },
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Basic ${Base64.encode(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data; // The sessionId
@@ -613,14 +696,41 @@ class OpenViduApp extends Component {
 
   async createToken(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
       {},
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Basic ${Base64.encode(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data; // The token
   }
+
+  // async createSession(sessionId) {
+  //   const response = await axios.post(
+  //     APPLICATION_SERVER_URL + "api/sessions",
+  //     { customSessionId: sessionId },
+  //     {
+  //       headers: { "Content-Type": "application/json" },
+  //     }
+  //   );
+  //   return response.data; // The sessionId
+  // }
+
+  // async createToken(sessionId) {
+  //   const response = await axios.post(
+  //     APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+  //     {},
+  //     {
+  //       headers: { "Content-Type": "application/json" },
+  //     }
+  //   );
+  //   return response.data; // The token
+  // }
 }
 
 export default OpenViduApp;

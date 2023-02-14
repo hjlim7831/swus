@@ -1,4 +1,6 @@
 import { OpenVidu } from "openvidu-browser";
+import { encode, decode } from "js-base64";
+import { Base64 } from "js-base64";
 
 import axios from "axios";
 import React, { Component } from "react";
@@ -21,18 +23,21 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 
 //쉬는시간 alert
 import startBreak from "../../components/modals/StartBreak";
 import endBreak from "../../components/modals/EndBreak";
-
+import { v4 as uuidv4 } from "uuid";
+import axiosUtils from "./../../Utils/index";
 //HOC 사용용
 
-const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
+// const APPLICATION_SERVER_URL = "http://localhost:5000/";
+
+const OPENVIDU_SERVER_URL = "https://i8a302.p.ssafy.io:8443";
+const OPENVIDU_SERVER_SECRET = "SWUS";
 
 class OpenViduApp extends Component {
   constructor(props) {
@@ -57,6 +62,7 @@ class OpenViduApp extends Component {
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.leaveCheck = this.leaveCheck.bind(this);
   }
 
   componentDidMount() {
@@ -69,10 +75,16 @@ class OpenViduApp extends Component {
     this.timeID = setInterval(() => {
       this.change();
       if (this.state.mySessionId.substr(6, 1) === "Y") {
-        if (this.state.d.getMinutes() === 33 && this.state.d.getSeconds() == 0) {
+        if (
+          this.state.d.getMinutes() === 50 &&
+          this.state.d.getSeconds() == 0
+        ) {
           console.log("if 들어감");
           startBreak();
-        } else if (this.state.d.getMinutes() === 34 && this.state.d.getSeconds() == 0) {
+        } else if (
+          this.state.d.getMinutes() === 0 &&
+          this.state.d.getSeconds() == 0
+        ) {
           console.log("elseif 들어감");
           endBreak();
         } else {
@@ -132,8 +144,128 @@ class OpenViduApp extends Component {
     }
   }
   audioControl() {
-    const publisher = this.state.publisher;
-    publisher.publishAudio(true);
+    let pub;
+    if (this.state.publisher.publishAudio === true) {
+      pub = this.state.publisher.publishAudio(true);
+    } else pub = this.state.publisher.publishAudio(false);
+    this.setState({
+      publisher: pub,
+    });
+  }
+
+  //스터디 종료 처리 및 시간 저장하는 함수
+  leaveCheck() {
+    //방 퇴장 알리는 통신
+
+    const payload = {
+      member_id: 0,
+      room_id: this.state.roomId,
+    };
+
+    const config = {
+      url: "/studyrooms/exit",
+      method: "post",
+      data: payload,
+    };
+    console.log("publicRoom leaveCheck");
+    axiosUtils(config).then((response) => {
+      console.log("퍼블릭룸 나가기 엑시오스 먹힘??");
+      console.log(response);
+    });
+
+    // const Token = sessionStorage.getItem("token");
+    // console.log("방 퇴장");
+    // console.log(this.state.roomId);
+    // axios({
+    //   method: "post",
+    //   url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
+    //   headers: { Authorization: `Bearer ${Token}` },
+    //   data: {
+    //     member_id: 0,
+    //     room_id: this.state.roomId,
+    //   },
+    // }).then((response) => {
+    //   console.log(response.data.message);
+    // });
+
+    //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
+    //기존 입장 시간
+    const inH = parseInt(localStorage.getItem("inHour"));
+    const inM = parseInt(localStorage.getItem("inMin"));
+
+    //현재 시간
+    const nowH = parseInt(this.state.d.getHours());
+    const nowM = parseInt(this.state.d.getMinutes());
+
+    //누적된 총 시간
+    const totalH = parseInt(localStorage.getItem("totalH"));
+    const totalM = parseInt(localStorage.getItem("totalM"));
+
+    if (inH <= nowH) {
+      //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
+      const cal = nowH * 60 + nowM - (inH * 60 + inM);
+      //시간 저장
+
+      const config = {
+        method: "PUT",
+        url: "/my-studies/now-total-time",
+        data: { now_total_time: totalH * 60 + totalM + cal },
+      };
+
+      axiosUtils(config).then((res) => {
+        console.log(res);
+      });
+
+      // axios({
+      //   method: "put",
+      //   url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+
+      //   headers: { Authorization: `Bearer ${Token}` },
+      //   data: {
+      //     now_total_time: totalH * 60 + totalM + cal,
+      //   },
+      // }).then((res) => {
+      //   console.log(res);
+      // });
+
+      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      localStorage.setItem("totalM", totalM + (cal % 60));
+    } else {
+      //앞시간이 더 큰 숫자일 경우 ex 18시~1시
+      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
+      //시간 저장
+
+      const config = {
+        method: "PUT",
+        url: "/my-studies/now-total-time",
+        data: { now_total_time: totalH * 60 + totalM + cal },
+      };
+
+      axiosUtils(config).then((res) => {
+        console.log(res);
+      });
+
+      // axios({
+      //   method: "put",
+      //   url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+
+      //   headers: { Authorization: `Bearer ${Token}` },
+      //   data: {
+      //     now_total_time: totalH * 60 + totalM + cal,
+      //   },
+      // }).then((res) => {
+      //   console.log(res);
+      // });
+
+      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      localStorage.setItem("totalM", totalM + (cal % 60));
+    }
+  }
+
+  //라운지 이동
+  moveToLounge() {
+    this.leaveCheck();
+    window.location.replace("http://localhost:3000/lounge");
   }
 
   joinSession() {
@@ -168,6 +300,7 @@ class OpenViduApp extends Component {
         });
 
         // On every Stream destroyed...
+        //스트림 구독 취소
         mySession.on("streamDestroyed", (event) => {
           // Remove the stream from 'subscribers' array
           this.deleteSubscriber(event.stream.streamManager);
@@ -185,6 +318,7 @@ class OpenViduApp extends Component {
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+          //초기화 된 세션에 참가
           mySession
             .connect(token, { clientData: this.state.myUserName })
             .then(async () => {
@@ -197,7 +331,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x600", // The resolution of your video
+                resolution: "1200x330", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -209,7 +343,9 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter((device) => device.kind === "videoinput");
+              var videoDevices = devices.filter(
+                (device) => device.kind === "videoinput"
+              );
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -249,20 +385,8 @@ class OpenViduApp extends Component {
       mySession.disconnect(); //연결 끊고
     }
 
-    const Token = sessionStorage.getItem("token");
-    console.log("방 퇴장");
-    console.log(this.state.roomId);
-    axios({
-      method: "post",
-      url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
-      headers: { Authorization: `Bearer ${Token}` },
-      data: {
-        member_id: 0,
-        room_id: this.state.roomId,
-      },
-    }).then((response) => {
-      console.log(response.data.message);
-    });
+    //스터디 종료 처리 및 시간 저장하는 함수
+    this.leaveCheck();
 
     // Empty all properties... 초기화
     this.OV = null;
@@ -275,56 +399,6 @@ class OpenViduApp extends Component {
       publisher: undefined,
     });
 
-    //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
-    //기존 입장 시간
-    const inH = parseInt(localStorage.getItem("inHour"));
-    const inM = parseInt(localStorage.getItem("inMin"));
-
-    //현재 시간
-    const nowH = parseInt(this.state.d.getHours());
-    const nowM = parseInt(this.state.d.getMinutes());
-
-    //누적된 총 시간
-    const totalH = parseInt(localStorage.getItem("totalH"));
-    const totalM = parseInt(localStorage.getItem("totalM"));
-
-    if (inH <= nowH) {
-      //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
-      const cal = nowH * 60 + nowM - (inH * 60 + inM);
-      //시간 저장
-      axios({
-        method: "put",
-        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-        headers: { Authorization: `Bearer ${Token}` },
-        data: {
-          now_total_time: totalH * 60 + totalM + cal,
-        },
-      }).then((res) => {
-        console.log(res);
-      });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
-    } else {
-      //앞시간이 더 큰 숫자일 경우 ex 18시~1시
-      const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
-      //시간 저장
-      axios({
-        method: "put",
-        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-        headers: { Authorization: `Bearer ${Token}` },
-        data: {
-          now_total_time: totalH * 60 + totalM + cal,
-        },
-      }).then((res) => {
-        console.log(res);
-      });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
-    }
     window.location.replace("http://localhost:3000/studyroom");
     // window.location.href = "/studyroom";/
   }
@@ -406,7 +480,9 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>공용 열람실{roomId}</h1>
+                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                  공용 열람실{roomId}
+                </h1>
                 <div style={{ height: 100, paddingTop: "20px" }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -423,7 +499,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {hoursTen}
                         </Typography>
                       </Box>
@@ -437,7 +516,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {hoursOne}
                         </Typography>
                       </Box>
@@ -462,7 +544,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {minutesTen}
                         </Typography>
                       </Box>
@@ -477,7 +562,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {minutesOne}
                         </Typography>
                       </Box>
@@ -502,7 +590,10 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {secondsTen}
                         </Typography>
                       </Box>
@@ -516,19 +607,25 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{ textAlign: "center", mt: "5px" }}
+                        >
                           {secondsOne}
                         </Typography>
                       </Box>
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                  To-do list
+                </h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
                     height: "100%",
                     padding: 5,
+                    borderRadius: 4,
                   }}
                 >
                   <MyTodoPublicIn />
@@ -554,43 +651,55 @@ class OpenViduApp extends Component {
               </Grid>
             </Grid>
             <Grid item xs={9.6}>
-              {this.state.session === undefined ? <div id="join">{this.joinSession()}</div> : null}
+              {this.state.session === undefined ? (
+                <div id="join">{this.joinSession()}</div>
+              ) : null}
               {/* <Grid container sx={{ border: 1 }}> */}
               {this.state.session !== undefined ? (
-                <div id="session">
-                  <div
-                    id="video-container"
-                    style={
-                      {
-                        /*marginLeft: "5%"*/
+                <div
+                  id="video-container"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
+                    alignContent: "stretch",
+                    justifyContent: "stretch",
+                    placeItems: "center",
+                    backgroundColor: "pink",
+                    padding: "0.5%",
+                    // flexWrap: "wrap",
+                  }}
+                >
+                  {this.state.publisher !== undefined ? (
+                    <div
+                      className="stream-container"
+                      onClick={() =>
+                        this.handleMainVideoStream(this.state.publisher)
                       }
-                    }
-                  >
-                    {this.state.publisher !== undefined ? (
-                      <div
-                        className="stream-container"
-                        onClick={() => this.handleMainVideoStream(this.state.publisher)}
-                      >
-                        <UserVideoComponent streamManager={this.state.publisher} />
-                      </div>
-                    ) : null}
-                    {this.state.subscribers.map((sub, i) => (
-                      <div
-                        key={i}
-                        className="stream-container"
-                        onClick={() => this.handleMainVideoStream(sub)}
-                      >
-                        <UserVideoComponent streamManager={sub} />
-                      </div>
-                    ))}
-                  </div>
+                      style={{ width: "100%", height: "100%" }}
+                    >
+                      <UserVideoComponent
+                        streamManager={this.state.publisher}
+                        style={{ width: "100%" }}
+                      />
+                    </div>
+                  ) : null}
+                  {this.state.subscribers.map((sub, i) => (
+                    <div
+                      key={i}
+                      className="stream-container"
+                      style={{ width: "100%", height: "100%" }}
+                      onClick={() => this.handleMainVideoStream(sub)}
+                    >
+                      <UserVideoComponent
+                        streamManager={sub}
+                        style={{ width: "100%" }}
+                      />
+                    </div>
+                  ))}
                 </div>
               ) : null}
             </Grid>
           </Grid>
-
-          {this.state.open === "start" ? { startBreak } : null}
-          {this.state.open === "end" ? { endBreak } : null}
         </Box>
       </>
     );
@@ -616,12 +725,19 @@ class OpenViduApp extends Component {
     return await this.createToken(sessionId);
   }
 
+  //  // DomException :Failed to excute 'open' on 'XMLHttpRequest':Invaild URL =>URL 뒤 "api/sessions"앞에 / 추가해서 해결
+  //  //
   async createSession(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      OPENVIDU_SERVER_URL + "/api/sessions",
       { customSessionId: sessionId },
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Basic ${Base64.encode(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data; // The sessionId
@@ -629,14 +745,130 @@ class OpenViduApp extends Component {
 
   async createToken(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
       {},
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Basic ${Base64.encode(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data; // The token
   }
+
+  //잠시 해결됐다가 메인페이지로 나오니까 모든 axios 에러
+  // createSession(sessionId) {
+  //   return new Promise((resolve, reject) => {
+  //     let data = JSON.stringify({ customSessionId: sessionId });
+  //     axios
+  //       .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
+  //         headers: {
+  //           Authorization: `Basic ${Base64.encode(
+  //             `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //           )}`,
+  //           "Content-Type": "application/json",
+  //           "Access-Control-Allow-Origin": "*",
+  //         },
+  //       })
+  //       .then((response) => {
+  //         resolve(response.data.id);
+  //       })
+  //       .catch((response) => {
+  //         let error = { ...response };
+  //         if (error?.response?.status === 409) {
+  //           resolve(sessionId);
+  //         } else if (
+  //           window.confirm(
+  //             `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
+  //               `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+  //           )
+  //         ) {
+  //           window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+  //         }
+  //       });
+  //   });
+  // }
+
+  // createToken(sessionId) {
+  //   return new Promise((resolve, reject) => {
+  //     let data = {};
+  //     axios
+  //       .post(
+  //         `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+  //         data,
+  //         {
+  //           headers: {
+  //             Authorization: `Basic ${Base64.encode(
+  //               `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //             )}`,
+  //             "Content-Type": "application/json",
+  //             "Access-Control-Allow-Origin": "*",
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         resolve(response.data.token);
+  //       })
+  //       .catch((error) => reject(error));
+  //   });
+  // }
+
+  // createSession(sessionId) {
+  //   return new Promise((resolve, reject) => {
+  //     let data = JSON.stringify({ customSessionId: sessionId });
+  //     axios
+  //       .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
+  //         headers: {
+  //           Authorization: `Basic ${Base64.encode(
+  //             `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //           )}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       })
+  //       .then((response) => {
+  //         resolve(response.data.id);
+  //       })
+  //       .catch((response) => {
+  //         let error = { ...response };
+  //         if (error?.response?.status === 409) {
+  //           resolve(sessionId);
+  //         } else if (
+  //           window.confirm(
+  //             `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
+  //               `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+  //           )
+  //         ) {
+  //           window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+  //         }
+  //       });
+  //   });
+  // }
+
+  // createToken(sessionId) {
+  //   return new Promise((resolve, reject) => {
+  //     let data = {};
+  //     axios
+  //       .post(
+  //         `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+  //         data,
+  //         {
+  //           headers: {
+  //             Authorization: `Basic ${Base64.encode(
+  //               `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //             )}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         resolve(response.data.token);
+  //       })
+  //       .catch((error) => reject(error));
+  //   });
+  // }
 }
 
 export default OpenViduApp;
