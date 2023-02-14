@@ -9,6 +9,7 @@ function NSRoom() {
   const roomName = location.state.roomName;
   const roomId = location.state.roomId;
   console.log("roomId");
+  console.log("roomName", roomName, "roomId", roomId);
   //여기까지 잘 온다.
   return (
     <>
