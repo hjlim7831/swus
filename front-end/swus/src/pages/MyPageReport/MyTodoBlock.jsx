@@ -11,7 +11,7 @@ import axios from "./../../Utils/index";
 // import { useSelector, useDispatch } from "react-redux";
 // import { addTodoList } from "./../../store/TodoList";
 
-function MyTodoBlock() {
+function MyTodoBlock({ setType }) {
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
 
@@ -78,14 +78,17 @@ function MyTodoBlock() {
         }}
       >
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <h3 style={{ marginLeft: "40px" }}>To-Do List</h3>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={7}>
             <IconButton
               color="black"
               aria-label="change view"
-              sx={{ paddingTop: "20px" }}
+              sx={{ paddingTop: "20px", marginLeft: "10rem" }}
+              onClick={() => {
+                setType("Time");
+              }}
             >
               <AutorenewIcon />
             </IconButton>

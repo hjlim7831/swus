@@ -207,12 +207,16 @@ function StudyRoomMain() {
             <Grid item xs={12}>
               <Typography
                 variant="h1"
-                sx={{ fontSize: 30, color: "white", marginTop: 2 }}
+                sx={{
+                  fontSize: 30,
+                  color: "white",
+                  my: "1.5rem",
+                }}
               >
                 STUDY ROOM
               </Typography>
             </Grid>
-            <Grid container>
+            <Grid container sx={{ mb: "2rem" }}>
               <Grid
                 item
                 xs={11.2}
