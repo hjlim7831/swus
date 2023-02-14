@@ -6,20 +6,28 @@ import { useSelector } from "react-redux";
 
 export default function Lounge() {
   const loungeurl = useSelector((state) => state.loungeurl);
-  const [urlId, setUrlId] = useState()
-  const [randomNum, setRandomNum] = useState(0);
-  
-  const RandomNum = () => {
-    setRandomNum(Math.floor(Math.random() * 6));
-  }
+
+  const [randomNum, setRandomNum] = useState();
+  const [urlId, setUrlId] = useState();
+  const [url, setUrl] = useState();
+
+  // const RandomUrl = async () => {
+  //   setRandomNum(await Math.floor(Math.random() * 6));
+  //   setUrlId(await loungeurl.motivation[randomNum]);
+  //   setUrl(await `https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`);
+  // };
 
   useEffect(() => {
-    RandomNum();
-    console.log(randomNum)
-    setUrlId(loungeurl.motivation[randomNum]);
-  }, [])
+    const RandomUrl = async () => {
+      setRandomNum(await Math.floor(Math.random() * 6));
+      setUrlId(await loungeurl.motivation[randomNum]);
+      setUrl(await `https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`);
+      console.log("끝?");
+    };
+    RandomUrl();
+  }, []);
 
-  const url = `https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`;
+  // const url = `https://www.youtube.com/embed/${urlId}?autoplay=1&mutes=1`;
 
   // const ChooseUrl = (name) => {
   //   RandomNum();

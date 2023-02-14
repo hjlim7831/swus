@@ -8,8 +8,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 // import { ResponsivePie } from "@nivo/pie";
 import PieChart from "./PieChart";
+import Typography from "@mui/material/Typography";
 
 import axios from "./../../Utils/index";
 
@@ -94,113 +97,147 @@ function MyTime() {
 
   return (
     <>
-      <Box
+      <Box sx={{ display: "flex" }}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontSize: 25,
+            color: "white",
+            my: "1rem",
+          }}
+        >
+          목표 공부 시간
+        </Typography>
+        <IconButton
+          aria-label="modify"
+          onClick={handleClickOpen}
+          sx={{ mb: "0.3rem", paddingLeft: "5rem" }}
+        >
+          <ModeEditOutlineOutlinedIcon sx={{ color: "white" }} />
+        </IconButton>
+      </Box>
+      <Grid
+        item
+        xs={10}
         sx={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: "white",
+          backgroundColor: "#F4EFE6",
+          borderRadius: 2,
+          paddingX: "10px",
         }}
       >
-        <Grid container>
-          <Grid item xs={12}>
-            <Grid
-              item
-              xs={12}
-              sx={{
-                backgroundColor: "#F4EFE6",
-                marginX: "auto",
-              }}
-            >
-              <Box
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "white",
+          }}
+        >
+          <Grid container>
+            <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
                 sx={{
-                  position: "relative",
-                  overflow: "auto",
-                  overflowX: "hidden",
-                  width: "100%",
-                  height: "15rem",
-                  backgroundColor: "F4EFE6",
+                  backgroundColor: "#F4EFE6",
+                  marginX: "auto",
                 }}
               >
-                <Grid item xs={12}>
-                  <Grid container sx={{ marginTop: "3%" }}>
-                    <Grid item xs={6}>
-                      나의 목표 시간
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box sx={{ marginLeft: "30%" }}>
-                        {parseInt(targetTime / 60)}시간{" "}
-                        {("0" + parseInt(targetTime % 60)).slice(-2)}분
-                      </Box>
-                    </Grid>
-                  </Grid>
-                  <Grid container sx={{ marginTop: "2%" }}>
-                    <Grid item xs={6}>
-                      현재 달성 시간
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box sx={{ marginLeft: "30%" }}>
-                        {parseInt(studyTime / 60)}시간{" "}
-                        {("0" + parseInt(studyTime % 60)).slice(-2)}분
-                      </Box>
-                    </Grid>
-                  </Grid>
-                  <Grid container sx={{ marginTop: "2%" }}>
-                    <Grid item xs={6}>
-                      남은 목표 시간
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box sx={{ marginLeft: "30%" }}>
-                        {parseInt(restTime / 60)}시간{" "}
-                        {("0" + parseInt(restTime % 60)).slice(-2)}분
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Grid>
+                <Box
+                  sx={{
+                    position: "relative",
+                    overflow: "auto",
+                    overflowX: "hidden",
+                    width: "100%",
+                    height: "15rem",
+                    backgroundColor: "F4EFE6",
+                  }}
+                >
+                  <Grid item xs={12}>
+                    <Grid container sx={{ marginTop: "3%" }}>
+                      <Grid item xs={6}>
+                        나의 목표 시간
+                      </Grid>
 
-                <PieChart />
-              </Box>
+                      <Grid item xs={6}>
+                        <Box sx={{ marginLeft: "30%" }}>
+                          {parseInt(targetTime / 60)}시간{" "}
+                          {("0" + parseInt(targetTime % 60)).slice(-2)}분
+                        </Box>
+                      </Grid>
+                    </Grid>
+                    <Grid container sx={{ marginTop: "2%" }}>
+                      <Grid item xs={6}>
+                        현재 달성 시간
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Box sx={{ marginLeft: "30%" }}>
+                          {parseInt(studyTime / 60)}시간{" "}
+                          {("0" + parseInt(studyTime % 60)).slice(-2)}분
+                        </Box>
+                      </Grid>
+                    </Grid>
+                    <Grid container sx={{ marginTop: "2%" }}>
+                      <Grid item xs={6}>
+                        남은 목표 시간
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Box sx={{ marginLeft: "30%" }}>
+                          {parseInt(restTime / 60)}시간{" "}
+                          {("0" + parseInt(restTime % 60)).slice(-2)}분
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  {targetTime && studyTime ? (
+                    <PieChart targetTime={targetTime} studyTime={studyTime} />
+                  ) : null}
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>목표시간 설정하기</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반
-              공부 => 10, 30 입력
-            </DialogContentText>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="hour"
-                  label="시"
-                  type="number"
-                  fullWidth
-                  variant="standard"
-                  onChange={changeH}
-                />
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>목표시간 설정하기</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반
+                공부 => 10, 30 입력
+              </DialogContentText>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="hour"
+                    label="시"
+                    type="number"
+                    fullWidth
+                    variant="standard"
+                    defaultValue={Math.floor(targetTime / 60)}
+                    onChange={changeH}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="min"
+                    label="분"
+                    type="number"
+                    fullWidth
+                    variant="standard"
+                    defaultValue={inputMin}
+                    onChange={changeM}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="min"
-                  label="분"
-                  type="number"
-                  fullWidth
-                  variant="standard"
-                  onChange={changeM}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={save}>저장</Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={save}>저장</Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
+      </Grid>
     </>
   );
 }

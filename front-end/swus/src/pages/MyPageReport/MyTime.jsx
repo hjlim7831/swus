@@ -187,7 +187,9 @@ function MyTime() {
                     </Grid>
                   </Grid>
                 </Grid>
-                <PieChart targetTime={targetTime} studyTime={studyTime} />
+                {targetTime && studyTime ? (
+                  <PieChart targetTime={targetTime} studyTime={studyTime} />
+                ) : null}
               </Box>
             </Grid>
           </Grid>

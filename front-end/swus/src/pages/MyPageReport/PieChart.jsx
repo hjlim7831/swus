@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 
 export default function ApexChart({ studyTime, targetTime }) {
@@ -7,7 +7,7 @@ export default function ApexChart({ studyTime, targetTime }) {
 
   const percent = targetTime ? Math.floor((studyTime / targetTime) * 100) : 0;
 
-  const [series, setSeries] = useState([percent]);
+  const [series, setSeries] = useState();
 
   const [options, setOptions] = useState({
     chart: {
@@ -67,6 +67,10 @@ export default function ApexChart({ studyTime, targetTime }) {
     colors: ["#F78F8E", "#AD99F3"],
     labels: ["Average Results"],
   });
+
+  useEffect(() => {
+    setSeries([percent]);
+  }, [targetTime]);
 
   return (
     <div id="chart">

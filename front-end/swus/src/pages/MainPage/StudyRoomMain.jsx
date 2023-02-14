@@ -3,7 +3,6 @@ import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import OpenViduApp from "../OpenVidu/OpenViduApp";
-// import MyTodo from "../MyPageReport/MyTodo";
 import MyTimeBlock from "../MyPageReport/MyTimeBlock";
 import NSRoomCard from "./RoomScroll/NSRoomCard";
 import FTRoomCard from "./RoomScroll/FTRoomCard";
@@ -11,14 +10,14 @@ import { useNavigate } from "react-router-dom";
 
 import { Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+
 import Grid from "@mui/material/Grid";
-import { LeftArrow, RightArrow } from "./RoomScroll/Arrows";
-import usePreventBodyScroll from "./RoomScroll/usePreventBodyScroll";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-import axios from "axios";
+import axios from "./../../Utils/index";
 import RoomInfo from "./RoomScroll/RoomInfo";
 import NavBar from "../../components/NavBar/NavBar";
 
@@ -41,13 +40,11 @@ function StudyRoomMain() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://i8a302.p.ssafy.io:8081/studyrooms",
-      headers: {
-        Authorization: `Bearer ${Token}`,
-      },
-    }).then((res) => {
+    const config = {
+      method: "GET",
+      url: "/studyrooms",
+    };
+    axios(config).then((res) => {
       console.log(res);
       // console.log(res.data);
       console.log(res.data.publics);
@@ -75,12 +72,12 @@ function StudyRoomMain() {
     console.log(typeOfRoom);
     console.log("axios post 방 추가 studyroomMain");
     if (typeOfRoom === "Y") {
-      axios({
-        method: "post",
-        url: "http://i8a302.p.ssafy.io:8081/studyrooms",
-        headers: { Authorization: `Bearer ${Token}` },
+      const config = {
+        method: "Post",
+        url: "/studyrooms",
         data: { type: "Y" },
-      })
+      };
+      axios(config)
         .then((res) => {
           console.log(res);
           console.log(res.data.public.session_name);
@@ -90,13 +87,11 @@ function StudyRoomMain() {
           console.log(sessionName);
           console.log(roomId);
 
-          axios({
-            method: "post",
-            url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
-            headers: {
-              Authorization: `Bearer ${Token}`,
-            },
-          }).then((response) => {
+          const config = {
+            method: "Post",
+            url: `/studyrooms/${roomId}`,
+          };
+          axios(config).then((response) => {
             if ("success_enter_studyroom") {
               console.log(response);
               navigate(`/studyroom/${sessionName}`, {
@@ -115,12 +110,12 @@ function StudyRoomMain() {
           console.log(error);
         });
     } else if (typeOfRoom === "N") {
-      axios({
+      const config = {
         method: "post",
-        url: "http://i8a302.p.ssafy.io:8081/studyrooms",
-        headers: { Authorization: `Bearer ${Token}` },
+        url: "studyrooms",
         data: { type: "N" },
-      }).then((res) => {
+      };
+      axios(config).then((res) => {
         console.log(res.data.public);
         console.log(res);
         console.log(res.data.public.session_name);
@@ -130,13 +125,11 @@ function StudyRoomMain() {
         console.log(sessionName);
         console.log(roomId);
 
-        axios({
+        const config = {
           method: "post",
-          url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
-          headers: {
-            Authorization: `Bearer ${Token}`,
-          },
-        }).then((response) => {
+          url: `studyrooms/${roomId}`,
+        };
+        axios(config).then((response) => {
           if ("success_enter_studyroom") {
             console.log(response);
             navigate(`/studyroom/${sessionName}`, {
@@ -171,10 +164,17 @@ function StudyRoomMain() {
         {/* 하나 xs 값 주면 나머지 알아서*/}
         <Grid container>
           {/* 그리드 컴포넌트 사이 넓이 */}
-          <Grid item xs={3} style={{}}>
+          <Grid item xs={3}>
             {/* todo& 목표 공부시간 묶는 div */}
-            <Grid item xs={12} sx={{ marginTop: 3, marginX: "auto", paddingLeft: "30px" }}>
-              <Typography variant="h5" sx={{ fontSize: 20, color: "white", marginTop: 2 }}>
+            <Grid
+              item
+              xs={12}
+              sx={{ marginTop: 3, marginX: "auto", paddingLeft: "30px" }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ fontSize: 25, color: "white", marginTop: 2 }}
+              >
                 Todo List
               </Typography>
               <Grid
@@ -191,27 +191,7 @@ function StudyRoomMain() {
             </Grid>
             <Grid item xs={12} sx={{ marginX: "auto", paddingLeft: "30px" }}>
               {/* 목표 공부시간 div */}
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: 20,
-                  color: "white",
-                  marginTop: 2,
-                }}
-              >
-                목표 공부 시간
-              </Typography>
-              <Grid
-                item
-                xs={10}
-                sx={{
-                  backgroundColor: "#F4EFE6",
-                  borderRadius: 2,
-                  paddingX: "10px",
-                }}
-              >
-                <MyTimeBlock />
-              </Grid>
+              <MyTimeBlock />
             </Grid>
           </Grid>
           <Grid
@@ -225,7 +205,10 @@ function StudyRoomMain() {
             }}
           >
             <Grid item xs={12}>
-              <Typography variant="h1" sx={{ fontSize: 30, color: "white", marginTop: 2 }}>
+              <Typography
+                variant="h1"
+                sx={{ fontSize: 30, color: "white", marginTop: 2 }}
+              >
                 STUDY ROOM
               </Typography>
             </Grid>
