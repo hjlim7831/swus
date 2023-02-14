@@ -30,6 +30,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import startBreak from "../../components/modals/StartBreak";
 import endBreak from "../../components/modals/EndBreak";
 import { v4 as uuidv4 } from "uuid";
+import axiosUtils from "./../../Utils/index";
 //HOC 사용용
 
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -155,20 +156,37 @@ class OpenViduApp extends Component {
   //스터디 종료 처리 및 시간 저장하는 함수
   leaveCheck() {
     //방 퇴장 알리는 통신
-    const Token = sessionStorage.getItem("token");
-    console.log("방 퇴장");
-    console.log(this.state.roomId);
-    axios({
+
+    const payload = {
+      member_id: 0,
+      room_id: this.state.roomId,
+    };
+
+    const config = {
+      url: "/studyrooms/exit",
       method: "post",
-      url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
-      headers: { Authorization: `Bearer ${Token}` },
-      data: {
-        member_id: 0,
-        room_id: this.state.roomId,
-      },
-    }).then((response) => {
-      console.log(response.data.message);
+      data: payload,
+    };
+    console.log("publicRoom leaveCheck");
+    axiosUtils(config).then((response) => {
+      console.log("퍼블릭룸 나가기 엑시오스 먹힘??");
+      console.log(response);
     });
+
+    // const Token = sessionStorage.getItem("token");
+    // console.log("방 퇴장");
+    // console.log(this.state.roomId);
+    // axios({
+    //   method: "post",
+    //   url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
+    //   headers: { Authorization: `Bearer ${Token}` },
+    //   data: {
+    //     member_id: 0,
+    //     room_id: this.state.roomId,
+    //   },
+    // }).then((response) => {
+    //   console.log(response.data.message);
+    // });
 
     //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
     //기존 입장 시간
@@ -187,17 +205,28 @@ class OpenViduApp extends Component {
       //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
       const cal = nowH * 60 + nowM - (inH * 60 + inM);
       //시간 저장
-      axios({
-        method: "put",
-        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
 
-        headers: { Authorization: `Bearer ${Token}` },
-        data: {
-          now_total_time: totalH * 60 + totalM + cal,
-        },
-      }).then((res) => {
+      const config = {
+        method: "PUT",
+        url: "/my-studies/now-total-time",
+        data: { now_total_time: totalH * 60 + totalM + cal },
+      };
+
+      axiosUtils(config).then((res) => {
         console.log(res);
       });
+
+      // axios({
+      //   method: "put",
+      //   url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+
+      //   headers: { Authorization: `Bearer ${Token}` },
+      //   data: {
+      //     now_total_time: totalH * 60 + totalM + cal,
+      //   },
+      // }).then((res) => {
+      //   console.log(res);
+      // });
 
       localStorage.setItem("totalH", totalH + parseInt(cal / 60));
       localStorage.setItem("totalM", totalM + (cal % 60));
@@ -205,17 +234,28 @@ class OpenViduApp extends Component {
       //앞시간이 더 큰 숫자일 경우 ex 18시~1시
       const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
       //시간 저장
-      axios({
-        method: "put",
-        url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
 
-        headers: { Authorization: `Bearer ${Token}` },
-        data: {
-          now_total_time: totalH * 60 + totalM + cal,
-        },
-      }).then((res) => {
+      const config = {
+        method: "PUT",
+        url: "/my-studies/now-total-time",
+        data: { now_total_time: totalH * 60 + totalM + cal },
+      };
+
+      axiosUtils(config).then((res) => {
         console.log(res);
       });
+
+      // axios({
+      //   method: "put",
+      //   url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
+
+      //   headers: { Authorization: `Bearer ${Token}` },
+      //   data: {
+      //     now_total_time: totalH * 60 + totalM + cal,
+      //   },
+      // }).then((res) => {
+      //   console.log(res);
+      // });
 
       localStorage.setItem("totalH", totalH + parseInt(cal / 60));
       localStorage.setItem("totalM", totalM + (cal % 60));

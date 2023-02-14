@@ -43,7 +43,6 @@ function MyGroupList() {
   const [teamDetails, setTeamDetails] = useState([]);
 
   const openModal = (teamId) => {
-
     const config = {
       url: `/my-reports/${teamId}/member-todos`,
       method: "GET"
@@ -187,16 +186,14 @@ function MyGroupList() {
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
           <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
-            {group.category === "S" ? (
-              <span style={{ color: "red" }}>[스터디]</span>
-            ) : (
-              <span style={{ color: "blue" }}>[메이트]</span>
-            )}
+            {group.category === "S"
+             ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
+             : <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
           </TableCell>
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
 
-            onClick={() => {navigate(`group/${group.team_id}`)}}>
+            onClick={() => {navigate(`/group/mystudy/group/${group.team_id}`)}}>
               <span style={{ cursor: "pointer" }}>{group.team_name}</span>
 
           </TableCell>
@@ -228,15 +225,13 @@ function MyGroupList() {
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
           <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
-            {group.category === "S" ? (
-              <span style={{ color: "red" }}>[스터디]</span>
-            ) : (
-              <span style={{ color: "blue" }}>[메이트]</span>
-            )}
+            {group.category === "S"
+              ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
+              : <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
           </TableCell>
           <TableCell 
             style={{ textAlign: "center", fontSize: "15px" }}
-            onClick={() => {navigate(`group/${group.team_id}`)}}>
+            onClick={() => {navigate(`/group/mystudy/group/${group.team_id}`)}}>
               <span style={{ cursor: "pointer" }}>{group.team_name}</span>
           </TableCell>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
@@ -256,8 +251,8 @@ function MyGroupList() {
                     <div style={{ display: "flex", justifyContent: "center" }}>
                       <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
                       {(teamDetails.category === "S")
-                        ? <span style={{ color: "red" }}>[스터디]</span> 
-                        : <span style={{ color: "blue" }}>[메이트]</span>} 
+                        ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 5, paddingInline: 10 }}>스터디</span> 
+                        : <span style={{ borderRadius: 8, backgroundColor: "#67A4FF", paddingBlock: 5, paddingInline: 10, color: "#F4EFE6" }}>메이트</span>}
                         <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
                       </p>
                     </div>
@@ -315,11 +310,13 @@ function MyGroupList() {
               textAlign: "center",
             }}
           >
-            <span>내 스터디룸</span>
+            <span>📖 내 스터디룸</span>
           </p>
         </Grid>
-        <TableContainer style={{ textAlign: "center" }}>
-          <Table style={{ textAlign: "center" }}>
+        <TableContainer style={{ textAlign: "center", 
+                                 borderTop: "1px solid gray",
+                                 border: "1px solid gray", }}>
+          <Table style={{ textAlign: "center", border: "1px solid gray", }}>
             <TableHead>
               <TableRow>
                 <TableCell colSpan={8}>

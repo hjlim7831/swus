@@ -34,20 +34,21 @@ function Report (props) {
 	function weekTopics() {
 
 		function getMemberTodos(member) {
-			if (Array.isArray(member) && member.length > 0) {
+			// if (Array.isArray(member) && member.length > 0) {
+			// 	console.log("웨지감자")
 				return member.todos.map((todo) => {
 					return (
 						<>
-							<p style={{ margin: 0}}>
+							<p style={{ margin: 0 }}>
 								{(todo.todo_done === "Y") ? <Checkbox checked={true} disabled/> : <Checkbox checked={false} disabled/>}
 								{todo.content}
 							</p>
 						</>
 					)
 				})
-			}	else {
-				return null
-			}
+			// }	else {
+			// 	return null
+			// }
 		}
 
 		function details(index) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import MyTodoList from "./MyTodoList";
-import MyTodoForm from "./MyTodoForm";
+import MyTodoList from "./../OpenVidu/TodoList/MyTodoList";
+import MyTodoForm from "./../OpenVidu/TodoList/MyTodoForm";
 import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
@@ -11,22 +11,13 @@ import axios from "./../../Utils/index";
 // import { useSelector, useDispatch } from "react-redux";
 // import { addTodoList } from "./../../store/TodoList";
 
-function GroupTodoBlock() {
-  // const dispatch = useDispatch();
-  // const todoList = useSelector((state) => state.todolist);
+function MyTodoBlock() {
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
 
-  // ---------------------------------------------------------------------
-  // 나중에 처리해야 하는 곳
-  // 1. groupId 받아서 저장
-  // 2. round 받아서 저장
-  const groupId = 1;
-  const round = 1;
-
   useEffect(() => {
     const config = {
-      url: `/my-groups/${groupId}/round/${round}`,
+      url: "/my-todos",
       method: "get",
     };
 
@@ -55,9 +46,9 @@ function GroupTodoBlock() {
     const content = value;
 
     const config = {
-      url: `/my-groups/${groupId}/round/${round}`,
+      url: "/my-todos",
       method: "post",
-      data: { content },
+      data: { todo_done: "N", content },
     };
 
     axios(config).then((response) => {
@@ -121,8 +112,6 @@ function GroupTodoBlock() {
                 setTodoData={setTodoData}
                 value={value}
                 setValue={setValue}
-                groupId={groupId}
-                round={round}
               />
               {/*todoData라는 state를 내려줌 List.js에 */}
               {/*자녀컴포넌트에서는 props 파라미터로 받음 */}
@@ -134,4 +123,4 @@ function GroupTodoBlock() {
   );
 }
 
-export default GroupTodoBlock;
+export default MyTodoBlock;

@@ -13,7 +13,8 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../../image/lib.jpg";
 import { Grid } from "@mui/material";
 import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
-import axios from "axios";
+// import axios from "axios";
+import axios from "./../../../Utils/index";
 
 function FtoTRoom(props) {
   const [open, setOpen] = React.useState(false);
@@ -35,34 +36,33 @@ function FtoTRoom(props) {
   const handleToEnter = () => {
     //입장시 api
     console.log("axios post NSRoomCard");
+    const config = {
+      method: "POST",
+      url: `/studyrooms/${roomId}`,
+    };
 
-    axios({
-      method: "post",
-      url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
-      headers: {
-        Authorization: `Bearer ${Token}`,
-      },
-      data: {},
-    }).then((response) => {
+    axios(config).then((response) => {
       if ("success_enter_studyroom") {
         console.log(response);
         console.log("is here?");
         navigate(`/studyroom/${sessionName}`, {
-          state: { roomName: sessionName },
+          state: { roomName: sessionName, roomId: roomId },
         }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
       } else {
         alert("잠시 후 다시 입장해주세요");
       }
     });
 
-    navigate(`/studyroom/${sessionName}`, {
-      state: { roomName: sessionName, roomId: roomId },
-    }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
+    // navigate(`/studyroom/${sessionName}`, {
+    //   state: { roomName: sessionName, roomId: roomId },
+    // }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
   };
 
   return (
     <>
-      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
+      <Card
+        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
+      >
         <div
           style={{
             width: 200,
@@ -122,7 +122,9 @@ function FtoTRoom(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">50 to 10 열람실 #{roomId} 입장하기</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          50 to 10 열람실 #{roomId} 입장하기
+        </DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>

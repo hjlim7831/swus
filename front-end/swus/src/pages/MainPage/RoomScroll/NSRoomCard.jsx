@@ -13,7 +13,8 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../../image/sampleImage.jpg";
 import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 import { Grid } from "@mui/material";
-import axios from "axios";
+// import axios from "axios";
+import axios from "./../../../Utils/index";
 
 function NSRoomCard(props) {
   const [open, setOpen] = React.useState(false);
@@ -21,7 +22,8 @@ function NSRoomCard(props) {
   const [count, setCount] = useState(props.partici);
   const [roomId, setRoomId] = useState(props.id);
 
-  console.log();
+  console.log("NS 룸에서의 잘 받아오나? 세션네임", sessionName);
+  console.log("NS 룸에서의 잘 받아오나? 룸 번호", roomId);
 
   const handleToOpen = () => {
     setOpen(true);
@@ -38,14 +40,12 @@ function NSRoomCard(props) {
     //입장시 api
     console.log("axios post NSRoomCard");
 
-    axios({
-      method: "post",
-      url: `http://i8a302.p.ssafy.io:8081/studyrooms/${roomId}`,
-      headers: {
-        Authorization: `Bearer ${Token}`,
-      },
-      data: {},
-    }).then((response) => {
+    const config = {
+      method: "POST",
+      url: `/studyrooms/${roomId}`,
+    };
+
+    axios(config).then((response) => {
       if ("success_enter_studyroom") {
         console.log(response);
         console.log("is here?");
@@ -56,15 +56,13 @@ function NSRoomCard(props) {
         alert("잠시 후 다시 입장해주세요");
       }
     });
-
-    navigate(`/studyroom/${sessionName}`, {
-      state: { roomName: sessionName, roomId: roomId },
-    }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
   };
 
   return (
     <>
-      <Card style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}>
+      <Card
+        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
+      >
         <div
           style={{
             width: 200,
@@ -124,7 +122,9 @@ function NSRoomCard(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Non-Stop 열람실 #{roomId} 입장하기</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          Non-Stop 열람실 #{roomId} 입장하기
+        </DialogTitle>
         <DialogContent></DialogContent>
         <DialogActions>
           <Button onClick={handleToEnter}>입장</Button>

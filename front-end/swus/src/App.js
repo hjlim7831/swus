@@ -13,9 +13,7 @@ import LogIn from "./pages/Accounts/LogIn";
 import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
-
-import LoungeMain from "./pages/Lounge/main";
-
+import LoungeMain from "./pages/Lounge/Main";
 import UserModal from "./pages/Accounts/LogInModal/UserModal";
 import LogInModal from "./pages/Accounts/LogInModal/LogIn";
 import SignUpModal from "./pages/Accounts/LogInModal/SignUp";
@@ -52,7 +50,10 @@ export default function App() {
           <Route exact path="/group" element={<GroupMain />}>
             <Route path="mystudy" element={<MyGroupList />} />
             <Route path="mystudy/group/:groupId" element={<GroupDetail />} />
-            <Route path="mystudy/group/:groupId/update" element={<UpdateGroupDetail />} />
+            <Route
+              path="mystudy/group/:groupId/update"
+              element={<UpdateGroupDetail />}
+            />
             <Route path="board" element={<GroupPage />} />
             <Route path="board/:boardId" element={<ArticleDetail />} />
             <Route path="board/:boardId/update" element={<UpdateArticle />} />

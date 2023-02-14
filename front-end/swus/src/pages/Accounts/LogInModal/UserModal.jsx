@@ -61,19 +61,7 @@ export default function BasicModalDialog() {
             >
               <img src={logo} width="180px" heigth="180px" alt="react"/>
             </Box>
-            <Box
-              sx={{
-                padding: 3,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                background: "white",
-                borderRadius: "3%",
-                border: "1px solid",
-              }}
-            >
-              <Outlet></Outlet>
-            </Box>
+            <Outlet></Outlet>
           </ModalDialog>
         </Modal>
       </React.Fragment>

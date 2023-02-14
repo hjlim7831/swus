@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 
-import "../GroupVideo.css";
+import "./GroupVideo.css";
 
 import Grid from "@mui/material/Grid";
 

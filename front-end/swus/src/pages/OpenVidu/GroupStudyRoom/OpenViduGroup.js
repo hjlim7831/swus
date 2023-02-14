@@ -1,6 +1,8 @@
 import { OpenVidu } from "openvidu-browser";
-
+import { encode, decode } from "js-base64";
+import { Base64 } from "js-base64";
 import axios from "axios";
+import axiosUtils from "./../../../Utils/index";
 import React, { Component } from "react";
 // import "./App.css";
 import GroupUserVideo from "./GroupUserVideo";
@@ -19,10 +21,11 @@ import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import Typography from "@mui/material/Typography";
 import GroupTodoBlock from "../../GroupPage/Todolist/GroupTodoBlock";
 
-//HOC 사용용
-
-const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
+// const APPLICATION_SERVER_URL = "http://localhost:5000/";
+
+const OPENVIDU_SERVER_URL = "https://i8a302.p.ssafy.io:8443";
+const OPENVIDU_SERVER_SECRET = "SWUS";
 
 class OpenViduApp extends Component {
   constructor(props) {
@@ -39,6 +42,7 @@ class OpenViduApp extends Component {
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
+      audiostate: false,
       subscribers: [], //다른 사람들의 활성 스트림 저장
       d: new Date(), //시계
     };
@@ -120,13 +124,23 @@ class OpenViduApp extends Component {
     console.log("그룹 방 퇴장");
     console.log(this.state.teamId);
     console.log(this.state.round);
-    axios({
+
+    const config = {
       method: "get",
-      url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
-      headers: { Authorization: `Bearer ${Token}` },
-    }).then((response) => {
-      console.log(response.data.message);
+      url: `/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
+    };
+
+    axiosUtils(config).then((res) => {
+      console.log(res.data.message);
     });
+
+    // axios({
+    //   method: "get",
+    //   url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
+    //   headers: { Authorization: `Bearer ${Token}` },
+    // }).then((response) => {
+    //   console.log(response.data.message);
+    // });
   }
 
   moveToLounge() {
@@ -211,7 +225,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x800", // The resolution of your video
+                resolution: "1200x540", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -666,10 +680,15 @@ class OpenViduApp extends Component {
 
   async createSession(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      OPENVIDU_SERVER_URL + "/api/sessions",
       { customSessionId: sessionId },
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Basic ${Base64.encode(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data; // The sessionId
@@ -677,14 +696,41 @@ class OpenViduApp extends Component {
 
   async createToken(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
       {},
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Basic ${Base64.encode(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data; // The token
   }
+
+  // async createSession(sessionId) {
+  //   const response = await axios.post(
+  //     APPLICATION_SERVER_URL + "api/sessions",
+  //     { customSessionId: sessionId },
+  //     {
+  //       headers: { "Content-Type": "application/json" },
+  //     }
+  //   );
+  //   return response.data; // The sessionId
+  // }
+
+  // async createToken(sessionId) {
+  //   const response = await axios.post(
+  //     APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+  //     {},
+  //     {
+  //       headers: { "Content-Type": "application/json" },
+  //     }
+  //   );
+  //   return response.data; // The token
+  // }
 }
 
 export default OpenViduApp;
