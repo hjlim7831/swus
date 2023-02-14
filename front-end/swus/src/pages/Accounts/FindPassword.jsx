@@ -7,14 +7,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router";
 
 import axios from "../../Utils/index";
-
-import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export default function FindPassword() {
-  const navigate = useNavigate();
-
   // 비밀번호 찾기용 질문 -> store에서 가져오기
   const favorite_questions = useSelector((state) => state.questions);
 
@@ -31,16 +29,27 @@ export default function FindPassword() {
     setInputData({ ...inputData, [name]: value });
   };
 
+  const Alert = ({title, icon}) => {
+    Swal.fire({
+      icon,
+      title,
+    })
+  };
+
+  // 이메일, 비밀번호 유효성 검사 변수
+  const [emailCheck, setEmailCheck] = useState(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/);
+
   const idSubmit = (event) => {
     event.preventDefault();
 
     const email = inputData.email;
 
-    const emailCheck = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
-
     if (email) {
       if (!emailCheck.test(email)) {
-        alert("이메일 형식을 지켜주세요.");
+        const title = "이메일 형식으로 작성해주세요.";
+        const icon = "error";
+        Alert({title, icon});
+
       } else {
         console.log(email);
 
@@ -50,18 +59,24 @@ export default function FindPassword() {
         };
 
         axios(config)
-          // .get(`http://localhost:8081/auth/check-email?email=${email}`)
           .then((response) => {
             console.log(response.data.msg);
             if (response.data.msg === "Y") {
-              alert("가입된 아이디입니다.");
+              const title = "가입된 아이디입니다.";
+              const icon = "error";
+              Alert({title, icon});
+
             } else {
-              alert("가입되지 않은 아이디입니다.");
+              const title = "가입되지 않은 아이디입니다.";
+              const icon = "success";
+              Alert({title, icon});
             }
           });
       }
     } else {
-      alert("정보를 다시 입력해주세요.");
+      const title = "정보를 다시 입력해주세요.";
+      const icon = "error";
+      Alert({title, icon});
     }
   };
 
@@ -85,28 +100,39 @@ export default function FindPassword() {
       };
 
       axios(config)
-        // axios
-        //   .post("http://localhost:8081/auth/check-pwd", payload)
         .then(() => {
           // console.log(response.data.msg);
-          alert("입력하신 메일로 비밀번호를 전송했습니다.");
-          navigate("/account/login");
+          const title = "입력하신 메일로 비밀번호를 전송했습니다.";
+          const icon = "success"
+          Alert({title, icon});
+          Navigate("/accounts/login");
         })
         .catch((error) => {
           if (error.message === "Request failed with status code 400") {
-            alert("질문이나 답이 틀렸습니다.");
+            const title = "질문이나 답이 틀렸습니다.";
+            const icon = "error"
+            Alert({title, icon});
+
           } else {
-            alert("이메일 전송을 실패했습니다.");
+            const title = "이메일 전송을 실패했습니다.";
+            const icon = "error";
+            Alert({title, icon});
           }
         });
     } else {
-      alert("정보를 다시 입력해주세요.");
+      const title = "정보를 다시 입력해주세요.";
+      const icon = "error";
+      Alert({title, icon});
     }
   };
 
   return (
     <>
-      <Typography component="h1" variant="h5" sx={{ mb: 3, mt: 1 }}>
+      <Typography
+        component="h1"
+        variant="h5"
+        sx={{ mb: 2, mt: 1, color: "#5F3A42" }}
+      >
         아이디/비밀번호 찾기
       </Typography>
       <Box component="form" noValidate onSubmit={idSubmit} sx={{ mt: 1 }}>
@@ -121,13 +147,19 @@ export default function FindPassword() {
           autoComplete="email"
           autoFocus
           variant="standard"
+          error={inputData.email && !emailCheck.test(inputData.email)}
           onChange={inputSubmit}
         />
         <Button
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 2, mb: 2, 
+            backgroundColor: "#E2B9B3", color: "#5F3A42",
+            '&:hover': {
+              backgroundColor: '#E2B9B3'
+            }, 
+          }}
         >
           아이디 확인
         </Button>
@@ -167,11 +199,15 @@ export default function FindPassword() {
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{ mt: 2, mb: 2, 
+            backgroundColor: "#E2B9B3", color: "#5F3A42",
+            '&:hover': {
+              backgroundColor: '#E2B9B3'
+            },
+          }}
         >
           비밀번호 찾기
         </Button>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Box>
     </>
   );
