@@ -1,6 +1,8 @@
 server:
   port:
     8081
+  servlet:
+    contextPath: /api
     
 #JPA
 spring:
