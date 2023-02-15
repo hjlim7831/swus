@@ -43,6 +43,7 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       audiostate: false,
+      content: props.content,
       subscribers: [], //다른 사람들의 활성 스트림 저장
       d: new Date(), //시계
     };
@@ -55,8 +56,6 @@ class OpenViduApp extends Component {
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
-    // this.muteAudio = this.muteAudio.bind(this);
-    // this.unmuteAudio = this.unmuteAudio.bind(this);
     this.leaveCheck = this.leaveCheck.bind(this);
   }
 
@@ -147,21 +146,7 @@ class OpenViduApp extends Component {
 
   moveToLounge() {
     this.leaveCheck();
-    window.location.replace("http://localhost:3000/lounge");
-  }
-
-  muteAudio() {
-    let publisher = this.state.publisher.publishAudio(false);
-    this.setState = {
-      publisher: publisher,
-    };
-  }
-
-  unmuteAudio() {
-    let publisher = this.state.publisher.publishAudio(true);
-    this.setState = {
-      publisher: publisher,
-    };
+    window.location = `${window.location.origin}/lounge`;
   }
 
   joinSession() {
@@ -227,7 +212,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x540", // The resolution of your video
+                resolution: "1200x350", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -292,58 +277,8 @@ class OpenViduApp extends Component {
       publisher: undefined,
     });
 
-    // //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
-    // //기존 입장 시간
-    // const inH = parseInt(localStorage.getItem("inHour"));
-    // const inM = parseInt(localStorage.getItem("inMin"));
-
-    // //현재 시간
-    // const nowH = parseInt(this.state.d.getHours());
-    // const nowM = parseInt(this.state.d.getMinutes());
-
-    // //누적된 총 시간
-    // const totalH = parseInt(localStorage.getItem("totalH"));
-    // const totalM = parseInt(localStorage.getItem("totalM"));
-
-    // if (inH <= nowH) {
-    //   //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
-    //   const cal = nowH * 60 + nowM - (inH * 60 + inM);
-    //   //시간 저장
-    //   axios({
-    //     method: "put",
-    //     url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-    //     headers: { Authorization: `Bearer ${Token}` },
-    //     data: {
-    //       now_total_time: totalH * 60 + totalM + cal,
-    //     },
-    //   }).then((res) => {
-    //     console.log(res);
-    //   });
-
-    //   localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-    //   localStorage.setItem("totalM", totalM + (cal % 60));
-    // } else {
-    //   //앞시간이 더 큰 숫자일 경우 ex 18시~1시
-    //   const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
-    //   //시간 저장
-    //   axios({
-    //     method: "put",
-    //     url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-    //     headers: { Authorization: `Bearer ${Token}` },
-    //     data: {
-    //       now_total_time: totalH * 60 + totalM + cal,
-    //     },
-    //   }).then((res) => {
-    //     console.log(res);
-    //   });
-
-    //   localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-    //   localStorage.setItem("totalM", totalM + (cal % 60));
-    // }
-
     // window.location.replace("http://localhost:3000/group/mystudy");
+    window.location = `${window.location.origin}/group/mystudy`;
   }
 
   render() {
@@ -374,64 +309,14 @@ class OpenViduApp extends Component {
           <Grid container spacing={1}>
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
-                {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
-                  <Stack direction="row" sx={{ display: "flex", justifyContent: "flex-end"}}>
-                    {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton aria-label="mute" color="primary">
-                      <MicNoneOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="primary" aria-label="add an alarm">
-                      <MusicNoteOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="primary" aria-label="quit">
-                      <HighlightOffIcon />
-                    </IconButton>
-                    <IconButton
-                      color="primary"
-                      aria-label="quit"
-                      onClick={() => {
-                        this.leaveSession(); //연결 끊어주고
-                        //열람실 메인으로 이동
-                      }}
-                    >
-                      <HighlightOffIcon />
-                    </IconButton>
-                  </Stack> //채팅방 버튼 없는 상위 버튼
-                ) : (
-                  <Stack direction="row">
-                    {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton
-                      aria-label="record"
-                      color="primary"
-                      // onClick={() =>
-                      //   this.state.publisher.publishAudio ? this.unmuteAudio : this.muteAudio
-                      // }
-                    >
-                      {/* {this.state.publisher.publishAudio ? (
-                        <MicNoneOutlinedIcon />
-                      ) : (
-                        <MicOffOutlinedIcon />
-                      )} */}
-                      <MicNoneOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="primary" aria-label="add an alarm">
-                      <MusicNoteOutlinedIcon />
-                    </IconButton>
-                    <IconButton
-                      color="primary"
-                      aria-label="quit"
-                      onClick={() => {
-                        this.leaveSession(); //연결 끊어주고
-                        //열람실 메인으로 이동
-                      }}
-                    >
-                      <HighlightOffIcon />
-                    </IconButton>
-                  </Stack> //채팅방용 상위 버튼
-                )}
+              <Stack direction="row"></Stack>{" "}
                 <h1 style={{ color: "white", paddingTop: "5px" }}>
                   {this.state.teamName}
                 </h1>
+                 <h5 style={{ color: "white" }}>{this.state.round}회차</h5>
+                 <h4 style={{ color: "white", marginTop: "-20px" }}>
+                  {this.state.content}
+                </h4>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -594,6 +479,9 @@ class OpenViduApp extends Component {
                       color: "#1A1E33",
                       fontSize: "20px",
                     }}
+                    onClick={() => {
+                      this.leaveSession();
+                    }}
                   >
                     스터디 종료하기
                   </Button>
@@ -601,7 +489,7 @@ class OpenViduApp extends Component {
               </Grid>
             </Grid>
             <Grid item xs={9.6}>
-              <div className="container" styled={{ paddingLeft: "10%" }}>
+              <div className="container" styled={{ paddingLeft: "5%" }}>
                 {this.state.session === undefined ? (
                   <div id="join">{this.joinSession()}</div>
                 ) : null}
@@ -614,11 +502,10 @@ class OpenViduApp extends Component {
                         display: "grid",
                         gridTemplateColumns:
                           "repeat(auto-fit, minmax(31%, auto))",
-                        alignContent: "stretch",
-                        justifyContent: "stretch",
                         placeItems: "center",
-                        backgroundColor: "pink",
-                        padding: "30px",
+                        padding: "5px",
+                        paddingRight: "20px",
+                        gridGap: "10px",
                         // flexWrap: "wrap",
                       }}
                     >
@@ -632,7 +519,7 @@ class OpenViduApp extends Component {
                         >
                           <GroupUserVideo
                             streamManager={this.state.publisher}
-                            style={{ width: "100%" }}
+                            style={{ width: "100%", paddingBottom: "20%" }}
                           />
                         </div>
                       ) : null}
@@ -645,7 +532,7 @@ class OpenViduApp extends Component {
                         >
                           <GroupUserVideo
                             streamManager={sub}
-                            style={{ width: "100%" }}
+                            style={{ width: "100%", paddingBottom: "20%" }}
                           />
                         </div>
                       ))}
@@ -660,57 +547,99 @@ class OpenViduApp extends Component {
     );
   }
 
-  /**
-   * --------------------------------------------
-   * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-   * --------------------------------------------
-   * The methods below request the creation of a Session and a Token to
-   * your application server. This keeps your OpenVidu deployment secure.
-   *
-   * In this sample code, there is no user control at all. Anybody could
-   * access your application server endpoints! In a real production
-   * environment, your application server must identify the user to allow
-   * access to the endpoints.
-   *
-   * Visit https://docs.openvidu.io/en/stable/application-server to learn
-   * more about the integration of OpenVidu in your application server.
-   */
+
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);
     return await this.createToken(sessionId);
   }
 
-  async createSession(sessionId) {
-    const response = await axios.post(
-      OPENVIDU_SERVER_URL + "/api/sessions",
-      { customSessionId: sessionId },
-      {
-        headers: {
-          Authorization: `Basic ${Base64.encode(
-            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-          )}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data; // The sessionId
+  createSession(sessionId) {
+    return new Promise((resolve, reject) => {
+      let data = JSON.stringify({ customSessionId: sessionId });
+      axios
+        .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
+          headers: {
+            Authorization: `Basic ${Base64.encode(
+              `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+            )}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((response) => {
+          resolve(response.data.id);
+        })
+        .catch((response) => {
+          let error = { ...response };
+          if (error?.response?.status === 409) {
+            resolve(sessionId);
+          } else if (
+            window.confirm(
+              `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
+                `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+            )
+          ) {
+            window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+          }
+        });
+    });
   }
 
-  async createToken(sessionId) {
-    const response = await axios.post(
-      OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
-      {},
-      {
-        headers: {
-          Authorization: `Basic ${Base64.encode(
-            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-          )}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data; // The token
+  createToken(sessionId) {
+    return new Promise((resolve, reject) => {
+      let data = {};
+      axios
+        .post(
+          `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+          data,
+          {
+            headers: {
+              Authorization: `Basic ${Base64.encode(
+                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+              )}`,
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        )
+        .then((response) => {
+          resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
+    });
   }
+
+  // async createSession(sessionId) {
+  //   const response = await axios.post(
+  //     OPENVIDU_SERVER_URL + "/api/sessions",
+  //     { customSessionId: sessionId },
+  //     {
+  //       headers: {
+  //         Authorization: `Basic ${Base64.encode(
+  //           `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //         )}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   return response.data; // The sessionId
+  // }
+
+  // async createToken(sessionId) {
+  //   const response = await axios.post(
+  //     OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
+  //     {},
+  //     {
+  //       headers: {
+  //         Authorization: `Basic ${Base64.encode(
+  //           `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //         )}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   return response.data; // The token
+  // }
 
   // async createSession(sessionId) {
   //   const response = await axios.post(

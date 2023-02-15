@@ -264,7 +264,7 @@ class OpenViduApp extends Component {
   //라운지 이동
   moveToLounge() {
     this.leaveCheck();
-    window.location.replace("http://localhost:3000/lounge");
+    window.location = `${window.location.origin}/lounge`;
   }
 
   joinSession() {
@@ -397,9 +397,7 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
-
-    window.location.replace("http://localhost:3000/studyroom");
-    // window.location.href = "/studyroom";/
+    window.location = `${window.location.origin}/studyroom`;
   }
 
   render() {
@@ -435,12 +433,6 @@ class OpenViduApp extends Component {
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
 
-                    <IconButton color="primary" aria-label="add an alarm">
-                      <MusicNoteOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="primary" aria-label="quit">
-                      <HighlightOffIcon />
-                    </IconButton>
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -455,21 +447,11 @@ class OpenViduApp extends Component {
                 ) : (
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton
-                      aria-label="record"
-                      color="primary"
-                      onClick={() => {
-                        this.audioControl();
-                      }}
-                    >
-                      <PlayCircleOutlineIcon />
-                    </IconButton>
-                    <IconButton color="primary" aria-label="add an alarm">
-                      <MusicNoteOutlinedIcon />
-                    </IconButton>
+
                     <IconButton
                       color="primary"
                       aria-label="quit"
+                      sx={{ fontSize: 40 }}
                       onClick={() => {
                         this.leaveSession(); //연결 끊어주고
                         //열람실 메인으로 이동
@@ -628,7 +610,6 @@ class OpenViduApp extends Component {
                   }}
                 >
                   <MyTodoPublicIn />
-                  {/* <MyTodoPublicIn parentFunction={this.getTodoCount} /> */}
                 </div>
                 <div>
                   <Button
@@ -660,11 +641,13 @@ class OpenViduApp extends Component {
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
+                    gridTemplateRows: "repeat(auto-fill,minMax(31%, auto))",
                     alignContent: "stretch",
                     justifyContent: "stretch",
                     placeItems: "center",
-                    backgroundColor: "pink",
                     padding: "0.5%",
+                    gridGap: "10px",
+                    paddingRight: "20px",
                     // flexWrap: "wrap",
                   }}
                 >

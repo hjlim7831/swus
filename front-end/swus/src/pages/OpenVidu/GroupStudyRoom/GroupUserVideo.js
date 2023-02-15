@@ -33,15 +33,14 @@ export default class GroupUserVideo extends Component {
 
   getNicknameTag() {
     // Gets the nickName of the user
-    return JSON.parse(this.props.streamManager.stream.connection.data)
-      .clientData;
+    return JSON.parse(this.props.streamManager.stream.connection.data).clientData;
   }
 
   render() {
     return (
       <>
         {this.props.streamManager !== undefined ? (
-          <div className="streamcomponent" style={{ width: "100%" }}>
+          <div className="streamcomponent" style={{ width: "100%", padding: "3px" }}>
             <OpenViduVideoComponent streamManager={this.props.streamManager} />
             <Grid
               container
