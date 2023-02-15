@@ -84,12 +84,13 @@ function Item(props) {
 				backgroundPosition: 'center center',
 				textAlign: 'center',
 				height: 800,
-				justifyContent: "center",
+				// justifyContent: "center",
 				display: "flex",
 				flexDirection: "column",
 				opacity: "50%",
 				position: "absolute",
 				width: "100vw",
+				top: 0
 			},
 			
 	}
@@ -104,20 +105,12 @@ function Item(props) {
 
 	return (
 		<>
-			<div style={{ background: "#1A1E33", height: "100vh"}}>
+			<div style={{ background: "#1A1E33", height: "100vh", alignItems: "space-between", display: "flex", justifyContent: "center", marginTop: 0 }}>
 				<Card style={ styles.categoryCard }>
 				</Card>
 				<Box sx={{ display: "flex", justifyContent: "space-evenly", position: "relative" }}>
-					{/* {props.item.name === "그룹 스터디" 
-						?	<div style={{ position: "absolute",
-						width: "40%",
-						height: "40%",
-						opacity: "45%",
-						borderRadius: "20px",
-						backgroundColor: "white"}}></div>
-						: null } */}
-					<div style={{ position: "absolute", width: "40%", height: "400px", opacity: "20%", backgroundColor: "gray", borderRadius: "20px", top: 60 }}></div>
-					<div style={{ display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", alignItems: "center" }}>
+					<div style={{ position: "absolute", width: "600px", height: "380px", opacity: "20%", backgroundColor: "gray", borderRadius: "20px", top: 220 }}></div>
+					<div style={{ display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", alignItems: "center", top: 180 }}>
 						<Typography align="center" mt={10} variant="h4" style={{color: `${props.item.color}`, fontSize: "80px"}}>
 							{props.item.name}
 						</Typography>
