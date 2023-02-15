@@ -44,19 +44,7 @@ function GroupPage() {
 	};
 
 	function goArticleDetail(boardId) {
-
-		const config = {
-			url: `/boards/${boardId}`,
-			method: "GET",
-		};
-
-		axios(config)
-			.then((response) => {
-				dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
-			})
-			.then((response) => {
-				navigate(`${boardId}`)
-			})
+		navigate(`${boardId}`)
 	}
 
 	return (
@@ -114,7 +102,7 @@ function GroupPage() {
 											<span style={{ cursor: "pointer" }}>{article.title}</span>
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>
-										{(article.recruitment_done === "Y") ? "📢모집중" : "✔모집 완료"}
+										{(article.recruitment_done === "N") ? "📢모집중" : "✔모집 완료"}
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.write_at}</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.views}</TableCell>

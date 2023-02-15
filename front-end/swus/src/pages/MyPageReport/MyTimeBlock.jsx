@@ -83,16 +83,30 @@ function MyTime() {
   const target_time = parseInt(inputHour) * 60 + parseInt(inputMin);
 
   const save = (event) => {
-    const config = {
-      method: "PUT",
-      url: "/my-studies/target-time",
-      data: { target_time },
-    };
-    axios(config).then((res) => {
-      // console.log(res);
-      setTargetTime(target_time);
-    });
-    setOpen(false);
+    const Swal = require("sweetalert2");
+    if (target_time > 24 * 60) {
+      setOpen(false);
+      Swal.fire({
+        title: "하루는 24시간이에요!",
+        text: "너무 무리는 하지 말아요 :)",
+        icon: "warning",
+      }).then((res) => {
+        if (res.isConfirmed) {
+          return;
+        }
+      });
+    } else {
+      const config = {
+        method: "PUT",
+        url: "/my-studies/target-time",
+        data: { target_time },
+      };
+      axios(config).then((res) => {
+        // console.log(res);
+        setTargetTime(target_time);
+      });
+      setOpen(false);
+    }
   };
 
   return (
@@ -111,7 +125,7 @@ function MyTime() {
         <IconButton
           aria-label="modify"
           onClick={handleClickOpen}
-          sx={{ mb: "0.3rem", paddingLeft: "5rem" }}
+          sx={{ mb: "0.3rem", paddingLeft: "1rem" }}
         >
           <ModeEditOutlineOutlinedIcon sx={{ color: "white" }} />
         </IconButton>
