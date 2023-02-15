@@ -124,21 +124,8 @@ function CreateArticleForm() {
 		
 		axios(config)
 		.then((response) => {
-
 			const boardId = response.data.board_id
-			const config2 = {
-				url: `/boards/${boardId}`,
-				method: "GET",
-			};
-
-			axios(config2)
-				.then((response) => {
-					dispatch(groupBoardSlice.actions.saveBoardId(boardId))
-					dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
-				})
-				.then((response) => {
-					navigate(`/group/board/${boardId}`);
-				})
+			navigate(`/group/board/${boardId}`);
 		})
 		.catch((error) => {
 			console.log(error);

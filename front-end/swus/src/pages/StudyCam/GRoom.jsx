@@ -11,6 +11,7 @@ function GRoom() {
   const teamId = location.state.teamId;
   const category = location.state.category;
   const teamName = location.state.teamName;
+  const content = location.state.content;
 
   //여기까지 잘 온다.
   return (
@@ -21,6 +22,7 @@ function GRoom() {
         teamId={teamId}
         category={category}
         teamName={teamName}
+        content={content}
       />
     </>
   );
