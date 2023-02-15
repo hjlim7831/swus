@@ -274,26 +274,6 @@ function GroupDetail() {
             </Grid>
               <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
             <Grid container sx={{ padding: 2 }}>
-              {/* <Grid item xs={4} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-                <div style={{ fontWeight: "bold", marginInline: 5, padding: 5 }}>스터디 일정</div>
-                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.begin_at} ~ {teamDetails.end_at}</div>
-              </Grid>
-              <Grid item xs={5} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-                <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>스터디 시간</div>
-                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{studyDays} {start_time} ~ {finish_time}</div>
-              </Grid>
-              <Grid item xs={3} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
-                <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>인원</div>
-                <div style={{ marginInline: 5, padding: 5, marginLeft: 20 }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</div>
-              </Grid>
-              <Grid container sx={{ padding: 2 }}>
-                <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
-                  <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
-                  <Typography style={{ margin: 10, padding: 35, minHeight: "30px", wordBreak: "break-all", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>
-                    {teamDetails.team_info}
-                  </Typography>
-                </Grid>
-              </Grid> */}
               <Grid container sx={{ display: "flex", alignItems: "center"}}>
                 <Grid item xs={2} sx={{ alignContent: "center" }}>
                   <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 일정</p>
@@ -321,6 +301,14 @@ function GroupDetail() {
                 </Grid>
                 <Grid item xs={1}>
                   <p style={{ textAlign: "center", fontSize: "18px" }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</p>
+                </Grid>
+              </Grid>
+              <Grid container sx={{ padding: 2 }}>
+                <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
+                  <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
+                  <Typography style={{ margin: 10, padding: 35, minHeight: "30px", wordBreak: "break-all", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>
+                    {teamDetails.team_info}
+                  </Typography>
                 </Grid>
               </Grid>
               <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlock: 30 }}>
@@ -362,7 +350,7 @@ function GroupDetail() {
                 }
               </Container>
               <br/>
-              <Container style={{ overflowY: "scroll", height: "300px" }}>
+              <Container style={{ overflowY: "scroll", height: "280px" }}>
                 {getWeekTopics()}
               </Container>
             </Grid>
