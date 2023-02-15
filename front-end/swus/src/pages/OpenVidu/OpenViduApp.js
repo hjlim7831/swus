@@ -391,7 +391,7 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
-    // window.location = `${window.location.origin}/studyroom`;
+    window.location = `${window.location.origin}/studyroom`;
   }
 
   render() {
