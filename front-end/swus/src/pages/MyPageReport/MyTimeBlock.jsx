@@ -111,7 +111,7 @@ function MyTime() {
         <IconButton
           aria-label="modify"
           onClick={handleClickOpen}
-          sx={{ mb: "0.3rem", paddingLeft: "5rem" }}
+          sx={{ mb: "0.3rem", paddingLeft: "1rem" }}
         >
           <ModeEditOutlineOutlinedIcon sx={{ color: "white" }} />
         </IconButton>
