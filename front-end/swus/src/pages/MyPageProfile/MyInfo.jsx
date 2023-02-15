@@ -208,6 +208,7 @@ export default function MyInfo() {
             fullWidth
             id="outlined-required"
             label="현재 비밀번호"
+            type="password"
             name="password"
             sx= {{ mt: 2}}
             onChange={inputSubmit}
@@ -226,6 +227,7 @@ export default function MyInfo() {
               id="outlined-helperText"
               label="새 비밀번호"
               name="newPassword"
+              type="password"
               onChange={inputSubmit}
               error={inputData.newPassword && 
                 (inputData.newPassword.length < 8 | 
@@ -237,6 +239,7 @@ export default function MyInfo() {
               id="outlined-helperText"
               label="비밀번호 확인"
               name="newPasswordConfirm"
+              type="password"
               onChange={inputSubmit}
               error={inputData.newPasswordConfirm && 
                 (inputData.newPasswordConfirm.length < 8 | 
