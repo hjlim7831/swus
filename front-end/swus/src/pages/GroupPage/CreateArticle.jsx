@@ -154,7 +154,7 @@ function CreateArticleForm() {
 								<Button 
 									type="submit" 
 									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3, height: "40px", "&:hover": { backgroundColor: "green" } }}
+									sx={{ backgroundColor: "#1560BD", m: 3, height: "40px", "&:hover": { backgroundColor: "#1560BD" } }}
 									size="small"
 									disabled={!true}
 									onClick={onHandleSubmit}>글 작성</Button>

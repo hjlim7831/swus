@@ -48,13 +48,13 @@ function ArticleDetail() {
 				<p style={{ paddingLeft: 30, paddingTop: 5}}>
 					<EditOutlinedIcon
 						variant="contained"
-						sx={{ fontSize: 30, color: "blue", "&:hover": { cursor: "pointer"} }}
+						sx={{ fontSize: 30, color: "#1560BD", "&:hover": { cursor: "pointer"} }}
 						onClick={() => {navigate(`update`)}} />
 				</p>
 				<p style={{ paddingLeft: 10, paddingTop: 5}}>
 					<DeleteOutlinedIcon
 						onClick={deleteArticle}
-						sx={{ fontSize: 30, color: "red", "&:hover": { cursor: "pointer"} }} 
+						sx={{ fontSize: 30, color: "#CA3433", "&:hover": { cursor: "pointer"} }} 
 					/>
 				</p>
 			</>
@@ -113,7 +113,7 @@ function ArticleDetail() {
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 4}}>
 						<Button 
 							variant="contained" 
-							sx={{ height: "40px", backgroundColor: "#9EC2F8", color: "black", fontWeight: "bold", fontSize: "15px" }} 
+							sx={{ height: "40px", backgroundColor: "#9EC2F8", color: "black", fontWeight: "bold", fontSize: "15px", "&:hover": { background: "#9EC2F8"} }} 
 							onClick={() => {						
 								navigate("/group/board");
 								}}>목록 보기</Button>

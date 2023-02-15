@@ -202,7 +202,7 @@ function MyGroupList() {
           <TableCell style={{ textAlign: "center" }}>
             <Button
               variant="contained"
-              style={{ width: "130px" }}
+              style={{ width: "130px", background: "#1560BD", "&:hover": { background: "#1560BD" } }}
               onClick={() => {
                 sendTeamId(group.team_id);
                 sendTeamName(group.team_name);
@@ -242,7 +242,7 @@ function MyGroupList() {
           <TableCell style={{ textAlign: "center" }}>
             <Button
               variant="contained"
-              style={{ width: "130px" }}
+              style={{ width: "130px", background: "#1560BD", "&:hover": { background: "#1560BD" } }}
               onClick={() => openModal(group.team_id)}
             >
               리포트 보기
@@ -425,11 +425,11 @@ function MyGroupList() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{teamName} 입장하기</DialogTitle>
-        <DialogContent></DialogContent>
-        <DialogActions>
-          <Button onClick={handleToEnter}>입장</Button>
-          <Button onClick={closeEnterM}>x</Button>
+        <DialogTitle id="alert-dialog-title" sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px" }}>{teamName} 입장하기</DialogTitle>
+        <DialogContent id="alert-dialog-description" sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}>열심히 스터디하러 가볼까요?</DialogContent>
+        <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+          <Button onClick={handleToEnter} sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}>입장</Button>
+          <Button onClick={closeEnterM} variant="contained" sx={{ background: "#A91B0D", "&:hover" : { backgroundColor: "#A91B0D" } }}>x</Button>
         </DialogActions>
       </Dialog>
     </>

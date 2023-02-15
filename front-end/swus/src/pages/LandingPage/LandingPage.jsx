@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Button, Card, Typography, Icon } from '@mui/material';
+import { Button, Card, Typography } from '@mui/material';
 import NavBar from "../../components/NavBar/NavBar";
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import GroupIcon from '@mui/icons-material/Group';
@@ -83,16 +83,13 @@ function Item(props) {
 				backgroundRepeat: 'no-repeat',
 				backgroundPosition: 'center center',
 				textAlign: 'center',
-				height: 800,
-				// justifyContent: "center",
+				height: "100vh",
 				display: "flex",
 				flexDirection: "column",
 				opacity: "50%",
 				position: "absolute",
 				width: "100vw",
 				top: 0,
-				// fontFamily: "italic",
-				// fontWeight: "bold"
 			},
 			
 	}
@@ -124,13 +121,10 @@ function Item(props) {
 						variant="fulfilled"
 						style={{ color:"black", 
 											background: "#DEDCEE",
-											// height: "100px",
-											// width: "180px",
 											fontSize: "30px",
 											fontFamily: "Cafe24", 
 											fontWeight: "bold",
 											borderRadius: "15px",
-											fontWeight: "bold",
 											paddingInline: "20px",
 											paddingBlock: "10px" }}
 						onClick={() => {getStart(props.item.url)}}

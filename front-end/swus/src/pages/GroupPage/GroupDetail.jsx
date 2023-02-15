@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box } from "@mui/system";
-import { Button, Grid, Divider, Typography, TextField } from '@mui/material';
+import { Button, Grid, Divider, Typography, TextField, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useNavigate } from 'react-router-dom';
 import inviteMember from '../../components/modals/InviteMember';
@@ -25,7 +25,7 @@ function GroupDetail() {
   const [teamDetails, setTeamDetails] = useState([]);
 
   const [reportData, setReportData] = useState([]);
-
+  const [open, setOpen] = useState(false);
   const [start_time, setStart_time] = useState();
   const [finish_time, setFinish_time] = useState();
   const [studyDays, setStudyDays] = useState();
@@ -73,8 +73,6 @@ function GroupDetail() {
       .then((response) => {
         axios(config2)
           .then((response) => {
-            console.log("리포트 정보")
-            console.log(response.data)
             setReportData(response.data)
           })
       })
@@ -91,6 +89,36 @@ function GroupDetail() {
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const openEnterM = () => {
+    setOpen(true);
+  };
+
+  const closeEnterM = () => {
+    setOpen(false);
+  };
+
+  const handleToEnter = () => {
+    const config = {
+      url: `/grouprooms/${teamId}`,
+      method: "GET",
+    };
+    
+    axios(config)
+      .then((response) => {
+        const sessionName = response.data.sessionName;
+        navigate(`/studyroom/group/${sessionName}`, {
+          state: {
+            roomName: sessionName,
+            round: response.data.round,
+            teamId: teamId,
+            category: teamDetails.category,
+            teamName: teamDetails.team_name,
+            content: response.data.content,
+          }
+        })
+      });
   };
 
   const filterCategory = /S/;
@@ -204,7 +232,7 @@ function GroupDetail() {
                 {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N")
                   ? <Button
                       variant="contained"
-                      sx={{ height: 30, backgroundColor: "red", "&:hover" : { backgroundColor: "red" } }}
+                      sx={{ height: 30, backgroundColor: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}
                       onClick={() => {endGroup(teamId)}}>종료하기</Button>
                   : null}
               </Grid>
@@ -216,7 +244,7 @@ function GroupDetail() {
                         onClick={() => {leaveGroup(teamId)}}
                       >탈퇴하기</Button>
                   : <div>
-                      <Button variant="outlined" onClick={openModal}>
+                      <Button variant="outlined" onClick={openModal} sx={{ color: "#1560BD" }}>
                         리포트 보기
                       </Button>
                       <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
@@ -267,9 +295,18 @@ function GroupDetail() {
                               fontWeight: "bold" }}>{teamDetails.leader}</div>
               </Grid>
                 <Divider orientation='vertical' flexItem sx={{ background: "grey", borderWidth: 1, marginInline: 3 }}/>
-              <Grid item xs={9} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+              <Grid item xs={7} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
                 <div style={{ marginInline: 10, padding: 5}}>그룹원 </div>
                 {getMembers()}
+              </Grid>
+              <Grid item xs={1}></Grid>
+              <Grid item xs={1.3}>
+                <Button 
+                  variant="contained"
+                  sx={{ background: "#1560BD", "&:hover": { background: "#1560BD" } }}
+                  onClick={() => {
+                    openEnterM();
+                  }}>스터디 입장</Button>
               </Grid>
             </Grid>
               <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
@@ -317,7 +354,7 @@ function GroupDetail() {
                 </div>
                 {(teamDetails.team_done === "N")
                   ? <div>
-                      <Button variant="outlined" onClick={openModal}>
+                      <Button variant="outlined" onClick={openModal} sx={{ color: "#1560BD" }}>
                         리포트 보기
                       </Button>
                       <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
@@ -350,11 +387,24 @@ function GroupDetail() {
                 }
               </Container>
               <br/>
-              <Container style={{ overflowY: "scroll", height: "280px" }}>
+              <Container style={{ overflowY: "scroll", height: "250px" }}>
                 {getWeekTopics()}
               </Container>
             </Grid>
           </Container>
+          <Dialog
+            open={open}
+            onClose={closeEnterM}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby='alert-dialog-description'
+          >
+            <DialogTitle id="alert-dialog-title" sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px" }}>{teamDetails.team_name} 입장하기</DialogTitle>
+            <DialogContent id="alert-dialog-description" sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}>열심히 스터디하러 가볼까요?</DialogContent>
+            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+              <Button onClick={handleToEnter} sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}>입장</Button>
+              <Button onClick={closeEnterM} variant="contained" sx={{ background: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}>x</Button>
+            </DialogActions>
+          </Dialog>
         </>
       )
       : <div>loading</div>
