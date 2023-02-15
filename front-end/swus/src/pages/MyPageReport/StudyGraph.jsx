@@ -66,11 +66,11 @@ const ApexChart = () => {
     xaxis: {
       categories: ["Mon", "Tue", "Web", "Thur", "Fri", "Sat", "Sun"],
     },
-    yaxis: {
-      min: 0,
-      max: 24,
-      tickAmount: 6,
-    },
+    // yaxis: {
+    //   min: 0,
+    //   max: 24,
+    //   tickAmount: 6,
+    // },
     fill: {
       opacity: 1,
     },
