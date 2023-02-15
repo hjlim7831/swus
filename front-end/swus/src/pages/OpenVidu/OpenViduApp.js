@@ -52,7 +52,9 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
-      enterTime: props.enterTime,
+      totalTime: props.totalTime,
+      enterHour: props.enterHour,
+      enterMin: props.enterMin,
       d: new Date(), //시계
       open: "first",
     };
@@ -264,7 +266,7 @@ class OpenViduApp extends Component {
   //라운지 이동
   moveToLounge() {
     this.leaveCheck();
-    window.location.replace("http://localhost:3000/lounge");
+    window.location = `${window.location.origin}/lounge`;
   }
 
   joinSession() {
@@ -319,7 +321,12 @@ class OpenViduApp extends Component {
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           //초기화 된 세션에 참가
           mySession
-            .connect(token, { clientData: this.state.myUserName })
+            .connect(token, {
+              clientData: this.state.myUserName,
+              enterHour: this.state.enterHour,
+              enterMin: this.state.enterMin,
+              totalTime: this.state.totalTime,
+            })
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
@@ -397,9 +404,7 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
-
-    window.location.replace("http://localhost:3000/studyroom");
-    // window.location.href = "/studyroom";/
+    window.location = `${window.location.origin}/studyroom`;
   }
 
   render() {
@@ -435,12 +440,6 @@ class OpenViduApp extends Component {
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
 
-                    <IconButton color="primary" aria-label="add an alarm">
-                      <MusicNoteOutlinedIcon />
-                    </IconButton>
-                    <IconButton color="primary" aria-label="quit">
-                      <HighlightOffIcon />
-                    </IconButton>
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -455,21 +454,11 @@ class OpenViduApp extends Component {
                 ) : (
                   <Stack direction="row">
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-                    <IconButton
-                      aria-label="record"
-                      color="primary"
-                      onClick={() => {
-                        this.audioControl();
-                      }}
-                    >
-                      <PlayCircleOutlineIcon />
-                    </IconButton>
-                    <IconButton color="primary" aria-label="add an alarm">
-                      <MusicNoteOutlinedIcon />
-                    </IconButton>
+
                     <IconButton
                       color="primary"
                       aria-label="quit"
+                      sx={{ fontSize: 40 }}
                       onClick={() => {
                         this.leaveSession(); //연결 끊어주고
                         //열람실 메인으로 이동
@@ -479,15 +468,21 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                <h1 style={{ color: "white", paddingTop: "10px" }}>
                   공용 열람실{roomId}
                 </h1>
-                <div style={{ height: 100, paddingTop: "20px" }}>
+                <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
-                    <Box sx={{ height: "100%", mt: "5px" }}>
+                    <Box
+                      sx={{
+                        mt: "5px",
+                        display: "flex",
+                        justifyContent: "flex-start",
+                      }}
+                    >
                       <Box
                         sx={{
                           display: "inline-block",
@@ -616,9 +611,7 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
-                  To-do list
-                </h4>
+                <h4 style={{ color: "white" }}>To-do list</h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -628,7 +621,6 @@ class OpenViduApp extends Component {
                   }}
                 >
                   <MyTodoPublicIn />
-                  {/* <MyTodoPublicIn parentFunction={this.getTodoCount} /> */}
                 </div>
                 <div>
                   <Button
@@ -660,11 +652,13 @@ class OpenViduApp extends Component {
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
+                    gridTemplateRows: "repeat(auto-fill,minMax(31%, auto))",
                     alignContent: "stretch",
                     justifyContent: "stretch",
                     placeItems: "center",
-                    backgroundColor: "pink",
                     padding: "0.5%",
+                    gridGap: "10px",
+                    paddingRight: "20px",
                     // flexWrap: "wrap",
                   }}
                 >
