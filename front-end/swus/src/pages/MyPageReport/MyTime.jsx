@@ -13,7 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 // import { ResponsivePie } from "@nivo/pie";
 import PieChart from "./PieChart";
-
+import "../../App.css";
 import axios from "./../../Utils/index";
 
 function MyTime({ setType }) {
@@ -213,51 +213,48 @@ function MyTime({ setType }) {
           </Grid>
         </Grid>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>목표시간 설정하기</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반
-              공부 => 10, 30 입력
-            </DialogContentText>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="hour"
-                  label="시"
-                  type="number"
-                  fullWidth
-                  variant="standard"
-                  defaultValue={Math.floor(targetTime / 60)}
-                  onChange={changeH}
-                />
+            <DialogTitle sx={{ fontFamily: "Cafe24", textAlign: "center" }}>목표시간 설정하기</DialogTitle>
+            <DialogContent>
+              <DialogContentText sx={{ fontFamily: "Cafe24", textAlign: "center", marginBottom: 3 }}>
+                오늘 공부할 목표 시간을 설정해 주세요 <br />
+                 ex. 오늘 10시간 반공부 : 10, 30 입력
+              </DialogContentText>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="hour"
+                    label="시"
+                    type="number"
+                    fullWidth
+                    variant="outlined"
+                    defaultValue={Math.floor(targetTime / 60)}
+                    onChange={changeH}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="min"
+                    label="분"
+                    type="number"
+                    fullWidth
+                    variant="outlined"
+                    defaultValue={inputMin}
+                    onChange={changeM}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="min"
-                  label="분"
-                  type="number"
-                  fullWidth
-                  variant="standard"
-                  defaultValue={inputMin}
-                  onChange={changeM}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                save();
-              }}
-            >
-              저장
-            </Button>
-          </DialogActions>
-        </Dialog>
+            </DialogContent>
+            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+              <Button 
+                onClick={save}
+                sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}
+              >저장</Button>
+            </DialogActions>
+          </Dialog>
       </Box>
     </>
   );

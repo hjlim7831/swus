@@ -63,7 +63,15 @@ function NSRoomCard(props) {
   return (
     <>
       <Card
-        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
+        style={{ 
+          marginRight: 20, 
+          height: 350, 
+          width: 295, 
+          borderRadius: 10, 
+          backgroundImage: `url(${logo})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          }}
       >
         <div
           style={{
@@ -71,15 +79,6 @@ function NSRoomCard(props) {
             height: 200,
           }}
         >
-          <img
-            style={{
-              width: 300,
-              height: 380,
-              objectFit: "cover",
-              opacity: 1,
-            }}
-            src={logo}
-          />
         </div>
         <CardContent>
           <div style={{ background: "gray", opacity: "35%", position: "absolute", width: "270px", height: "120px", borderRadius: "10px", }}></div>

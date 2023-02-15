@@ -15,12 +15,12 @@ import axios from "../../Utils/index";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import myGroupListSlice from "../../store/MyGroupListSlice";
-
+import DifferenceOutlinedIcon from '@mui/icons-material/DifferenceOutlined';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import Report from "../../components/modals/Report";
 import "../../App.css";
 
@@ -201,14 +201,15 @@ function MyGroupList() {
           </TableCell>
           <TableCell style={{ textAlign: "center" }}>
             <Button
-              variant="contained"
-              style={{ width: "130px", background: "#1560BD", "&:hover": { background: "#1560BD" } }}
+              variant="outlined"
+              // style={{ width: "150px", background: "#1560BD", "&:hover": { background: "#1560BD" } }}
               onClick={() => {
                 sendTeamId(group.team_id);
                 sendTeamName(group.team_name);
                 sendTeamCategory(group.category);
                 openEnterM();
               }}
+              startIcon={<LoginRoundedIcon></LoginRoundedIcon>}
             >
               스터디룸 입장
             </Button>
@@ -231,7 +232,7 @@ function MyGroupList() {
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
             onClick={() => {
-              navigate(`group/${group.team_id}`);
+              navigate(`/group/mystudy/group/${group.team_id}`);
             }}
           >
             <span style={{ cursor: "pointer" }}>{group.team_name}</span>
@@ -241,9 +242,10 @@ function MyGroupList() {
           </TableCell>
           <TableCell style={{ textAlign: "center" }}>
             <Button
-              variant="contained"
-              style={{ width: "130px", background: "#1560BD", "&:hover": { background: "#1560BD" } }}
+              variant="outlined"
+              // style={{ width: "140px", background: "#1560BD", "&:hover": { background: "#1560BD" } }}
               onClick={() => openModal(group.team_id)}
+              startIcon={<DifferenceOutlinedIcon></DifferenceOutlinedIcon>}
             >
               리포트 보기
             </Button>

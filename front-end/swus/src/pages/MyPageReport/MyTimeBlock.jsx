@@ -165,10 +165,11 @@ function MyTime() {
                     width: "100%",
                     height: "15rem",
                     backgroundColor: "F4EFE6",
+                    padding: 2,
                   }}
                 >
                   <Grid item xs={12}>
-                    <Grid container sx={{ marginTop: "3%" }}>
+                    <Grid container sx={{ marginTop: 1 }}>
                       <Grid item xs={6}>
                         나의 목표 시간
                       </Grid>
@@ -212,11 +213,11 @@ function MyTime() {
             </Grid>
           </Grid>
           <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>목표시간 설정하기</DialogTitle>
+            <DialogTitle sx={{ fontFamily: "Cafe24", textAlign: "center" }}>목표시간 설정하기</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반
-                공부 => 10, 30 입력
+              <DialogContentText sx={{ fontFamily: "Cafe24", textAlign: "center", marginBottom: 3 }}>
+                오늘 공부할 목표 시간을 설정해 주세요 <br />
+                 ex. 오늘 10시간 반공부 : 10, 30 입력
               </DialogContentText>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -227,7 +228,7 @@ function MyTime() {
                     label="시"
                     type="number"
                     fullWidth
-                    variant="standard"
+                    variant="outlined"
                     defaultValue={Math.floor(targetTime / 60)}
                     onChange={changeH}
                   />
@@ -240,15 +241,18 @@ function MyTime() {
                     label="분"
                     type="number"
                     fullWidth
-                    variant="standard"
+                    variant="outlined"
                     defaultValue={inputMin}
                     onChange={changeM}
                   />
                 </Grid>
               </Grid>
             </DialogContent>
-            <DialogActions>
-              <Button onClick={save}>저장</Button>
+            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+              <Button 
+                onClick={save}
+                sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}
+              >저장</Button>
             </DialogActions>
           </Dialog>
         </Box>

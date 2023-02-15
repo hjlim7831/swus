@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from "../../Utils/index";
 import { useDispatch, useSelector } from 'react-redux';
 import myGroupListSlice from '../../store/MyGroupListSlice';
-
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 
 
@@ -299,14 +299,18 @@ function GroupDetail() {
                 <div style={{ marginInline: 10, padding: 5}}>그룹원 </div>
                 {getMembers()}
               </Grid>
-              <Grid item xs={1}></Grid>
-              <Grid item xs={1.3}>
-                <Button 
-                  variant="contained"
-                  sx={{ background: "#1560BD", "&:hover": { background: "#1560BD" } }}
+              <Grid item xs={0.7}></Grid>
+              <Grid item xs={1.6}>
+                {(teamDetails.team_done === "N")
+                  ? <Button 
+                  variant="outlined"
+                  // sx={{ background: "#1560BD", "&:hover": { background: "#1560BD" } }}
                   onClick={() => {
                     openEnterM();
-                  }}>스터디 입장</Button>
+                  }}
+                  startIcon={<LoginRoundedIcon></LoginRoundedIcon>}
+                >스터디 입장</Button>
+                  : null }
               </Grid>
             </Grid>
               <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>

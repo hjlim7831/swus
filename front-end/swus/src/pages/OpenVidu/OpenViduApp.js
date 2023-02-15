@@ -431,7 +431,7 @@ class OpenViduApp extends Component {
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
-                  <Stack direction="row">
+                  <Stack direction="row" sx={{ display: "flex", justifyContent: "flex-end" }}>
                     {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
 
                     <IconButton
