@@ -9,6 +9,7 @@ import TodoJandi from "./TodoJandi";
 
 function MyReport() {
   const [type, setType] = useState("todo");
+  const [jandiType, setJandiType] = useState("todo");
 
   return (
     <>
@@ -31,10 +32,10 @@ function MyReport() {
         </Grid>
         <Grid item xs={12}>
           <Box>
-            {type === "todo" ? (
-              <TodoJandi setType={setType} />
+            {jandiType === "todo" ? (
+              <TodoJandi setJandiType={setJandiType} />
             ) : (
-              <TimeJandi setType={setType} />
+              <TimeJandi setJandiType={setJandiType} />
             )}
           </Box>
         </Grid>

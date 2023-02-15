@@ -102,7 +102,7 @@ const ApexChart = () => {
       >
         <Grid container>
           <Grid item xs={12}>
-            <h3 style={{ marginLeft: "50px" }}>주간 공부 기록</h3>
+            <h3 style={{ marginLeft: "50px" }}>📊 주간 공부 기록</h3>
             {/* <p>{ series[0].data }</p> */}
           </Grid>
 

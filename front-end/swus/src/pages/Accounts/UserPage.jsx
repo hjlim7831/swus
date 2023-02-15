@@ -20,7 +20,7 @@ export default function UserPage() {
     <>
       <NavBar />
       <ThemeProvider theme={theme}>
-        <Grid container component="main" sx={{ height: "100vh" }}>
+        <Grid container component="main" sx={{ height: "100vh", width: "80%", mx: 20, my: 8 }}>
           <CssBaseline />
           <Grid
             item
@@ -30,7 +30,6 @@ export default function UserPage() {
             sx={{
               backgroundImage: `url(${loginback})`,
               backgroundRepeat: "no-repeat",
-              backgroundColor: "#1A1E33",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -47,8 +46,8 @@ export default function UserPage() {
           >
             <Box
               sx={{
-                my: 10,
                 mx: 4,
+                my: 2,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

@@ -122,13 +122,13 @@ export default function SignInSide() {
   return (
     <>
       <Typography
-        component="h1"
+        component="h2"
         variant="h5"
         sx={{
           mb: 3,
           mt: 1,
-          display: "flex",
-          alignContent: "space-between",
+          // display: "flex",
+          // alignContent: "space-between",
           color: "#5F3A42",
         }}
       >
@@ -139,9 +139,9 @@ export default function SignInSide() {
           style={{
             textDecoration: "none",
             color: "black",
-            marginLeft: 100,
             fontSize: 17,
             color: "#5F3A42",
+            marginLeft: "10rem"
           }}
         >
           Sign Up
@@ -173,6 +173,7 @@ export default function SignInSide() {
             name="email"
             autoComplete="email"
             autoFocus
+            sx={{ mb: 3 }}
             error={inputData.email && !emailCheck.test(inputData.email)}
             onChange={inputSubmit}
           />

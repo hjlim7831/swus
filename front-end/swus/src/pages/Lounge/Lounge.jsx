@@ -3,8 +3,13 @@ import { Box, height } from "@mui/system";
 import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
-import motivationImg from "../../image/Lounge/motivation.jpg";
-// import { steching } from "./../../man-with-arms-and-one-leg-streching-position.png"
+// import motivationImg from "../../image/Lounge/motivation.jpg";
+import stretching from "../../image/Lounge/stretching.png";
+import stretchingMain from "../../image/Lounge/stretching-main.png";
+import stretchingBack from "../../image/Lounge/stretching-back.png";
+import stretchingWaist from "../../image/Lounge/stretching-waist.png";
+import stretchingLeg from "../../image/Lounge/stretching-leg.png";
+import stretchingShoulder from "../../image/Lounge/stretching-shoulder.png";
 
 export default function Lounge() {
   const loungeurl = useSelector((state) => state.loungeurl);
@@ -68,30 +73,31 @@ export default function Lounge() {
       id: "neck",
       name: "목",
       color: "#FFE0E0",
-      imageUrl:
-        "https://www.figma.com/file/UuETcaqRfTnkUNITtmAeYT/UI?node-id=819%3A280&t=L5Vm5CGoNV8Nym3o-4v",
+      // imageUrl: stretching,
     },
     {
       id: "back",
       name: "등",
       color: "#EBEBEB",
+      // imageUrl: stretching,
     },
     {
       id: "shoulder",
       name: "어깨",
       color: "#FFECDA",
-      imageUrl:
-        "https://www.figma.com/file/UuETcaqRfTnkUNITtmAeYT/UI?node-id=819%3A278&t=L5Vm5CGoNV8Nym3o-4",
+      // imageUrl: stretching,
     },
     {
       id: "waist",
       name: "허리",
       color: "#EBEBEB",
+      // imageUrl: stretching,
     },
     {
       id: "leg",
       name: "다리",
       color: "#FFFBED",
+      // imageUrl: stretching,
     },
   ];
 
@@ -175,14 +181,14 @@ export default function Lounge() {
                         fontWeight: "bold",
                         fontSize: "25px",
                         display: "flex",
-                        justifyContent: "flex-start",
+                        justifyContent: "space-between",
                       }}
                       onClick={() => {
                         ChooseUrl(data.id);
                       }}
                     >
                       <span>{data.name} 운동하기</span>
-                      {/* <img src={steching} alt="title" /> */}
+                      {/* <img src={data.imageUrl} alt="title" style={{ width: "3rem", height: "3rem" }} /> */}
                     </Button>
                   );
                 })}
@@ -199,9 +205,9 @@ export default function Lounge() {
                   borderRadius: 2,
                   mt: "1rem",
                   marginLeft: "3rem",
-                  backgroundImage: `url(${motivationImg})`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
+                  // backgroundImage: `url(${motivationImg})`,
+                  // backgroundRepeat: "no-repeat",
+                  // backgroundSize: "cover",
                 }}
               >
                 <Typography
@@ -211,7 +217,7 @@ export default function Lounge() {
                     mb: "1rem",
                     fontSize: "30px",
                     fontWeight: "bold",
-                    color: "black",
+                    color: "white",
                   }}
                 >
                   동기부여 영상 보기
@@ -222,7 +228,7 @@ export default function Lounge() {
                       mx: "3rem",
                       my: "1rem",
                       fontSize: "20px",
-                      color: "black",
+                      color: "white",
                     }}
                   >
                     공부 동기가 필요한 당신... <br />
@@ -250,7 +256,7 @@ export default function Lounge() {
                   >
                     GO!
                   </Button>
-                  <div
+                  {/* <div
                     style={{
                       backgroundColor: "white",
                       opacity: "30%",
@@ -259,7 +265,7 @@ export default function Lounge() {
                       height: "15rem",
                       borderRadius: 2,
                     }}
-                  ></div>
+                  ></div> */}
                 </Box>
               </Box>
             </Grid>
