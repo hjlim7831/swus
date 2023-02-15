@@ -74,7 +74,7 @@ function MyTodoPublicMain() {
         }}
       >
         <Grid container>
-          <Grid item xs={12} sx={{ marginTop: "8%" }}>
+          <Grid item xs={12}>
             <MyTodoForm
               handleSubmit={handleSubmit}
               value={value}

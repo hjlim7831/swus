@@ -309,12 +309,12 @@ class OpenViduApp extends Component {
           <Grid container spacing={1}>
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
-                <Stack direction="row"></Stack>{" "}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>
+              <Stack direction="row"></Stack>{" "}
+                <h1 style={{ color: "white", paddingTop: "5px" }}>
                   {this.state.teamName}
                 </h1>
-                <h5 style={{ color: "white" }}>{this.state.round}회차</h5>
-                <h4 style={{ color: "white", marginTop: "-20px" }}>
+                 <h5 style={{ color: "white" }}>{this.state.round}회차</h5>
+                 <h4 style={{ color: "white", marginTop: "-20px" }}>
                   {this.state.content}
                 </h4>
                 <div style={{ height: 100 }}>
@@ -322,7 +322,7 @@ class OpenViduApp extends Component {
                     <p style={{ color: "white" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
-                    <Box sx={{ height: "100%" }}>
+                    <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start" }}>
                       <Box
                         sx={{
                           display: "inline-block",
@@ -547,21 +547,7 @@ class OpenViduApp extends Component {
     );
   }
 
-  /**
-   * --------------------------------------------
-   * GETTING A TOKEN FROM YOUR APPLICATION SERVER
-   * --------------------------------------------
-   * The methods below request the creation of a Session and a Token to
-   * your application server. This keeps your OpenVidu deployment secure.
-   *
-   * In this sample code, there is no user control at all. Anybody could
-   * access your application server endpoints! In a real production
-   * environment, your application server must identify the user to allow
-   * access to the endpoints.
-   *
-   * Visit https://docs.openvidu.io/en/stable/application-server to learn
-   * more about the integration of OpenVidu in your application server.
-   */
+
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);
     return await this.createToken(sessionId);

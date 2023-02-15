@@ -461,15 +461,15 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                <h1 style={{ color: "white", paddingTop: "10px" }}>
                   공용 열람실{roomId}
                 </h1>
-                <div style={{ height: 100, paddingTop: "20px" }}>
+                <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
-                    <Box sx={{ height: "100%", mt: "5px" }}>
+                    <Box sx={{ mt: "5px", display: "flex", justifyContent: "flex-start" }}>
                       <Box
                         sx={{
                           display: "inline-block",
@@ -598,7 +598,7 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                <h4 style={{ color: "white" }}>
                   To-do list
                 </h4>
                 <div
