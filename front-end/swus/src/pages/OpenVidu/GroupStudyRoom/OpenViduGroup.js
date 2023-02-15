@@ -204,17 +204,24 @@ class OpenViduApp extends Component {
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
+              let audioControl = false;
+              if (this.state.roomType === "S") {
+                console.log(this.state.roomType);
+                audioControl = true;
+                console.log(audioControl);
+              }
+
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                publishAudio: audioControl, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                 resolution: "1200x350", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                mirror: true, // Whether to mirror your local video or not
+                mirror: false, // Whether to mirror your local video or not
               });
 
               // --- 6) Publish your stream ---
@@ -223,9 +230,7 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter(
-                (device) => device.kind === "videoinput"
-              );
+              var videoDevices = devices.filter((device) => device.kind === "videoinput");
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -309,13 +314,9 @@ class OpenViduApp extends Component {
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
                 <Stack direction="row"></Stack>{" "}
-                <h1 style={{ color: "white", paddingTop: "5px" }}>
-                  {this.state.teamName}
-                </h1>
+                <h1 style={{ color: "white", paddingTop: "5px" }}>{this.state.teamName}</h1>
                 <h5 style={{ color: "white" }}>{this.state.round}회차</h5>
-                <h4 style={{ color: "white", marginTop: "-20px" }}>
-                  {this.state.content}
-                </h4>
+                <h4 style={{ color: "white", marginTop: "-20px" }}>{this.state.content}</h4>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
@@ -338,10 +339,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {hoursTen}
                         </Typography>
                       </Box>
@@ -355,10 +353,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {hoursOne}
                         </Typography>
                       </Box>
@@ -383,10 +378,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {minutesTen}
                         </Typography>
                       </Box>
@@ -401,10 +393,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {minutesOne}
                         </Typography>
                       </Box>
@@ -429,10 +418,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {secondsTen}
                         </Typography>
                       </Box>
@@ -446,19 +432,14 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {secondsOne}
                         </Typography>
                       </Box>
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
-                  To-do list
-                </h4>
+                <h4 style={{ color: "white", paddingTop: "20px" }}>To-do list</h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -467,10 +448,7 @@ class OpenViduApp extends Component {
                     borderRadius: "5px",
                   }}
                 >
-                  <GroupTodoBlock
-                    groupId={this.state.teamId}
-                    round={this.state.round}
-                  />
+                  <GroupTodoBlock groupId={this.state.teamId} round={this.state.round} />
                 </div>
                 <div>
                   <Button
@@ -506,8 +484,7 @@ class OpenViduApp extends Component {
                       id="video-container"
                       style={{
                         display: "grid",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(31%, auto))",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
                         gridTemplateRows: "repeat(auto-fit, minmax(50%, auto))",
                         placeItems: "center",
                         padding: "5px",
@@ -519,9 +496,7 @@ class OpenViduApp extends Component {
                       {this.state.publisher !== undefined ? (
                         <div
                           className="stream-container"
-                          onClick={() =>
-                            this.handleMainVideoStream(this.state.publisher)
-                          }
+                          onClick={() => this.handleMainVideoStream(this.state.publisher)}
                           style={{ width: "100%", height: "100%" }}
                         >
                           <GroupUserVideo
@@ -565,9 +540,7 @@ class OpenViduApp extends Component {
       axios
         .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
           headers: {
-            Authorization: `Basic ${Base64.encode(
-              `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-            )}`,
+            Authorization: `Basic ${Base64.encode(`OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`)}`,
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
@@ -595,19 +568,13 @@ class OpenViduApp extends Component {
     return new Promise((resolve, reject) => {
       let data = {};
       axios
-        .post(
-          `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-          data,
-          {
-            headers: {
-              Authorization: `Basic ${Base64.encode(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-              )}`,
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-          }
-        )
+        .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, data, {
+          headers: {
+            Authorization: `Basic ${Base64.encode(`OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`)}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
         .then((response) => {
           resolve(response.data.token);
         })
