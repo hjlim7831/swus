@@ -64,6 +64,7 @@ class OpenViduApp extends Component {
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.leaveCheck = this.leaveCheck.bind(this);
+    this.moveToLounge = this.moveToLounge.bind(this);
   }
 
   componentDidMount() {
@@ -191,16 +192,22 @@ class OpenViduApp extends Component {
 
     //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
     //기존 입장 시간
-    const inH = parseInt(localStorage.getItem("inHour"));
-    const inM = parseInt(localStorage.getItem("inMin"));
+    // const inH = parseInt(localStorage.getItem("inHour"));
+    // const inM = parseInt(localStorage.getItem("inMin"));
+
+    const inH = parseInt(this.state.enterHour);
+    const inM = parseInt(this.state.enterMin);
+    console.log("입장 시간 시/분", inH, " ", inM);
 
     //현재 시간
     const nowH = parseInt(this.state.d.getHours());
     const nowM = parseInt(this.state.d.getMinutes());
 
     //누적된 총 시간
-    const totalH = parseInt(localStorage.getItem("totalH"));
-    const totalM = parseInt(localStorage.getItem("totalM"));
+    // const totalH = parseInt(localStorage.getItem("totalH"));
+    // const totalM = parseInt(localStorage.getItem("totalM"));
+    const totalH = parseInt(this.state.totalTime / 60);
+    const totalM = parseInt(this.state.totalTime % 60);
 
     if (inH <= nowH) {
       //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
@@ -214,23 +221,13 @@ class OpenViduApp extends Component {
       };
 
       axiosUtils(config).then((res) => {
+        console.log("조건1");
+        console.log(totalH * 60 + totalM + cal);
         console.log(res);
       });
 
-      // axios({
-      //   method: "put",
-      //   url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-      //   headers: { Authorization: `Bearer ${Token}` },
-      //   data: {
-      //     now_total_time: totalH * 60 + totalM + cal,
-      //   },
-      // }).then((res) => {
-      //   console.log(res);
-      // });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
+      // localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      // localStorage.setItem("totalM", totalM + (cal % 60));
     } else {
       //앞시간이 더 큰 숫자일 경우 ex 18시~1시
       const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
@@ -243,23 +240,13 @@ class OpenViduApp extends Component {
       };
 
       axiosUtils(config).then((res) => {
+        console.log("조건 2");
+        console.log(totalH * 60 + totalM + cal);
         console.log(res);
       });
 
-      // axios({
-      //   method: "put",
-      //   url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-      //   headers: { Authorization: `Bearer ${Token}` },
-      //   data: {
-      //     now_total_time: totalH * 60 + totalM + cal,
-      //   },
-      // }).then((res) => {
-      //   console.log(res);
-      // });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
+      // localStorage.setItem("totalH", totalH + parseInt(cal / 60));
+      // localStorage.setItem("totalM", totalM + (cal % 60));
     }
   }
 
@@ -340,7 +327,7 @@ class OpenViduApp extends Component {
                 resolution: "1200x330", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                mirror: false, // Whether to mirror your local video or not
+                mirror: true, // Whether to mirror your local video or not
               });
 
               // --- 6) Publish your stream ---
@@ -404,7 +391,7 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
-    window.location = `${window.location.origin}/studyroom`;
+    // window.location = `${window.location.origin}/studyroom`;
   }
 
   render() {
@@ -635,6 +622,7 @@ class OpenViduApp extends Component {
                       color: "#1A1E33",
                       fontSize: "20px",
                     }}
+                    onClick={this.moveToLounge}
                   >
                     휴게실 바로가기
                   </Button>

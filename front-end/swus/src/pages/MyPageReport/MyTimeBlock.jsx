@@ -41,8 +41,8 @@ function MyTime() {
         setTargetTime(Time);
         console.log("여기 데이터");
         console.log(res.data);
-        setInputHour(Math.floor(Time / 60));
-        setInputMin(Time % 60);
+        setInputHour(parseInt(Math.floor(Time / 60)));
+        setInputMin(parseInt(Time % 60));
       })
       .then((res) => {
         const config2 = {
@@ -53,7 +53,7 @@ function MyTime() {
         axios(config2).then((res) => {
           console.log("여기는 공부시간");
           console.log(res.data.now_total_time);
-          setStudyTime(res.data.now_total_time);
+          setStudyTime(parseInt(res.data.now_total_time));
         });
       });
   }, []);

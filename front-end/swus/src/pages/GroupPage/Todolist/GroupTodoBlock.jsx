@@ -82,17 +82,22 @@ function GroupTodoBlock(props) {
     <>
       <Grid container>
         <Grid item xs={12}>
+          <GroupTodoForm
+            handleSubmit={handleSubmit}
+            value={value}
+            setValue={setValue}
+          />
           <Box
             sx={{
               position: "relative",
               overflow: "auto",
               overflowX: "hidden",
-              width: "100%",
+              width: "93%",
               marginX: "auto",
-              height: 360,
+              height: 400,
+              paddingBottom: "20px",
             }}
           >
-            <GroupTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
             <GroupTodoList
               todoData={todoData}
               setTodoData={setTodoData}

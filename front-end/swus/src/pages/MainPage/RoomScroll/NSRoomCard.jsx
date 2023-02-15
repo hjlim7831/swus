@@ -61,7 +61,7 @@ function NSRoomCard(props) {
   return (
     <>
       <Card
-        style={{ marginRight: 20, height: 350, width: 295, borderRadius: 10 }}
+        style={{ marginRight: 20, height: 370, width: 295, borderRadius: 10 }}
       >
         <div
           style={{
@@ -82,7 +82,8 @@ function NSRoomCard(props) {
         <CardContent>
           <div style={{ width: 200 }}>
             <Typography sx={{ fontSize: 20 }} color="white">
-              NonStop 열람실 #{sessionName}
+              NonStop 열람실
+              <br />#{roomId}
             </Typography>
           </div>
         </CardContent>

@@ -263,7 +263,7 @@ function StudyRoomMain() {
                 </IconButton>
               </Grid>
             </Grid>
-            <Grid container sx={{ marginTop: "2%" }}>
+            <Grid container sx={{ marginTop: "3%" }}>
               <Grid
                 item
                 xs={11.2}

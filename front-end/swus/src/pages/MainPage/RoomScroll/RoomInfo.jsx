@@ -12,7 +12,7 @@ function roomInfo() {
         style={{
           marginRight: 20,
           background: "#352E2B",
-          height: 350,
+          height: 370,
           width: 295,
           borderRadius: 10,
         }}

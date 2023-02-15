@@ -14,8 +14,6 @@ export default class UserVideoComponent extends Component {
 
     this.state = {
       d: new Date(),
-      // todo: this.props.todo,
-      // done: this.props.done,
     };
   }
 

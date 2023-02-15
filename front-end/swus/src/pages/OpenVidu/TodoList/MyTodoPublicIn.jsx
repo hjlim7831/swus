@@ -89,8 +89,12 @@ function MyTodoPublicIn() {
         }}
       >
         <Grid container>
-          <Grid item xs={12} sx={{ marginTop: "8%" }}>
-            <MyTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
+          <Grid item xs={12} sx={{ marginTop: "3%" }}>
+            <MyTodoForm
+              handleSubmit={handleSubmit}
+              value={value}
+              setValue={setValue}
+            />
             <Box
               sx={{
                 position: "relative",

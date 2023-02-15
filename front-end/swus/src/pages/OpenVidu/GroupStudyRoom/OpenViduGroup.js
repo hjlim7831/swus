@@ -120,7 +120,6 @@ class OpenViduApp extends Component {
   }
 
   leaveCheck() {
-    const Token = sessionStorage.getItem("token");
     console.log("그룹 방 퇴장");
     console.log(this.state.teamId);
     console.log(this.state.round);
@@ -210,12 +209,12 @@ class OpenViduApp extends Component {
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
+                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                 resolution: "1200x350", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                mirror: false, // Whether to mirror your local video or not
+                mirror: true, // Whether to mirror your local video or not
               });
 
               // --- 6) Publish your stream ---
@@ -465,6 +464,7 @@ class OpenViduApp extends Component {
                     backgroundColor: "#F4EFE6",
                     height: "100%",
                     padding: 5,
+                    borderRadius: "5px",
                   }}
                 >
                   <GroupTodoBlock
