@@ -7,7 +7,7 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
+import "../../App.css";
 import axios from "./../../Utils/index";
 import Swal from "sweetalert2";
 
@@ -130,6 +130,7 @@ export default function SignInSide() {
           display: "flex",
           alignContent: "space-between",
           color: "#5F3A42",
+          fontFamily: "Cafe24"
         }}
       >
         Sign in
@@ -142,6 +143,7 @@ export default function SignInSide() {
             marginLeft: 100,
             fontSize: 17,
             color: "#5F3A42",
+            marginTop: 5,
           }}
         >
           Sign Up

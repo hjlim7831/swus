@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from 'uuid';
-import groupBoardSlice from '../../store/GroupBoardSlice';
+import "../../App.css";
 
 
 
@@ -147,7 +147,7 @@ function CreateArticleForm() {
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px", marginTop: 3, background: "white" }}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
-							<p style={{ paddingLeft: 10, display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+							<p style={{ paddingLeft: 10, marginLeft: 10, display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center", fontFamily: "Cafe24" }}>
 								게시글 작성
 							</p>
 							<div style={{ display: "flex", alignItems: "center" }}>

@@ -13,7 +13,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 // import { ResponsivePie } from "@nivo/pie";
 import PieChart from "./PieChart";
 import Typography from "@mui/material/Typography";
-
+import "../../App.css";
 import axios from "./../../Utils/index";
 
 function MyTime() {
@@ -118,6 +118,7 @@ function MyTime() {
             fontSize: 25,
             color: "white",
             my: "1rem",
+            fontFamily: "Cafe24",
           }}
         >
           목표 공부 시간

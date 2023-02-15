@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import { Box } from "@mui/system";
 import { Grid } from "@mui/material";
 import axios from "./../../Utils/index";
+import "../../App.css";
 
 const ApexChart = () => {
   const [series, setSeries] = useState([]);
@@ -102,7 +103,7 @@ const ApexChart = () => {
       >
         <Grid container>
           <Grid item xs={12}>
-            <h3 style={{ marginLeft: "50px" }}>주간 공부 기록</h3>
+            <h2 style={{ marginLeft: "50px", fontFamily: "Cafe24" }}>주간 공부 기록</h2>
             {/* <p>{ series[0].data }</p> */}
           </Grid>
 

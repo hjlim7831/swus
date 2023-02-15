@@ -7,9 +7,8 @@ import TextField from "@mui/material/TextField";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-
+import "../../App.css";
 import axios from "../../Utils/index";
-
 import Swal from 'sweetalert2';
 
 export default function MyInfo() {
@@ -134,7 +133,7 @@ export default function MyInfo() {
       >
         <Grid container>
           <Grid item xs={3}>
-            <h3 style={{ marginLeft: "15px" }}>내 정보</h3>
+            <h2 style={{ marginLeft: "20px", fontFamily: "Cafe24" }}>내 정보</h2>
           </Grid>
           <Grid item xs={3} sx={{ marginLeft: "50%" }}>
             <IconButton

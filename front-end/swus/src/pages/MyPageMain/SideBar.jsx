@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 // import "./SideBar.css";
 import { useNavigate } from "react-router-dom";
+import "../../App.css";
 
 
 const drawerWidth = 240;
@@ -22,11 +23,11 @@ export default function MiniDrawer(props) {
   const sideItems = window.location.pathname.slice(8, 15) === "profile"
     ? [
       { name: "PROFILE", path: `profile`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
-      { name: "MY REPORT", path: `myreport`, backgroundColor: "#1A1E33", color: "white"}
+      { name: "MY REPORT", path: `myreport`, backgroundColor: "#1A1E33", color: "white" }
     ]
     : [
       { name: "PROFILE", path: `profile`, backgroundColor: "#1A1E33", color: "white" },
-      { name: "MY REPORT", path: `myreport`, backgroundColor: "#DEDCEE", color: "#1A1E33"} 
+      { name: "MY REPORT", path: `myreport`, backgroundColor: "#DEDCEE", color: "#1A1E33" } 
     ]
 
 
@@ -48,8 +49,9 @@ export default function MiniDrawer(props) {
                 color: item.color,
                 width: "180px",
                 height: "60px",
-                fontSize: "20px",
+                fontSize: "25px",
                 marginBlock: "20px",
+                fontFamily: "Cafe24_e"
               }}
               onClick={() => {navigate(item.path)}}
           >{item.name}</Button>

@@ -22,6 +22,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import Report from "../../components/modals/Report";
+import "../../App.css";
 
 function MyGroupList() {
   const navigate = useNavigate();
@@ -178,21 +179,19 @@ function MyGroupList() {
   }
 
   function getIngGroups() {
-    return ingGroups.slice(page * 8, (page + 1) * 8).map((group) => {
+    return ingGroups.slice(page * 7, (page + 1) * 7).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
           <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
-            {group.category === "S" ? (
-              <span style={{ color: "red" }}>[스터디]</span>
-            ) : (
-              <span style={{ color: "blue" }}>[메이트]</span>
-            )}
+            {group.category === "S"
+              ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
+              : <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
           </TableCell>
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
             onClick={() => {
-              navigate(`group/${group.team_id}`);
+              navigate(`/group/mystudy/group/${group.team_id}`);
             }}
           >
             <span style={{ cursor: "pointer" }}>{group.team_name}</span>
@@ -220,16 +219,14 @@ function MyGroupList() {
   }
 
   function getFinishedGroups() {
-    return finishedGroups.slice(page * 8, (page + 1) * 8).map((group) => {
+    return finishedGroups.slice(page * 7, (page + 1) * 7).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
           <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
-            {group.category === "S" ? (
-              <span style={{ color: "red" }}>[스터디]</span>
-            ) : (
-              <span style={{ color: "blue" }}>[메이트]</span>
-            )}
+            {group.category === "S"
+               ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
+               : <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
           </TableCell>
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
@@ -334,6 +331,7 @@ function MyGroupList() {
               fontWeight: "bold",
               fontSize: "30px",
               textAlign: "center",
+              fontFamily: "Cafe24",
             }}
           >
             <span>내 스터디룸</span>
@@ -357,7 +355,7 @@ function MyGroupList() {
                         label="진행중인 스터디"
                         style={
                           value === 0
-                            ? { color: "black", width: "100%", fontWeight: "bold", marginRight: 10 }
+                            ? { color: "black", width: "100%", fontWeight: "bold", marginRight: 10, fontFamily: "Cafe24", fontSize: "20px" }
                             : {
                                 backgroundColor: "white",
                                 width: "100%",
@@ -371,7 +369,7 @@ function MyGroupList() {
                         label="완료된 스터디"
                         style={
                           value === 1
-                            ? { color: "black", width: "100%", fontWeight: "bold", marginRight: 10 }
+                            ? { color: "black", width: "100%", fontWeight: "bold", marginRight: 10, fontFamily: "Cafe24", fontSize: "20px" }
                             : {
                                 backgroundColor: "white",
                                 width: "100%",
@@ -412,7 +410,7 @@ function MyGroupList() {
                 <TablePagination
                   count={value === 0 ? ingGroups.length : finishedGroups.length}
                   page={page}
-                  rowsPerPage={8}
+                  rowsPerPage={7}
                   rowsPerPageOptions={[]}
                   onPageChange={handleChangePage}
                 />

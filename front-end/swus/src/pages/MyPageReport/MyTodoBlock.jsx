@@ -7,6 +7,7 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
 
 import axios from "./../../Utils/index";
+import "../../App.css";
 
 // import { useSelector, useDispatch } from "react-redux";
 // import { addTodoList } from "./../../store/TodoList";
@@ -79,7 +80,7 @@ function MyTodoBlock({ setType }) {
       >
         <Grid container>
           <Grid item xs={5}>
-            <h3 style={{ marginLeft: "40px" }}>To-Do List</h3>
+            <h2 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>To-Do List</h2>
           </Grid>
           <Grid item xs={7}>
             <IconButton

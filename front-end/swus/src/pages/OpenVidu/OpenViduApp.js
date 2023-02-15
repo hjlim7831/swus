@@ -31,6 +31,7 @@ import startBreak from "../../components/modals/StartBreak";
 import endBreak from "../../components/modals/EndBreak";
 import { v4 as uuidv4 } from "uuid";
 import axiosUtils from "./../../Utils/index";
+import "../../App.css";
 
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -461,12 +462,12 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "10px" }}>
+                <h1 style={{ color: "white", paddingTop: "10px", fontFamily: "Cafe24" }}>
                   공용 열람실{roomId}
                 </h1>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
-                    <p style={{ color: "white" }}>
+                    <p style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
                     <Box sx={{ mt: "5px", display: "flex", justifyContent: "flex-start" }}>
@@ -598,7 +599,7 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white" }}>
+                <h4 style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
                   To-do list
                 </h4>
                 <div
@@ -623,6 +624,7 @@ class OpenViduApp extends Component {
                       height: "50px",
                       color: "#1A1E33",
                       fontSize: "20px",
+                      fontFamily: "Cafe24"
                     }}
                   >
                     휴게실 바로가기

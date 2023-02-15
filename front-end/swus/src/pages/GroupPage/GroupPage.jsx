@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from "uuid";
-import groupBoardSlice from '../../store/GroupBoardSlice';
+import "../../App.css";
 
 
 const filterCategory = /S/;
@@ -56,7 +56,8 @@ function GroupPage() {
 											fontWeight: "bold", 
 											fontSize: "30px", 
 											textAlign: "center",
-											marginLeft: 20 }}>
+											marginLeft: 20,
+											fontFamily: "Cafe24" }}>
 						<span>✏️스터디 모집게시판</span>
 					</p>
 					<Button 
@@ -102,7 +103,7 @@ function GroupPage() {
 											<span style={{ cursor: "pointer" }}>{article.title}</span>
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>
-										{(article.recruitment_done === "N") ? "📢모집중" : "✔모집 완료"}
+										{(article.recruitment_done === "N") ? "📢모집중" : "✔모집 완료" }
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.write_at}</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.views}</TableCell>

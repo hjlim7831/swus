@@ -123,7 +123,7 @@ function MyTime({ setType }) {
       >
         <Grid container>
           <Grid item xs={5}>
-            <h3 style={{ marginLeft: "40px" }}>공부 목표 시간</h3>
+            <h2 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>공부 목표 시간</h2>
           </Grid>
           <Grid item xs={1}>
             <IconButton

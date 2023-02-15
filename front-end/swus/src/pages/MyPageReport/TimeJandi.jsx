@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Grid } from "@mui/material";
 import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
-
+import "../../App.css";
 import axios from "./../../Utils/index";
 
 function TodoJandi() {
@@ -97,7 +97,7 @@ function TodoJandi() {
             xs={12}
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
-            <h3 style={{ marginLeft: "40px" }}>{nickname}의 공부시간 기록</h3>
+            <h2 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>{nickname}의 공부시간 기록</h2>
             <div>
               {/* 색변경 아이콘들 */}
               <FormatColorFillIcon

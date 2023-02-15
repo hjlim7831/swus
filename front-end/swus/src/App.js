@@ -26,6 +26,7 @@ import GRoom from "./pages/StudyCam/GRoom";
 import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css"
 
 export default function App() {
   return (

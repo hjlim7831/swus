@@ -112,7 +112,7 @@ function Report (props) {
 															display: "flex",
 															flexDirection: "column" }}>
 									<span style={{ verticalAlign: "middle", display: "inline-block", marginBlock: 5 }}>{topic.round}주차</span>
-									<span style={{ marginBlock: 5 }}>2023-02-24</span>
+									<span style={{ marginBlock: 5 }}>{topic.study_at}</span>
 								</div>
 							</Grid>
 							<Grid item xs={8} sx={{ marginBottom: 5}}>

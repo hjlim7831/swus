@@ -4,7 +4,6 @@ import { Base64 } from "js-base64";
 import axios from "axios";
 import axiosUtils from "./../../../Utils/index";
 import React, { Component } from "react";
-// import "./App.css";
 import GroupUserVideo from "./GroupUserVideo";
 
 //열람실 내부 컴포넌트용
@@ -20,6 +19,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import Typography from "@mui/material/Typography";
 import GroupTodoBlock from "../../GroupPage/Todolist/GroupTodoBlock";
+import "../../../App.css";
 
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -310,16 +310,16 @@ class OpenViduApp extends Component {
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
               <Stack direction="row"></Stack>{" "}
-                <h1 style={{ color: "white", paddingTop: "5px" }}>
+                <h1 style={{ color: "white", paddingTop: "5px", fontFamily: "Cafe24" }}>
                   {this.state.teamName}
                 </h1>
-                 <h5 style={{ color: "white" }}>{this.state.round}회차</h5>
-                 <h4 style={{ color: "white", marginTop: "-20px" }}>
+                 <h5 style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>{this.state.round}회차</h5>
+                 <h4 style={{ color: "white", marginTop: "-20px", fontFamily: "Cafe24", fontSize: "30px" }}>
                   {this.state.content}
                 </h4>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
-                    <p style={{ color: "white" }}>
+                    <p style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
                     <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start" }}>
@@ -451,7 +451,7 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                <h4 style={{ color: "white", paddingTop: "20px", fontFamily: "Cafe24", fontSize: "20px" }}>
                   To-do list
                 </h4>
                 <div
@@ -478,6 +478,7 @@ class OpenViduApp extends Component {
                       height: "50px",
                       color: "#1A1E33",
                       fontSize: "20px",
+                      fontFamily: "Cafe24",
                     }}
                     onClick={() => {
                       this.leaveSession();

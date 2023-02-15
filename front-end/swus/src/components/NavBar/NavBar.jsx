@@ -19,6 +19,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
 import logo from "./../../logo.png";
+import "../../App.css";
 
 const drawerWidth = 240;
 const position = window.location.pathname
@@ -58,7 +59,8 @@ function DrawerAppBar(props) {
     <Box
       onClick={handleDrawerToggle}
       sx={{ textAlign: "center",
-            height: "100vh" }}
+            height: "100vh",
+            background: "#1A1E33" }}
     >
       <Typography variant="h6" sx={{ my: 2 }}>
         <img
@@ -74,7 +76,7 @@ function DrawerAppBar(props) {
         {navItems.map((item) => (
           <ListItem key={item.name} disablePadding>
             <ListItemButton
-              sx={{ textAlign: "center", color: "white" }}
+              sx={{ textAlign: "center", color: "white", fontFamily: "Cafe24" }}
               onClick={() => {
                 if (item.name === "Logout") {
                   logout();
@@ -135,7 +137,7 @@ function DrawerAppBar(props) {
             {navItems.map((item) => (
               <Button
                 key={item.name}
-                sx={{ color: "#fff", fontSize: "22px", marginInline: "15px", fontFamily: "italic", fontWeight: "bold" }}
+                sx={{ color: "#fff", fontSize: "22px", marginInline: "15px", fontFamily: "Cafe24", fontWeight: "bold" }}
                 onClick={() => {
                   if (item.name === "Logout") {
                     logout();

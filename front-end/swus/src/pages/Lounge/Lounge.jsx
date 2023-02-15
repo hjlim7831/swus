@@ -4,6 +4,7 @@ import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 // import { steching } from "./../../man-with-arms-and-one-leg-streching-position.png"
+import "../../App.css";
 
 export default function Lounge() {
   const loungeurl = useSelector((state) => state.loungeurl);
@@ -136,6 +137,7 @@ export default function Lounge() {
                     mb: "1rem",
                     fontSize: "30px",
                     fontWeight: "bold",
+                    fontFamily: "Cafe24",
                     color: "white",
                   }}
                 >
@@ -165,7 +167,7 @@ export default function Lounge() {
                         ChooseUrl(data.id);
                       }}
                     >
-                      <span>{data.name} 운동하기</span>
+                      <span style={{ fontFamily: "Cafe24" }}>{data.name} 운동하기</span>
                       {/* <img src={steching} alt="title" /> */}
                     </Button>
                   );
@@ -190,9 +192,10 @@ export default function Lounge() {
                     mx: "3rem",
                     mt: "2rem",
                     mb: "1rem",
-                    fontSize: "30px",
+                    fontSize: "35px",
                     fontWeight: "bold",
                     color: "white",
+                    fontFamily: "Cafe24",
                   }}
                 >
                   동기부여 영상 보기
@@ -202,7 +205,8 @@ export default function Lounge() {
                     sx={{
                       mx: "3rem",
                       my: "1rem",
-                      fontSize: "20px",
+                      fontSize: "22px",
+                      fontFamily: "Cafe24",
                       color: "white",
                     }}
                   >
@@ -215,12 +219,13 @@ export default function Lounge() {
                     sx={{
                       my: "1rem",
                       mt: "4rem",
-                      marginLeft: "2rem",
+                      // marginLeft: "1rem",
                       backgroundColor: "#F4EFE6",
                       width: "6rem",
                       height: "3rem",
                       color: "#1A1E33",
                       fontSize: "20px",
+                      fontFamily: "Cafe24_e",
                       "&:hover": {
                         backgroundColor: "#F4EFE6",
                       },

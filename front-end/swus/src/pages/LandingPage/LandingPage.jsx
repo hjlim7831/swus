@@ -90,7 +90,9 @@ function Item(props) {
 				opacity: "50%",
 				position: "absolute",
 				width: "100vw",
-				top: 0
+				top: 0,
+				// fontFamily: "italic",
+				// fontWeight: "bold"
 			},
 			
 	}
@@ -111,10 +113,10 @@ function Item(props) {
 				<Box sx={{ display: "flex", justifyContent: "space-evenly", position: "relative" }}>
 					<div style={{ position: "absolute", width: "600px", height: "380px", opacity: "20%", backgroundColor: "gray", borderRadius: "20px", top: 220 }}></div>
 					<div style={{ display: "flex", flexDirection: "column", position: "relative", alignItems: "center", top: 190 }}>
-						<Typography align="center" mt={10} variant="h4" style={{color: `${props.item.color}`, fontSize: "80px"}}>
+						<Typography align="center" mt={10} variant="h4" style={{color: `${props.item.color}`, fontSize: "80px", fontFamily: "Cafe24", fontWeight: "bold" }}>
 							{props.item.name}
 						</Typography>
-						<Typography align="center" mt={3} variant="body2" style={{color: `${props.item.color}`, fontSize: "35px"}}>
+						<Typography align="center" mt={3} variant="body2" style={{color: `${props.item.color}`, fontSize: "35px", fontFamily: "Cafe24", fontWeight: "bold"}}>
 							{props.item.description}
 						</Typography>
 						<div style={{ marginTop: 50 }}>
@@ -125,6 +127,8 @@ function Item(props) {
 											// height: "100px",
 											// width: "180px",
 											fontSize: "30px",
+											fontFamily: "Cafe24", 
+											fontWeight: "bold",
 											borderRadius: "15px",
 											fontWeight: "bold",
 											paddingInline: "20px",

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import "../../App.css";
 import axios from "../../Utils/index";
 import Swal from 'sweetalert2';
 
@@ -172,6 +172,7 @@ export default function SignUpSide() {
           display: "flex",
           alignContent: "space-between",
           color: "#5F3A42",
+          fontFamily: "Cafe24",
         }}
       >
         Sign Up

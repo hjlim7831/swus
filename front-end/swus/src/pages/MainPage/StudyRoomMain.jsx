@@ -24,6 +24,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./RoomScroll/hideScrollbar.css";
 import { resolveComponentProps } from "@mui/base";
 import MyTodoBlock from "../OpenVidu/TodoList/MyTodoPublicMain";
+import "../../App.css";
 
 // const getrooms = () =>
 //   Array(1) //카드의 개수 추정 0부터 10까지 있는 카드
@@ -173,7 +174,7 @@ function StudyRoomMain() {
             >
               <Typography
                 variant="h5"
-                sx={{ fontSize: 25, color: "white", marginTop: 2 }}
+                sx={{ fontSize: 25, color: "white", marginTop: 2, fontFamily: "Cafe24" }}
               >
                 Todo List
               </Typography>
@@ -211,6 +212,7 @@ function StudyRoomMain() {
                   fontSize: 30,
                   color: "white",
                   my: "1.5rem",
+                  fontFamily: "Cafe24",
                 }}
               >
                 STUDY ROOM
