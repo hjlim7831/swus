@@ -641,7 +641,7 @@ class OpenViduApp extends Component {
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit, minmax(31%, auto))",
-                    gridTemplateRows: "repeat(auto-fit,minMax(31%, auto))",
+                    gridTemplateRows: "repeat(auto-fill,minMax(31%, auto))",
                     alignContent: "stretch",
                     justifyContent: "stretch",
                     placeItems: "center",
