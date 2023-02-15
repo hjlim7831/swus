@@ -3,11 +3,7 @@ import { Box } from "@mui/system";
 import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Grid } from "@mui/material";
-import PaletteIcon from "@mui/icons-material/Palette";
-import WifiProtectedSetupIcon from "@mui/icons-material/WifiProtectedSetup";
 import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
-import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
-
 import axios from "./../../Utils/index";
 
 function TodoJandi() {
@@ -103,36 +99,36 @@ function TodoJandi() {
             <h3 style={{ marginLeft: "40px" }}>{nickname}의 Todo 달성 기록</h3>
             <div>
               {/* 색변경 아이콘들 */}
-              <WifiProtectedSetupIcon
+              <FormatColorFillIcon
                 name="git"
                 sx={{
-                  color: "#44a340",
+                  color: "#1e6823",
                   mt: "17px",
-                  marginLeft: "10px",
+                  marginLeft: "1rem",
                   cursor: "pointer",
                 }}
                 onClick={() => {
                   colorChange("git");
                 }}
               />
-              <WifiProtectedSetupIcon
+              <FormatColorFillIcon
                 name="basic"
                 sx={{
                   color: "#4926c1",
                   mt: "17px",
-                  marginLeft: "10px",
+                  marginLeft: "1rem",
                   cursor: "pointer",
                 }}
                 onClick={() => {
                   colorChange("basic");
                 }}
               />
-              <FormatColorFillIcon 
+              <FormatColorFillIcon
                 name="first"
                 sx={{
                   color: "#41AE76",
                   mt: "17px",
-                  marginLeft: "10px",
+                  marginLeft: "1rem",
                   cursor: "pointer",
                 }}
                 onClick={() => {
@@ -144,47 +140,36 @@ function TodoJandi() {
                 sx={{
                   color: "#49729B",
                   mt: "17px",
-                  marginLeft: "10px",
+                  marginLeft: "1rem",
                   cursor: "pointer",
                 }}
                 onClick={() => {
                   colorChange("second");
                 }}
               />
-              <AutoFixHighIcon
+              <FormatColorFillIcon
                 name="third"
                 sx={{
                   color: "#EA1A87",
                   mt: "17px",
-                  marginLeft: "10px",
+                  marginLeft: "1rem",
                   cursor: "pointer",
                 }}
                 onClick={() => {
                   colorChange("third");
                 }}
               />
-              <AutoFixHighIcon
+              <FormatColorFillIcon
                 name="fourth"
                 sx={{
                   color: "#FC4E2A",
                   mt: "17px",
-                  marginLeft: "10px",
+                  marginLeft: "1rem",
+                  marginRight: "3rem",
                   cursor: "pointer",
                 }}
                 onClick={() => {
                   colorChange("fourth");
-                }}
-              />
-              <PaletteIcon
-                name="fifth"
-                sx={{
-                  color: "#598392",
-                  mt: "17px",
-                  marginLeft: "10px",
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  colorChange("fifth");
                 }}
               />
             </div>
@@ -263,13 +248,13 @@ const StyledContainer = styled.div`
     fill: #eeeeee;
   }
   .react-calendar-heatmap .color-first-1 {
-    fill: #CCECE6;
+    fill: #ccece6;
   }
   .react-calendar-heatmap .color-first-2 {
-    fill: #66C2A4;
+    fill: #66c2a4;
   }
   .react-calendar-heatmap .color-first-3 {
-    fill: #41AE76;
+    fill: #41ae76;
   }
   .react-calendar-heatmap .color-first-4 {
     fill: 006D2C;
@@ -279,65 +264,47 @@ const StyledContainer = styled.div`
     fill: #eeeeee;
   }
   .react-calendar-heatmap .color-second-1 {
-    fill: #ACD5F2;
+    fill: #acd5f2;
   }
   .react-calendar-heatmap .color-second-2 {
-    fill: #7FA8D1;
+    fill: #7fa8d1;
   }
   .react-calendar-heatmap .color-second-3 {
-    fill: #49729B;
+    fill: #49729b;
   }
   .react-calendar-heatmap .color-second-4 {
-    fill: #254E77;
+    fill: #254e77;
   }
 
   .react-calendar-heatmap .color-third-0 {
     fill: #eeeeee;
   }
   .react-calendar-heatmap .color-third-1 {
-    fill: #F9ACD6;
+    fill: #f9acd6;
   }
   .react-calendar-heatmap .color-third-2 {
-    fill: #F66CB6;
+    fill: #f66cb6;
   }
   .react-calendar-heatmap .color-third-3 {
-    fill: #EA1A87;
+    fill: #ea1a87;
   }
   .react-calendar-heatmap .color-third-4 {
-    fill: #C20064;
+    fill: #c20064;
   }
 
   .react-calendar-heatmap .color-fourth-0 {
     fill: #eeeeee;
   }
   .react-calendar-heatmap .color-fourth-1 {
-    fill: #FFFFAA;
+    fill: #ffdd00;
   }
   .react-calendar-heatmap .color-fourth-2 {
-    fill: #FEC44F;
+    fill: #ffb700;
   }
   .react-calendar-heatmap .color-fourth-3 {
-    fill: #FC4E2A;
+    fill: #ff7b00;
   }
   .react-calendar-heatmap .color-fourth-4 {
-    fill: #BD0026;
+    fill: #fc4e2a;
   }
-
-  .react-calendar-heatmap .color-fifth-0 {
-    fill: #eeeeee;
-  }
-  .react-calendar-heatmap .color-fifth-1 {
-    fill: #E3FCAF;
-  }
-  .react-calendar-heatmap .color-fifth-2 {
-    fill: #AEC3B0;
-  }
-  .react-calendar-heatmap .color-fifth-3 {
-    fill: #598392;
-  }
-  .react-calendar-heatmap .color-fifth-4 {
-    fill: #124559;
-  }
-  
 `;
-// 1, 5, 6, 11

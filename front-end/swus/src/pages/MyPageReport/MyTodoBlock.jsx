@@ -102,7 +102,7 @@ function MyTodoBlock({ setType }) {
                 width: "85%",
                 marginX: "auto",
                 height: 360,
-                backgroundColor: "#F4EFE6",
+                backgroundColor: "#E7E6F2",
               }}
             >
               <MyTodoForm
