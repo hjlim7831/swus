@@ -31,7 +31,6 @@ import startBreak from "../../components/modals/StartBreak";
 import endBreak from "../../components/modals/EndBreak";
 import { v4 as uuidv4 } from "uuid";
 import axiosUtils from "./../../Utils/index";
-//HOC 사용용
 
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
 // const APPLICATION_SERVER_URL = "http://localhost:5000/";
@@ -480,15 +479,15 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "20px" }}>
+                <h1 style={{ color: "white", paddingTop: "10px" }}>
                   공용 열람실{roomId}
                 </h1>
-                <div style={{ height: 100, paddingTop: "20px" }}>
+                <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
                     <p style={{ color: "white" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
-                    <Box sx={{ height: "100%", mt: "5px" }}>
+                    <Box sx={{ mt: "5px", display: "flex", justifyContent: "flex-start" }}>
                       <Box
                         sx={{
                           display: "inline-block",
@@ -617,7 +616,7 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                <h4 style={{ color: "white" }}>
                   To-do list
                 </h4>
                 <div
@@ -722,99 +721,100 @@ class OpenViduApp extends Component {
    */
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);
+    console.log("세션아이디", sessionId);
     return await this.createToken(sessionId);
   }
 
   //  // DomException :Failed to excute 'open' on 'XMLHttpRequest':Invaild URL =>URL 뒤 "api/sessions"앞에 / 추가해서 해결
   //  //
-  async createSession(sessionId) {
-    const response = await axios.post(
-      OPENVIDU_SERVER_URL + "/api/sessions",
-      { customSessionId: sessionId },
-      {
-        headers: {
-          Authorization: `Basic ${Base64.encode(
-            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-          )}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data; // The sessionId
-  }
+  // async createSession(sessionId) {
+  //   const response = await axios.post(
+  //     OPENVIDU_SERVER_URL + "/api/sessions",
+  //     { customSessionId: sessionId },
+  //     {
+  //       headers: {
+  //         // Authorization: `Basic ${Base64.encode(
+  //         //   `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //         // )}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   return response.data; // The sessionId
+  // }
 
-  async createToken(sessionId) {
-    const response = await axios.post(
-      OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
-      {},
-      {
-        headers: {
-          Authorization: `Basic ${Base64.encode(
-            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-          )}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data; // The token
-  }
+  // async createToken(sessionId) {
+  //   const response = await axios.post(
+  //     OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId.id + "/connections",
+  //     {},
+  //     {
+  //       headers: {
+  //         Authorization: `Basic ${Base64.encode(
+  //           `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //         )}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   return response.data; // The token
+  // }
 
   //잠시 해결됐다가 메인페이지로 나오니까 모든 axios 에러
-  // createSession(sessionId) {
-  //   return new Promise((resolve, reject) => {
-  //     let data = JSON.stringify({ customSessionId: sessionId });
-  //     axios
-  //       .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
-  //         headers: {
-  //           Authorization: `Basic ${Base64.encode(
-  //             `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //           )}`,
-  //           "Content-Type": "application/json",
-  //           "Access-Control-Allow-Origin": "*",
-  //         },
-  //       })
-  //       .then((response) => {
-  //         resolve(response.data.id);
-  //       })
-  //       .catch((response) => {
-  //         let error = { ...response };
-  //         if (error?.response?.status === 409) {
-  //           resolve(sessionId);
-  //         } else if (
-  //           window.confirm(
-  //             `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
-  //               `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-  //           )
-  //         ) {
-  //           window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-  //         }
-  //       });
-  //   });
-  // }
+  createSession(sessionId) {
+    return new Promise((resolve, reject) => {
+      let data = JSON.stringify({ customSessionId: sessionId });
+      axios
+        .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
+          headers: {
+            Authorization: `Basic ${Base64.encode(
+              `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+            )}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((response) => {
+          resolve(response.data.id);
+        })
+        .catch((response) => {
+          let error = { ...response };
+          if (error?.response?.status === 409) {
+            resolve(sessionId);
+          } else if (
+            window.confirm(
+              `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
+                `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+            )
+          ) {
+            window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+          }
+        });
+    });
+  }
 
-  // createToken(sessionId) {
-  //   return new Promise((resolve, reject) => {
-  //     let data = {};
-  //     axios
-  //       .post(
-  //         `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-  //         data,
-  //         {
-  //           headers: {
-  //             Authorization: `Basic ${Base64.encode(
-  //               `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //             )}`,
-  //             "Content-Type": "application/json",
-  //             "Access-Control-Allow-Origin": "*",
-  //           },
-  //         }
-  //       )
-  //       .then((response) => {
-  //         resolve(response.data.token);
-  //       })
-  //       .catch((error) => reject(error));
-  //   });
-  // }
+  createToken(sessionId) {
+    return new Promise((resolve, reject) => {
+      let data = {};
+      axios
+        .post(
+          `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+          data,
+          {
+            headers: {
+              Authorization: `Basic ${Base64.encode(
+                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+              )}`,
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        )
+        .then((response) => {
+          resolve(response.data.token);
+        })
+        .catch((error) => reject(error));
+    });
+  }
 
   // createSession(sessionId) {
   //   return new Promise((resolve, reject) => {
