@@ -110,7 +110,7 @@ function Item(props) {
 				</Card>
 				<Box sx={{ display: "flex", justifyContent: "space-evenly", position: "relative" }}>
 					<div style={{ position: "absolute", width: "600px", height: "380px", opacity: "20%", backgroundColor: "gray", borderRadius: "20px", top: 220 }}></div>
-					<div style={{ display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", alignItems: "center" }}>
+					<div style={{ display: "flex", flexDirection: "column", position: "relative", alignItems: "center", top: 190 }}>
 						<Typography align="center" mt={10} variant="h4" style={{color: `${props.item.color}`, fontSize: "80px"}}>
 							{props.item.name}
 						</Typography>
