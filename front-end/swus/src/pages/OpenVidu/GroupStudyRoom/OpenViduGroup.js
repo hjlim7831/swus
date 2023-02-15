@@ -49,6 +49,7 @@ class OpenViduApp extends Component {
 
     console.log(this.state.teamName);
     console.log(this.state.mySessionId);
+    console.log(this.state.round);
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
@@ -131,6 +132,7 @@ class OpenViduApp extends Component {
     };
 
     axiosUtils(config).then((res) => {
+      console.log(res);
       console.log(res.data.message);
     });
 
@@ -341,7 +343,7 @@ class OpenViduApp extends Component {
     //   localStorage.setItem("totalM", totalM + (cal % 60));
     // }
 
-    window.location.replace("http://localhost:3000/group/mystudy");
+    // window.location.replace("http://localhost:3000/group/mystudy");
   }
 
   render() {
