@@ -1,39 +1,22 @@
 import { OpenVidu } from "openvidu-browser";
-import { encode, decode } from "js-base64";
 import { Base64 } from "js-base64";
-
 import axios from "axios";
 import React, { Component } from "react";
-// import "./App.css";
 import UserVideoComponent from "./UserVideoComponent";
-
 //열람실 내부 컴포넌트용
 import { Box } from "@mui/system";
 import Grid from "@mui/material/Grid";
-
 import MyTodoPublicIn from "./TodoList/MyTodoPublicIn";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import Typography from "@mui/material/Typography";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-
 //쉬는시간 alert
 import startBreak from "../../components/modals/StartBreak";
 import endBreak from "../../components/modals/EndBreak";
-import { v4 as uuidv4 } from "uuid";
 import axiosUtils from "./../../Utils/index";
-
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
+import "../../App.css";
 
 const OPENVIDU_SERVER_URL = "https://i8a302.p.ssafy.io:8443";
 const OPENVIDU_SERVER_SECRET = "SWUS";
@@ -64,6 +47,7 @@ class OpenViduApp extends Component {
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.leaveCheck = this.leaveCheck.bind(this);
+    this.moveToLounge = this.moveToLounge.bind(this);
   }
 
   componentDidMount() {
@@ -80,16 +64,12 @@ class OpenViduApp extends Component {
           this.state.d.getMinutes() === 50 &&
           this.state.d.getSeconds() == 0
         ) {
-          console.log("if 들어감");
           startBreak();
         } else if (
           this.state.d.getMinutes() === 0 &&
           this.state.d.getSeconds() == 0
         ) {
-          console.log("elseif 들어감");
           endBreak();
-        } else {
-          console.log("else 들어감");
         }
       }
     }, 1000);
@@ -168,39 +148,28 @@ class OpenViduApp extends Component {
       method: "post",
       data: payload,
     };
-    console.log("publicRoom leaveCheck");
     axiosUtils(config).then((response) => {
-      console.log("퍼블릭룸 나가기 엑시오스 먹힘??");
       console.log(response);
     });
 
-    // const Token = sessionStorage.getItem("token");
-    // console.log("방 퇴장");
-    // console.log(this.state.roomId);
-    // axios({
-    //   method: "post",
-    //   url: "http://i8a302.p.ssafy.io:8081/studyrooms/exit",
-    //   headers: { Authorization: `Bearer ${Token}` },
-    //   data: {
-    //     member_id: 0,
-    //     room_id: this.state.roomId,
-    //   },
-    // }).then((response) => {
-    //   console.log(response.data.message);
-    // });
-
     //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
     //기존 입장 시간
-    const inH = parseInt(localStorage.getItem("inHour"));
-    const inM = parseInt(localStorage.getItem("inMin"));
+    // const inH = parseInt(localStorage.getItem("inHour"));
+    // const inM = parseInt(localStorage.getItem("inMin"));
+
+    const inH = parseInt(this.state.enterHour);
+    const inM = parseInt(this.state.enterMin);
+    // console.log("입장 시간 시/분", inH, " ", inM);
 
     //현재 시간
     const nowH = parseInt(this.state.d.getHours());
     const nowM = parseInt(this.state.d.getMinutes());
 
     //누적된 총 시간
-    const totalH = parseInt(localStorage.getItem("totalH"));
-    const totalM = parseInt(localStorage.getItem("totalM"));
+    // const totalH = parseInt(localStorage.getItem("totalH"));
+    // const totalM = parseInt(localStorage.getItem("totalM"));
+    const totalH = parseInt(this.state.totalTime / 60);
+    const totalM = parseInt(this.state.totalTime % 60);
 
     if (inH <= nowH) {
       //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
@@ -214,23 +183,10 @@ class OpenViduApp extends Component {
       };
 
       axiosUtils(config).then((res) => {
+        // console.log("조건1");
+        // console.log(totalH * 60 + totalM + cal);
         console.log(res);
       });
-
-      // axios({
-      //   method: "put",
-      //   url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-      //   headers: { Authorization: `Bearer ${Token}` },
-      //   data: {
-      //     now_total_time: totalH * 60 + totalM + cal,
-      //   },
-      // }).then((res) => {
-      //   console.log(res);
-      // });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
     } else {
       //앞시간이 더 큰 숫자일 경우 ex 18시~1시
       const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
@@ -243,23 +199,10 @@ class OpenViduApp extends Component {
       };
 
       axiosUtils(config).then((res) => {
+        // console.log("조건 2");
+        // console.log(totalH * 60 + totalM + cal);
         console.log(res);
       });
-
-      // axios({
-      //   method: "put",
-      //   url: "http://i8a302.p.ssafy.io:8081/my-studies/now-total-time",
-
-      //   headers: { Authorization: `Bearer ${Token}` },
-      //   data: {
-      //     now_total_time: totalH * 60 + totalM + cal,
-      //   },
-      // }).then((res) => {
-      //   console.log(res);
-      // });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
     }
   }
 
@@ -337,10 +280,10 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x330", // The resolution of your video
+                resolution: "1200x300", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                mirror: false, // Whether to mirror your local video or not
+                mirror: true, // Whether to mirror your local video or not
               });
 
               // --- 6) Publish your stream ---
@@ -385,8 +328,6 @@ class OpenViduApp extends Component {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     const mySession = this.state.session;
-    console.log("check post");
-    console.log(this.state.roomId);
     if (mySession) {
       mySession.disconnect(); //연결 끊고
     }
@@ -409,7 +350,6 @@ class OpenViduApp extends Component {
 
   render() {
     const roomId = this.state.roomId;
-    console.log(roomId);
     const myUserName = this.state.myUserName;
 
     const year = this.state.d.getFullYear();
@@ -437,9 +377,10 @@ class OpenViduApp extends Component {
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
-                  <Stack direction="row">
-                    {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-
+                  <Stack
+                    direction="row"
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -453,8 +394,6 @@ class OpenViduApp extends Component {
                   </Stack> //채팅방 버튼 없는 상위 버튼
                 ) : (
                   <Stack direction="row">
-                    {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -468,12 +407,24 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "10px" }}>
+                <h1
+                  style={{
+                    color: "white",
+                    paddingTop: "10px",
+                    fontFamily: "Cafe24",
+                  }}
+                >
                   공용 열람실{roomId}
                 </h1>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
-                    <p style={{ color: "white" }}>
+                    <p
+                      style={{
+                        color: "white",
+                        fontFamily: "Cafe24",
+                        fontSize: "20px",
+                      }}
+                    >
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
                     <Box
@@ -611,7 +562,15 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white" }}>To-do list</h4>
+                <h4
+                  style={{
+                    color: "white",
+                    fontFamily: "Cafe24",
+                    fontSize: "20px",
+                  }}
+                >
+                  To-do list
+                </h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -634,7 +593,10 @@ class OpenViduApp extends Component {
                       height: "50px",
                       color: "#1A1E33",
                       fontSize: "20px",
+                      fontFamily: "Cafe24",
+                      "&:hover": { backgroundColor: "#DEDCEE" },
                     }}
+                    onClick={this.moveToLounge}
                   >
                     휴게실 바로가기
                   </Button>
@@ -645,7 +607,6 @@ class OpenViduApp extends Component {
               {this.state.session === undefined ? (
                 <div id="join">{this.joinSession()}</div>
               ) : null}
-              {/* <Grid container sx={{ border: 1 }}> */}
               {this.state.session !== undefined ? (
                 <div
                   id="video-container"
@@ -659,7 +620,6 @@ class OpenViduApp extends Component {
                     padding: "0.5%",
                     gridGap: "10px",
                     paddingRight: "20px",
-                    // flexWrap: "wrap",
                   }}
                 >
                   {this.state.publisher !== undefined ? (
@@ -715,43 +675,8 @@ class OpenViduApp extends Component {
    */
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);
-    console.log("세션아이디", sessionId);
     return await this.createToken(sessionId);
   }
-
-  //  // DomException :Failed to excute 'open' on 'XMLHttpRequest':Invaild URL =>URL 뒤 "api/sessions"앞에 / 추가해서 해결
-  //  //
-  // async createSession(sessionId) {
-  //   const response = await axios.post(
-  //     OPENVIDU_SERVER_URL + "/api/sessions",
-  //     { customSessionId: sessionId },
-  //     {
-  //       headers: {
-  //         // Authorization: `Basic ${Base64.encode(
-  //         //   `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //         // )}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   return response.data; // The sessionId
-  // }
-
-  // async createToken(sessionId) {
-  //   const response = await axios.post(
-  //     OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId.id + "/connections",
-  //     {},
-  //     {
-  //       headers: {
-  //         Authorization: `Basic ${Base64.encode(
-  //           `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //         )}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   return response.data; // The token
-  // }
 
   //잠시 해결됐다가 메인페이지로 나오니까 모든 axios 에러
   createSession(sessionId) {
@@ -809,60 +734,6 @@ class OpenViduApp extends Component {
         .catch((error) => reject(error));
     });
   }
-
-  // createSession(sessionId) {
-  //   return new Promise((resolve, reject) => {
-  //     let data = JSON.stringify({ customSessionId: sessionId });
-  //     axios
-  //       .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
-  //         headers: {
-  //           Authorization: `Basic ${Base64.encode(
-  //             `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //           )}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //       .then((response) => {
-  //         resolve(response.data.id);
-  //       })
-  //       .catch((response) => {
-  //         let error = { ...response };
-  //         if (error?.response?.status === 409) {
-  //           resolve(sessionId);
-  //         } else if (
-  //           window.confirm(
-  //             `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
-  //               `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-  //           )
-  //         ) {
-  //           window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-  //         }
-  //       });
-  //   });
-  // }
-
-  // createToken(sessionId) {
-  //   return new Promise((resolve, reject) => {
-  //     let data = {};
-  //     axios
-  //       .post(
-  //         `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-  //         data,
-  //         {
-  //           headers: {
-  //             Authorization: `Basic ${Base64.encode(
-  //               `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //             )}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       )
-  //       .then((response) => {
-  //         resolve(response.data.token);
-  //       })
-  //       .catch((error) => reject(error));
-  //   });
-  // }
 }
 
 export default OpenViduApp;

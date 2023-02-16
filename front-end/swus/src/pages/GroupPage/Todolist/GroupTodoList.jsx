@@ -1,35 +1,9 @@
-import { React, useState } from "react";
+import React from "react";
 import axios from "../../../Utils/index";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
 function GroupTodoList({ todoData, setTodoData, value, setValue, groupId, round }) {
-  // 수정 로직
-  // const [isEditing, setIsEditing] = useState(false);
-
-  // const editTile = (e) => {
-  //   setValue(e.target.value);
-  // }
-
-  // const todoUpdate = (num) => {
-  //   const i = todoData.findIndex((e) => e.num === num)
-  //   const newTodoData = [...todoData];
-
-  //   newTodoData[i].content = value;
-
-  //   setTodoData(newTodoData)
-  //   setIsEditing(false);
-  // }
-
-  // const btnStyle = {
-  //   color: "#fff",
-  //   border: "none",
-  //   padding: "5px, 9px",
-  //   borderRadius: "50%" /*원래 css는 border-Radius지만 여기는 JSX*/,
-  //   cursor: "pointer",
-  //   float: "right",
-  // };
 
   const getStyle = (todo_done) => {
     return {
@@ -63,7 +37,6 @@ function GroupTodoList({ todoData, setTodoData, value, setValue, groupId, round 
     };
 
     axios(config).then((response) => {
-      console.log(response.data);
       newTodoData[i].todo_done = !newTodoData[i].todo_done;
       setTodoData(newTodoData);
     });
@@ -97,26 +70,10 @@ function GroupTodoList({ todoData, setTodoData, value, setValue, groupId, round 
             {/*함수이므로 ()필수, key속성에는 객체의 유니크 값 넣어줘야*/}
             <input
               type="checkbox"
-              // defaultChecked={false}
               checked={data.todo_done}
               onChange={() => hadleCompleteChange(data.num)}
             />
             {/*어떤 아이디 값 클릭됐는지*/}
-
-            {/* {
-              (isEditing) ? (
-                <>
-                  <input type="text" value={ data.content } onChange={ editTile } />
-                  <CheckCircleOutlinedIcon sx={{ fontSize: 18, cursor: "pointer", float: "right"}} onClick={ todoUpdate(data.num) }/>
-                </>
-                
-              ) : (
-                <>
-                  { data.content }
-                  <ModeEditOutlineOutlinedIcon sx={{ fontSize: 18, cursor: "pointer", float: "right"}} onClick={() => setIsEditing(true)} />
-                </>
-              )
-            } */}
             {data.content}
 
             <RemoveCircleOutlineIcon

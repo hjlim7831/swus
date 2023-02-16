@@ -4,7 +4,6 @@ function leaveGroup(teamId) {
 
   const Swal = require("sweetalert2");
 
-
   Swal.fire({
     title: "정말로 해당 스터디를 탈퇴하시겠습니까?",
     text: "스터디를 탈퇴하면 리포트를 조회할 수 없습니다. 정말 탈퇴하시겠습니까?",

@@ -1,4 +1,3 @@
-import { Box, Container } from "@mui/material";
 import React from "react";
 import MyGroupList from "./MyGroupList";
 import MyInfo from "./MyInfo";

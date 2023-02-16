@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
-
 import axios from "../../Utils/index";
 import Swal from 'sweetalert2';
 
@@ -51,8 +48,6 @@ export default function FindPassword() {
         Alert({title, icon});
 
       } else {
-        console.log(email);
-
         const config = {
           url: `/auth/check-email?email=${email}`,
           method: "GET",
@@ -60,7 +55,6 @@ export default function FindPassword() {
 
         axios(config)
           .then((response) => {
-            console.log(response.data.msg);
             if (response.data.msg === "Y") {
               const title = "가입된 아이디입니다.";
               const icon = "error";
@@ -101,7 +95,6 @@ export default function FindPassword() {
 
       axios(config)
         .then(() => {
-          // console.log(response.data.msg);
           const title = "입력하신 메일로 비밀번호를 전송했습니다.";
           const icon = "success"
           Alert({title, icon});
@@ -142,7 +135,6 @@ export default function FindPassword() {
           required
           fullWidth
           id="email"
-          // label="Email Address"
           name="email"
           autoComplete="email"
           autoFocus
@@ -188,7 +180,6 @@ export default function FindPassword() {
           required
           fullWidth
           id="answer"
-          // label="answer"
           name="answer"
           autoComplete="answer"
           autoFocus

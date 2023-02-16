@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box } from "@mui/system";
-import { Button, Grid, Divider, Typography, TextField } from '@mui/material';
+import { Container } from "@mui/system";
+import { Button, Grid, Divider, Typography, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useNavigate } from 'react-router-dom';
 import inviteMember from '../../components/modals/InviteMember';
@@ -10,9 +10,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Report from "../../components/modals/Report";
 import { v4 as uuidv4 } from 'uuid';
 import axios from "../../Utils/index";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import myGroupListSlice from '../../store/MyGroupListSlice';
-
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 
 
@@ -25,7 +25,7 @@ function GroupDetail() {
   const [teamDetails, setTeamDetails] = useState([]);
 
   const [reportData, setReportData] = useState([]);
-
+  const [open, setOpen] = useState(false);
   const [start_time, setStart_time] = useState();
   const [finish_time, setFinish_time] = useState();
   const [studyDays, setStudyDays] = useState();
@@ -44,7 +44,6 @@ function GroupDetail() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
         setTeamDetails(response.data)
         setStart_time(response.data.start_time.slice(0, 5))
         setFinish_time(response.data.finish_time.slice(0, 5))
@@ -73,14 +72,11 @@ function GroupDetail() {
       .then((response) => {
         axios(config2)
           .then((response) => {
-            console.log("리포트 정보")
-            console.log(response.data)
             setReportData(response.data)
           })
       })
 
       dispatch(myGroupListSlice.actions.saveGroupId(teamId))
-    
   }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -91,6 +87,36 @@ function GroupDetail() {
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const openEnterM = () => {
+    setOpen(true);
+  };
+
+  const closeEnterM = () => {
+    setOpen(false);
+  };
+
+  const handleToEnter = () => {
+    const config = {
+      url: `/grouprooms/${teamId}`,
+      method: "GET",
+    };
+    
+    axios(config)
+      .then((response) => {
+        const sessionName = response.data.sessionName;
+        navigate(`/studyroom/group/${sessionName}`, {
+          state: {
+            roomName: sessionName,
+            round: response.data.round,
+            teamId: teamId,
+            category: teamDetails.category,
+            teamName: teamDetails.team_name,
+            content: response.data.content,
+          }
+        })
+      });
   };
 
   const filterCategory = /S/;
@@ -107,11 +133,10 @@ function GroupDetail() {
 			return days.map((date, index) => {
 				const style = {
 					background: checked[index] ? "#9EC2F8" : "white",
-					// color: checked[index] ? "white" : "black",
 					marginInline: 3,
 					borderRadius: 5,
-					padding: "1px",
 					fontWeight: "bold",
+					padding: "5px"
 				}
 				return (
 					<>
@@ -186,7 +211,7 @@ function GroupDetail() {
                 {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N") 
                   ? <p style={{ paddingLeft: 30, paddingTop: 5 }}>
                       <EditOutlinedIcon
-                        sx={{ fontSize: 30, "&:hover" : { cursor: "pointer" } }}
+                        sx={{ fontSize: 30, "&:hover" : { cursor: "pointer" }, color: "#1560BD" }}
                         onClick={() => {navigate(`update`)}}
                       /></p>
                   : null}
@@ -204,7 +229,7 @@ function GroupDetail() {
                 {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N")
                   ? <Button
                       variant="contained"
-                      sx={{ height: 30, backgroundColor: "red", "&:hover" : { backgroundColor: "red" } }}
+                      sx={{ height: 30, backgroundColor: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}
                       onClick={() => {endGroup(teamId)}}>종료하기</Button>
                   : null}
               </Grid>
@@ -216,7 +241,7 @@ function GroupDetail() {
                         onClick={() => {leaveGroup(teamId)}}
                       >탈퇴하기</Button>
                   : <div>
-                      <Button variant="outlined" onClick={openModal}>
+                      <Button variant="outlined" onClick={openModal} sx={{ color: "#1560BD" }}>
                         리포트 보기
                       </Button>
                       <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
@@ -267,15 +292,28 @@ function GroupDetail() {
                               fontWeight: "bold" }}>{teamDetails.leader}</div>
               </Grid>
                 <Divider orientation='vertical' flexItem sx={{ background: "grey", borderWidth: 1, marginInline: 3 }}/>
-              <Grid item xs={9} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
+              <Grid item xs={7} sx={{ display: "flex", justifyContent: "flex-start", alignContent: "center" }}>
                 <div style={{ marginInline: 10, padding: 5}}>그룹원 </div>
                 {getMembers()}
+              </Grid>
+              <Grid item xs={0.7}></Grid>
+              <Grid item xs={1.6}>
+                {(teamDetails.team_done === "N")
+                  ? <Button 
+                  variant="outlined"
+                  onClick={() => {
+                    openEnterM();
+                  }}
+                  startIcon={<LoginRoundedIcon></LoginRoundedIcon>}
+                >스터디 입장</Button>
+                  : null }
               </Grid>
             </Grid>
               <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
             <Grid container sx={{ padding: 2 }}>
               <Grid container sx={{ display: "flex", alignItems: "center"}}>
-                <Grid item xs={2} sx={{ alignContent: "center" }}>
+                <Grid item xs={0.5}/>
+                <Grid item xs={0.8} sx={{ alignContent: "center" }}>
                   <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 일정</p>
                 </Grid>
                 <Grid item xs={3}>
@@ -283,24 +321,29 @@ function GroupDetail() {
                     ? <p style={{ textAlign: "center", fontSize: "20px" }}>{teamDetails.begin_at} ~ {teamDetails.end_at}</p> 
                     : <p style={{ textAlign: "center", fontSize: "20px" }}>미정</p>}
                 </Grid>
+                <Grid item xs={0.3}/>
                 <Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2 }}/>
-                <Grid item xs={2}>
+                <Grid item xs={0.2}/>
+                <Grid item xs={0.8}>
                   <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 시간</p>
                   </div>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                   <p style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                     <p style={{ textAlign: "center", marginInline: 5 }}>{getStudyDays()} </p>
                     <p style={{ textAlign: "center", marginInline: 5 }}>{start_time} ~ {finish_time}</p>
                   </p>
                 </Grid>
+                <Grid item xs={0.3}/>
                 <Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2 }}/>
-                <Grid item xs={1}>
+                <Grid item xs={0.3}/>
+                <Grid item xs={0.6}>
                   <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "18px" }}>인원 현황</p>
                 </Grid>
+                <Grid item xs={0.5}/>
                 <Grid item xs={1}>
-                  <p style={{ textAlign: "center", fontSize: "18px" }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</p>
+                  <p style={{ textAlign: "center", fontSize: "25px", fontWeight: "bold" }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</p>
                 </Grid>
               </Grid>
               <Grid container sx={{ padding: 2 }}>
@@ -317,7 +360,7 @@ function GroupDetail() {
                 </div>
                 {(teamDetails.team_done === "N")
                   ? <div>
-                      <Button variant="outlined" onClick={openModal}>
+                      <Button variant="outlined" onClick={openModal} sx={{ color: "#1560BD" }}>
                         리포트 보기
                       </Button>
                       <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
@@ -350,11 +393,24 @@ function GroupDetail() {
                 }
               </Container>
               <br/>
-              <Container style={{ overflowY: "scroll", height: "280px" }}>
+              <Container style={{ overflowY: "scroll", height: "250px" }}>
                 {getWeekTopics()}
               </Container>
             </Grid>
           </Container>
+          <Dialog
+            open={open}
+            onClose={closeEnterM}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby='alert-dialog-description'
+          >
+            <DialogTitle id="alert-dialog-title" sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px" }}>{teamDetails.team_name} 입장하기</DialogTitle>
+            <DialogContent id="alert-dialog-description" sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}>열심히 스터디하러 가볼까요?</DialogContent>
+            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+              <Button onClick={handleToEnter} sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}>입장</Button>
+              <Button onClick={closeEnterM} variant="contained" sx={{ background: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}>x</Button>
+            </DialogActions>
+          </Dialog>
         </>
       )
       : <div>loading</div>
