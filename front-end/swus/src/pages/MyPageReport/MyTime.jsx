@@ -117,7 +117,9 @@ function MyTime({ setType }) {
       >
         <Grid container>
           <Grid item xs={5}>
-            <h3 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>🕒 공부 목표 시간</h3>
+            <h3 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>
+              🕒 공부 목표 시간
+            </h3>
           </Grid>
           <Grid item xs={1}>
             <IconButton
@@ -144,10 +146,11 @@ function MyTime({ setType }) {
           <Grid item xs={12}>
             <Grid
               item
-              xs={10}
+              xs={10.2}
               sx={{
                 backgroundColor: "#E7E6F2",
                 marginX: "auto",
+                borderRadius: 2,
               }}
             >
               <Box
@@ -206,48 +209,63 @@ function MyTime({ setType }) {
           </Grid>
         </Grid>
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle sx={{ fontFamily: "Cafe24", textAlign: "center" }}>목표시간 설정하기</DialogTitle>
-            <DialogContent>
-              <DialogContentText sx={{ fontFamily: "Cafe24", textAlign: "center", marginBottom: 3 }}>
-                오늘 공부할 목표 시간을 설정해 주세요 <br />
-                 ex. 오늘 10시간 반공부 : 10, 30 입력
-              </DialogContentText>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="hour"
-                    label="시"
-                    type="number"
-                    fullWidth
-                    variant="outlined"
-                    defaultValue={Math.floor(targetTime / 60)}
-                    onChange={changeH}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="min"
-                    label="분"
-                    type="number"
-                    fullWidth
-                    variant="outlined"
-                    defaultValue={inputMin}
-                    onChange={changeM}
-                  />
-                </Grid>
+          <DialogTitle sx={{ fontFamily: "Cafe24", textAlign: "center" }}>
+            목표시간 설정하기
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText
+              sx={{
+                fontFamily: "Cafe24",
+                textAlign: "center",
+                marginBottom: 3,
+              }}
+            >
+              오늘 공부할 목표 시간을 설정해 주세요 <br />
+              ex. 오늘 10시간 반공부 : 10, 30 입력
+            </DialogContentText>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="hour"
+                  label="시"
+                  type="number"
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={Math.floor(targetTime / 60)}
+                  onChange={changeH}
+                />
               </Grid>
-            </DialogContent>
-            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
-              <Button 
-                onClick={save}
-                sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}
-              >저장</Button>
-            </DialogActions>
-          </Dialog>
+              <Grid item xs={6}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="min"
+                  label="분"
+                  type="number"
+                  fullWidth
+                  variant="outlined"
+                  defaultValue={inputMin}
+                  onChange={changeM}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              onClick={save}
+              sx={{
+                fontFamily: "Cafe24",
+                color: "white",
+                background: "#1560BD",
+                "&:hover": { backgroundColor: "#1560BD" },
+              }}
+            >
+              저장
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </>
   );
