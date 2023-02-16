@@ -3,19 +3,14 @@ import { Box } from "@mui/system";
 import MyTodoList from "./MyTodoList";
 import MyTodoForm from "./MyTodoForm";
 import { Grid } from "@mui/material";
-
 import axios from "../../../Utils/index";
-
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function MyTodoPublicIn() {
   //{ parentFunction }
   const dispatch = useDispatch();
-  // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
-  // const [todoCnt, setTodoCnt] = useState(0);
-  // const [doneCnt, setDoneCnt] = useState(0);
 
   useEffect(() => {
     const config = {
@@ -25,7 +20,6 @@ function MyTodoPublicIn() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {
             return {
@@ -33,7 +27,6 @@ function MyTodoPublicIn() {
               todo_done: todo.todo_done === "N" ? false : true,
             };
           });
-          console.log(updatedData);
           setTodoData(updatedData);
         }
       })
@@ -42,17 +35,6 @@ function MyTodoPublicIn() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   setTodoCnt(todoData.length);
-  //   setDoneCnt(todoData.filter((todo) => todo.todo_done === true));
-  // }, []);
-
-  // const childFunction = () => {
-  //   parentFunction(
-  //     todoData.length,
-  //     todoData.filter((todo) => todo.todo_done === true).length
-  //   );
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,8 +58,6 @@ function MyTodoPublicIn() {
 
     setValue("");
   };
-
-  // const todoList = useSelector((state) => state.todolist);
 
   return (
     <>

@@ -1,28 +1,17 @@
 import { OpenVidu } from "openvidu-browser";
-import { encode, decode } from "js-base64";
 import { Base64 } from "js-base64";
 import axios from "axios";
 import axiosUtils from "./../../../Utils/index";
 import React, { Component } from "react";
-// import "./App.css";
 import GroupUserVideo from "./GroupUserVideo";
-
 //열람실 내부 컴포넌트용
 import { Box } from "@mui/system";
 import Grid from "@mui/material/Grid";
-
 import { Button } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
-import MicOffOutlinedIcon from "@mui/icons-material/MicOffOutlined";
 import Stack from "@mui/material/Stack";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import MusicNoteOutlinedIcon from "@mui/icons-material/MusicNoteOutlined";
 import Typography from "@mui/material/Typography";
 import GroupTodoBlock from "../../GroupPage/Todolist/GroupTodoBlock";
-
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
-// const APPLICATION_SERVER_URL = "http://localhost:5000/";
+import "../../../App.css";
 
 const OPENVIDU_SERVER_URL = "https://i8a302.p.ssafy.io:8443";
 const OPENVIDU_SERVER_SECRET = "SWUS";
@@ -131,17 +120,9 @@ class OpenViduApp extends Component {
     };
 
     axiosUtils(config).then((res) => {
-      console.log(res);
       console.log(res.data.message);
     });
 
-    // axios({
-    //   method: "get",
-    //   url: `http://i8a302.p.ssafy.io:8081/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
-    //   headers: { Authorization: `Bearer ${Token}` },
-    // }).then((response) => {
-    //   console.log(response.data.message);
-    // });
   }
 
   moveToLounge() {
@@ -179,7 +160,6 @@ class OpenViduApp extends Component {
           this.setState({
             subscribers: subscribers,
           });
-          console.log(subscribers);
         });
 
         // On every Stream destroyed...
@@ -260,8 +240,6 @@ class OpenViduApp extends Component {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     const mySession = this.state.session;
-    console.log("check post");
-    console.log(this.state.roomId);
     if (mySession) {
       mySession.disconnect(); //연결 끊고
     }
@@ -309,17 +287,17 @@ class OpenViduApp extends Component {
           <Grid container spacing={1}>
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
-                <Stack direction="row"></Stack>{" "}
-                <h1 style={{ color: "white", paddingTop: "5px" }}>
+              <Stack direction="row"></Stack>{" "}
+                <h1 style={{ color: "white", paddingTop: "5px", fontFamily: "Cafe24" }}>
                   {this.state.teamName}
                 </h1>
-                <h5 style={{ color: "white" }}>{this.state.round}회차</h5>
-                <h4 style={{ color: "white", marginTop: "-20px" }}>
+                 <h5 style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>{this.state.round}회차</h5>
+                 <h4 style={{ color: "white", marginTop: "-20px", fontFamily: "Cafe24", fontSize: "30px" }}>
                   {this.state.content}
                 </h4>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
-                    <p style={{ color: "white" }}>
+                    <p style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
                     <Box
@@ -457,7 +435,7 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px" }}>
+                <h4 style={{ color: "white", paddingTop: "20px", fontFamily: "Cafe24", fontSize: "20px" }}>
                   To-do list
                 </h4>
                 <div
@@ -484,6 +462,7 @@ class OpenViduApp extends Component {
                       height: "50px",
                       color: "#1A1E33",
                       fontSize: "20px",
+                      fontFamily: "Cafe24",
                     }}
                     onClick={() => {
                       this.leaveSession();
@@ -513,7 +492,6 @@ class OpenViduApp extends Component {
                         padding: "5px",
                         paddingRight: "20px",
                         gridGap: "10px",
-                        // flexWrap: "wrap",
                       }}
                     >
                       {this.state.publisher !== undefined ? (
@@ -614,60 +592,6 @@ class OpenViduApp extends Component {
         .catch((error) => reject(error));
     });
   }
-
-  // async createSession(sessionId) {
-  //   const response = await axios.post(
-  //     OPENVIDU_SERVER_URL + "/api/sessions",
-  //     { customSessionId: sessionId },
-  //     {
-  //       headers: {
-  //         Authorization: `Basic ${Base64.encode(
-  //           `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //         )}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   return response.data; // The sessionId
-  // }
-
-  // async createToken(sessionId) {
-  //   const response = await axios.post(
-  //     OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId + "/connections",
-  //     {},
-  //     {
-  //       headers: {
-  //         Authorization: `Basic ${Base64.encode(
-  //           `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //         )}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   return response.data; // The token
-  // }
-
-  // async createSession(sessionId) {
-  //   const response = await axios.post(
-  //     APPLICATION_SERVER_URL + "api/sessions",
-  //     { customSessionId: sessionId },
-  //     {
-  //       headers: { "Content-Type": "application/json" },
-  //     }
-  //   );
-  //   return response.data; // The sessionId
-  // }
-
-  // async createToken(sessionId) {
-  //   const response = await axios.post(
-  //     APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
-  //     {},
-  //     {
-  //       headers: { "Content-Type": "application/json" },
-  //     }
-  //   );
-  //   return response.data; // The token
-  // }
 }
 
 export default OpenViduApp;

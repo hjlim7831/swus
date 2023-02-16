@@ -6,7 +6,7 @@ import { Grid } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
-
+import "../../App.css";
 import axios from "./../../Utils/index";
 
 function TodoJandi({ setType }) {
@@ -44,9 +44,6 @@ function TodoJandi({ setType }) {
 
     axios(config)
       .then((response) => {
-        // console.log(response.data);
-        // {id_study_at: '2023-02-01', todo_done_count: 3}
-        // 1 <= , 3 <=, 5<= , 7 <=
         const newData = response.data.time_records.map((data) => {
           let value = 0;
 
@@ -65,7 +62,6 @@ function TodoJandi({ setType }) {
             classValue: value,
           };
         });
-        // console.log("new", newData);
         setValues(newData);
       })
       .catch((error) => {
@@ -76,10 +72,8 @@ function TodoJandi({ setType }) {
   const colorChange = (name) => {
     localStorage.setItem("jandi", name);
     setColor(name);
-    // console.log(color);
   };
 
-  // const color = ["grey", "#BDACFB", "#7A5DDF", "#4926C1", "#2A117D"];
   return (
     <>
       <Box
@@ -100,7 +94,7 @@ function TodoJandi({ setType }) {
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
             <div style={{ display: "flex" }}>
-              <h3 style={{ marginLeft: "40px", marginRight: "8px" }}>
+              <h3 style={{ marginLeft: "40px", marginRight: "8px", fontFamily: "Cafe24" }}>
                 🌱 {nickname}의 공부시간 기록
               </h3>
               <IconButton
@@ -113,7 +107,6 @@ function TodoJandi({ setType }) {
                 <AutorenewIcon />
               </IconButton>
             </div>
-
             <div>
               {/* 색변경 아이콘들 */}
               <FormatColorFillIcon

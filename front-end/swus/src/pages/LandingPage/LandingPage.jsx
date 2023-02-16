@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Button, Card, Typography, Icon } from '@mui/material';
+import { Button, Card, Typography } from '@mui/material';
 import NavBar from "../../components/NavBar/NavBar";
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import GroupIcon from '@mui/icons-material/Group';
@@ -83,14 +83,13 @@ function Item(props) {
 				backgroundRepeat: 'no-repeat',
 				backgroundPosition: 'center center',
 				textAlign: 'center',
-				height: 800,
-				// justifyContent: "center",
+				height: "100vh",
 				display: "flex",
 				flexDirection: "column",
 				opacity: "50%",
 				position: "absolute",
 				width: "100vw",
-				top: 0
+				top: 0,
 			},
 			
 	}
@@ -111,10 +110,10 @@ function Item(props) {
 				<Box sx={{ display: "flex", justifyContent: "space-evenly", position: "relative" }}>
 					<div style={{ position: "absolute", width: "600px", height: "380px", opacity: "20%", backgroundColor: "gray", borderRadius: "20px", top: 220 }}></div>
 					<div style={{ display: "flex", flexDirection: "column", position: "relative", alignItems: "center", top: 190 }}>
-						<Typography align="center" mt={10} variant="h4" style={{color: `${props.item.color}`, fontSize: "80px"}}>
+						<Typography align="center" mt={10} variant="h4" style={{color: `${props.item.color}`, fontSize: "80px", fontFamily: "Cafe24", fontWeight: "bold" }}>
 							{props.item.name}
 						</Typography>
-						<Typography align="center" mt={3} variant="body2" style={{color: `${props.item.color}`, fontSize: "35px"}}>
+						<Typography align="center" mt={3} variant="body2" style={{color: `${props.item.color}`, fontSize: "35px", fontFamily: "Cafe24", fontWeight: "bold"}}>
 							{props.item.description}
 						</Typography>
 						<div style={{ marginTop: 50 }}>
@@ -122,11 +121,10 @@ function Item(props) {
 						variant="fulfilled"
 						style={{ color:"black", 
 											background: "#DEDCEE",
-											// height: "100px",
-											// width: "180px",
 											fontSize: "30px",
-											borderRadius: "15px",
+											fontFamily: "Cafe24", 
 											fontWeight: "bold",
+											borderRadius: "15px",
 											paddingInline: "20px",
 											paddingBlock: "10px" }}
 						onClick={() => {getStart(props.item.url)}}

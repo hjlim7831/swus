@@ -1,39 +1,37 @@
 import React, { useEffect, useState } from "react";
-import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import OpenViduApp from "../OpenVidu/OpenViduApp";
 import MyTimeBlock from "../MyPageReport/MyTimeBlock";
 import NSRoomCard from "./RoomScroll/NSRoomCard";
 import FTRoomCard from "./RoomScroll/FTRoomCard";
 import { useNavigate } from "react-router-dom";
-
-import { Box } from "@mui/material";
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-
 import Grid from "@mui/material/Grid";
-import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
-
+import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-
 import axios from "./../../Utils/index";
 import RoomInfo from "./RoomScroll/RoomInfo";
 import NavBar from "../../components/NavBar/NavBar";
-
 import "./RoomScroll/hideScrollbar.css";
-import { resolveComponentProps } from "@mui/base";
 import MyTodoBlock from "../OpenVidu/TodoList/MyTodoPublicMain";
+import "../../App.css";
 
-// const getrooms = () =>
-//   Array(1) //카드의 개수 추정 0부터 10까지 있는 카드
-//     .fill(0)
-//     .map((_, ind) => ({ id: `element-${ind}` }));
 
 function StudyRoomMain() {
   const [rooms, setrooms] = useState([]);
   const [noRooms, setnoRooms] = useState([]); //nonstop방만 저장할 배열
   const [yesRooms, setyesRooms] = useState([]); //쉬는시간방만 저장할 배열
+  const [open, setOpen] = useState(false);
+  const [roomCategory, setRoomCategory] = useState("N");
+
+  const handleToOpen = () => {
+    setOpen(true);
+  };
+
+  const handleToClose = () => {
+    setOpen(false);
+  };
 
   const Token = sessionStorage.getItem("token");
 
@@ -45,32 +43,24 @@ function StudyRoomMain() {
       url: "/studyrooms",
     };
     axios(config).then((res) => {
-      console.log(res);
-      // console.log(res.data);
-      console.log(res.data.publics);
 
       if ("success_get_studyrooms") {
         setrooms(res.data.publics);
-        // console.log(res.data.publics);
       } else {
       }
     });
   }, []);
-  console.log(rooms);
   useEffect(() => {
     const NR = rooms.filter((room) => room.type === "N");
     setnoRooms(NR);
-    console.log(noRooms);
     const YR = rooms.filter((room) => room.type === "Y");
     setyesRooms(YR);
   }, [rooms]);
 
-  // const navigate = useNavigate();
-
   //방 추가하는 함수, 추가하고 바로 이동
   const addItem = (typeOfRoom) => {
-    console.log(typeOfRoom);
-    console.log("axios post 방 추가 studyroomMain");
+
+    
     if (typeOfRoom === "Y") {
       const config = {
         method: "Post",
@@ -79,13 +69,8 @@ function StudyRoomMain() {
       };
       axios(config)
         .then((res) => {
-          console.log(res);
-          console.log(res.data.public.session_name);
           const sessionName = res.data.public.session_name;
           const roomId = res.data.public.id;
-
-          console.log(sessionName);
-          console.log(roomId);
 
           const config = {
             method: "Post",
@@ -93,7 +78,6 @@ function StudyRoomMain() {
           };
           axios(config).then((response) => {
             if ("success_enter_studyroom") {
-              console.log(response);
               navigate(`/studyroom/${sessionName}`, {
                 state: { roomName: sessionName },
               }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
@@ -116,14 +100,8 @@ function StudyRoomMain() {
         data: { type: "N" },
       };
       axios(config).then((res) => {
-        console.log(res.data.public);
-        console.log(res);
-        console.log(res.data.public.session_name);
         const sessionName = res.data.public.session_name;
         const roomId = res.data.public.id;
-
-        console.log(sessionName);
-        console.log(roomId);
 
         const config = {
           method: "post",
@@ -131,7 +109,6 @@ function StudyRoomMain() {
         };
         axios(config).then((response) => {
           if ("success_enter_studyroom") {
-            console.log(response);
             navigate(`/studyroom/${sessionName}`, {
               state: { roomName: sessionName },
             }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
@@ -158,7 +135,6 @@ function StudyRoomMain() {
           height: "100vh",
           bgcolor: "#1A1E33F2",
           position: "static",
-          // overscrollBehavior: "contain",
         }}
       >
         {/* 하나 xs 값 주면 나머지 알아서*/}
@@ -173,7 +149,7 @@ function StudyRoomMain() {
             >
               <Typography
                 variant="h5"
-                sx={{ fontSize: 25, color: "white", marginTop: 2 }}
+                sx={{ fontSize: 25, color: "white", marginTop: 2, fontFamily: "Cafe24" }}
               >
                 Todo List
               </Typography>
@@ -211,6 +187,7 @@ function StudyRoomMain() {
                   fontSize: 30,
                   color: "white",
                   my: "1.5rem",
+                  fontFamily: "Cafe24",
                 }}
               >
                 STUDY ROOM
@@ -222,13 +199,9 @@ function StudyRoomMain() {
                 xs={11.2}
                 style={{
                   position: "relative",
-                  // displayPrint: "inline-block",
-                  // backgroundColor: "green",
                 }}
               >
                 <ScrollMenu
-                  // LeftArrow={LeftArrow} //좌우 클릭으로 이동
-                  // RightArrow={RightArrow}
                   onWheel={onWheel}
                 >
                   <RoomInfo />
@@ -250,12 +223,12 @@ function StudyRoomMain() {
                 style={{
                   position: "relative",
                   display: "inline-block",
-                  // backgroundColor: "yellow",
                 }}
               >
                 <IconButton
                   onClick={() => {
-                    addItem("N");
+                    handleToOpen();
+                    setRoomCategory("N");
                   }}
                   sx={{ color: "white", top: "45%", width: "80px" }}
                 >
@@ -270,14 +243,10 @@ function StudyRoomMain() {
                 style={{
                   position: "relative",
                   displayPrint: "inline-block",
-                  // backgroundColor: "red",
-                  // marginTop: "2%",
                   height: "100%",
                 }}
               >
                 <ScrollMenu
-                  // LeftArrow={LeftArrow}
-                  // RightArrow={RightArrow}
                   onWheel={onWheel}
                 >
                   {yesRooms.map((room, i) => (
@@ -298,12 +267,12 @@ function StudyRoomMain() {
                 style={{
                   position: "relative",
                   displayPrint: "inline-block",
-                  position: "relative",
                 }}
               >
                 <IconButton
                   onClick={() => {
-                    addItem("Y");
+                    handleToOpen()
+                    setRoomCategory("Y")
                   }}
                   sx={{ color: "white", top: "45%", width: "80px" }}
                 >
@@ -314,6 +283,23 @@ function StudyRoomMain() {
           </Grid>
         </Grid>
       </Box>
+      <Dialog
+        open={open}
+        onClose={handleToClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title" sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+          열람실 생성하기
+        </DialogTitle>
+        <DialogContent id="alert-dialog-description" sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}>
+          오늘도 열심히 달려볼까요?
+        </DialogContent>
+        <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+          <Button onClick={() => {addItem(roomCategory)}}  sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}>입장</Button>
+          <Button onClick={handleToClose} variant="contained" sx={{ background: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}>x</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

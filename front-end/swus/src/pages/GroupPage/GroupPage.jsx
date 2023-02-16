@@ -11,11 +11,10 @@ import { Container,
 					Button,
 					Grid,
 				} from '@mui/material';
-import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from "uuid";
-import groupBoardSlice from '../../store/GroupBoardSlice';
+import "../../App.css";
 
 
 const filterCategory = /S/;
@@ -23,7 +22,6 @@ const filterCategory = /S/;
 function GroupPage() {
 
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const [page, setPage] = useState(0)
 	const [articles, setArticles] = useState([]);
 
@@ -56,13 +54,14 @@ function GroupPage() {
 											fontWeight: "bold", 
 											fontSize: "30px", 
 											textAlign: "center",
-											marginLeft: 20 }}>
+											marginLeft: 20,
+											fontFamily: "Cafe24" }}>
 						<span>✏️스터디 모집게시판</span>
 					</p>
 					<Button 
 						type="submit" 
 						variant='contained' 
-						sx={{ backgroundColor: "green", m: 3, height: "40px", "&:hover": { backgroundColor: "green" } }}
+						sx={{ backgroundColor: "#1560BD", m: 3, height: "40px", "&:hover": { backgroundColor: "#1560BD" } }}
 						size="small"
 						onClick={() => {navigate("/group/board/create")}}>글 작성</Button>
 				</Grid>
@@ -102,7 +101,7 @@ function GroupPage() {
 											<span style={{ cursor: "pointer" }}>{article.title}</span>
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>
-										{(article.recruitment_done === "N") ? "📢모집중" : "✔모집 완료"}
+										{(article.recruitment_done === "N") ? "📢모집중" : "✔모집 완료" }
 									</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.write_at}</TableCell>
 									<TableCell style={{ textAlign: "center" }}>{article.views}</TableCell>
@@ -117,7 +116,6 @@ function GroupPage() {
 									rowsPerPage={10}
 									rowsPerPageOptions={[]}
 									onPageChange={handleChangePage}
-									// onChangeRowsPerPage={handleChangeRowsPerPage}
 								/>
 							</TableRow>
 						</TableFooter>

@@ -3,7 +3,7 @@ import { Box, height } from "@mui/system";
 import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
-// import motivationImg from "../../image/Lounge/motivation.jpg";
+import "../../App.css";
 import stretchingNeck from "../../image/Lounge/stretching-neck.png";
 import stretchingMain from "../../image/Lounge/stretching-main.png";
 import stretchingBack from "../../image/Lounge/stretching-back.png";
@@ -153,6 +153,13 @@ export default function Lounge() {
               >
                 <Box
                   sx={{
+                    mx: "3rem",
+                    mt: "2rem",
+                    mb: "1rem",
+                    fontSize: "30px",
+                    fontWeight: "bold",
+                    fontFamily: "Cafe24",
+                    color: "white",
                     display: "flex",
                     flexDirection: "column",
                   }}
@@ -238,9 +245,10 @@ export default function Lounge() {
                     mx: "3rem",
                     mt: "2rem",
                     mb: "1rem",
-                    fontSize: "30px",
+                    fontSize: "35px",
                     fontWeight: "bold",
                     color: "white",
+                    fontFamily: "Cafe24",
                   }}
                 >
                   동기부여 영상 보기
@@ -250,7 +258,8 @@ export default function Lounge() {
                     sx={{
                       mx: "3rem",
                       my: "1rem",
-                      fontSize: "20px",
+                      fontSize: "22px",
+                      fontFamily: "Cafe24",
                       color: "white",
                     }}
                   >
@@ -263,12 +272,13 @@ export default function Lounge() {
                     sx={{
                       my: "1rem",
                       mt: "4rem",
-                      marginLeft: "2rem",
+                      // marginLeft: "1rem",
                       backgroundColor: "#F4EFE6",
                       width: "6rem",
                       height: "3rem",
                       color: "#1A1E33",
                       fontSize: "20px",
+                      fontFamily: "Cafe24_e",
                       "&:hover": {
                         backgroundColor: "#F4EFE6",
                       },

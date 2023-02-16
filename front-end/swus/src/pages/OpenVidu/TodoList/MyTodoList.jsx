@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React from "react";
 import axios from "../../../Utils/index";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
@@ -39,7 +39,6 @@ function MyTodoList({ todoData, setTodoData, value, setValue }) {
     };
 
     axios(config).then((response) => {
-      console.log(response.data);
       newTodoData[i].todo_done = !newTodoData[i].todo_done;
       setTodoData(newTodoData);
     });

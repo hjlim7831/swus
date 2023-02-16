@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { Checkbox, FormControlLabel, TextField, Divider, Grid, OutlinedInput } from '@mui/material';
-import { MenuItem, Select, Button, InputLabel, FormControl } from '@mui/material';
+import { Checkbox, FormControlLabel, TextField, Divider, Grid } from '@mui/material';
+import { MenuItem, Select, Button } from '@mui/material';
 import { Container } from '@mui/system';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from 'uuid';
-import groupBoardSlice from '../../store/GroupBoardSlice';
+import "../../App.css";
 
 
 
 function CreateArticleForm() {
 
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		category: "",
 		title: "",
@@ -39,7 +38,6 @@ function CreateArticleForm() {
 					newDay[num] = !newDay[num]
 				}
 			}
-			console.log(newDay)
 			setInputs({...inputs, [date] : newDay})
 		}	else	{
 			setInputs({...inputs, [name] : value})
@@ -147,14 +145,14 @@ function CreateArticleForm() {
 			<Container sx={{ border: "1px gray solid", borderRadius: "10px", marginTop: 3, background: "white" }}>
 				<form>
 						<Grid container style={{ justifyContent: "space-between", display: "flex", alignContent: "center"}}>
-							<p style={{ paddingLeft: 10, display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+							<p style={{ paddingLeft: 10, marginLeft: 10, display: "flex", alignItems: "center", fontWeight: "bold", fontSize: "30px", textAlign: "center", fontFamily: "Cafe24" }}>
 								게시글 작성
 							</p>
 							<div style={{ display: "flex", alignItems: "center" }}>
 								<Button 
 									type="submit" 
 									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3, height: "40px", "&:hover": { backgroundColor: "green" } }}
+									sx={{ backgroundColor: "#1560BD", m: 3, height: "40px", "&:hover": { backgroundColor: "#1560BD" } }}
 									size="small"
 									disabled={!true}
 									onClick={onHandleSubmit}>글 작성</Button>
@@ -379,8 +377,6 @@ function CreateArticleForm() {
 
 
 function CreateArticle() {
-
-
   return (
     <>
 			<div>
