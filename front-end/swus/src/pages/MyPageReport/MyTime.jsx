@@ -123,7 +123,7 @@ function MyTime({ setType }) {
       >
         <Grid container>
           <Grid item xs={5}>
-            <h3 style={{ marginLeft: "40px" }}>공부 목표 시간</h3>
+            <h3 style={{ marginLeft: "40px" }}>🕒 공부 목표 시간</h3>
           </Grid>
           <Grid item xs={1}>
             <IconButton
@@ -152,7 +152,7 @@ function MyTime({ setType }) {
               item
               xs={10}
               sx={{
-                backgroundColor: "#F4EFE6",
+                backgroundColor: "#E7E6F2",
                 marginX: "auto",
               }}
             >
