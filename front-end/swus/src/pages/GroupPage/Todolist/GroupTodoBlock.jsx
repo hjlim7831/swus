@@ -76,7 +76,7 @@ function GroupTodoBlock(props) {
               overflowX: "hidden",
               width: "93%",
               marginX: "auto",
-              height: 400,
+              height: 350,
               paddingBottom: "20px",
             }}
           >

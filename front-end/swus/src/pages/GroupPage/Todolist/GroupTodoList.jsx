@@ -3,8 +3,14 @@ import axios from "../../../Utils/index";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
-function GroupTodoList({ todoData, setTodoData, value, setValue, groupId, round }) {
-
+function GroupTodoList({
+  todoData,
+  setTodoData,
+  value,
+  setValue,
+  groupId,
+  round,
+}) {
   const getStyle = (todo_done) => {
     return {
       padding: "10px",
@@ -81,9 +87,6 @@ function GroupTodoList({ todoData, setTodoData, value, setValue, groupId, round 
               sx={{ fontSize: 18, cursor: "pointer", float: "right" }}
               onClick={() => handleClick(data.num)}
             />
-
-            {/* 수정 아이콘은 생성했지만, 로직 구현 아직... 필요할까? */}
-            <ModeEditOutlineOutlinedIcon sx={{ fontSize: 18, cursor: "pointer", float: "right" }} />
           </div>
         ))}
     </div>

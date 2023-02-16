@@ -8,7 +8,6 @@ import { Grid } from "@mui/material";
 import axios from "./../../Utils/index";
 import "../../App.css";
 
-
 function MyTodoBlock({ setType }) {
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
@@ -73,7 +72,9 @@ function MyTodoBlock({ setType }) {
       >
         <Grid container>
           <Grid item xs={5}>
-            <h3 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>✅ To-Do List</h3>
+            <h3 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>
+              ✅ To-Do List
+            </h3>
           </Grid>
           <Grid item xs={7}>
             <IconButton
@@ -95,8 +96,9 @@ function MyTodoBlock({ setType }) {
                 overflowX: "hidden",
                 width: "85%",
                 marginX: "auto",
-                height: 360,
+                height: "23rem",
                 backgroundColor: "#E7E6F2",
+                borderRadius: 2,
               }}
             >
               <MyTodoForm
