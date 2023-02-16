@@ -9,7 +9,7 @@ import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
 
 import axios from "./../../Utils/index";
 
-function TodoJandi({ setJandiType }) {
+function TodoJandi({ setType }) {
   //  Heatmap Data
   const checkColor = localStorage.getItem("jandi")
     ? localStorage.getItem("jandi")
@@ -100,18 +100,20 @@ function TodoJandi({ setJandiType }) {
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
             <div style={{ display: "flex" }}>
-              <h3 style={{ marginLeft: "40px", marginRight: "8px" }}>🌱 {nickname}의 공부시간 기록</h3>
+              <h3 style={{ marginLeft: "40px", marginRight: "8px" }}>
+                🌱 {nickname}의 공부시간 기록
+              </h3>
               <IconButton
                 color="black"
                 aria-label="change view"
                 onClick={() => {
-                  setJandiType("todo");
+                  setType("todo");
                 }}
               >
                 <AutorenewIcon />
               </IconButton>
             </div>
-            
+
             <div>
               {/* 색변경 아이콘들 */}
               <FormatColorFillIcon
