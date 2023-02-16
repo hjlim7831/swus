@@ -153,9 +153,9 @@ export default function Lounge() {
               >
                 <Box
                   sx={{
-                    mx: "3rem",
-                    mt: "2rem",
-                    mb: "1rem",
+                    // mx: "3rem",
+                    // mt: "2rem",
+                    // mb: "1rem",
                     fontSize: "30px",
                     fontWeight: "bold",
                     fontFamily: "Cafe24",

@@ -283,7 +283,7 @@ function MyGroupList() {
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
             {group.start_time.slice(0, 5)} ~ {group.finish_time.slice(0, 5)}
           </TableCell>
-          <TableCell style={{ textAlign: "center" }}>
+          <TableCell>
             <Button
               variant="outlined"
               onClick={() => openModal(group.team_id)}
@@ -291,7 +291,6 @@ function MyGroupList() {
             >
               리포트 보기
             </Button>
-            <div>
               <Report
                 open={modalOpen}
                 close={closeModal}
@@ -343,7 +342,7 @@ function MyGroupList() {
                   </>
                 }
               </Report>
-            </div>
+
           </TableCell>
         </TableRow>
       );

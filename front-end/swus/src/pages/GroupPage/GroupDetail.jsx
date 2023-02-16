@@ -346,55 +346,57 @@ function GroupDetail() {
                   <p style={{ textAlign: "center", fontSize: "25px", fontWeight: "bold" }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</p>
                 </Grid>
               </Grid>
-              <Grid container sx={{ padding: 2 }}>
-                <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
-                  <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
-                  <Typography style={{ margin: 10, padding: 35, minHeight: "30px", wordBreak: "break-all", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>
-                    {teamDetails.team_info}
-                  </Typography>
+              <Container sx={{ height: "500px", overflowY: "scroll" }}>
+                <Grid container sx={{ padding: 2 }}>
+                  <Grid item xs={12} sx={{ display: "float", justifyContent: "flex-start", alignContent: "center" }}>
+                    <div style={{ fontWeight: "bold", margineInline: 5, padding: 5 }}>내용</div>
+                    <Typography style={{ margin: 10, padding: 35, wordBreak: "break-all", whiteSpace: "pre-wrap", borderRadius: "10px", backgroundColor: "#F4EFE6" }}>
+                      {teamDetails.team_info}
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlock: 30 }}>
-                <div style={{ paddingInline: 20, fontWeight: "bold", fontSize: "20px" }}>
-                  회차별 주제
-                </div>
-                {(teamDetails.team_done === "N")
-                  ? <div>
-                      <Button variant="outlined" onClick={openModal} sx={{ color: "#1560BD" }}>
-                        리포트 보기
-                      </Button>
-                      <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
-                        {
-                          <>
-                            <div style={{ display: "flex", justifyContent: "center" }}>
-                              <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
-                                {filterCategory.test(teamDetails.category) 
-                                  ? <span style={{ color: "red" }}>[스터디]</span>
-                                  : <span style={{ color: "blue"}}>[메이트]</span>} 
-                                <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
-                              </p>
-                            </div>
-                            <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
-                              <div style={{ borderRadius: "20px", 
-                                            border: "1px solid grey", 
-                                            backgroundColor: "#E2B9B3", 
-                                            padding: 5, 
-                                            marginInline: 10, 
-                                            paddingInline: 10, 
-                                            fontWeight: "bold"
-                                          }}>{teamDetails.leader}</div>
-                              {getMembers()}
-                            </div>
-                          </>
-                        } 
-                      </Report>
-                    </div>
-                  : null
-                }
-              </Container>
-              <br/>
-              <Container style={{ overflowY: "scroll", height: "250px" }}>
-                {getWeekTopics()}
+                <Container style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBlock: 30 }}>
+                  <div style={{ paddingInline: 20, fontWeight: "bold", fontSize: "20px" }}>
+                    회차별 주제
+                  </div>
+                  {(teamDetails.team_done === "N")
+                    ? <div>
+                        <Button variant="outlined" onClick={() => {openModal()}} sx={{ color: "#1560BD" }}>
+                          리포트 보기
+                        </Button>
+                        <Report open={modalOpen} close={closeModal} header="우리 팀의 REPORT" payload={reportData}>
+                          {
+                            <>
+                              <div style={{ display: "flex", justifyContent: "center" }}>
+                                <p style={{ fontWeight: "bold", fontSize: "25px", justifyContent: "space-between" }}> 
+                                  {filterCategory.test(teamDetails.category) 
+                                    ? <span style={{ color: "red" }}>[스터디]</span>
+                                    : <span style={{ color: "blue"}}>[메이트]</span>} 
+                                  <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                                </p>
+                              </div>
+                              <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
+                                <div style={{ borderRadius: "20px", 
+                                              border: "1px solid grey", 
+                                              backgroundColor: "#E2B9B3", 
+                                              padding: 5, 
+                                              marginInline: 10, 
+                                              paddingInline: 10, 
+                                              fontWeight: "bold"
+                                            }}>{teamDetails.leader}</div>
+                                {getMembers()}
+                              </div>
+                            </>
+                          } 
+                        </Report>
+                      </div>
+                    : null
+                  }
+                </Container>
+                <br/>
+                <Container>
+                  {getWeekTopics()}
+                </Container>
               </Container>
             </Grid>
           </Container>
