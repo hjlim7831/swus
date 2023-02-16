@@ -10,7 +10,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 
 import axios from "../../Utils/index";
 
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export default function MyInfo() {
   const [nickname, setNickName] = useState(localStorage.getItem("nickname"));
@@ -59,7 +59,6 @@ export default function MyInfo() {
     };
 
     axios(config).then(() => {
-      // console.log(response.data);
       localStorage.clear();
       sessionStorage.clear();
       window.location = window.location.origin;
@@ -72,14 +71,14 @@ export default function MyInfo() {
     password: "",
     newPassword: "",
     newPasswordConfirm: "",
-  })
+  });
 
   const inputSubmit = (event) => {
     const name = event.target.name;
     const value = event.target.value;
 
-    setInputData({ ...inputData, [name]: value});
-  }
+    setInputData({ ...inputData, [name]: value });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -88,7 +87,7 @@ export default function MyInfo() {
       nickname: inputData.nickname,
       old_password: inputData.password,
       new_password: inputData.newPassword,
-    }
+    };
 
     // const newPasswordConfirm = inputData.newPasswordConfirm;
 
@@ -96,29 +95,29 @@ export default function MyInfo() {
       method: "put",
       url: "/users/my-info",
       data: payload,
-    }
+    };
 
-    console.log(payload)
+    console.log(payload);
 
     axios(config)
       .then((response) => {
         iumClose();
         Swal.fire({
-          icon: 'success',
-          title: '정보가 수정되었습니다.',
+          icon: "success",
+          title: "정보가 수정되었습니다.",
           showConfirmButton: false,
           timer: 1000,
-        })
+        });
       })
       .catch((error) => {
         Swal.fire({
-          icon: 'error',
-          title: '비밀번호가 다릅니다.',
+          icon: "error",
+          title: "비밀번호가 다릅니다.",
           showConfirmButton: false,
           timer: 1000,
-        })
-      })
-  }
+        });
+      });
+  };
 
   return (
     <>
@@ -187,7 +186,7 @@ export default function MyInfo() {
             label="email"
             defaultValue={email}
             disabled
-            sx= {{ mt: 2}}
+            sx={{ mt: 2 }}
           />
           <TextField
             autoFocus
@@ -197,12 +196,14 @@ export default function MyInfo() {
             label="닉네임"
             name="nickname"
             defaultValue={nickname}
-            sx= {{ mt: 2}}
+            sx={{ mt: 2 }}
             onChange={inputSubmit}
-            error={inputData.nickname.length > 10 | inputData.nickname.length < 2}
+            error={
+              (inputData.nickname.length > 10) | (inputData.nickname.length < 2)
+            }
             helperText="닉네임은 2글자 이상, 10글자 이하로만 수정가능합니다."
           />
-          
+
           <TextField
             autoFocus
             fullWidth
@@ -210,11 +211,13 @@ export default function MyInfo() {
             label="현재 비밀번호"
             type="password"
             name="password"
-            sx= {{ mt: 2}}
+            sx={{ mt: 2 }}
             onChange={inputSubmit}
-            error={inputData.password && 
-              (inputData.password.length < 8 | 
-                !(passwordCheck.test(inputData.password)))}
+            error={
+              inputData.password &&
+              (inputData.password.length < 8) |
+                !passwordCheck.test(inputData.password)
+            }
             helperText="비밀번호는 문자, 숫자 포함한 8자 이상이어야 합니다."
           />
           {/* <TextField
@@ -229,11 +232,12 @@ export default function MyInfo() {
               name="newPassword"
               type="password"
               onChange={inputSubmit}
-              error={inputData.newPassword && 
-                (inputData.newPassword.length < 8 | 
-                  !(passwordCheck.test(inputData.newPassword)))
-                }
-              sx= {{ mt: 2, width: 260}}
+              error={
+                inputData.newPassword &&
+                (inputData.newPassword.length < 8) |
+                  !passwordCheck.test(inputData.newPassword)
+              }
+              sx={{ mt: 2, width: 260 }}
             />
             <TextField
               id="outlined-helperText"
@@ -241,15 +245,19 @@ export default function MyInfo() {
               name="newPasswordConfirm"
               type="password"
               onChange={inputSubmit}
-              error={inputData.newPasswordConfirm && 
-                (inputData.newPasswordConfirm.length < 8 | 
-                  !(passwordCheck.test(inputData.newPasswordConfirm)))
-                }
-              helperText = {inputData.newPassword != inputData.newPasswordConfirm ? "입력하신 비밀번호와 다릅니다." : ""} 
-              sx= {{ mt: 2, marginLeft: 3, width: 260}}
+              error={
+                inputData.newPasswordConfirm &&
+                (inputData.newPasswordConfirm.length < 8) |
+                  !passwordCheck.test(inputData.newPasswordConfirm)
+              }
+              helperText={
+                inputData.newPassword != inputData.newPasswordConfirm
+                  ? "입력하신 비밀번호와 다릅니다."
+                  : ""
+              }
+              sx={{ mt: 2, marginLeft: 3, width: 260 }}
             />
           </Box>
-          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit}>Save</Button>

@@ -10,7 +10,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-// import { ResponsivePie } from "@nivo/pie";
 import PieChart from "./PieChart";
 import Typography from "@mui/material/Typography";
 
@@ -143,7 +142,6 @@ function MyTime() {
           sx={{
             width: "100%",
             height: "100%",
-            backgroundColor: "white",
           }}
         >
           <Grid container>
@@ -164,48 +162,56 @@ function MyTime() {
                     width: "100%",
                     height: "15rem",
                     backgroundColor: "F4EFE6",
+                    marginTop: "10px",
                   }}
                 >
                   <Grid item xs={12}>
                     <Grid container sx={{ marginTop: "3%" }}>
-                      <Grid item xs={6}>
-                        나의 목표 시간
+                      <Grid item xs={1} />
+                      <Grid item xs={5}>
+                        📌 나의 목표 시간
                       </Grid>
 
-                      <Grid item xs={6}>
+                      <Grid item xs={5}>
                         <Box sx={{ marginLeft: "30%" }}>
                           {parseInt(targetTime / 60)}시간{" "}
                           {("0" + parseInt(targetTime % 60)).slice(-2)}분
                         </Box>
                       </Grid>
+                      <Grid item xs={1} />
                     </Grid>
                     <Grid container sx={{ marginTop: "2%" }}>
-                      <Grid item xs={6}>
-                        현재 달성 시간
+                      <Grid item xs={1} />
+                      <Grid item xs={5}>
+                        🏆 현재 달성 시간
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={5}>
                         <Box sx={{ marginLeft: "30%" }}>
                           {parseInt(studyTime / 60)}시간{" "}
                           {("0" + parseInt(studyTime % 60)).slice(-2)}분
                         </Box>
                       </Grid>
+                      <Grid item xs={1} />
                     </Grid>
                     <Grid container sx={{ marginTop: "2%" }}>
-                      <Grid item xs={6}>
-                        남은 목표 시간
+                      <Grid item xs={1} />
+                      <Grid item xs={5}>
+                        🚩 남은 목표 시간
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={5}>
                         <Box sx={{ marginLeft: "30%" }}>
                           {parseInt(restTime / 60)}시간{" "}
                           {("0" + parseInt(restTime % 60)).slice(-2)}분
                         </Box>
                       </Grid>
+                      <Grid item xs={1} />
                     </Grid>
                   </Grid>
-
-                  {targetTime && studyTime ? (
-                    <PieChart targetTime={targetTime} studyTime={studyTime} />
-                  ) : null}
+                  <Box sx={{ marginLeft: "20px" }}>
+                    {targetTime && studyTime ? (
+                      <PieChart targetTime={targetTime} studyTime={studyTime} />
+                    ) : null}
+                  </Box>
                 </Box>
               </Grid>
             </Grid>

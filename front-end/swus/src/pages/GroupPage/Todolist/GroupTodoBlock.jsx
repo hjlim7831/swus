@@ -2,30 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import GroupTodoList from "./GroupTodoList";
 import GroupTodoForm from "./GroupTodoForm";
-import IconButton from "@mui/material/IconButton";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
 
 import axios from "../../../Utils/index";
 
-// import { useSelector, useDispatch } from "react-redux";
-// import { addTodoList } from "./../../store/TodoList";
-
 function GroupTodoBlock(props) {
-  // const dispatch = useDispatch();
-  // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
 
-  // ---------------------------------------------------------------------
-  // 나중에 처리해야 하는 곳
   // 1. groupId 받아서 저장
   // 2. round 받아서 저장
   const groupId = props.groupId;
   const round = props.round;
-  console.log("투두리스트 프롭스");
-  console.log(groupId);
-  console.log(round);
 
   useEffect(() => {
     const config = {
@@ -35,7 +23,7 @@ function GroupTodoBlock(props) {
 
     axios(config)
       .then((response) => {
-        console.log("그룹 투두 겟 api");
+        // console.log("그룹 투두 겟 api");
         console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {

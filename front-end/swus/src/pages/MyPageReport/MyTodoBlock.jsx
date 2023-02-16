@@ -23,7 +23,6 @@ function MyTodoBlock({ setType }) {
 
     axios(config)
       .then((response) => {
-        // console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {
             return {
@@ -31,7 +30,6 @@ function MyTodoBlock({ setType }) {
               todo_done: todo.todo_done === "N" ? false : true,
             };
           });
-          // console.log(updatedData);
           setTodoData(updatedData);
         }
       })

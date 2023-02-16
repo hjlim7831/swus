@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import OpenViduVideoComponent from "./OvVideo";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 
 import "./UserVideo.css";
 

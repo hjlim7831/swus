@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -30,12 +28,10 @@ function FtoTRoom(props) {
   const hadleToClose = () => {
     setOpen(false);
   };
-  const Token = sessionStorage.getItem("token");
 
   const navigate = useNavigate();
   const handleToEnter = () => {
     //입장시 api
-    console.log("axios post NSRoomCard");
     const config = {
       method: "POST",
       url: `/studyrooms/${roomId}`,
@@ -52,10 +48,6 @@ function FtoTRoom(props) {
         alert("잠시 후 다시 입장해주세요");
       }
     });
-
-    // navigate(`/studyroom/${sessionName}`, {
-    //   state: { roomName: sessionName, roomId: roomId },
-    // }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
   };
 
   return (

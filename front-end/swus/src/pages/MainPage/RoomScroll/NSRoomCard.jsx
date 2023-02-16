@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../../image/sampleImage.jpg";
 import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 import { Grid } from "@mui/material";
-// import axios from "axios";
 import axios from "./../../../Utils/index";
 
 function NSRoomCard(props) {
@@ -21,9 +20,6 @@ function NSRoomCard(props) {
   const [sessionName, setsessionName] = useState(props.sessionName);
   const [count, setCount] = useState(props.partici);
   const [roomId, setRoomId] = useState(props.id);
-
-  console.log("NS 룸에서의 잘 받아오나? 세션네임", sessionName);
-  console.log("NS 룸에서의 잘 받아오나? 룸 번호", roomId);
 
   const handleToOpen = () => {
     setOpen(true);
@@ -33,12 +29,9 @@ function NSRoomCard(props) {
     setOpen(false);
   };
 
-  const Token = sessionStorage.getItem("token");
-
   const navigate = useNavigate();
   const handleToEnter = () => {
     //입장시 api
-    console.log("axios post NSRoomCard");
 
     const config = {
       method: "POST",
@@ -47,8 +40,6 @@ function NSRoomCard(props) {
 
     axios(config).then((response) => {
       if ("success_enter_studyroom") {
-        console.log(response);
-        console.log("is here?");
         navigate(`/studyroom/${sessionName}`, {
           state: { roomName: sessionName, roomId: roomId },
         }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌

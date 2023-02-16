@@ -14,8 +14,6 @@ const ApexChart = () => {
     };
 
     axios(config).then((response) => {
-      // console.log(response.data);
-
       let updatedSeries = [
         {
           name: "공부시간",
@@ -40,7 +38,6 @@ const ApexChart = () => {
         });
         setSeries(updatedSeries);
       }
-      // console.log(series);
     });
   }, []);
 
@@ -89,7 +86,6 @@ const ApexChart = () => {
 
   return (
     <>
-      {/* {console.log("check", series)} */}
       <Box
         sx={{
           width: "100%",

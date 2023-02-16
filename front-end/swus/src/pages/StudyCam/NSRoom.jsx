@@ -22,8 +22,6 @@ function NSRoom() {
 
   const roomName = location.state.roomName;
   const roomId = location.state.roomId;
-  console.log("roomId");
-  console.log("roomName", roomName, "roomId", roomId);
 
   const enterHour = new Date().getHours();
   const enterMin = new Date().getMinutes();

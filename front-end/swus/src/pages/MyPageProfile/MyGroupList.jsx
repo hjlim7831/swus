@@ -104,7 +104,6 @@ function MyGroupList() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
         dispatch(myGroupListSlice.actions.saveGroupId(teamId));
         dispatch(myGroupListSlice.actions.getGroupDetails(response.data));
       })
@@ -131,14 +130,12 @@ function MyGroupList() {
   };
 
   const handleToEnter = () => {
-    console.log(teamName);
     const config = {
       url: `/grouprooms/${teamId}`,
       method: "GET",
     };
 
     axios(config).then((response) => {
-      console.log(response.data);
       const sessionName = response.data.sessionName;
       navigate(`/studyroom/group/${sessionName}`, {
         state: {
@@ -154,7 +151,10 @@ function MyGroupList() {
   };
 
   function getMembers() {
-    if (Array.isArray(teamDetails.member_list) && teamDetails.member_list.length > 0) {
+    if (
+      Array.isArray(teamDetails.member_list) &&
+      teamDetails.member_list.length > 0
+    ) {
       return teamDetails.member_list.map((member) => {
         return (
           <div
@@ -181,8 +181,16 @@ function MyGroupList() {
     return ingGroups.slice(page * 8, (page + 1) * 8).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
-          <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
+            {group.team_id}
+          </TableCell>
+          <TableCell
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "15px",
+            }}
+          >
             {group.category === "S" ? (
               <span style={{ color: "red" }}>[스터디]</span>
             ) : (
@@ -223,8 +231,16 @@ function MyGroupList() {
     return finishedGroups.slice(page * 8, (page + 1) * 8).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
-          <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
+            {group.team_id}
+          </TableCell>
+          <TableCell
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "15px",
+            }}
+          >
             {group.category === "S" ? (
               <span style={{ color: "red" }}>[스터디]</span>
             ) : (
@@ -272,11 +288,17 @@ function MyGroupList() {
                         ) : (
                           <span style={{ color: "blue" }}>[메이트]</span>
                         )}
-                        <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                        <span style={{ marginInline: "10px" }}>
+                          {teamDetails.team_name}
+                        </span>
                       </p>
                     </div>
                     <div
-                      style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginBottom: "50px",
+                      }}
                     >
                       <div
                         style={{
@@ -344,7 +366,13 @@ function MyGroupList() {
             <TableHead>
               <TableRow>
                 <TableCell colSpan={8}>
-                  <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      borderBottom: 1,
+                      borderColor: "divider",
+                    }}
+                  >
                     <Tabs
                       value={value}
                       onChange={handleChange}
@@ -357,7 +385,12 @@ function MyGroupList() {
                         label="진행중인 스터디"
                         style={
                           value === 0
-                            ? { color: "black", width: "100%", fontWeight: "bold", marginRight: 10 }
+                            ? {
+                                color: "black",
+                                width: "100%",
+                                fontWeight: "bold",
+                                marginRight: 10,
+                              }
                             : {
                                 backgroundColor: "white",
                                 width: "100%",
@@ -371,7 +404,12 @@ function MyGroupList() {
                         label="완료된 스터디"
                         style={
                           value === 1
-                            ? { color: "black", width: "100%", fontWeight: "bold", marginRight: 10 }
+                            ? {
+                                color: "black",
+                                width: "100%",
+                                fontWeight: "bold",
+                                marginRight: 10,
+                              }
                             : {
                                 backgroundColor: "white",
                                 width: "100%",
@@ -388,19 +426,45 @@ function MyGroupList() {
             <TableHead>
               <TableRow>
                 <TableCell
-                  style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
                 ></TableCell>
-                <TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}>
+                <TableCell
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
                   그룹 종류
                 </TableCell>
-                <TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}>
+                <TableCell
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
                   그룹 이름
                 </TableCell>
-                <TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}>
+                <TableCell
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
                   스터디 시간
                 </TableCell>
                 <TableCell
-                  style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
                 ></TableCell>
               </TableRow>
             </TableHead>
