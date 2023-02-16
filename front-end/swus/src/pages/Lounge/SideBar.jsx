@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import hourGlass from "../../image/Lounge/hourglass.png";
 import "../../App.css";
 
 export default function MiniDrawer() {
@@ -57,7 +58,14 @@ export default function MiniDrawer() {
           LOUNGE
         </Button>
 
-        <Typography sx={{ mt: "2rem", color: "white", fontSize: "18px", fontFamily: "Cafe24" }}>
+        <Typography
+          sx={{
+            mt: "2rem",
+            color: "white",
+            fontSize: "18px",
+            fontFamily: "Cafe24",
+          }}
+        >
           열람실 이동까지 남은 시간
         </Typography>
 
@@ -75,7 +83,10 @@ export default function MiniDrawer() {
               backgroundColor: "#E8E8E8",
             }}
           >
-            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px", fontFamily: "Cafe24"  }}>
+            <Typography
+              variant="h4"
+              sx={{ textAlign: "center", mt: "5px", fontFamily: "Cafe24" }}
+            >
               {minutesTen}
             </Typography>
           </Box>
@@ -90,7 +101,10 @@ export default function MiniDrawer() {
               backgroundColor: "#E8E8E8",
             }}
           >
-            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px", fontFamily: "Cafe24"  }}>
+            <Typography
+              variant="h4"
+              sx={{ textAlign: "center", mt: "5px", fontFamily: "Cafe24" }}
+            >
               {minutesOne}
             </Typography>
           </Box>
@@ -109,7 +123,10 @@ export default function MiniDrawer() {
               backgroundColor: "#E8E8E8",
             }}
           >
-            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px", fontFamily: "Cafe24"  }}>
+            <Typography
+              variant="h4"
+              sx={{ textAlign: "center", mt: "5px", fontFamily: "Cafe24" }}
+            >
               {secondsTen}
             </Typography>
           </Box>
@@ -123,13 +140,23 @@ export default function MiniDrawer() {
               backgroundColor: "#E8E8E8",
             }}
           >
-            <Typography variant="h4" sx={{ textAlign: "center", mt: "5px", fontFamily: "Cafe24"  }}>
+            <Typography
+              variant="h4"
+              sx={{ textAlign: "center", mt: "5px", fontFamily: "Cafe24" }}
+            >
               {secondsOne}
             </Typography>
           </Box>
         </Box>
 
-        <Typography sx={{ mt: "3rem", color: "white", fontSize: "18px", fontFamily: "Cafe24"  }}>
+        <Typography
+          sx={{
+            mt: "3rem",
+            color: "white",
+            fontSize: "18px",
+            fontFamily: "Cafe24",
+          }}
+        >
           휴게실 이용 방법
         </Typography>
 
@@ -188,6 +215,13 @@ export default function MiniDrawer() {
           >
             5. 동기부여 영상은 다양한 영상이 랜덤으로 제공됩니다.
           </Typography>
+          <Box sx={{ mt: 5, ml: 13 }}>
+            <img
+              src={hourGlass}
+              alt="title"
+              style={{ width: "5rem", height: "5rem" }}
+            />
+          </Box>
         </Box>
 
         <Button
@@ -202,7 +236,7 @@ export default function MiniDrawer() {
             "&:hover": {
               backgroundColor: "#DEDCEE",
             },
-            fontFamily: "Cafe24"
+            fontFamily: "Cafe24",
           }}
           onClick={() => {
             navigate("/studyroom");

@@ -168,6 +168,7 @@ export default function Lounge() {
                       mb: "1rem",
                       fontSize: "30px",
                       fontWeight: "bold",
+                      fontFamily: "Cafe24",
                       color: "white",
                     }}
                   >
@@ -210,9 +211,17 @@ export default function Lounge() {
                   <img
                     src={stretchingMain}
                     alt="title"
-                    style={{ width: "9rem", height: "9rem" }}
+                    style={{ width: "9rem", height: "9rem", marginLeft: 15 }}
                   />
-                  <Typography sx={{ color: "white", mt: 5, fontSize: "18px" }}>
+                  <Typography
+                    sx={{
+                      color: "white",
+                      mt: 5,
+                      ml: 2,
+                      fontSize: "18px",
+                      fontFamily: "Cafe24",
+                    }}
+                  >
                     랜덤으로 재생되는 <br />
                     스트레칭 영상으로 <br />
                     긴장한 근육을 <br />
