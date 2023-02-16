@@ -289,16 +289,6 @@ export default function Lounge() {
                   >
                     GO!
                   </Button>
-                  {/* <div
-                    style={{
-                      backgroundColor: "white",
-                      opacity: "30%",
-                      position: "absolute",
-                      width: "35rem",
-                      height: "15rem",
-                      borderRadius: 2,
-                    }}
-                  ></div> */}
                 </Box>
               </Box>
             </Grid>

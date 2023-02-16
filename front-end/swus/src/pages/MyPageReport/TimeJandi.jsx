@@ -94,7 +94,13 @@ function TodoJandi({ setType }) {
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
             <div style={{ display: "flex" }}>
-              <h3 style={{ marginLeft: "40px", marginRight: "8px", fontFamily: "Cafe24" }}>
+              <h3
+                style={{
+                  marginLeft: "40px",
+                  marginRight: "8px",
+                  fontFamily: "Cafe24",
+                }}
+              >
                 🌱 {nickname}의 공부시간 기록
               </h3>
               <IconButton

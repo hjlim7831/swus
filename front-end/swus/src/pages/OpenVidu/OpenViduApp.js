@@ -18,7 +18,6 @@ import endBreak from "../../components/modals/EndBreak";
 import axiosUtils from "./../../Utils/index";
 import "../../App.css";
 
-
 const OPENVIDU_SERVER_URL = "https://i8a302.p.ssafy.io:8443";
 const OPENVIDU_SERVER_SECRET = "SWUS";
 
@@ -48,6 +47,7 @@ class OpenViduApp extends Component {
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.leaveCheck = this.leaveCheck.bind(this);
+    this.moveToLounge = this.moveToLounge.bind(this);
   }
 
   componentDidMount() {
@@ -154,16 +154,22 @@ class OpenViduApp extends Component {
 
     //현재 시간과 기존 입장 시간 비교해서 공부시간 측정
     //기존 입장 시간
-    const inH = parseInt(localStorage.getItem("inHour"));
-    const inM = parseInt(localStorage.getItem("inMin"));
+    // const inH = parseInt(localStorage.getItem("inHour"));
+    // const inM = parseInt(localStorage.getItem("inMin"));
+
+    const inH = parseInt(this.state.enterHour);
+    const inM = parseInt(this.state.enterMin);
+    // console.log("입장 시간 시/분", inH, " ", inM);
 
     //현재 시간
     const nowH = parseInt(this.state.d.getHours());
     const nowM = parseInt(this.state.d.getMinutes());
 
     //누적된 총 시간
-    const totalH = parseInt(localStorage.getItem("totalH"));
-    const totalM = parseInt(localStorage.getItem("totalM"));
+    // const totalH = parseInt(localStorage.getItem("totalH"));
+    // const totalM = parseInt(localStorage.getItem("totalM"));
+    const totalH = parseInt(this.state.totalTime / 60);
+    const totalM = parseInt(this.state.totalTime % 60);
 
     if (inH <= nowH) {
       //시간이 뒷 시간이 더 큰 숫자일 경우 ex 18시~20시
@@ -177,11 +183,10 @@ class OpenViduApp extends Component {
       };
 
       axiosUtils(config).then((res) => {
+        // console.log("조건1");
+        // console.log(totalH * 60 + totalM + cal);
         console.log(res);
       });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
     } else {
       //앞시간이 더 큰 숫자일 경우 ex 18시~1시
       const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
@@ -194,11 +199,10 @@ class OpenViduApp extends Component {
       };
 
       axiosUtils(config).then((res) => {
+        // console.log("조건 2");
+        // console.log(totalH * 60 + totalM + cal);
         console.log(res);
       });
-
-      localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      localStorage.setItem("totalM", totalM + (cal % 60));
     }
   }
 
@@ -279,7 +283,7 @@ class OpenViduApp extends Component {
                 resolution: "1200x330", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                mirror: false, // Whether to mirror your local video or not
+                mirror: true, // Whether to mirror your local video or not
               });
 
               // --- 6) Publish your stream ---
@@ -346,7 +350,6 @@ class OpenViduApp extends Component {
 
   render() {
     const roomId = this.state.roomId;
-    console.log(roomId);
     const myUserName = this.state.myUserName;
 
     const year = this.state.d.getFullYear();
@@ -374,8 +377,10 @@ class OpenViduApp extends Component {
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
-                  <Stack direction="row" sx={{ display: "flex", justifyContent: "flex-end" }}>
-
+                  <Stack
+                    direction="row"
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -389,7 +394,6 @@ class OpenViduApp extends Component {
                   </Stack> //채팅방 버튼 없는 상위 버튼
                 ) : (
                   <Stack direction="row">
-
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -403,12 +407,24 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "10px", fontFamily: "Cafe24" }}>
+                <h1
+                  style={{
+                    color: "white",
+                    paddingTop: "10px",
+                    fontFamily: "Cafe24",
+                  }}
+                >
                   공용 열람실{roomId}
                 </h1>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
-                    <p style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
+                    <p
+                      style={{
+                        color: "white",
+                        fontFamily: "Cafe24",
+                        fontSize: "20px",
+                      }}
+                    >
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
                     <Box
@@ -546,7 +562,13 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
+                <h4
+                  style={{
+                    color: "white",
+                    fontFamily: "Cafe24",
+                    fontSize: "20px",
+                  }}
+                >
                   To-do list
                 </h4>
                 <div
@@ -572,8 +594,9 @@ class OpenViduApp extends Component {
                       color: "#1A1E33",
                       fontSize: "20px",
                       fontFamily: "Cafe24",
-                      "&:hover": { backgroundColor: "#DEDCEE" }
+                      "&:hover": { backgroundColor: "#DEDCEE" },
                     }}
+                    onClick={this.moveToLounge}
                   >
                     휴게실 바로가기
                   </Button>
@@ -652,7 +675,6 @@ class OpenViduApp extends Component {
    */
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);
-    console.log("세션아이디", sessionId);
     return await this.createToken(sessionId);
   }
 

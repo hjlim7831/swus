@@ -5,7 +5,13 @@ import MyTimeBlock from "../MyPageReport/MyTimeBlock";
 import NSRoomCard from "./RoomScroll/NSRoomCard";
 import FTRoomCard from "./RoomScroll/FTRoomCard";
 import { useNavigate } from "react-router-dom";
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
@@ -16,7 +22,6 @@ import NavBar from "../../components/NavBar/NavBar";
 import "./RoomScroll/hideScrollbar.css";
 import MyTodoBlock from "../OpenVidu/TodoList/MyTodoPublicMain";
 import "../../App.css";
-
 
 function StudyRoomMain() {
   const [rooms, setrooms] = useState([]);
@@ -33,8 +38,6 @@ function StudyRoomMain() {
     setOpen(false);
   };
 
-  const Token = sessionStorage.getItem("token");
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +46,6 @@ function StudyRoomMain() {
       url: "/studyrooms",
     };
     axios(config).then((res) => {
-
       if ("success_get_studyrooms") {
         setrooms(res.data.publics);
       } else {
@@ -59,8 +61,6 @@ function StudyRoomMain() {
 
   //방 추가하는 함수, 추가하고 바로 이동
   const addItem = (typeOfRoom) => {
-
-    
     if (typeOfRoom === "Y") {
       const config = {
         method: "Post",
@@ -149,7 +149,12 @@ function StudyRoomMain() {
             >
               <Typography
                 variant="h5"
-                sx={{ fontSize: 25, color: "white", marginTop: 2, fontFamily: "Cafe24" }}
+                sx={{
+                  fontSize: 25,
+                  color: "white",
+                  marginTop: 2,
+                  fontFamily: "Cafe24",
+                }}
               >
                 Todo List
               </Typography>
@@ -201,9 +206,7 @@ function StudyRoomMain() {
                   position: "relative",
                 }}
               >
-                <ScrollMenu
-                  onWheel={onWheel}
-                >
+                <ScrollMenu onWheel={onWheel}>
                   <RoomInfo />
                   {noRooms.map((room, i) => (
                     <>
@@ -236,7 +239,7 @@ function StudyRoomMain() {
                 </IconButton>
               </Grid>
             </Grid>
-            <Grid container sx={{ marginTop: "2%" }}>
+            <Grid container sx={{ marginTop: "3%" }}>
               <Grid
                 item
                 xs={11.2}
@@ -246,9 +249,7 @@ function StudyRoomMain() {
                   height: "100%",
                 }}
               >
-                <ScrollMenu
-                  onWheel={onWheel}
-                >
+                <ScrollMenu onWheel={onWheel}>
                   {yesRooms.map((room, i) => (
                     <>
                       <FTRoomCard
@@ -271,8 +272,8 @@ function StudyRoomMain() {
               >
                 <IconButton
                   onClick={() => {
-                    handleToOpen()
-                    setRoomCategory("Y")
+                    handleToOpen();
+                    setRoomCategory("Y");
                   }}
                   sx={{ color: "white", top: "45%", width: "80px" }}
                 >
@@ -289,15 +290,47 @@ function StudyRoomMain() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px", textAlign: "center" }}>
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{
+            fontFamily: "Cafe24",
+            fontWeight: "bold",
+            fontSize: "30px",
+            textAlign: "center",
+          }}
+        >
           열람실 생성하기
         </DialogTitle>
-        <DialogContent id="alert-dialog-description" sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}>
+        <DialogContent
+          id="alert-dialog-description"
+          sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}
+        >
           오늘도 열심히 달려볼까요?
         </DialogContent>
         <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
-          <Button onClick={() => {addItem(roomCategory)}}  sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}>입장</Button>
-          <Button onClick={handleToClose} variant="contained" sx={{ background: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}>x</Button>
+          <Button
+            onClick={() => {
+              addItem(roomCategory);
+            }}
+            sx={{
+              fontFamily: "Cafe24",
+              color: "white",
+              background: "#1560BD",
+              "&:hover": { backgroundColor: "#1560BD" },
+            }}
+          >
+            입장
+          </Button>
+          <Button
+            onClick={handleToClose}
+            variant="contained"
+            sx={{
+              background: "#CA3433",
+              "&:hover": { backgroundColor: "#CA3433" },
+            }}
+          >
+            x
+          </Button>
         </DialogActions>
       </Dialog>
     </>

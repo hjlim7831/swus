@@ -12,7 +12,7 @@ import logo from "../../../image/nonStop.png";
 import { Grid } from "@mui/material";
 import "../../../App.css";
 import axios from "./../../../Utils/index";
-import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
+import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 
 function NSRoomCard(props) {
   const [open, setOpen] = React.useState(false);
@@ -27,11 +27,8 @@ function NSRoomCard(props) {
     setOpen(false);
   };
 
-  const Token = sessionStorage.getItem("token");
-
   const navigate = useNavigate();
   const handleToEnter = () => {
-
     const config = {
       method: "POST",
       url: `/studyrooms/${roomId}`,
@@ -51,28 +48,37 @@ function NSRoomCard(props) {
   return (
     <>
       <Card
-        style={{ 
-          marginRight: 20, 
-          height: 350, 
-          width: 295, 
-          borderRadius: 10, 
+        style={{
+          marginRight: 20,
+          height: 350,
+          width: 295,
+          borderRadius: 10,
           backgroundImage: `url(${logo})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          }}
+        }}
       >
         <div
           style={{
             width: 200,
             height: 200,
           }}
-        >
-        </div>
+        ></div>
         <CardContent>
-          <div style={{ background: "gray", opacity: "35%", position: "absolute", width: "270px", height: "120px", borderRadius: "10px", }}></div>
+          <div
+            style={{
+              background: "gray",
+              opacity: "35%",
+              position: "absolute",
+              width: "270px",
+              height: "120px",
+              borderRadius: "10px",
+            }}
+          ></div>
           <div style={{ width: 200 }}>
-            <Typography sx={{ fontSize: 20, paddingLeft: 1 }} color="white">
-              NonStop 열람실 #{sessionName}
+            <Typography sx={{ fontSize: 20 }} color="white">
+              NonStop 열람실
+              <br />#{roomId}
             </Typography>
           </div>
         </CardContent>
@@ -85,7 +91,7 @@ function NSRoomCard(props) {
               display: "inline-block",
               fontSize: "25px",
               marginLeft: "7%",
-              paddingLeft: 1 
+              paddingLeft: 1,
             }}
           >
             {count}/9
@@ -98,7 +104,7 @@ function NSRoomCard(props) {
                 marginLeft: "22%",
                 height: "100%",
                 backgroundColor: "#475467",
-                "&:hover": { background: "#475467" }
+                "&:hover": { background: "#475467" },
               }}
               startIcon={<LoginRoundedIcon></LoginRoundedIcon>}
             >
@@ -114,15 +120,40 @@ function NSRoomCard(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px" }}>
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px" }}
+        >
           Non-Stop 열람실 #{roomId} 입장하기
         </DialogTitle>
-        <DialogContent id="alert-dialog-description" sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}>
+        <DialogContent
+          id="alert-dialog-description"
+          sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}
+        >
           오늘도 열심히 달려볼까요?
         </DialogContent>
         <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
-          <Button onClick={handleToEnter}  sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}>입장</Button>
-          <Button onClick={handleToClose} variant="contained" sx={{ background: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}>x</Button>
+          <Button
+            onClick={handleToEnter}
+            sx={{
+              fontFamily: "Cafe24",
+              color: "white",
+              background: "#1560BD",
+              "&:hover": { backgroundColor: "#1560BD" },
+            }}
+          >
+            입장
+          </Button>
+          <Button
+            onClick={handleToClose}
+            variant="contained"
+            sx={{
+              background: "#CA3433",
+              "&:hover": { backgroundColor: "#CA3433" },
+            }}
+          >
+            x
+          </Button>
         </DialogActions>
       </Dialog>
     </>

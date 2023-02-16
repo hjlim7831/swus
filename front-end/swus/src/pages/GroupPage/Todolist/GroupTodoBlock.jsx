@@ -6,12 +6,9 @@ import { Grid } from "@mui/material";
 import axios from "../../../Utils/index";
 
 function GroupTodoBlock(props) {
-
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
 
-  // ---------------------------------------------------------------------
-  // 나중에 처리해야 하는 곳
   // 1. groupId 받아서 저장
   // 2. round 받아서 저장
   const groupId = props.groupId;
@@ -67,17 +64,22 @@ function GroupTodoBlock(props) {
     <>
       <Grid container>
         <Grid item xs={12}>
+          <GroupTodoForm
+            handleSubmit={handleSubmit}
+            value={value}
+            setValue={setValue}
+          />
           <Box
             sx={{
               position: "relative",
               overflow: "auto",
               overflowX: "hidden",
-              width: "100%",
+              width: "93%",
               marginX: "auto",
-              height: 360,
+              height: 400,
+              paddingBottom: "20px",
             }}
           >
-            <GroupTodoForm handleSubmit={handleSubmit} value={value} setValue={setValue} />
             <GroupTodoList
               todoData={todoData}
               setTodoData={setTodoData}

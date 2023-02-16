@@ -37,9 +37,6 @@ class OpenViduApp extends Component {
       d: new Date(), //시계
     };
 
-    console.log(this.state.teamName);
-    console.log(this.state.mySessionId);
-    console.log(this.state.round);
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
@@ -109,11 +106,6 @@ class OpenViduApp extends Component {
   }
 
   leaveCheck() {
-    const Token = sessionStorage.getItem("token");
-    console.log("그룹 방 퇴장");
-    console.log(this.state.teamId);
-    console.log(this.state.round);
-
     const config = {
       method: "get",
       url: `/my-reports/${this.state.teamId}/rounds/${this.state.round}`,
@@ -122,7 +114,6 @@ class OpenViduApp extends Component {
     axiosUtils(config).then((res) => {
       console.log(res.data.message);
     });
-
   }
 
   moveToLounge() {
@@ -185,12 +176,17 @@ class OpenViduApp extends Component {
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
+              let audioControl = false;
+              if (this.state.roomType === "S") {
+                audioControl = true;
+              }
+
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
+                publishAudio: audioControl, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                 resolution: "1200x350", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
@@ -287,17 +283,44 @@ class OpenViduApp extends Component {
           <Grid container spacing={1}>
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
-              <Stack direction="row"></Stack>{" "}
-                <h1 style={{ color: "white", paddingTop: "5px", fontFamily: "Cafe24" }}>
+                <Stack direction="row"></Stack>{" "}
+                <h1
+                  style={{
+                    color: "white",
+                    paddingTop: "5px",
+                    fontFamily: "Cafe24",
+                  }}
+                >
                   {this.state.teamName}
                 </h1>
-                 <h5 style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>{this.state.round}회차</h5>
-                 <h4 style={{ color: "white", marginTop: "-20px", fontFamily: "Cafe24", fontSize: "30px" }}>
+                <h5
+                  style={{
+                    color: "white",
+                    fontFamily: "Cafe24",
+                    fontSize: "20px",
+                  }}
+                >
+                  {this.state.round}회차
+                </h5>
+                <h4
+                  style={{
+                    color: "white",
+                    marginTop: "-20px",
+                    fontFamily: "Cafe24",
+                    fontSize: "30px",
+                  }}
+                >
                   {this.state.content}
                 </h4>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
-                    <p style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
+                    <p
+                      style={{
+                        color: "white",
+                        fontFamily: "Cafe24",
+                        fontSize: "20px",
+                      }}
+                    >
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
                     <Box
@@ -435,7 +458,14 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white", paddingTop: "20px", fontFamily: "Cafe24", fontSize: "20px" }}>
+                <h4
+                  style={{
+                    color: "white",
+                    paddingTop: "20px",
+                    fontFamily: "Cafe24",
+                    fontSize: "20px",
+                  }}
+                >
                   To-do list
                 </h4>
                 <div
@@ -443,6 +473,7 @@ class OpenViduApp extends Component {
                     backgroundColor: "#F4EFE6",
                     height: "100%",
                     padding: 5,
+                    borderRadius: "5px",
                   }}
                 >
                   <GroupTodoBlock

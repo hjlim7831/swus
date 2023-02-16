@@ -15,7 +15,6 @@ const ApexChart = () => {
     };
 
     axios(config).then((response) => {
-
       let updatedSeries = [
         {
           name: "공부시간",
@@ -98,7 +97,9 @@ const ApexChart = () => {
       >
         <Grid container>
           <Grid item xs={12}>
-            <h3 style={{ marginLeft: "50px", fontFamily: "Cafe24" }}>📊 주간 공부 기록</h3>
+            <h3 style={{ marginLeft: "50px", fontFamily: "Cafe24" }}>
+              📊 주간 공부 기록
+            </h3>
           </Grid>
 
           <Box

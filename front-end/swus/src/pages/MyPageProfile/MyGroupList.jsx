@@ -15,12 +15,12 @@ import axios from "../../Utils/index";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import myGroupListSlice from "../../store/MyGroupListSlice";
-import DifferenceOutlinedIcon from '@mui/icons-material/DifferenceOutlined';
+import DifferenceOutlinedIcon from "@mui/icons-material/DifferenceOutlined";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
+import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import Report from "../../components/modals/Report";
 import "../../App.css";
 
@@ -136,7 +136,10 @@ function MyGroupList() {
   };
 
   function getMembers() {
-    if (Array.isArray(teamDetails.member_list) && teamDetails.member_list.length > 0) {
+    if (
+      Array.isArray(teamDetails.member_list) &&
+      teamDetails.member_list.length > 0
+    ) {
       return teamDetails.member_list.map((member) => {
         return (
           <div
@@ -163,11 +166,41 @@ function MyGroupList() {
     return ingGroups.slice(page * 7, (page + 1) * 7).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
-          <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
-            {group.category === "S"
-              ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
-              : <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
+            {group.team_id}
+          </TableCell>
+          <TableCell
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "15px",
+            }}
+          >
+            {group.category === "S" ? (
+              <span
+                style={{
+                  borderRadius: 8,
+                  backgroundColor: "#FFD1D1",
+                  paddingBlock: 7,
+                  paddingInline: 13,
+                  fontSize: "14px",
+                }}
+              >
+                스터디
+              </span>
+            ) : (
+              <span
+                style={{
+                  borderRadius: 8,
+                  backgroundColor: "#CEE0FB",
+                  paddingBlock: 7,
+                  paddingInline: 13,
+                  fontSize: "14px",
+                }}
+              >
+                메이트
+              </span>
+            )}
           </TableCell>
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
@@ -203,11 +236,41 @@ function MyGroupList() {
     return finishedGroups.slice(page * 7, (page + 1) * 7).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
-          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>{group.team_id}</TableCell>
-          <TableCell style={{ textAlign: "center", fontWeight: "bold", fontSize: "15px" }}>
-            {group.category === "S"
-               ? <span style={{ borderRadius: 8, backgroundColor: "#FFD1D1", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>스터디</span> 
-               : <span style={{ borderRadius: 8, backgroundColor: "#CEE0FB", paddingBlock: 7, paddingInline: 13, fontSize: "14px" }}>메이트</span>}
+          <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
+            {group.team_id}
+          </TableCell>
+          <TableCell
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "15px",
+            }}
+          >
+            {group.category === "S" ? (
+              <span
+                style={{
+                  borderRadius: 8,
+                  backgroundColor: "#FFD1D1",
+                  paddingBlock: 7,
+                  paddingInline: 13,
+                  fontSize: "14px",
+                }}
+              >
+                스터디
+              </span>
+            ) : (
+              <span
+                style={{
+                  borderRadius: 8,
+                  backgroundColor: "#CEE0FB",
+                  paddingBlock: 7,
+                  paddingInline: 13,
+                  fontSize: "14px",
+                }}
+              >
+                메이트
+              </span>
+            )}
           </TableCell>
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
@@ -250,11 +313,17 @@ function MyGroupList() {
                         ) : (
                           <span style={{ color: "blue" }}>[메이트]</span>
                         )}
-                        <span style={{ marginInline: "10px" }}>{teamDetails.team_name}</span>
+                        <span style={{ marginInline: "10px" }}>
+                          {teamDetails.team_name}
+                        </span>
                       </p>
                     </div>
                     <div
-                      style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginBottom: "50px",
+                      }}
                     >
                       <div
                         style={{
@@ -323,7 +392,13 @@ function MyGroupList() {
             <TableHead>
               <TableRow>
                 <TableCell colSpan={8}>
-                  <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      borderBottom: 1,
+                      borderColor: "divider",
+                    }}
+                  >
                     <Tabs
                       value={value}
                       onChange={handleChange}
@@ -336,7 +411,14 @@ function MyGroupList() {
                         label="진행중인 스터디"
                         style={
                           value === 0
-                            ? { color: "black", width: "100%", fontWeight: "bold", marginRight: 10, fontFamily: "Cafe24", fontSize: "20px" }
+                            ? {
+                                color: "black",
+                                width: "100%",
+                                fontWeight: "bold",
+                                marginRight: 10,
+                                fontFamily: "Cafe24",
+                                fontSize: "20px",
+                              }
                             : {
                                 backgroundColor: "white",
                                 width: "100%",
@@ -350,7 +432,14 @@ function MyGroupList() {
                         label="완료된 스터디"
                         style={
                           value === 1
-                            ? { color: "black", width: "100%", fontWeight: "bold", marginRight: 10, fontFamily: "Cafe24", fontSize: "20px" }
+                            ? {
+                                color: "black",
+                                width: "100%",
+                                fontWeight: "bold",
+                                marginRight: 10,
+                                fontFamily: "Cafe24",
+                                fontSize: "20px",
+                              }
                             : {
                                 backgroundColor: "white",
                                 width: "100%",
@@ -367,19 +456,45 @@ function MyGroupList() {
             <TableHead>
               <TableRow>
                 <TableCell
-                  style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
                 ></TableCell>
-                <TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}>
+                <TableCell
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
                   그룹 종류
                 </TableCell>
-                <TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}>
+                <TableCell
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
                   그룹 이름
                 </TableCell>
-                <TableCell style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}>
+                <TableCell
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
                   스터디 시간
                 </TableCell>
                 <TableCell
-                  style={{ fontSize: "15px", fontWeight: "bold", textAlign: "center" }}
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
                 ></TableCell>
               </TableRow>
             </TableHead>
@@ -406,11 +521,40 @@ function MyGroupList() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px" }}>{teamName} 입장하기</DialogTitle>
-        <DialogContent id="alert-dialog-description" sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}>열심히 스터디하러 가볼까요?</DialogContent>
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px" }}
+        >
+          {teamName} 입장하기
+        </DialogTitle>
+        <DialogContent
+          id="alert-dialog-description"
+          sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}
+        >
+          열심히 스터디하러 가볼까요?
+        </DialogContent>
         <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
-          <Button onClick={handleToEnter} sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}>입장</Button>
-          <Button onClick={closeEnterM} variant="contained" sx={{ background: "#A91B0D", "&:hover" : { backgroundColor: "#A91B0D" } }}>x</Button>
+          <Button
+            onClick={handleToEnter}
+            sx={{
+              fontFamily: "Cafe24",
+              color: "white",
+              background: "#1560BD",
+              "&:hover": { backgroundColor: "#1560BD" },
+            }}
+          >
+            입장
+          </Button>
+          <Button
+            onClick={closeEnterM}
+            variant="contained"
+            sx={{
+              background: "#A91B0D",
+              "&:hover": { backgroundColor: "#A91B0D" },
+            }}
+          >
+            x
+          </Button>
         </DialogActions>
       </Dialog>
     </>
