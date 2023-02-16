@@ -10,7 +10,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-// import { ResponsivePie } from "@nivo/pie";
 import PieChart from "./PieChart";
 import Typography from "@mui/material/Typography";
 import "../../App.css";
@@ -39,8 +38,6 @@ function MyTime() {
       .then((res) => {
         const Time = res.data.target_time;
         setTargetTime(Time);
-        console.log("여기 데이터");
-        console.log(res.data);
         setInputHour(Math.floor(Time / 60));
         setInputMin(Time % 60);
       })
@@ -51,8 +48,6 @@ function MyTime() {
         };
         // 총 공부시간 가져오기 (분)
         axios(config2).then((res) => {
-          console.log("여기는 공부시간");
-          console.log(res.data.now_total_time);
           setStudyTime(res.data.now_total_time);
         });
       });
@@ -102,7 +97,6 @@ function MyTime() {
         data: { target_time },
       };
       axios(config).then((res) => {
-        // console.log(res);
         setTargetTime(target_time);
       });
       setOpen(false);
@@ -213,7 +207,7 @@ function MyTime() {
             </Grid>
           </Grid>
           <Dialog open={open} onClose={handleClose}>
-            <DialogTitle sx={{ fontFamily: "Cafe24", textAlign: "center" }}>목표시간 설정하기</DialogTitle>
+            <DialogTitle sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "30px" }}>목표시간 설정하기</DialogTitle>
             <DialogContent>
               <DialogContentText sx={{ fontFamily: "Cafe24", textAlign: "center", marginBottom: 3 }}>
                 오늘 공부할 목표 시간을 설정해 주세요 <br />

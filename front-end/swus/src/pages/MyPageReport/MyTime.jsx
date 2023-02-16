@@ -11,7 +11,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-// import { ResponsivePie } from "@nivo/pie";
 import PieChart from "./PieChart";
 import "../../App.css";
 import axios from "./../../Utils/index";
@@ -39,8 +38,6 @@ function MyTime({ setType }) {
       .then((res) => {
         const Time = res.data.target_time;
         setTargetTime(Time);
-        console.log("여기 데이터");
-        console.log(res.data);
         setInputHour(Math.floor(Time / 60));
         setInputMin(Time % 60);
       })
@@ -51,8 +48,6 @@ function MyTime({ setType }) {
         };
         // 총 공부시간 가져오기 (분)
         axios(config2).then((res) => {
-          console.log("여기는 공부시간");
-          console.log(res.data.now_total_time);
           setStudyTime(res.data.now_total_time);
         });
       });
@@ -102,7 +97,6 @@ function MyTime({ setType }) {
         data: { target_time },
       };
       axios(config).then((res) => {
-        // console.log(res);
         setTargetTime(target_time);
       });
       setOpen(false);
@@ -163,7 +157,6 @@ function MyTime({ setType }) {
                   overflowX: "hidden",
                   width: "100%",
                   height: "23rem",
-                  // backgroundColor: "F4EFE6",
                 }}
               >
                 <Grid item xs={10} sx={{ marginX: "auto" }}>

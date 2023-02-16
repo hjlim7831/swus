@@ -1,9 +1,8 @@
 import React, { useState, useEffect }  from 'react';
 import './Report.css';
-import { Box, Checkbox, Grid, Icon, Divider } from '@mui/material';
+import { Checkbox, Grid, Icon, Divider } from '@mui/material';
 import logo from "../../logo.png";
 import { v4 as uuidv4 } from 'uuid';
-import AddIcon from '@mui/icons-material/Add';
 
 
 function Report (props) {
@@ -18,38 +17,28 @@ function Report (props) {
 		if (Array.isArray(payload) && payload.length > 0) {
 			for (let i = 0; i < payload.length; i++) {
 				newToggles.push(false);
-				console.log(toggles);
 			};
 		}	else {
 			return
 		}
 
-		
-		console.log("여기야 여기!");
-		console.log(payload);
-		
 		setToggles(newToggles);
 	}, []);
 
 	function weekTopics() {
 
 		function getMemberTodos(member) {
-			// if (Array.isArray(member) && member.length > 0) {
-			// 	console.log("웨지감자")
-				return member.todos.map((todo) => {
-					return (
-						<>
-							<p style={{ margin: 0 }}>
-								{(todo.todo_done === "Y") ? <Checkbox checked={true} disabled/> : <Checkbox checked={false} disabled/>}
-								{todo.content}
-							</p>
-						</>
-					)
-				})
-			// }	else {
-			// 	return null
-			// }
-		}
+			return member.todos.map((todo) => {
+				return (
+					<>
+						<p style={{ margin: 0 }}>
+							{(todo.todo_done === "Y") ? <Checkbox checked={true} disabled/> : <Checkbox checked={false} disabled/>}
+							{todo.content}
+						</p>
+					</>
+				)
+			})
+	}
 
 		function details(index) {
 			if (Array.isArray(payload.rounds[index].members) && payload.rounds[index].members.length > 0) {
@@ -123,7 +112,7 @@ function Report (props) {
 							</Grid>
 							<Grid item xs={1} sx={{ marginBottom: 5}}>
 								<Icon 
-									sx={{ "&:hover": { cursor: "pointer" }, marginLeft: 2, marginTop: 1, color: "#7468CF" }}
+									sx={{ "&:hover": { cursor: "pointer" }, marginLeft: 2, marginTop: 1, color: "#1560BD" }}
 									onClick={() => toggleFeature(index)}>
 										add_circle
 								</Icon>
@@ -163,11 +152,6 @@ function Report (props) {
 							{weekTopics()}
 						</div>
 					</main>
-          {/* <footer>
-            <button className="close" onClick={close}>
-              close
-            </button>
-          </footer> */}
         </section>
       ) : null}
     </div>

@@ -3,14 +3,11 @@ import { Box } from "@mui/system";
 import MyTodoList from "./MyTodoList";
 import MyTodoForm from "./MyTodoForm";
 import { Grid } from "@mui/material";
-
 import axios from "../../../Utils/index";
-
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function MyTodoPublicMain() {
   const dispatch = useDispatch();
-  // const todoList = useSelector((state) => state.todolist);
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
 
@@ -22,7 +19,6 @@ function MyTodoPublicMain() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {
             return {
@@ -30,7 +26,6 @@ function MyTodoPublicMain() {
               todo_done: todo.todo_done === "N" ? false : true,
             };
           });
-          console.log(updatedData);
           setTodoData(updatedData);
         }
       })
@@ -61,8 +56,6 @@ function MyTodoPublicMain() {
 
     setValue("");
   };
-
-  // const todoList = useSelector((state) => state.todolist);
 
   return (
     <>

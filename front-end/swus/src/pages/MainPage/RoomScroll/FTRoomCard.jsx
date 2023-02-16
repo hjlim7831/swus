@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -12,7 +10,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../image/stop.png";
 import { Grid } from "@mui/material";
-import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 import "../../../App.css";
 import axios from "./../../../Utils/index";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
@@ -53,10 +50,6 @@ function FtoTRoom(props) {
         alert("잠시 후 다시 입장해주세요");
       }
     });
-
-    // navigate(`/studyroom/${sessionName}`, {
-    //   state: { roomName: sessionName, roomId: roomId },
-    // }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
   };
 
   return (

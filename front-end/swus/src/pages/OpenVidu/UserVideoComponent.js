@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import OpenViduVideoComponent from "./OvVideo";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
-
 import "./UserVideo.css";
-
 import Grid from "@mui/material/Grid";
 
 export default class UserVideoComponent extends Component {
@@ -14,8 +9,6 @@ export default class UserVideoComponent extends Component {
 
     this.state = {
       d: new Date(),
-      // todo: this.props.todo,
-      // done: this.props.done,
     };
   }
 
@@ -109,85 +102,6 @@ export default class UserVideoComponent extends Component {
                   {this.getNicknameTag()}
                 </div>
               </Grid>
-              {/* <Grid
-                item
-                xs={4}
-                sx={{
-                  padding: "1%",
-                  paddingX: "auto",
-                }}
-              >
-                <Box sx={{ height: "100%", paddingLeft: "20%" }}>
-                  <Box
-                    sx={{
-                      display: "inline-block",
-                      width: "14.5%",
-                      height: "100%",
-                      mr: "1%",
-                      borderRadius: 1,
-                      backgroundColor: "#E8E8E8",
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ textAlign: "center" }}>
-                      {hoursTen}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "inline-block",
-                      width: "14.5%",
-                      height: "100%",
-                      mr: "0.3%",
-                      borderRadius: 1,
-                      backgroundColor: "#E8E8E8",
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ textAlign: "center" }}>
-                      {hoursOne}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "inline-block",
-                      color: "white",
-                      mr: "0.3%",
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ textAlign: "center", color: "black" }}>
-                      :
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "inline-block",
-                      width: "14.5%",
-                      mr: "1%",
-                      height: "100%",
-                      borderRadius: 1,
-                      backgroundColor: "#E8E8E8",
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ textAlign: "center" }}>
-                      {minutesTen}
-                    </Typography>
-                  </Box>
-
-                  <Box
-                    sx={{
-                      display: "inline-block",
-                      width: "14.5%",
-                      height: "100%",
-                      mr: "0.3%",
-                      borderRadius: 1,
-                      backgroundColor: "#E8E8E8",
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ textAlign: "center" }}>
-                      {minutesOne}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Grid> */}
             </Grid>
           </div>
         ) : null}

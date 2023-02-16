@@ -3,7 +3,6 @@ import { Box } from "@mui/system";
 import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
-// import { steching } from "./../../man-with-arms-and-one-leg-streching-position.png"
 import "../../App.css";
 
 export default function Lounge() {
@@ -168,7 +167,6 @@ export default function Lounge() {
                       }}
                     >
                       <span style={{ fontFamily: "Cafe24" }}>{data.name} 운동하기</span>
-                      {/* <img src={steching} alt="title" /> */}
                     </Button>
                   );
                 })}

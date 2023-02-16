@@ -1,21 +1,17 @@
 import React, { useState } from "react";
 import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../image/nonStop.png";
-import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 import { Grid } from "@mui/material";
 import "../../../App.css";
 import axios from "./../../../Utils/index";
-import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 function NSRoomCard(props) {
@@ -23,15 +19,11 @@ function NSRoomCard(props) {
   const [sessionName, setsessionName] = useState(props.sessionName);
   const [count, setCount] = useState(props.partici);
   const [roomId, setRoomId] = useState(props.id);
-
-  console.log("NS 룸에서의 잘 받아오나? 세션네임", sessionName);
-  console.log("NS 룸에서의 잘 받아오나? 룸 번호", roomId);
-
   const handleToOpen = () => {
     setOpen(true);
   };
 
-  const hadleToClose = () => {
+  const handleToClose = () => {
     setOpen(false);
   };
 
@@ -39,8 +31,6 @@ function NSRoomCard(props) {
 
   const navigate = useNavigate();
   const handleToEnter = () => {
-    //입장시 api
-    console.log("axios post NSRoomCard");
 
     const config = {
       method: "POST",
@@ -49,8 +39,6 @@ function NSRoomCard(props) {
 
     axios(config).then((response) => {
       if ("success_enter_studyroom") {
-        console.log(response);
-        console.log("is here?");
         navigate(`/studyroom/${sessionName}`, {
           state: { roomName: sessionName, roomId: roomId },
         }); // nsroom 으로 이동하면서 roomNum에 sessionName 담아 보내줌
@@ -122,7 +110,7 @@ function NSRoomCard(props) {
 
       <Dialog
         open={open}
-        onClose={hadleToClose}
+        onClose={handleToClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -134,7 +122,7 @@ function NSRoomCard(props) {
         </DialogContent>
         <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
           <Button onClick={handleToEnter}  sx={{ fontFamily: "Cafe24", color: "white", background: "#1560BD", "&:hover" : { backgroundColor: "#1560BD" } }}>입장</Button>
-          <Button onClick={hadleToClose} variant="contained" sx={{ background: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}>x</Button>
+          <Button onClick={handleToClose} variant="contained" sx={{ background: "#CA3433", "&:hover" : { backgroundColor: "#CA3433" } }}>x</Button>
         </DialogActions>
       </Dialog>
     </>

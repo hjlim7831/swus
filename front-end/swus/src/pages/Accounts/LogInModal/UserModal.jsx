@@ -1,40 +1,18 @@
 import * as React from "react";
-
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
-
 import Box from "@mui/material/Box";
-
 import logo from "./../../../logo.png";
 import { Outlet } from "react-router";
-
 import NavBar from "./../../../components/NavBar/NavBar";
 
 export default function BasicModalDialog() {
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
-
   const [open, setOpen] = React.useState(true);
 
   return (
     <>
       <NavBar />
       <React.Fragment>
-        {/* <Button
-          variant="outlined"
-          color="neutral"
-          // startDecorator={<Add />}
-          onClick={() => setOpen(true)}
-        >
-          New project
-        </Button> */}
-
         <Modal open={open} onClose={() => setOpen(false)}>
           <ModalDialog
             sx={{
@@ -50,7 +28,6 @@ export default function BasicModalDialog() {
           >
             <Box
               sx={{
-                // my: 5,
                 marginRight: 6,
                 marginLeft: 4,
                 display: "flex",

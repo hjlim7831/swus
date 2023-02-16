@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Container } from "@mui/system";
-import { Button, Grid, Divider, Typography, FormControlLabel, Checkbox } from "@mui/material";
+import { Button, Grid, Divider, FormControlLabel, Checkbox } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Icon from '@mui/material/Icon';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from "uuid";
 import axios from "../../Utils/index";
-import myGroupListSlice from "../../store/MyGroupListSlice";
 
 function GroupDetailUpdate() {
 
@@ -179,9 +178,6 @@ function GroupDetailUpdate() {
 		axios(config)
 			.then((response) => {
 				axios(config2)
-					// .then((response) => {
-					// 	dispatch(myGroupListSlice.actions.getGroupDetails(response.data))
-					// })
 					.then((response) => {
 						navigate(`/group/mystudy/group/${teamId}`);
 					})
@@ -222,7 +218,7 @@ function GroupDetailUpdate() {
 								<Button 
 									type="submit" 
 									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3, height: "40px" }}
+									sx={{ backgroundColor: "#1560BD", m: 3, height: "40px", "&:hover": { backgroundColor: "#1560BD" } }}
 									size="small"
 									onClick={onHandleSubmit}>수정하기</Button>
 						</div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box } from "@mui/system";
-import { Button, Grid, Divider, Typography, TextField, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
+import { Container } from "@mui/system";
+import { Button, Grid, Divider, Typography, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useNavigate } from 'react-router-dom';
 import inviteMember from '../../components/modals/InviteMember';
@@ -10,7 +10,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Report from "../../components/modals/Report";
 import { v4 as uuidv4 } from 'uuid';
 import axios from "../../Utils/index";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import myGroupListSlice from '../../store/MyGroupListSlice';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
@@ -44,7 +44,6 @@ function GroupDetail() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
         setTeamDetails(response.data)
         setStart_time(response.data.start_time.slice(0, 5))
         setFinish_time(response.data.finish_time.slice(0, 5))
@@ -78,7 +77,6 @@ function GroupDetail() {
       })
 
       dispatch(myGroupListSlice.actions.saveGroupId(teamId))
-    
   }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -135,11 +133,10 @@ function GroupDetail() {
 			return days.map((date, index) => {
 				const style = {
 					background: checked[index] ? "#9EC2F8" : "white",
-					// color: checked[index] ? "white" : "black",
 					marginInline: 3,
 					borderRadius: 5,
-					padding: "1px",
 					fontWeight: "bold",
+					padding: "5px"
 				}
 				return (
 					<>
@@ -214,7 +211,7 @@ function GroupDetail() {
                 {(teamDetails.leader_email === localStorage.getItem("id") && teamDetails.team_done === "N") 
                   ? <p style={{ paddingLeft: 30, paddingTop: 5 }}>
                       <EditOutlinedIcon
-                        sx={{ fontSize: 30, "&:hover" : { cursor: "pointer" } }}
+                        sx={{ fontSize: 30, "&:hover" : { cursor: "pointer" }, color: "#1560BD" }}
                         onClick={() => {navigate(`update`)}}
                       /></p>
                   : null}
@@ -304,7 +301,6 @@ function GroupDetail() {
                 {(teamDetails.team_done === "N")
                   ? <Button 
                   variant="outlined"
-                  // sx={{ background: "#1560BD", "&:hover": { background: "#1560BD" } }}
                   onClick={() => {
                     openEnterM();
                   }}
@@ -316,7 +312,8 @@ function GroupDetail() {
               <Divider orientation='horizontal' flexItem sx={{ background: "grey", borderWidth: 1 }}/>
             <Grid container sx={{ padding: 2 }}>
               <Grid container sx={{ display: "flex", alignItems: "center"}}>
-                <Grid item xs={2} sx={{ alignContent: "center" }}>
+                <Grid item xs={0.5}/>
+                <Grid item xs={0.8} sx={{ alignContent: "center" }}>
                   <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 일정</p>
                 </Grid>
                 <Grid item xs={3}>
@@ -324,24 +321,29 @@ function GroupDetail() {
                     ? <p style={{ textAlign: "center", fontSize: "20px" }}>{teamDetails.begin_at} ~ {teamDetails.end_at}</p> 
                     : <p style={{ textAlign: "center", fontSize: "20px" }}>미정</p>}
                 </Grid>
+                <Grid item xs={0.3}/>
                 <Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2 }}/>
-                <Grid item xs={2}>
+                <Grid item xs={0.2}/>
+                <Grid item xs={0.8}>
                   <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 시간</p>
                   </div>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                   <p style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                     <p style={{ textAlign: "center", marginInline: 5 }}>{getStudyDays()} </p>
                     <p style={{ textAlign: "center", marginInline: 5 }}>{start_time} ~ {finish_time}</p>
                   </p>
                 </Grid>
+                <Grid item xs={0.3}/>
                 <Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2 }}/>
-                <Grid item xs={1}>
+                <Grid item xs={0.3}/>
+                <Grid item xs={0.6}>
                   <p style={{ fontWeight: "bold", textAlign: "center", fontSize: "18px" }}>인원 현황</p>
                 </Grid>
+                <Grid item xs={0.5}/>
                 <Grid item xs={1}>
-                  <p style={{ textAlign: "center", fontSize: "18px" }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</p>
+                  <p style={{ textAlign: "center", fontSize: "25px", fontWeight: "bold" }}>{teamDetails.team_number} / {teamDetails.recruitment_number}</p>
                 </Grid>
               </Grid>
               <Grid container sx={{ padding: 2 }}>

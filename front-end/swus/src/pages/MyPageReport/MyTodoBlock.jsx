@@ -5,12 +5,9 @@ import MyTodoForm from "./../OpenVidu/TodoList/MyTodoForm";
 import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
-
 import axios from "./../../Utils/index";
 import "../../App.css";
 
-// import { useSelector, useDispatch } from "react-redux";
-// import { addTodoList } from "./../../store/TodoList";
 
 function MyTodoBlock({ setType }) {
   const [todoData, setTodoData] = useState([]);
@@ -24,7 +21,6 @@ function MyTodoBlock({ setType }) {
 
     axios(config)
       .then((response) => {
-        // console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {
             return {
@@ -32,7 +28,6 @@ function MyTodoBlock({ setType }) {
               todo_done: todo.todo_done === "N" ? false : true,
             };
           });
-          // console.log(updatedData);
           setTodoData(updatedData);
         }
       })
@@ -63,8 +58,6 @@ function MyTodoBlock({ setType }) {
 
     setValue("");
   };
-
-  // const todoList = useSelector((state) => state.todolist);
 
   return (
     <>

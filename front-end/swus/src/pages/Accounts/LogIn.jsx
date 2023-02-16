@@ -63,21 +63,13 @@ export default function SignInSide() {
       password: inputData.password,
     };
 
-    console.log(payload);
-
     // 유효성검사
     if (payload.email && payload.password) {
       let icon = "error";
       if (!emailCheck.test(payload.email)) {
         const title = "이메일 형식을 지켜주세요";
         Alert({ title, icon });
-        // alert("이메일 형식을 지켜주세요.");
-        // } else if (payload.password.length < 8) {
-        //   alert("비밀번호는 8자 이상이여야 합니다.");
-        // } else if (!passwordCheck.test(payload.password)) {
-        //   alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
       } else {
-        console.log({ payload });
 
         const config = {
           url: "/auth/login",
@@ -108,14 +100,12 @@ export default function SignInSide() {
           .catch((error) => {
             const title = "존재하는 아이디가 아닙니다.";
             Alert({ title, icon });
-            // alert("존재하는 아이디가 아닙니다.");
           });
       }
     } else {
       const title = "정보를 다시 입력해주세요.";
       let icon = "error";
       Alert({ title, icon });
-      // alert("정보를 다시 입력해주세요.");
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Checkbox, FormControlLabel, TextField, Divider, Grid, OutlinedInput } from '@mui/material';
-import { MenuItem, Select, Button, InputLabel, FormControl } from '@mui/material';
+import { Checkbox, FormControlLabel, TextField, Divider, Grid } from '@mui/material';
+import { MenuItem, Select, Button } from '@mui/material';
 import { Container } from '@mui/system';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,6 @@ import "../../App.css";
 function CreateArticleForm() {
 
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const [inputs, setInputs] = useState({
 		category: "",
 		title: "",
@@ -39,7 +38,6 @@ function CreateArticleForm() {
 					newDay[num] = !newDay[num]
 				}
 			}
-			console.log(newDay)
 			setInputs({...inputs, [date] : newDay})
 		}	else	{
 			setInputs({...inputs, [name] : value})
@@ -379,8 +377,6 @@ function CreateArticleForm() {
 
 
 function CreateArticle() {
-
-
   return (
     <>
 			<div>

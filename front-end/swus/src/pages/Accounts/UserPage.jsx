@@ -4,13 +4,8 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import NavBar from "./../../components/NavBar/NavBar";
-
-import { indigo } from "@mui/material/colors";
-
 import { Outlet } from "react-router";
-
 import loginback from "./../../loginback.jpg";
 
 const theme = createTheme();

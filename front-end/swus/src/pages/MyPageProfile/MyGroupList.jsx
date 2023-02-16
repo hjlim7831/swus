@@ -97,23 +97,6 @@ function MyGroupList() {
     setPage(newPage);
   };
 
-  function goGroupDetail(teamId) {
-    const config = {
-      url: `/users/my-groups/${teamId}`,
-      method: "GET",
-    };
-
-    axios(config)
-      .then((response) => {
-        console.log(response.data);
-        dispatch(myGroupListSlice.actions.saveGroupId(teamId));
-        dispatch(myGroupListSlice.actions.getGroupDetails(response.data));
-      })
-      .then((response) => {
-        navigate(`group/${teamId}`);
-      });
-  }
-
   const openEnterM = () => {
     setOpen(true);
   };
@@ -132,14 +115,12 @@ function MyGroupList() {
   };
 
   const handleToEnter = () => {
-    console.log(teamName);
     const config = {
       url: `/grouprooms/${teamId}`,
       method: "GET",
     };
 
     axios(config).then((response) => {
-      console.log(response.data);
       const sessionName = response.data.sessionName;
       navigate(`/studyroom/group/${sessionName}`, {
         state: {
@@ -202,7 +183,6 @@ function MyGroupList() {
           <TableCell style={{ textAlign: "center" }}>
             <Button
               variant="outlined"
-              // style={{ width: "150px", background: "#1560BD", "&:hover": { background: "#1560BD" } }}
               onClick={() => {
                 sendTeamId(group.team_id);
                 sendTeamName(group.team_name);
@@ -243,7 +223,6 @@ function MyGroupList() {
           <TableCell style={{ textAlign: "center" }}>
             <Button
               variant="outlined"
-              // style={{ width: "140px", background: "#1560BD", "&:hover": { background: "#1560BD" } }}
               onClick={() => openModal(group.team_id)}
               startIcon={<DifferenceOutlinedIcon></DifferenceOutlinedIcon>}
             >

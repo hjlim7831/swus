@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
@@ -58,28 +57,22 @@ export default function SignUpSide() {
         Alert({title, icon});
 
       } else {
-        console.log(email);
-
         const config = {
           url: `/auth/check-email?email=${email}`,
           method: "GET",
         };
 
         axios(config)
-          // axios
-          //   .get(`http://localhost:8081/auth/check-email?email=${email}`)
           .then((response) => {
             console.log(response.data.msg);
             if (response.data.msg === "Y") {
               const title = "존재하는 아이디입니다.";
               const icon = "error";
               Alert({title, icon});
-              // alert("존재하는 아이디입니다.");
             } else {
               const title = "사용가능한 아이디입니다.";
               const icon = "success";
               Alert({title, icon});
-              // alert("사용가능한 아이디입니다.");
             }
           });
       }
@@ -105,7 +98,6 @@ export default function SignUpSide() {
     let icon = "error";
     // 유효성검사
     if (
-      // payload.email &&
       payload.password &&
       payload.nickname &&
       payload.question_id &&
@@ -114,21 +106,17 @@ export default function SignUpSide() {
       if (payload.password.length < 8) {
         const title = "비밀번호는 8자 이상이여야 합니다."
         Alert({title, icon})
-        // alert("비밀번호는 8자 이상이여야 합니다.");
       } else if (!passwordCheck.test(payload.password)) {
         const title = "비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다."
         Alert({title, icon})
-        // alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
       } else if (payload.password != passwordConfirm) {
         const title = "비밀번호와 비밀번호 확인이 서로 다릅니다."
         Alert({title, icon})
-        // alert("비밀번호와 비밀번호 확인이 서로 다릅니다.");
       } else if (
         !(2 <= payload.nickname.length && payload.nickname.length <= 10)
       ) {
         const title = "닉네임은 2글자 이상, 10글자 이하만 가능합니다."
         Alert({title, icon})
-        // alert("닉네임은 2글자 이상, 10글자 이하만 가능합니다.");
       } else {
         console.log({
           payload,
@@ -141,23 +129,17 @@ export default function SignUpSide() {
         };
 
         axios(config)
-          // .post("http://localhost:8081/auth/sign-up", payload)
           .then((response) => {
-            // console.log("success");
-            console.log(response.data);
             navigate("/account/login");
           })
           .catch((error) => {
-            console.log(error.message);
             const title = "존재하는 회원입니다.";
             Alert({title, icon});
-            // alert("존재하는 회원입니다.");
           });
       }
     } else {
       const title = "정보를 다시 입력해주세요.";
       Alert({title, icon});
-      // alert("정보를 다시 입력해주세요.");
     }
   };
 
@@ -181,7 +163,6 @@ export default function SignUpSide() {
           variant="h5"
           style={{
             textDecoration: "none",
-            color: "black",
             marginLeft: 100,
             fontSize: 17,
             color: "#5F3A42",
@@ -209,7 +190,6 @@ export default function SignUpSide() {
           required
           fullWidth
           id="email"
-          // label="Email Address"
           name="email"
           autoComplete="email"
           autoFocus
@@ -237,7 +217,6 @@ export default function SignUpSide() {
           required
           fullWidth
           name="password"
-          // label="Password"
           type="password"
           id="password"
           autoComplete="current-password"
@@ -254,7 +233,6 @@ export default function SignUpSide() {
           required
           fullWidth
           name="passwordConfirm"
-          // label="Password Confirm"
           type="password"
           id="passwordConfirm"
           onChange={inputSubmit}
@@ -287,7 +265,6 @@ export default function SignUpSide() {
           required
           fullWidth
           id="answer"
-          // label="answer"
           name="answer"
           onChange={inputSubmit}
           autoComplete="answer"
@@ -308,7 +285,6 @@ export default function SignUpSide() {
         >
           Sign Up
         </Button>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Box>
     </>
   );

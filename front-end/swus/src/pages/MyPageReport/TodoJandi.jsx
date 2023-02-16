@@ -42,9 +42,6 @@ function TodoJandi() {
 
     axios(config)
       .then((response) => {
-        console.log(response.data);
-        // {id_study_at: '2023-02-01', todo_done_count: 3}
-        // 1 <= , 3 <=, 5<= , 7 <=
         const newData = response.data.todo_records.map((data) => {
           let value = 0;
 
@@ -63,7 +60,6 @@ function TodoJandi() {
             classValue: value,
           };
         });
-        // console.log("new", newData);
         setValues(newData);
       })
       .catch((error) => {
@@ -74,10 +70,8 @@ function TodoJandi() {
   const colorChange = (name) => {
     localStorage.setItem("jandi", name);
     setColor(name);
-    // console.log(color);
   };
 
-  // const color = ["grey", "#BDACFB", "#7A5DDF", "#4926C1", "#2A117D"];
   return (
     <>
       <Box

@@ -1,5 +1,4 @@
 import React from "react";
-// import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,17 +13,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-// import { indigo } from "@mui/material/colors";
-
 import { useNavigate } from "react-router-dom";
-
 import logo from "./../../logo.png";
 import "../../App.css";
 
 const drawerWidth = 240;
-const position = window.location.pathname
 const token = sessionStorage.getItem("token");
-const nickname = localStorage.getItem("nickname");
 const navItems = token
   ? [
       { name: "Study Room", path: "/studyroom" },
@@ -120,7 +114,6 @@ function DrawerAppBar(props) {
 
           {/* 메인페이지 */}
           <Typography
-            // variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >

@@ -58,7 +58,6 @@ export default function MyInfo() {
     };
 
     axios(config).then(() => {
-      // console.log(response.data);
       localStorage.clear();
       sessionStorage.clear();
       window.location = window.location.origin;
@@ -89,15 +88,12 @@ export default function MyInfo() {
       new_password: inputData.newPassword,
     }
 
-    // const newPasswordConfirm = inputData.newPasswordConfirm;
-
     const config = {
       method: "put",
       url: "/users/my-info",
       data: payload,
     }
 
-    console.log(payload)
 
     axios(config)
       .then((response) => {
@@ -186,7 +182,7 @@ export default function MyInfo() {
             label="email"
             defaultValue={email}
             disabled
-            sx= {{ mt: 2}}
+            sx= {{ mt: 2 }}
           />
           <TextField
             autoFocus
@@ -196,7 +192,7 @@ export default function MyInfo() {
             label="닉네임"
             name="nickname"
             defaultValue={nickname}
-            sx= {{ mt: 2}}
+            sx= {{ mt: 2 }}
             onChange={inputSubmit}
             error={inputData.nickname.length > 10 | inputData.nickname.length < 2}
             helperText="닉네임은 2글자 이상, 10글자 이하로만 수정가능합니다."
@@ -216,11 +212,6 @@ export default function MyInfo() {
                 !(passwordCheck.test(inputData.password)))}
             helperText="비밀번호는 문자, 숫자 포함한 8자 이상이어야 합니다."
           />
-          {/* <TextField
-            id="outlined-helperText"
-            label="Helper text"
-            defaultValue="Default Value"
-          /> */}
           <Box>
             <TextField
               id="outlined-helperText"
@@ -248,14 +239,12 @@ export default function MyInfo() {
               sx= {{ mt: 2, marginLeft: 3, width: 260}}
             />
           </Box>
-          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit}>Save</Button>
           <Button onClick={iumClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
-
       <Dialog
         open={quitMOpen}
         onClose={qmClose}

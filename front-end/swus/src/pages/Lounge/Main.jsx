@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@mui/system";
-
 import NavBar from "../../components/NavBar/NavBar";
 import SideBar from "./SideBar"
 import Lounge from "./Lounge"

@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-
 const groupBoardSlice = createSlice({
 	name: "groupBoard",
 	initialState: { 
@@ -72,8 +70,6 @@ const groupBoardSlice = createSlice({
 			state.todoLists = action.payload;
 		}
 	},
-	extraReducers: (builder) => {
-	}
 });
 
 export default groupBoardSlice;

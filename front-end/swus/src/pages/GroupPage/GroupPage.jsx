@@ -11,7 +11,6 @@ import { Container,
 					Button,
 					Grid,
 				} from '@mui/material';
-import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from "uuid";
@@ -23,7 +22,6 @@ const filterCategory = /S/;
 function GroupPage() {
 
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const [page, setPage] = useState(0)
 	const [articles, setArticles] = useState([]);
 
@@ -118,7 +116,6 @@ function GroupPage() {
 									rowsPerPage={10}
 									rowsPerPageOptions={[]}
 									onPageChange={handleChangePage}
-									// onChangeRowsPerPage={handleChangeRowsPerPage}
 								/>
 							</TableRow>
 						</TableFooter>
