@@ -207,7 +207,7 @@ function MyTime() {
                       <Grid item xs={1} />
                     </Grid>
                   </Grid>
-                  <Box sx={{ marginLeft: "20px" }}>
+                  <Box sx={{ marginLeft: "15px" }}>
                     {targetTime && studyTime ? (
                       <PieChart targetTime={targetTime} studyTime={studyTime} />
                     ) : null}
