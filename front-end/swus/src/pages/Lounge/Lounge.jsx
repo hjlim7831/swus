@@ -153,9 +153,6 @@ export default function Lounge() {
               >
                 <Box
                   sx={{
-                    mx: "3rem",
-                    mt: "2rem",
-                    mb: "1rem",
                     fontSize: "30px",
                     fontWeight: "bold",
                     fontFamily: "Cafe24",
@@ -235,9 +232,6 @@ export default function Lounge() {
                   borderRadius: 2,
                   mt: "1rem",
                   marginLeft: "3rem",
-                  // backgroundImage: `url(${motivationImg})`,
-                  // backgroundRepeat: "no-repeat",
-                  // backgroundSize: "cover",
                 }}
               >
                 <Typography
