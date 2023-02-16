@@ -12,10 +12,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from "uuid";
+import "../../App.css";
 
 function CreateArticleForm() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     category: "",
     title: "",
@@ -41,7 +41,6 @@ function CreateArticleForm() {
           newDay[num] = !newDay[num];
         }
       }
-      console.log(newDay);
       setInputs({ ...inputs, [date]: newDay });
     } else {
       setInputs({ ...inputs, [name]: value });

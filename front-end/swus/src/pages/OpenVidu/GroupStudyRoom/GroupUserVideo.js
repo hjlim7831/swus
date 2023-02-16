@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import OpenViduVideoComponent from "../OvVideo";
-
 import "./GroupVideo.css";
-
 import Grid from "@mui/material/Grid";
 
 export default class GroupUserVideo extends Component {

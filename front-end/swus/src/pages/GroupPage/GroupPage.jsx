@@ -16,12 +16,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "../../Utils/index";
 import { v4 as uuidv4 } from "uuid";
+import "../../App.css";
 
 const filterCategory = /S/;
 
 function GroupPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [articles, setArticles] = useState([]);
 
@@ -72,6 +72,7 @@ function GroupPage() {
               fontSize: "30px",
               textAlign: "center",
               marginLeft: 20,
+              fontFamily: "Cafe24",
             }}
           >
             <span>✏️스터디 모집게시판</span>
@@ -80,10 +81,10 @@ function GroupPage() {
             type="submit"
             variant="contained"
             sx={{
-              backgroundColor: "green",
+              backgroundColor: "#1560BD",
               m: 3,
               height: "40px",
-              "&:hover": { backgroundColor: "green" },
+              "&:hover": { backgroundColor: "#1560BD" },
             }}
             size="small"
             onClick={() => {
@@ -225,7 +226,6 @@ function GroupPage() {
                   rowsPerPage={10}
                   rowsPerPageOptions={[]}
                   onPageChange={handleChangePage}
-                  // onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
               </TableRow>
             </TableFooter>

@@ -13,7 +13,6 @@ import Icon from "@mui/material/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import axios from "../../Utils/index";
-import myGroupListSlice from "../../store/MyGroupListSlice";
 
 function GroupDetailUpdate() {
   const navigate = useNavigate();
@@ -178,10 +177,8 @@ function GroupDetailUpdate() {
       alert("시작 시간이 종료 시간보다 늦습니다!");
       return;
     } else if (
-      Number(
-        inputs.begin_at.replace(/-/gi, "") >
-          Number(inputs.end_at.replace(/-/gi, ""))
-      )
+      Number(inputs.begin_at.replace(/-/gi, "")) >
+      Number(inputs.end_at.replace(/-/gi, ""))
     ) {
       alert("스터디 시작 날짜가 종료 날짜보다 늦습니다!");
       return;
@@ -214,15 +211,12 @@ function GroupDetailUpdate() {
         team_todo_list: todoList,
       },
     };
+
     axios(config)
       .then((response) => {
-        axios(config2)
-          // .then((response) => {
-          // 	dispatch(myGroupListSlice.actions.getGroupDetails(response.data))
-          // })
-          .then((response) => {
-            navigate(`/group/mystudy/group/${teamId}`);
-          });
+        axios(config2).then((response) => {
+          navigate(`/group/mystudy/group/${teamId}`);
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -283,7 +277,12 @@ function GroupDetailUpdate() {
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ backgroundColor: "green", m: 3, height: "40px" }}
+                sx={{
+                  backgroundColor: "#1560BD",
+                  m: 3,
+                  height: "40px",
+                  "&:hover": { backgroundColor: "#1560BD" },
+                }}
                 size="small"
                 onClick={onHandleSubmit}
               >

@@ -16,22 +16,16 @@ function Report(props) {
     if (Array.isArray(payload) && payload.length > 0) {
       for (let i = 0; i < payload.length; i++) {
         newToggles.push(false);
-        console.log(toggles);
       }
     } else {
       return;
     }
-
-    console.log("여기야 여기!");
-    console.log(payload);
 
     setToggles(newToggles);
   }, []);
 
   function weekTopics() {
     function getMemberTodos(member) {
-      // if (Array.isArray(member) && member.length > 0) {
-      // 	console.log("웨지감자")
       return member.todos.map((todo) => {
         return (
           <>
@@ -46,9 +40,6 @@ function Report(props) {
           </>
         );
       });
-      // }	else {
-      // 	return null
-      // }
     }
 
     function details(index) {
@@ -143,7 +134,7 @@ function Report(props) {
                   >
                     {topic.round}주차
                   </span>
-                  <span style={{ marginBlock: 5 }}>2023-02-24</span>
+                  <span style={{ marginBlock: 5 }}>{topic.study_at}</span>
                 </div>
               </Grid>
               <Grid item xs={8} sx={{ marginBottom: 5 }}>
@@ -176,7 +167,7 @@ function Report(props) {
                     "&:hover": { cursor: "pointer" },
                     marginLeft: 2,
                     marginTop: 1,
-                    color: "#7468CF",
+                    color: "#1560BD",
                   }}
                   onClick={() => toggleFeature(index)}
                 >
@@ -217,11 +208,6 @@ function Report(props) {
               {weekTopics()}
             </div>
           </main>
-          {/* <footer>
-            <button className="close" onClick={close}>
-              close
-            </button>
-          </footer> */}
         </section>
       ) : null}
     </div>

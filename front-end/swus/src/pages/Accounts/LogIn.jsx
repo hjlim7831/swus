@@ -7,7 +7,7 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
+import "../../App.css";
 import axios from "./../../Utils/index";
 import Swal from "sweetalert2";
 
@@ -63,21 +63,13 @@ export default function SignInSide() {
       password: inputData.password,
     };
 
-    console.log(payload);
-
     // 유효성검사
     if (payload.email && payload.password) {
       let icon = "error";
       if (!emailCheck.test(payload.email)) {
         const title = "이메일 형식을 지켜주세요";
         Alert({ title, icon });
-        // alert("이메일 형식을 지켜주세요.");
-        // } else if (payload.password.length < 8) {
-        //   alert("비밀번호는 8자 이상이여야 합니다.");
-        // } else if (!passwordCheck.test(payload.password)) {
-        //   alert("비밀번호는 문자, 숫자를 최소 1번 사용해야 합니다.");
       } else {
-        console.log({ payload });
 
         const config = {
           url: "/auth/login",
@@ -108,28 +100,27 @@ export default function SignInSide() {
           .catch((error) => {
             const title = "존재하는 아이디가 아닙니다.";
             Alert({ title, icon });
-            // alert("존재하는 아이디가 아닙니다.");
           });
       }
     } else {
       const title = "정보를 다시 입력해주세요.";
       let icon = "error";
       Alert({ title, icon });
-      // alert("정보를 다시 입력해주세요.");
     }
   };
 
   return (
     <>
       <Typography
-        component="h1"
+        component="h2"
         variant="h5"
         sx={{
           mb: 3,
           mt: 1,
-          display: "flex",
-          alignContent: "space-between",
+          // display: "flex",
+          // alignContent: "space-between",
           color: "#5F3A42",
+          fontFamily: "Cafe24"
         }}
       >
         Sign in
@@ -139,9 +130,9 @@ export default function SignInSide() {
           style={{
             textDecoration: "none",
             color: "black",
-            marginLeft: 100,
             fontSize: 17,
             color: "#5F3A42",
+            marginTop: 5,
           }}
         >
           Sign Up
@@ -173,6 +164,7 @@ export default function SignInSide() {
             name="email"
             autoComplete="email"
             autoFocus
+            sx={{ mb: 3 }}
             error={inputData.email && !emailCheck.test(inputData.email)}
             onChange={inputSubmit}
           />

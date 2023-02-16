@@ -24,10 +24,6 @@ function UpdateArticleForm() {
 		return state.groupBoard.boardId
 	});
 
-	useEffect(() => {
-		console.log("인풋을 받아오는 곳")
-		console.log(inputs)
-	})
 	const onHandleInput = (event) => {
 		const name = event.target.name
 		const value = event.target.value
@@ -108,9 +104,6 @@ function UpdateArticleForm() {
 			finish_time: inputs.finish_time,
 		}
 
-		console.log(payload)
-		console.log(boardId)
-
 		const config = {
 			url: `/boards/${boardId}`,
 			method: "PATCH",
@@ -124,8 +117,6 @@ function UpdateArticleForm() {
 
 		axios(config)
 			.then((response) => {
-				console.log(response.data);
-
 
 				axios(config2)
 					.then((response) => {
@@ -163,7 +154,7 @@ function UpdateArticleForm() {
 								<Button 
 									type="submit" 
 									variant='contained' 
-									sx={{ backgroundColor: "green", m: 3, height: "40px", "&:hover": { backgroundColor: "green" } }}
+									sx={{ backgroundColor: "#1560BD", m: 3, height: "40px", "&:hover": { backgroundColor: "#1560BD" } }}
 									size="small"
 									onClick={onHandleSubmit}>글 수정</Button>
 							</div>
@@ -371,14 +362,11 @@ function UpdateArticleForm() {
 
 
 function UpdateArticle() {
-
-
   return (
     <>
 			<div>
 				<UpdateArticleForm />
 			</div>
-
     </>
   )
 }

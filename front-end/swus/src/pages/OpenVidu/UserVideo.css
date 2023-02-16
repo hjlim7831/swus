@@ -3,7 +3,6 @@
 video {
   width: 100%;
   height: auto;
-  /* float: left; */
   cursor: pointer;
   margin-right: 1%;
   display: inline-block;
@@ -15,10 +14,7 @@ video {
   float: left;
   display: inline-block;
   background-color: #f4efe6;
-  /* background-color: white; */
-  /* width: 31%; */
   width: 100%;
-  /* height: 30hv; */
   margin-top: 1%;
   margin-right: 2%;
   border: 10px;
@@ -27,14 +23,6 @@ video {
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
 }
-
-/* .nameTag {
-  width: 20%;
-  height: 100%;
-  display: inline-block;
-  text-align: center;
-  background-color: aquamarine;
-} */
 
 .videotag {
   margin: 0;

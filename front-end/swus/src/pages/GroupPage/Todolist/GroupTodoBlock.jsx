@@ -3,7 +3,6 @@ import { Box } from "@mui/system";
 import GroupTodoList from "./GroupTodoList";
 import GroupTodoForm from "./GroupTodoForm";
 import { Grid } from "@mui/material";
-
 import axios from "../../../Utils/index";
 
 function GroupTodoBlock(props) {
@@ -23,8 +22,6 @@ function GroupTodoBlock(props) {
 
     axios(config)
       .then((response) => {
-        // console.log("그룹 투두 겟 api");
-        console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {
             return {
@@ -32,7 +29,6 @@ function GroupTodoBlock(props) {
               todo_done: todo.todo_done === "N" ? false : true,
             };
           });
-          console.log(updatedData);
           setTodoData(updatedData);
         }
       })
@@ -63,8 +59,6 @@ function GroupTodoBlock(props) {
 
     setValue("");
   };
-
-  // const todoList = useSelector((state) => state.todolist);
 
   return (
     <>

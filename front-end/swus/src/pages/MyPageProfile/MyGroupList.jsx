@@ -15,13 +15,14 @@ import axios from "../../Utils/index";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import myGroupListSlice from "../../store/MyGroupListSlice";
-
+import DifferenceOutlinedIcon from "@mui/icons-material/DifferenceOutlined";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import Report from "../../components/modals/Report";
+import "../../App.css";
 
 function MyGroupList() {
   const navigate = useNavigate();
@@ -96,22 +97,6 @@ function MyGroupList() {
     setPage(newPage);
   };
 
-  function goGroupDetail(teamId) {
-    const config = {
-      url: `/users/my-groups/${teamId}`,
-      method: "GET",
-    };
-
-    axios(config)
-      .then((response) => {
-        dispatch(myGroupListSlice.actions.saveGroupId(teamId));
-        dispatch(myGroupListSlice.actions.getGroupDetails(response.data));
-      })
-      .then((response) => {
-        navigate(`group/${teamId}`);
-      });
-  }
-
   const openEnterM = () => {
     setOpen(true);
   };
@@ -178,7 +163,7 @@ function MyGroupList() {
   }
 
   function getIngGroups() {
-    return ingGroups.slice(page * 8, (page + 1) * 8).map((group) => {
+    return ingGroups.slice(page * 7, (page + 1) * 7).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
@@ -192,15 +177,35 @@ function MyGroupList() {
             }}
           >
             {group.category === "S" ? (
-              <span style={{ color: "red" }}>[스터디]</span>
+              <span
+                style={{
+                  borderRadius: 8,
+                  backgroundColor: "#FFD1D1",
+                  paddingBlock: 7,
+                  paddingInline: 13,
+                  fontSize: "14px",
+                }}
+              >
+                스터디
+              </span>
             ) : (
-              <span style={{ color: "blue" }}>[메이트]</span>
+              <span
+                style={{
+                  borderRadius: 8,
+                  backgroundColor: "#CEE0FB",
+                  paddingBlock: 7,
+                  paddingInline: 13,
+                  fontSize: "14px",
+                }}
+              >
+                메이트
+              </span>
             )}
           </TableCell>
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
             onClick={() => {
-              navigate(`group/${group.team_id}`);
+              navigate(`/group/mystudy/group/${group.team_id}`);
             }}
           >
             <span style={{ cursor: "pointer" }}>{group.team_name}</span>
@@ -210,14 +215,14 @@ function MyGroupList() {
           </TableCell>
           <TableCell style={{ textAlign: "center" }}>
             <Button
-              variant="contained"
-              style={{ width: "130px" }}
+              variant="outlined"
               onClick={() => {
                 sendTeamId(group.team_id);
                 sendTeamName(group.team_name);
                 sendTeamCategory(group.category);
                 openEnterM();
               }}
+              startIcon={<LoginRoundedIcon></LoginRoundedIcon>}
             >
               스터디룸 입장
             </Button>
@@ -228,7 +233,7 @@ function MyGroupList() {
   }
 
   function getFinishedGroups() {
-    return finishedGroups.slice(page * 8, (page + 1) * 8).map((group) => {
+    return finishedGroups.slice(page * 7, (page + 1) * 7).map((group) => {
       return (
         <TableRow key={uuidv4()} style={{ justifyContent: "center" }}>
           <TableCell style={{ textAlign: "center", fontSize: "15px" }}>
@@ -242,15 +247,35 @@ function MyGroupList() {
             }}
           >
             {group.category === "S" ? (
-              <span style={{ color: "red" }}>[스터디]</span>
+              <span
+                style={{
+                  borderRadius: 8,
+                  backgroundColor: "#FFD1D1",
+                  paddingBlock: 7,
+                  paddingInline: 13,
+                  fontSize: "14px",
+                }}
+              >
+                스터디
+              </span>
             ) : (
-              <span style={{ color: "blue" }}>[메이트]</span>
+              <span
+                style={{
+                  borderRadius: 8,
+                  backgroundColor: "#CEE0FB",
+                  paddingBlock: 7,
+                  paddingInline: 13,
+                  fontSize: "14px",
+                }}
+              >
+                메이트
+              </span>
             )}
           </TableCell>
           <TableCell
             style={{ textAlign: "center", fontSize: "15px" }}
             onClick={() => {
-              navigate(`group/${group.team_id}`);
+              navigate(`/group/mystudy/group/${group.team_id}`);
             }}
           >
             <span style={{ cursor: "pointer" }}>{group.team_name}</span>
@@ -260,9 +285,9 @@ function MyGroupList() {
           </TableCell>
           <TableCell style={{ textAlign: "center" }}>
             <Button
-              variant="contained"
-              style={{ width: "130px" }}
+              variant="outlined"
               onClick={() => openModal(group.team_id)}
+              startIcon={<DifferenceOutlinedIcon></DifferenceOutlinedIcon>}
             >
               리포트 보기
             </Button>
@@ -356,6 +381,7 @@ function MyGroupList() {
               fontWeight: "bold",
               fontSize: "30px",
               textAlign: "center",
+              fontFamily: "Cafe24",
             }}
           >
             <span>내 스터디룸</span>
@@ -390,6 +416,8 @@ function MyGroupList() {
                                 width: "100%",
                                 fontWeight: "bold",
                                 marginRight: 10,
+                                fontFamily: "Cafe24",
+                                fontSize: "20px",
                               }
                             : {
                                 backgroundColor: "white",
@@ -409,6 +437,8 @@ function MyGroupList() {
                                 width: "100%",
                                 fontWeight: "bold",
                                 marginRight: 10,
+                                fontFamily: "Cafe24",
+                                fontSize: "20px",
                               }
                             : {
                                 backgroundColor: "white",
@@ -476,7 +506,7 @@ function MyGroupList() {
                 <TablePagination
                   count={value === 0 ? ingGroups.length : finishedGroups.length}
                   page={page}
-                  rowsPerPage={8}
+                  rowsPerPage={7}
                   rowsPerPageOptions={[]}
                   onPageChange={handleChangePage}
                 />
@@ -491,11 +521,40 @@ function MyGroupList() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{teamName} 입장하기</DialogTitle>
-        <DialogContent></DialogContent>
-        <DialogActions>
-          <Button onClick={handleToEnter}>입장</Button>
-          <Button onClick={closeEnterM}>x</Button>
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{ fontFamily: "Cafe24", fontWeight: "bold", fontSize: "30px" }}
+        >
+          {teamName} 입장하기
+        </DialogTitle>
+        <DialogContent
+          id="alert-dialog-description"
+          sx={{ fontFamily: "Cafe24", textAlign: "center", fontSize: "20px" }}
+        >
+          열심히 스터디하러 가볼까요?
+        </DialogContent>
+        <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            onClick={handleToEnter}
+            sx={{
+              fontFamily: "Cafe24",
+              color: "white",
+              background: "#1560BD",
+              "&:hover": { backgroundColor: "#1560BD" },
+            }}
+          >
+            입장
+          </Button>
+          <Button
+            onClick={closeEnterM}
+            variant="contained"
+            sx={{
+              background: "#A91B0D",
+              "&:hover": { backgroundColor: "#A91B0D" },
+            }}
+          >
+            x
+          </Button>
         </DialogActions>
       </Dialog>
     </>

@@ -1,26 +1,22 @@
 import { OpenVidu } from "openvidu-browser";
 import { Base64 } from "js-base64";
-
 import axios from "axios";
 import React, { Component } from "react";
-// import "./App.css";
 import UserVideoComponent from "./UserVideoComponent";
-
 //열람실 내부 컴포넌트용
 import { Box } from "@mui/system";
 import Grid from "@mui/material/Grid";
-
 import MyTodoPublicIn from "./TodoList/MyTodoPublicIn";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import Typography from "@mui/material/Typography";
-
 //쉬는시간 alert
 import startBreak from "../../components/modals/StartBreak";
 import endBreak from "../../components/modals/EndBreak";
 import axiosUtils from "./../../Utils/index";
+import "../../App.css";
 
 const OPENVIDU_SERVER_URL = "https://i8a302.p.ssafy.io:8443";
 const OPENVIDU_SERVER_SECRET = "SWUS";
@@ -74,7 +70,6 @@ class OpenViduApp extends Component {
           this.state.d.getSeconds() == 0
         ) {
           endBreak();
-        } else {
         }
       }
     }, 1000);
@@ -192,9 +187,6 @@ class OpenViduApp extends Component {
         // console.log(totalH * 60 + totalM + cal);
         console.log(res);
       });
-
-      // localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      // localStorage.setItem("totalM", totalM + (cal % 60));
     } else {
       //앞시간이 더 큰 숫자일 경우 ex 18시~1시
       const cal = 24 * 60 - (inH * 60 + inM) + (nowH * 60 + nowM);
@@ -211,9 +203,6 @@ class OpenViduApp extends Component {
         // console.log(totalH * 60 + totalM + cal);
         console.log(res);
       });
-
-      // localStorage.setItem("totalH", totalH + parseInt(cal / 60));
-      // localStorage.setItem("totalM", totalM + (cal % 60));
     }
   }
 
@@ -388,9 +377,10 @@ class OpenViduApp extends Component {
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
-                  <Stack direction="row">
-                    {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-
+                  <Stack
+                    direction="row"
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -404,8 +394,6 @@ class OpenViduApp extends Component {
                   </Stack> //채팅방 버튼 없는 상위 버튼
                 ) : (
                   <Stack direction="row">
-                    {/**justifyContent="flex-end"오른쪽 끝으로 밀어줌 */}
-
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -419,12 +407,24 @@ class OpenViduApp extends Component {
                     </IconButton>
                   </Stack> //채팅방용 상위 버튼
                 )}
-                <h1 style={{ color: "white", paddingTop: "10px" }}>
+                <h1
+                  style={{
+                    color: "white",
+                    paddingTop: "10px",
+                    fontFamily: "Cafe24",
+                  }}
+                >
                   공용 열람실{roomId}
                 </h1>
                 <div style={{ height: 100 }}>
                   <div style={{ height: "50%" }}>
-                    <p style={{ color: "white" }}>
+                    <p
+                      style={{
+                        color: "white",
+                        fontFamily: "Cafe24",
+                        fontSize: "20px",
+                      }}
+                    >
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
                     <Box
@@ -562,7 +562,15 @@ class OpenViduApp extends Component {
                     </Box>
                   </div>
                 </div>
-                <h4 style={{ color: "white" }}>To-do list</h4>
+                <h4
+                  style={{
+                    color: "white",
+                    fontFamily: "Cafe24",
+                    fontSize: "20px",
+                  }}
+                >
+                  To-do list
+                </h4>
                 <div
                   style={{
                     backgroundColor: "#F4EFE6",
@@ -585,6 +593,8 @@ class OpenViduApp extends Component {
                       height: "50px",
                       color: "#1A1E33",
                       fontSize: "20px",
+                      fontFamily: "Cafe24",
+                      "&:hover": { backgroundColor: "#DEDCEE" },
                     }}
                     onClick={this.moveToLounge}
                   >
@@ -597,7 +607,6 @@ class OpenViduApp extends Component {
               {this.state.session === undefined ? (
                 <div id="join">{this.joinSession()}</div>
               ) : null}
-              {/* <Grid container sx={{ border: 1 }}> */}
               {this.state.session !== undefined ? (
                 <div
                   id="video-container"
@@ -611,7 +620,6 @@ class OpenViduApp extends Component {
                     padding: "0.5%",
                     gridGap: "10px",
                     paddingRight: "20px",
-                    // flexWrap: "wrap",
                   }}
                 >
                   {this.state.publisher !== undefined ? (
@@ -669,40 +677,6 @@ class OpenViduApp extends Component {
     const sessionId = await this.createSession(this.state.mySessionId);
     return await this.createToken(sessionId);
   }
-
-  //  // DomException :Failed to excute 'open' on 'XMLHttpRequest':Invaild URL =>URL 뒤 "api/sessions"앞에 / 추가해서 해결
-  //  //
-  // async createSession(sessionId) {
-  //   const response = await axios.post(
-  //     OPENVIDU_SERVER_URL + "/api/sessions",
-  //     { customSessionId: sessionId },
-  //     {
-  //       headers: {
-  //         // Authorization: `Basic ${Base64.encode(
-  //         //   `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //         // )}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   return response.data; // The sessionId
-  // }
-
-  // async createToken(sessionId) {
-  //   const response = await axios.post(
-  //     OPENVIDU_SERVER_URL + "/api/sessions/" + sessionId.id + "/connections",
-  //     {},
-  //     {
-  //       headers: {
-  //         Authorization: `Basic ${Base64.encode(
-  //           `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-  //         )}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   return response.data; // The token
-  // }
 
   //잠시 해결됐다가 메인페이지로 나오니까 모든 axios 에러
   createSession(sessionId) {

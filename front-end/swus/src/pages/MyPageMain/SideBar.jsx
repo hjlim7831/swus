@@ -1,7 +1,8 @@
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
-// import "./SideBar.css";
 import { useNavigate } from "react-router-dom";
+import "../../App.css";
+import { v4 as uuidv4 } from "uuid";
 
 
 const drawerWidth = 240;
@@ -21,12 +22,12 @@ export default function MiniDrawer(props) {
 
   const sideItems = window.location.pathname.slice(8, 15) === "profile"
     ? [
+      { name: "MY REPORT", path: `myreport`, backgroundColor: "#1A1E33", color: "white"},
       { name: "PROFILE", path: `profile`, backgroundColor: "#DEDCEE", color: "#1A1E33" },
-      { name: "MY REPORT", path: `myreport`, backgroundColor: "#1A1E33", color: "white"}
     ]
     : [
+      { name: "MY REPORT", path: `myreport`, backgroundColor: "#DEDCEE", color: "#1A1E33"},
       { name: "PROFILE", path: `profile`, backgroundColor: "#1A1E33", color: "white" },
-      { name: "MY REPORT", path: `myreport`, backgroundColor: "#DEDCEE", color: "#1A1E33"} 
     ]
 
 
@@ -37,9 +38,10 @@ export default function MiniDrawer(props) {
     >
 
       <Box fullWidth sx={{ mt: 11, mx: 4, justifyContent: "center" }}>
-        {sideItems.map((item, index) => {
+        {sideItems.map((item) => {
           return (
             <Button
+              key={uuidv4()}
               disableRipple 
               variant="contained"
               fullWidth
@@ -48,8 +50,9 @@ export default function MiniDrawer(props) {
                 color: item.color,
                 width: "180px",
                 height: "60px",
-                fontSize: "20px",
+                fontSize: "25px",
                 marginBlock: "20px",
+                fontFamily: "Cafe24_e"
               }}
               onClick={() => {navigate(item.path)}}
           >{item.name}</Button>

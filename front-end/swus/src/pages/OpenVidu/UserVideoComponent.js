@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import OpenViduVideoComponent from "./OvVideo";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
-
 import "./UserVideo.css";
-
 import Grid from "@mui/material/Grid";
+import { Box, Typography } from "@mui/material";
 
 export default class UserVideoComponent extends Component {
   constructor(props) {

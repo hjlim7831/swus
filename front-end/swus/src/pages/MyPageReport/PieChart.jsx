@@ -12,7 +12,6 @@ export default function ApexChart({ studyTime, targetTime }) {
   const [options, setOptions] = useState({
     chart: {
       type: "radialBar",
-      // offsetY: -20,
       sparkline: {
         enabled: true,
       },
