@@ -116,8 +116,6 @@ export default function SignInSide() {
         sx={{
           mb: 3,
           mt: 1,
-          // display: "flex",
-          // alignContent: "space-between",
           color: "#5F3A42",
           fontFamily: "Cafe24",
         }}
@@ -131,7 +129,7 @@ export default function SignInSide() {
             color: "black",
             fontSize: 17,
             color: "#5F3A42",
-            marginTop: 5,
+            marginLeft: "10rem",
           }}
         >
           Sign Up
