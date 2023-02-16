@@ -70,7 +70,6 @@ export default function SignInSide() {
         const title = "이메일 형식을 지켜주세요";
         Alert({ title, icon });
       } else {
-
         const config = {
           url: "/auth/login",
           method: "POST",
@@ -98,7 +97,7 @@ export default function SignInSide() {
             window.location = `${window.location.origin}/studyroom`;
           })
           .catch((error) => {
-            const title = "존재하는 아이디가 아닙니다.";
+            const title = "아이디(이메일)나 비밀번호를 잘못 입력했습니다.";
             Alert({ title, icon });
           });
       }
@@ -120,7 +119,7 @@ export default function SignInSide() {
           // display: "flex",
           // alignContent: "space-between",
           color: "#5F3A42",
-          fontFamily: "Cafe24"
+          fontFamily: "Cafe24",
         }}
       >
         Sign in
