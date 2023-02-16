@@ -73,7 +73,7 @@ function MyTodoBlock({ setType }) {
       >
         <Grid container>
           <Grid item xs={5}>
-            <h2 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>To-Do List</h2>
+            <h3 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>✅ To-Do List</h3>
           </Grid>
           <Grid item xs={7}>
             <IconButton

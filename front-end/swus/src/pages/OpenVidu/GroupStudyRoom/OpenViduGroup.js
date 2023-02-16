@@ -300,7 +300,13 @@ class OpenViduApp extends Component {
                     <p style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
-                    <Box sx={{ height: "100%", display: "flex", justifyContent: "flex-start" }}>
+                    <Box
+                      sx={{
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "flex-start",
+                      }}
+                    >
                       <Box
                         sx={{
                           display: "inline-block",
@@ -481,6 +487,7 @@ class OpenViduApp extends Component {
                         display: "grid",
                         gridTemplateColumns:
                           "repeat(auto-fit, minmax(31%, auto))",
+                        gridTemplateRows: "repeat(auto-fit, minmax(50%, auto))",
                         placeItems: "center",
                         padding: "5px",
                         paddingRight: "20px",
@@ -524,7 +531,6 @@ class OpenViduApp extends Component {
       </>
     );
   }
-
 
   async getToken() {
     const sessionId = await this.createSession(this.state.mySessionId);

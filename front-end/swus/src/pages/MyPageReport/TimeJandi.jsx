@@ -3,11 +3,13 @@ import { Box } from "@mui/system";
 import styled from "styled-components";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Grid } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
 import "../../App.css";
 import axios from "./../../Utils/index";
 
-function TodoJandi() {
+function TodoJandi({ setType }) {
   //  Heatmap Data
   const checkColor = localStorage.getItem("jandi")
     ? localStorage.getItem("jandi")
@@ -91,7 +93,20 @@ function TodoJandi() {
             xs={12}
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
-            <h2 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>{nickname}의 공부시간 기록</h2>
+            <div style={{ display: "flex" }}>
+              <h3 style={{ marginLeft: "40px", marginRight: "8px", fontFamily: "Cafe24" }}>
+                🌱 {nickname}의 공부시간 기록
+              </h3>
+              <IconButton
+                color="black"
+                aria-label="change view"
+                onClick={() => {
+                  setType("todo");
+                }}
+              >
+                <AutorenewIcon />
+              </IconButton>
+            </div>
             <div>
               {/* 색변경 아이콘들 */}
               <FormatColorFillIcon

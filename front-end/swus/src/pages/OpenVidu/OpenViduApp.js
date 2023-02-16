@@ -36,7 +36,9 @@ class OpenViduApp extends Component {
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers' //자체 로컬 웹캠 스트림(본인)
       publisher: undefined,
       subscribers: [], //다른 사람들의 활성 스트림 저장
-      enterTime: props.enterTime,
+      totalTime: props.totalTime,
+      enterHour: props.enterHour,
+      enterMin: props.enterMin,
       d: new Date(), //시계
       open: "first",
     };
@@ -258,7 +260,12 @@ class OpenViduApp extends Component {
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           //초기화 된 세션에 참가
           mySession
-            .connect(token, { clientData: this.state.myUserName })
+            .connect(token, {
+              clientData: this.state.myUserName,
+              enterHour: this.state.enterHour,
+              enterMin: this.state.enterMin,
+              totalTime: this.state.totalTime,
+            })
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
@@ -404,7 +411,13 @@ class OpenViduApp extends Component {
                     <p style={{ color: "white", fontFamily: "Cafe24", fontSize: "20px" }}>
                       {year}. {month}. {day} {this.getTodayLabel()}요일
                     </p>
-                    <Box sx={{ mt: "5px", display: "flex", justifyContent: "flex-start" }}>
+                    <Box
+                      sx={{
+                        mt: "5px",
+                        display: "flex",
+                        justifyContent: "flex-start",
+                      }}
+                    >
                       <Box
                         sx={{
                           display: "inline-block",

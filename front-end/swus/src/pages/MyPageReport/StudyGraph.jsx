@@ -63,11 +63,11 @@ const ApexChart = () => {
     xaxis: {
       categories: ["Mon", "Tue", "Web", "Thur", "Fri", "Sat", "Sun"],
     },
-    yaxis: {
-      min: 0,
-      max: 24,
-      tickAmount: 6,
-    },
+    // yaxis: {
+    //   min: 0,
+    //   max: 24,
+    //   tickAmount: 6,
+    // },
     fill: {
       opacity: 1,
     },
@@ -98,7 +98,7 @@ const ApexChart = () => {
       >
         <Grid container>
           <Grid item xs={12}>
-            <h2 style={{ marginLeft: "50px", fontFamily: "Cafe24" }}>주간 공부 기록</h2>
+            <h3 style={{ marginLeft: "50px", fontFamily: "Cafe24" }}>📊 주간 공부 기록</h3>
           </Grid>
 
           <Box

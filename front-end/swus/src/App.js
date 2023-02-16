@@ -13,10 +13,6 @@ import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 import LoungeMain from "./pages/Lounge/Main";
-import UserModal from "./pages/Accounts/LogInModal/UserModal";
-import LogInModal from "./pages/Accounts/LogInModal/LogIn";
-import SignUpModal from "./pages/Accounts/LogInModal/SignUp";
-import FindPasswordModal from "./pages/Accounts/LogInModal/FindPassword";
 import MyReport from "./pages/MyPageReport/MyReport";
 import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
 import NSRoom from "./pages/StudyCam/NSRoom";
@@ -65,13 +61,6 @@ export default function App() {
             <Route exact path="login" element={<LogIn />} />
             <Route exact path="signup" element={<SignUp />} />
             <Route exact path="findpassword" element={<FindPassword />} />
-          </Route>
-
-          {/* Login modal */}
-          <Route exact path="/accounts" element={<UserModal />}>
-            <Route exact path="login" element={<LogInModal />} />
-            <Route exact path="signup" element={<SignUpModal />} />
-            <Route exact path="findpassword" element={<FindPasswordModal />} />
           </Route>
         </Routes>
       </BrowserRouter>

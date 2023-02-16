@@ -146,18 +146,18 @@ export default function SignUpSide() {
   return (
     <>
       <Typography
-        component="h1"
+        component="h2"
         variant="h5"
         sx={{
           mb: 3,
           mt: 1,
-          display: "flex",
-          alignContent: "space-between",
+          // display: "flex",
+          // alignContent: "space-between",
           color: "#5F3A42",
           fontFamily: "Cafe24",
         }}
       >
-        Sign Up
+        <span>Sign Up</span>
         <Link
           href="login"
           variant="h5"
@@ -166,6 +166,7 @@ export default function SignUpSide() {
             marginLeft: 100,
             fontSize: 17,
             color: "#5F3A42",
+            marginLeft: "10rem"
           }}
         >
           Sign In
@@ -179,7 +180,7 @@ export default function SignUpSide() {
             '&:hover': {
               backgroundColor: '#E2B9B3'
             },
-            marginLeft: 30
+            float: "right"
           }}
           onClick={idCheck}
         >
