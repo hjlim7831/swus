@@ -297,7 +297,7 @@ class OpenViduApp extends Component {
                   style={{
                     color: "white",
                     fontFamily: "Cafe24",
-                    fontSize: "20px",
+                    fontSize: "15px",
                   }}
                 >
                   {this.state.round}회차
@@ -307,7 +307,7 @@ class OpenViduApp extends Component {
                     color: "white",
                     marginTop: "-20px",
                     fontFamily: "Cafe24",
-                    fontSize: "30px",
+                    fontSize: "25px",
                   }}
                 >
                   {this.state.content}
@@ -486,7 +486,7 @@ class OpenViduApp extends Component {
                     variant="contained"
                     fullWidth
                     sx={{
-                      mt: 4,
+                      mt: 2,
                       pt: 2,
                       pb: 1.5,
                       backgroundColor: "#DEDCEE",
