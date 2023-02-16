@@ -5,11 +5,9 @@ import MyTodoForm from "./../OpenVidu/TodoList/MyTodoForm";
 import IconButton from "@mui/material/IconButton";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { Grid } from "@mui/material";
-
 import axios from "./../../Utils/index";
+import "../../App.css";
 
-// import { useSelector, useDispatch } from "react-redux";
-// import { addTodoList } from "./../../store/TodoList";
 
 function MyTodoBlock({ setType }) {
   const [todoData, setTodoData] = useState([]);
@@ -23,7 +21,6 @@ function MyTodoBlock({ setType }) {
 
     axios(config)
       .then((response) => {
-        // console.log(response.data);
         if (response.data) {
           const updatedData = response.data.map((todo) => {
             return {
@@ -31,7 +28,6 @@ function MyTodoBlock({ setType }) {
               todo_done: todo.todo_done === "N" ? false : true,
             };
           });
-          // console.log(updatedData);
           setTodoData(updatedData);
         }
       })
@@ -63,8 +59,6 @@ function MyTodoBlock({ setType }) {
     setValue("");
   };
 
-  // const todoList = useSelector((state) => state.todolist);
-
   return (
     <>
       <Box
@@ -79,7 +73,7 @@ function MyTodoBlock({ setType }) {
       >
         <Grid container>
           <Grid item xs={5}>
-            <h3 style={{ marginLeft: "40px" }}>To-Do List</h3>
+            <h3 style={{ marginLeft: "40px", fontFamily: "Cafe24" }}>✅ To-Do List</h3>
           </Grid>
           <Grid item xs={7}>
             <IconButton

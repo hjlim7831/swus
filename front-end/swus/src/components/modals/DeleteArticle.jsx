@@ -2,8 +2,6 @@ import axios from "../../Utils/index";
 
 function deleteArticle() {
 
-  // const navigate = useNavigate();
-
   const Swal = require("sweetalert2");
 
   Swal.fire({

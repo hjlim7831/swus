@@ -6,7 +6,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import deleteArticle from '../../components/modals/DeleteArticle';
 import axios from "../../Utils/index";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import groupBoardSlice from '../../store/GroupBoardSlice';
 
 
@@ -21,10 +21,6 @@ function ArticleDetail() {
 	const [finishTime, setFinishTime] = useState();
 	const filterCategory = /S/;
 
-	const articleDetail = useSelector(state => {
-		return state.groupBoard.info
-	})
-
 	const boardId = window.location.pathname.slice(13, window.location.pathname.length + 1)
 	
 	useEffect(() => {
@@ -38,6 +34,7 @@ function ArticleDetail() {
 				setArticle(response.data)
 				setStartTime(response.data.start_time.slice(0, 5))
 				setFinishTime(response.data.finish_time.slice(0, 5))
+				dispatch(groupBoardSlice.actions.getArticleDetails(response.data))
 			})
 		dispatch(groupBoardSlice.actions.saveBoardId(boardId))
 	}, [])
@@ -48,13 +45,13 @@ function ArticleDetail() {
 				<p style={{ paddingLeft: 30, paddingTop: 5}}>
 					<EditOutlinedIcon
 						variant="contained"
-						sx={{ fontSize: 30, color: "blue", "&:hover": { cursor: "pointer"} }}
+						sx={{ fontSize: 30, color: "#1560BD", "&:hover": { cursor: "pointer"} }}
 						onClick={() => {navigate(`update`)}} />
 				</p>
 				<p style={{ paddingLeft: 10, paddingTop: 5}}>
 					<DeleteOutlinedIcon
 						onClick={deleteArticle}
-						sx={{ fontSize: 30, color: "red", "&:hover": { cursor: "pointer"} }} 
+						sx={{ fontSize: 30, color: "#CA3433", "&:hover": { cursor: "pointer"} }} 
 					/>
 				</p>
 			</>
@@ -73,11 +70,11 @@ function ArticleDetail() {
 			return days.map((date, index) => {
 				const style = {
 					background: checked[index] ? "#9EC2F8" : "white",
-					// color: checked[index] ? "white" : "black",
 					marginInline: 3,
 					borderRadius: 5,
-					padding: "1px",
 					fontWeight: "bold",
+					padding: "5px",
+					marginTop: 3
 				}
 				return (
 					<>
@@ -113,7 +110,7 @@ function ArticleDetail() {
 					<Grid item xs={1.5} sx={{ alignItems: "center", display: "flex", pl: 4}}>
 						<Button 
 							variant="contained" 
-							sx={{ height: "40px", backgroundColor: "#9EC2F8", color: "black", fontWeight: "bold", fontSize: "15px" }} 
+							sx={{ height: "40px", backgroundColor: "#9EC2F8", color: "black", fontWeight: "bold", fontSize: "15px", "&:hover": { background: "#9EC2F8"} }} 
 							onClick={() => {						
 								navigate("/group/board");
 								}}>목록 보기</Button>
@@ -135,7 +132,8 @@ function ArticleDetail() {
 				</Grid>
 				<Divider orientation='horizontal' flexItem sx={{ borderBottomWidth: 5 }}/>
 				<Grid container sx={{ display: "flex", alignItems: "center"}}>
-					<Grid item xs={2} sx={{ alignContent: "center" }}>
+					<Grid item xs={0.5}/>
+					<Grid item xs={0.8} sx={{ alignContent: "center" }}>
 						<p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 일정</p>
 					</Grid>
 					<Grid item xs={3}>
@@ -143,24 +141,29 @@ function ArticleDetail() {
 							? <p style={{ textAlign: "center", fontSize: "20px" }}>{article.begin_at} ~ {article.end_at}</p> 
 							: <p style={{ textAlign: "center", fontSize: "20px" }}>미정</p>}
 					</Grid>
+					<Grid item xs={0.3}/>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mr: 2 }}/>
-					<Grid item xs={2}>
+					<Grid item xs={0.2}/>
+					<Grid item xs={0.8}>
 						<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 							<p style={{ fontWeight: "bold", textAlign: "center", fontSize: "20px" }}>스터디 시간</p>
 						</div>
 					</Grid>
-					<Grid item xs={2}>
-						<p style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+					<Grid item xs={3}>
+						<p style={{ justifyContent: "center", alignItems: "center", flexDirection: "column", marginTop: 2 }}>
 							<p style={{ textAlign: "center", marginInline: 5 }}>{getStudyDays()} </p>
-							<p style={{ textAlign: "center", marginInline: 5 }}>{startTime} ~ {finishTime}</p>
+							<p style={{ textAlign: "center", marginInline: 5, fontSize: "20px" }}>{startTime} ~ {finishTime}</p>
 						</p>
 					</Grid>
+					<Grid item xs={0.3}/>
 					<Divider orientation='vertical' flexItem variant='middle' sx={{ mx: 2 }}/>
-					<Grid item xs={1}>
+					<Grid item xs={0.3}/>
+					<Grid item xs={0.6}>
 						<p style={{ fontWeight: "bold", textAlign: "center", fontSize: "18px" }}>인원 현황</p>
 					</Grid>
+					<Grid item xs={0.5}/>
 					<Grid item xs={1}>
-						<p style={{ textAlign: "center", fontSize: "18px" }}>{article.team_number} / {article.board_number}</p>
+						<p style={{ textAlign: "center", fontSize: "25px", fontWeight: "bold" }}>{article.team_number} / {article.board_number}</p>
 					</Grid>
 				</Grid>
 				<Grid container>

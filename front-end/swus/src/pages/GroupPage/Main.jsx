@@ -13,18 +13,6 @@ function Main() {
 		console.log(condition)
 	}, [])
 
-	// const MusicPlayer = () => {
-	// 	const audioRef = useRef(null);
-
-	// 	useEffect(() => {
-	// 		audioRef.current.play();
-	// 	}, []);
-
-	// 	return (
-	// 		<audio playsinline controls ref={audioRef} src="./SideBar/music.mp3" />
-	// 	);
-	// };
-
   return (
 		<>
 			<NavBar />
@@ -32,7 +20,6 @@ function Main() {
 				<SideBar props={condition} />
 				<div style={{ marginLeft: 50, width: "80vw", marginTop: 80 }}>
 					<Outlet></Outlet>
-					{/* {MusicPlayer()} */}
 				</div>
 			</Box>
 		</>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "../../Utils/index.jsx";
-
 import OpenViduApp from "../OpenVidu/OpenViduApp";
 
 function NSRoom() {
@@ -22,13 +21,9 @@ function NSRoom() {
 
   const roomName = location.state.roomName;
   const roomId = location.state.roomId;
-  console.log("roomId");
-  console.log("roomName", roomName, "roomId", roomId);
 
   const enterHour = new Date().getHours();
   const enterMin = new Date().getMinutes();
-
-  //여기까지 잘 온다.
   return (
     <>
       {totalTime !== undefined ? (

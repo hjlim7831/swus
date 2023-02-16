@@ -10,10 +10,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-// import { ResponsivePie } from "@nivo/pie";
 import PieChart from "./PieChart";
 import Typography from "@mui/material/Typography";
-
+import "../../App.css";
 import axios from "./../../Utils/index";
 
 function MyTime() {
@@ -39,10 +38,8 @@ function MyTime() {
       .then((res) => {
         const Time = res.data.target_time;
         setTargetTime(Time);
-        console.log("여기 데이터");
-        console.log(res.data);
-        setInputHour(Math.floor(Time / 60));
-        setInputMin(Time % 60);
+        setInputHour(parseInt(Math.floor(Time / 60)));
+        setInputMin(parseInt(Time % 60));
       })
       .then((res) => {
         const config2 = {
@@ -51,9 +48,7 @@ function MyTime() {
         };
         // 총 공부시간 가져오기 (분)
         axios(config2).then((res) => {
-          console.log("여기는 공부시간");
-          console.log(res.data.now_total_time);
-          setStudyTime(res.data.now_total_time);
+          setStudyTime(parseInt(res.data.now_total_time));
         });
       });
   }, []);
@@ -102,7 +97,6 @@ function MyTime() {
         data: { target_time },
       };
       axios(config).then((res) => {
-        // console.log(res);
         setTargetTime(target_time);
       });
       setOpen(false);
@@ -118,6 +112,7 @@ function MyTime() {
             fontSize: 25,
             color: "white",
             my: "1rem",
+            fontFamily: "Cafe24",
           }}
         >
           목표 공부 시간
@@ -143,7 +138,6 @@ function MyTime() {
           sx={{
             width: "100%",
             height: "100%",
-            backgroundColor: "white",
           }}
         >
           <Grid container>
@@ -164,58 +158,80 @@ function MyTime() {
                     width: "100%",
                     height: "15rem",
                     backgroundColor: "F4EFE6",
+                    marginTop: "10px",
                   }}
                 >
                   <Grid item xs={12}>
                     <Grid container sx={{ marginTop: "3%" }}>
-                      <Grid item xs={6}>
-                        나의 목표 시간
+                      <Grid item xs={1} />
+                      <Grid item xs={5}>
+                        📌 나의 목표 시간
                       </Grid>
 
-                      <Grid item xs={6}>
+                      <Grid item xs={5}>
                         <Box sx={{ marginLeft: "30%" }}>
                           {parseInt(targetTime / 60)}시간{" "}
                           {("0" + parseInt(targetTime % 60)).slice(-2)}분
                         </Box>
                       </Grid>
+                      <Grid item xs={1} />
                     </Grid>
                     <Grid container sx={{ marginTop: "2%" }}>
-                      <Grid item xs={6}>
-                        현재 달성 시간
+                      <Grid item xs={1} />
+                      <Grid item xs={5}>
+                        🏆 현재 달성 시간
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={5}>
                         <Box sx={{ marginLeft: "30%" }}>
                           {parseInt(studyTime / 60)}시간{" "}
                           {("0" + parseInt(studyTime % 60)).slice(-2)}분
                         </Box>
                       </Grid>
+                      <Grid item xs={1} />
                     </Grid>
                     <Grid container sx={{ marginTop: "2%" }}>
-                      <Grid item xs={6}>
-                        남은 목표 시간
+                      <Grid item xs={1} />
+                      <Grid item xs={5}>
+                        🚩 남은 목표 시간
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={5}>
                         <Box sx={{ marginLeft: "30%" }}>
                           {parseInt(restTime / 60)}시간{" "}
                           {("0" + parseInt(restTime % 60)).slice(-2)}분
                         </Box>
                       </Grid>
+                      <Grid item xs={1} />
                     </Grid>
                   </Grid>
-
-                  {targetTime && studyTime ? (
-                    <PieChart targetTime={targetTime} studyTime={studyTime} />
-                  ) : null}
+                  <Box sx={{ marginLeft: "15px" }}>
+                    {targetTime && studyTime ? (
+                      <PieChart targetTime={targetTime} studyTime={studyTime} />
+                    ) : null}
+                  </Box>
                 </Box>
               </Grid>
             </Grid>
           </Grid>
           <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>목표시간 설정하기</DialogTitle>
+            <DialogTitle
+              sx={{
+                fontFamily: "Cafe24",
+                textAlign: "center",
+                fontSize: "30px",
+              }}
+            >
+              목표시간 설정하기
+            </DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                오늘 공부할 목표 시간을 설정해 주세요 <br /> ex) 오늘 10시간 반
-                공부 => 10, 30 입력
+              <DialogContentText
+                sx={{
+                  fontFamily: "Cafe24",
+                  textAlign: "center",
+                  marginBottom: 3,
+                }}
+              >
+                오늘 공부할 목표 시간을 설정해 주세요 <br />
+                ex. 오늘 10시간 반공부 : 10, 30 입력
               </DialogContentText>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -226,7 +242,7 @@ function MyTime() {
                     label="시"
                     type="number"
                     fullWidth
-                    variant="standard"
+                    variant="outlined"
                     defaultValue={Math.floor(targetTime / 60)}
                     onChange={changeH}
                   />
@@ -239,15 +255,25 @@ function MyTime() {
                     label="분"
                     type="number"
                     fullWidth
-                    variant="standard"
+                    variant="outlined"
                     defaultValue={inputMin}
                     onChange={changeM}
                   />
                 </Grid>
               </Grid>
             </DialogContent>
-            <DialogActions>
-              <Button onClick={save}>저장</Button>
+            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                onClick={save}
+                sx={{
+                  fontFamily: "Cafe24",
+                  color: "white",
+                  background: "#1560BD",
+                  "&:hover": { backgroundColor: "#1560BD" },
+                }}
+              >
+                저장
+              </Button>
             </DialogActions>
           </Dialog>
         </Box>

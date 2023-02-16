@@ -67,9 +67,6 @@ const myGroupListSlice = createSlice({
     saveGroupId: (state, action) => {
       state.groupId = action.payload;
     },
-    // saveGroupTodos: (state, action) => {
-    //   state.groupTodos = action.payload
-    // },
   }
 })
 

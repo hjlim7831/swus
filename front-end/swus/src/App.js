@@ -8,24 +8,18 @@ import GroupMain from "./pages/GroupPage/Main";
 import MyPageMain from "./pages/MyPageMain/Main";
 import MyGroupList from "./pages/MyPageProfile/MyGroupList";
 import LandingPage from "./pages/LandingPage/LandingPage";
-
 import LogIn from "./pages/Accounts/LogIn";
 import SignUp from "./pages/Accounts/SignUp";
 import FindPassword from "./pages/Accounts/FindPassword";
 import Account from "./pages/Accounts/UserPage";
 import LoungeMain from "./pages/Lounge/Main";
-import UserModal from "./pages/Accounts/LogInModal/UserModal";
-import LogInModal from "./pages/Accounts/LogInModal/LogIn";
-import SignUpModal from "./pages/Accounts/LogInModal/SignUp";
-import FindPasswordModal from "./pages/Accounts/LogInModal/FindPassword";
 import MyReport from "./pages/MyPageReport/MyReport";
-
 import StudyRoomMain from "./pages/MainPage/StudyRoomMain";
 import NSRoom from "./pages/StudyCam/NSRoom";
 import GRoom from "./pages/StudyCam/GRoom";
 import MyProfileMain from "./pages/MyPageProfile/MyProfileMain";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css"
 
 export default function App() {
   return (
@@ -63,18 +57,10 @@ export default function App() {
           <Route exact path="/lounge" element={<LoungeMain />} />
 
           {/* 회원 정보 관련 주소 */}
-          {/* <Route exact path="/account" element={<UserModal />}> */}
           <Route exact path="/account" element={<Account />}>
             <Route exact path="login" element={<LogIn />} />
             <Route exact path="signup" element={<SignUp />} />
             <Route exact path="findpassword" element={<FindPassword />} />
-          </Route>
-
-          {/* Login modal */}
-          <Route exact path="/accounts" element={<UserModal />}>
-            <Route exact path="login" element={<LogInModal />} />
-            <Route exact path="signup" element={<SignUpModal />} />
-            <Route exact path="findpassword" element={<FindPasswordModal />} />
           </Route>
         </Routes>
       </BrowserRouter>

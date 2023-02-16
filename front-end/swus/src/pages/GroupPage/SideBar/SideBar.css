@@ -1,15 +1,9 @@
-/* $props : study */
-
 #study {
-    @if $props == study {
-			background-color: "#DEDCEE";
-			color: "#1A1E33";
-		} @else {
-			background-color: "#1A1E33";
-			color: "white";
-		}
-}
-
-#board {
-
+	@if $props == study {
+		background-color: "#DEDCEE";
+		color: "#1A1E33";
+	} @else {
+		background-color: "#1A1E33";
+		color: "white";
+	}
 }

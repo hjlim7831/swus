@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import "./SideBar.css";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import "../../../App.css";
 
 
 const drawerWidth = 240;
@@ -39,7 +40,7 @@ export default function MiniDrawer(props) {
     >
 
       <Box fullWidth sx={{ mt: 11, mx: 4, justifyContent: "center" }}>
-        {sideItems.map((item, index) => {
+        {sideItems.map((item) => {
           return (
             <Button
               key={uuidv4()}
@@ -55,7 +56,7 @@ export default function MiniDrawer(props) {
                 marginBlock: "20px",
               }}
               onClick={() => {navigate(item.path)}}
-          >{item.name}</Button>
+          ><span style={{ fontFamily: "Cafe24_e" }}>{item.name}</span></Button>
           )
         })}
       </Box>
