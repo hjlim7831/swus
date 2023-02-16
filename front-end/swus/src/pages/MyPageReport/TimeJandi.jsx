@@ -273,7 +273,7 @@ const StyledContainer = styled.div`
     fill: #41ae76;
   }
   .react-calendar-heatmap .color-first-4 {
-    fill: 006D2C;
+    fill: #006d2c;
   }
 
   .react-calendar-heatmap .color-second-0 {
