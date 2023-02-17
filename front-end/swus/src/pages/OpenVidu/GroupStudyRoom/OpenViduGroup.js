@@ -504,7 +504,7 @@ class OpenViduApp extends Component {
                 </div>
               </Grid>
             </Grid>
-            <Grid item xs={9.6}>
+            <Grid item xs={9.6} sx={{ overflowY: "scroll", height: "90vh", mt: 3 }}>
               <div className="container" styled={{ paddingLeft: "5%" }}>
                 {this.state.session === undefined ? (
                   <div id="join">{this.joinSession()}</div>
