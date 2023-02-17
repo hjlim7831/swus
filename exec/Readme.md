@@ -22,7 +22,6 @@
 
 ## ✨ 배포
 
----
 
 ![젠킨스목록](./image/1_젠킨스목록.png)
 
@@ -30,7 +29,6 @@
 
 ## ✨ 서비스 아키텍쳐
 
----
 
 ![아키텍쳐](./image/2_아키텍쳐.png)
 
@@ -38,7 +36,6 @@
 
 ## ✨ 포팅 메뉴얼
 
----
 
 프로젝트 관련 세부사항들을 총 정리해 작성했습니다.  
 https://lab.ssafy.com/s08-webmobile1-sub2/S08P12A302/-/blob/DEV/exec/StudyWithUs_%ED%8F%AC%ED%8C%85%EB%A9%94%EB%89%B4%EC%96%BC.pdf
