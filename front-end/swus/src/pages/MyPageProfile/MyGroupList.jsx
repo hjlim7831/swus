@@ -291,7 +291,6 @@ function MyGroupList() {
             >
               리포트 보기
             </Button>
-            <div>
               <Report
                 open={modalOpen}
                 close={closeModal}
@@ -343,7 +342,7 @@ function MyGroupList() {
                   </>
                 }
               </Report>
-            </div>
+
           </TableCell>
         </TableRow>
       );
