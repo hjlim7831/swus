@@ -22,7 +22,7 @@
 2. 집에서 혼자 공부하면 잘 집중하지 못하는 사람
 3. 자신의 공부 기록을 정리해서 보고 싶은 사람
 
-## 2. Study With Us 서비스 화면 <img src="README.assets/swus-black.png" alt="swus-black" style="zoom:10%;" />
+## 2. Study With Us 서비스 화면 <img src="README.assets/swus-black.png" alt="swus-black" style="width:8px" />
 
 **메인 페이지**
 
