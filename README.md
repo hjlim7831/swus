@@ -2,6 +2,8 @@
 
 ## 1. Overview✨
 
+<img src="README.assets/swus-black.png" alt="swus-black" style="width:8px" />
+
 **서비스 소개**
 
 카페에 직접 가서 공부하기는 부담스럽고 집에서 혼자 공부하기에는 집중이 안되는 당신!
@@ -22,7 +24,7 @@
 2. 집에서 혼자 공부하면 잘 집중하지 못하는 사람
 3. 자신의 공부 기록을 정리해서 보고 싶은 사람
 
-## 2. Study With Us 서비스 화면 <img src="README.assets/swus-black.png" alt="swus-black" style="width:8px" />
+## 2. Study With Us 서비스 화면 
 
 **메인 페이지**
 
