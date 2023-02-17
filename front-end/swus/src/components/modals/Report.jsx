@@ -58,7 +58,7 @@ function Report(props) {
                       fontWeight: "bold",
                       margineInline: 5,
                       padding: 5,
-                      textAlign: "center",
+                      // textAlign: "center",
                       alignItems: "center",
                       justifyContent: "flex-start",
                       display: "flex",
