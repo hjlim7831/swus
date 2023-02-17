@@ -60,15 +60,9 @@ class OpenViduApp extends Component {
     this.timeID = setInterval(() => {
       this.change();
       if (this.state.mySessionId.substr(6, 1) === "Y") {
-        if (
-          this.state.d.getMinutes() === 50 &&
-          this.state.d.getSeconds() == 0
-        ) {
+        if (this.state.d.getMinutes() === 50 && this.state.d.getSeconds() == 0) {
           startBreak();
-        } else if (
-          this.state.d.getMinutes() === 0 &&
-          this.state.d.getSeconds() == 0
-        ) {
+        } else if (this.state.d.getMinutes() === 0 && this.state.d.getSeconds() == 0) {
           endBreak();
         }
       }
@@ -280,7 +274,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "1200x300", // The resolution of your video
+                resolution: "1200x600", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -292,9 +286,7 @@ class OpenViduApp extends Component {
 
               // Obtain the current video device in use
               var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter(
-                (device) => device.kind === "videoinput"
-              );
+              var videoDevices = devices.filter((device) => device.kind === "videoinput");
               var currentVideoDeviceId = publisher.stream
                 .getMediaStream()
                 .getVideoTracks()[0]
@@ -377,10 +369,7 @@ class OpenViduApp extends Component {
             <Grid item xs={2.4}>
               <Grid item xs={10} sx={{ marginX: "auto" }}>
                 {this.state.mySessionId.substr(6, 1) === "Y" ? ( //채팅방 Y면
-                  <Stack
-                    direction="row"
-                    sx={{ display: "flex", justifyContent: "flex-end" }}
-                  >
+                  <Stack direction="row" sx={{ display: "flex", justifyContent: "flex-end" }}>
                     <IconButton
                       color="primary"
                       aria-label="quit"
@@ -444,10 +433,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {hoursTen}
                         </Typography>
                       </Box>
@@ -461,10 +447,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {hoursOne}
                         </Typography>
                       </Box>
@@ -489,10 +472,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {minutesTen}
                         </Typography>
                       </Box>
@@ -507,10 +487,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {minutesOne}
                         </Typography>
                       </Box>
@@ -535,10 +512,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {secondsTen}
                         </Typography>
                       </Box>
@@ -552,10 +526,7 @@ class OpenViduApp extends Component {
                           backgroundColor: "#E8E8E8",
                         }}
                       >
-                        <Typography
-                          variant="h4"
-                          sx={{ textAlign: "center", mt: "5px" }}
-                        >
+                        <Typography variant="h4" sx={{ textAlign: "center", mt: "5px" }}>
                           {secondsOne}
                         </Typography>
                       </Box>
@@ -604,9 +575,7 @@ class OpenViduApp extends Component {
               </Grid>
             </Grid>
             <Grid item xs={9.6}>
-              {this.state.session === undefined ? (
-                <div id="join">{this.joinSession()}</div>
-              ) : null}
+              {this.state.session === undefined ? <div id="join">{this.joinSession()}</div> : null}
               {this.state.session !== undefined ? (
                 <div
                   id="video-container"
@@ -625,9 +594,7 @@ class OpenViduApp extends Component {
                   {this.state.publisher !== undefined ? (
                     <div
                       className="stream-container"
-                      onClick={() =>
-                        this.handleMainVideoStream(this.state.publisher)
-                      }
+                      onClick={() => this.handleMainVideoStream(this.state.publisher)}
                       style={{ width: "100%", height: "100%" }}
                     >
                       <UserVideoComponent
@@ -643,10 +610,7 @@ class OpenViduApp extends Component {
                       style={{ width: "100%", height: "100%" }}
                       onClick={() => this.handleMainVideoStream(sub)}
                     >
-                      <UserVideoComponent
-                        streamManager={sub}
-                        style={{ width: "100%" }}
-                      />
+                      <UserVideoComponent streamManager={sub} style={{ width: "100%" }} />
                     </div>
                   ))}
                 </div>
@@ -685,9 +649,7 @@ class OpenViduApp extends Component {
       axios
         .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
           headers: {
-            Authorization: `Basic ${Base64.encode(
-              `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-            )}`,
+            Authorization: `Basic ${Base64.encode(`OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`)}`,
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
@@ -715,19 +677,13 @@ class OpenViduApp extends Component {
     return new Promise((resolve, reject) => {
       let data = {};
       axios
-        .post(
-          `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-          data,
-          {
-            headers: {
-              Authorization: `Basic ${Base64.encode(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-              )}`,
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-          }
-        )
+        .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, data, {
+          headers: {
+            Authorization: `Basic ${Base64.encode(`OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`)}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
         .then((response) => {
           resolve(response.data.token);
         })
