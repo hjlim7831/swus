@@ -22,7 +22,7 @@
 2. 집에서 혼자 공부하면 잘 집중하지 못하는 사람
 3. 자신의 공부 기록을 정리해서 보고 싶은 사람
 
-## 2. Study With Us 서비스 화면 <img src="README.assets/swus-black.png" alt="swus-black" style="zoom:25%;" />
+## 2. Study With Us 서비스 화면 <img src="README.assets/swus-black.png" alt="swus-black" style="zoom:10%;" />
 
 **메인 페이지**
 
@@ -34,9 +34,9 @@
 
 **마이 페이지(기록)**
 
-![마이 페이지(todo)](README.assets/마이 페이지(todo).png)
+![마이 페이지(todo)](README.assets/마이페이지(todo).png)
 
-![마이 페이지(공부시간)](README.assets/마이 페이지(공부시간).png)
+![마이 페이지(공부시간)](README.assets/마이페이지(공부시간).png)
 
 **그룹 열람실**
 
