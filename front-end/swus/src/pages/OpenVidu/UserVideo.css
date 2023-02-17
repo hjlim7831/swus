@@ -3,6 +3,7 @@
 video {
   width: 100%;
   height: auto;
+  max-height: 80%;
   cursor: pointer;
   margin-right: 1%;
   display: inline-block;
