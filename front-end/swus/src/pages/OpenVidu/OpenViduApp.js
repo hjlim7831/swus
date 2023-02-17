@@ -280,7 +280,7 @@ class OpenViduApp extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "2x1.8", // The resolution of your video
+                resolution: "360x215", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
@@ -603,7 +603,7 @@ class OpenViduApp extends Component {
                 </div>
               </Grid>
             </Grid>
-            <Grid item xs={9.6}>
+            <Grid item xs={9.6} sx={{ overflowY: "scroll", height: "90vh", mt: 3 }}>
               {this.state.session === undefined ? (
                 <div id="join">{this.joinSession()}</div>
               ) : null}
