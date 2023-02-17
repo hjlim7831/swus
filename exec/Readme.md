@@ -2,10 +2,10 @@
 
 - Written By @ShinMinhye  
 
+<br>
 
 ## **🖥️ 개발 환경과 기술스택**
 
----
 
 |개발환경|기술스택|
 |:--------------------:|:-------------------------|
@@ -18,7 +18,7 @@
 | <span style="color:skyblue">**Frontend** | - NodeJS 18.13.0<br>- npm 8.19.3<br>- react 18.12.0<br>- redux 4.2.0<br>- material ui 5.11.8 |
 | <span style="color:skyblue">**Others** | - OpenVidu 2.25.0<br>- Google Gmail SMTP |
   
-
+<br>
 
 ## ✨ 배포
 
@@ -26,6 +26,7 @@
 
 ![젠킨스목록](./image/1_젠킨스목록.png)
 
+<br>
 
 ## ✨ 서비스 아키텍쳐
 
@@ -33,10 +34,11 @@
 
 ![아키텍쳐](./image/2_아키텍쳐.png)
 
+<br>
 
 ## ✨ 포팅 메뉴얼
 
 ---
 
-프로젝트 관련 세부사항들을 총 정리해 작성했습니다.
-![그룹 모집게시판](./StudyWithUs_포팅메뉴얼.pdf)
+프로젝트 관련 세부사항들을 총 정리해 작성했습니다.  
+https://lab.ssafy.com/s08-webmobile1-sub2/S08P12A302/-/blob/DEV/exec/StudyWithUs_%ED%8F%AC%ED%8C%85%EB%A9%94%EB%89%B4%EC%96%BC.pdf
