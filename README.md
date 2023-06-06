@@ -32,7 +32,7 @@
 
 **공용 열람실**
 
-![공용 열람실](README.assets/공용 열람실.png)
+![공용 열람실](README.assets/공용_열람실.png)
 
 **마이 페이지(기록)**
 
@@ -42,12 +42,12 @@
 
 **그룹 열람실**
 
-![그룹 열람실](README.assets/그룹 열람실.png)
+![그룹 열람실](README.assets/그룹_열람실.png)
 
 **그룹 정보 & 리포트**
-![그룹 세부정보](README.assets/그룹 세부정보-1676564360214-14.png)
+![그룹 세부정보](README.assets/그룹_세부정보-1676564360214-14.png)
 
-![그룹 세부정보](README.assets/그룹 리포트-1676564344638-12.png)
+![그룹 세부정보](README.assets/그룹_리포트-1676564344638-12.png)
 
 **휴게실**
 
@@ -93,7 +93,7 @@
 
 ### API 기능 명세
 
-![API 기능 명세](README.assets/API 기능 명세.png)
+![API 기능 명세](README.assets/API_기능_명세.png)
 
 ## 5. 개발 환경과 기술 스택 🖥️
 
